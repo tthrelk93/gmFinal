@@ -1,0 +1,557 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		314FACD320D975F9005A5E7C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314FACD220D975F9005A5E7C /* AppDelegate.swift */; };
+		314FACD520D975F9005A5E7C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314FACD420D975F9005A5E7C /* ViewController.swift */; };
+		314FACD820D975F9005A5E7C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 314FACD620D975F9005A5E7C /* Main.storyboard */; };
+		314FACDA20D975F9005A5E7C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 314FACD920D975F9005A5E7C /* Assets.xcassets */; };
+		314FACDD20D975F9005A5E7C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 314FACDB20D975F9005A5E7C /* LaunchScreen.storyboard */; };
+		314FACE820D975F9005A5E7C /* GymMeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314FACE720D975F9005A5E7C /* GymMeTests.swift */; };
+		314FACF320D975F9005A5E7C /* GymMeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314FACF220D975F9005A5E7C /* GymMeUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		314FACE420D975F9005A5E7C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 314FACC720D975F9005A5E7C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 314FACCE20D975F9005A5E7C;
+			remoteInfo = GymMe;
+		};
+		314FACEF20D975F9005A5E7C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 314FACC720D975F9005A5E7C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 314FACCE20D975F9005A5E7C;
+			remoteInfo = GymMe;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		314FACCF20D975F9005A5E7C /* GymMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GymMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		314FACD220D975F9005A5E7C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		314FACD420D975F9005A5E7C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		314FACD720D975F9005A5E7C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		314FACD920D975F9005A5E7C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		314FACDC20D975F9005A5E7C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		314FACDE20D975F9005A5E7C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		314FACE320D975F9005A5E7C /* GymMeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GymMeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		314FACE720D975F9005A5E7C /* GymMeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GymMeTests.swift; sourceTree = "<group>"; };
+		314FACE920D975F9005A5E7C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		314FACEE20D975F9005A5E7C /* GymMeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GymMeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		314FACF220D975F9005A5E7C /* GymMeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GymMeUITests.swift; sourceTree = "<group>"; };
+		314FACF420D975F9005A5E7C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		314FACCC20D975F9005A5E7C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		314FACE020D975F9005A5E7C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		314FACEB20D975F9005A5E7C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		314FACC620D975F9005A5E7C = {
+			isa = PBXGroup;
+			children = (
+				314FACD120D975F9005A5E7C /* GymMe */,
+				314FACE620D975F9005A5E7C /* GymMeTests */,
+				314FACF120D975F9005A5E7C /* GymMeUITests */,
+				314FACD020D975F9005A5E7C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		314FACD020D975F9005A5E7C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				314FACCF20D975F9005A5E7C /* GymMe.app */,
+				314FACE320D975F9005A5E7C /* GymMeTests.xctest */,
+				314FACEE20D975F9005A5E7C /* GymMeUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		314FACD120D975F9005A5E7C /* GymMe */ = {
+			isa = PBXGroup;
+			children = (
+				314FACD220D975F9005A5E7C /* AppDelegate.swift */,
+				314FACD420D975F9005A5E7C /* ViewController.swift */,
+				314FACD620D975F9005A5E7C /* Main.storyboard */,
+				314FACD920D975F9005A5E7C /* Assets.xcassets */,
+				314FACDB20D975F9005A5E7C /* LaunchScreen.storyboard */,
+				314FACDE20D975F9005A5E7C /* Info.plist */,
+			);
+			path = GymMe;
+			sourceTree = "<group>";
+		};
+		314FACE620D975F9005A5E7C /* GymMeTests */ = {
+			isa = PBXGroup;
+			children = (
+				314FACE720D975F9005A5E7C /* GymMeTests.swift */,
+				314FACE920D975F9005A5E7C /* Info.plist */,
+			);
+			path = GymMeTests;
+			sourceTree = "<group>";
+		};
+		314FACF120D975F9005A5E7C /* GymMeUITests */ = {
+			isa = PBXGroup;
+			children = (
+				314FACF220D975F9005A5E7C /* GymMeUITests.swift */,
+				314FACF420D975F9005A5E7C /* Info.plist */,
+			);
+			path = GymMeUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		314FACCE20D975F9005A5E7C /* GymMe */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 314FACF720D975F9005A5E7C /* Build configuration list for PBXNativeTarget "GymMe" */;
+			buildPhases = (
+				314FACCB20D975F9005A5E7C /* Sources */,
+				314FACCC20D975F9005A5E7C /* Frameworks */,
+				314FACCD20D975F9005A5E7C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GymMe;
+			productName = GymMe;
+			productReference = 314FACCF20D975F9005A5E7C /* GymMe.app */;
+			productType = "com.apple.product-type.application";
+		};
+		314FACE220D975F9005A5E7C /* GymMeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 314FACFA20D975F9005A5E7C /* Build configuration list for PBXNativeTarget "GymMeTests" */;
+			buildPhases = (
+				314FACDF20D975F9005A5E7C /* Sources */,
+				314FACE020D975F9005A5E7C /* Frameworks */,
+				314FACE120D975F9005A5E7C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				314FACE520D975F9005A5E7C /* PBXTargetDependency */,
+			);
+			name = GymMeTests;
+			productName = GymMeTests;
+			productReference = 314FACE320D975F9005A5E7C /* GymMeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		314FACED20D975F9005A5E7C /* GymMeUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 314FACFD20D975F9005A5E7C /* Build configuration list for PBXNativeTarget "GymMeUITests" */;
+			buildPhases = (
+				314FACEA20D975F9005A5E7C /* Sources */,
+				314FACEB20D975F9005A5E7C /* Frameworks */,
+				314FACEC20D975F9005A5E7C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				314FACF020D975F9005A5E7C /* PBXTargetDependency */,
+			);
+			name = GymMeUITests;
+			productName = GymMeUITests;
+			productReference = 314FACEE20D975F9005A5E7C /* GymMeUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		314FACC720D975F9005A5E7C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0910;
+				LastUpgradeCheck = 0910;
+				ORGANIZATIONNAME = "Thomas Threlkeld";
+				TargetAttributes = {
+					314FACCE20D975F9005A5E7C = {
+						CreatedOnToolsVersion = 9.1;
+						ProvisioningStyle = Automatic;
+					};
+					314FACE220D975F9005A5E7C = {
+						CreatedOnToolsVersion = 9.1;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 314FACCE20D975F9005A5E7C;
+					};
+					314FACED20D975F9005A5E7C = {
+						CreatedOnToolsVersion = 9.1;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 314FACCE20D975F9005A5E7C;
+					};
+				};
+			};
+			buildConfigurationList = 314FACCA20D975F9005A5E7C /* Build configuration list for PBXProject "GymMe" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 314FACC620D975F9005A5E7C;
+			productRefGroup = 314FACD020D975F9005A5E7C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				314FACCE20D975F9005A5E7C /* GymMe */,
+				314FACE220D975F9005A5E7C /* GymMeTests */,
+				314FACED20D975F9005A5E7C /* GymMeUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		314FACCD20D975F9005A5E7C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				314FACDD20D975F9005A5E7C /* LaunchScreen.storyboard in Resources */,
+				314FACDA20D975F9005A5E7C /* Assets.xcassets in Resources */,
+				314FACD820D975F9005A5E7C /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		314FACE120D975F9005A5E7C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		314FACEC20D975F9005A5E7C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		314FACCB20D975F9005A5E7C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				314FACD520D975F9005A5E7C /* ViewController.swift in Sources */,
+				314FACD320D975F9005A5E7C /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		314FACDF20D975F9005A5E7C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				314FACE820D975F9005A5E7C /* GymMeTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		314FACEA20D975F9005A5E7C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				314FACF320D975F9005A5E7C /* GymMeUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		314FACE520D975F9005A5E7C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 314FACCE20D975F9005A5E7C /* GymMe */;
+			targetProxy = 314FACE420D975F9005A5E7C /* PBXContainerItemProxy */;
+		};
+		314FACF020D975F9005A5E7C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 314FACCE20D975F9005A5E7C /* GymMe */;
+			targetProxy = 314FACEF20D975F9005A5E7C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		314FACD620D975F9005A5E7C /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				314FACD720D975F9005A5E7C /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		314FACDB20D975F9005A5E7C /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				314FACDC20D975F9005A5E7C /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		314FACF520D975F9005A5E7C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		314FACF620D975F9005A5E7C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		314FACF820D975F9005A5E7C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = GymMe/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tthrelk.GymMe;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		314FACF920D975F9005A5E7C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = GymMe/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tthrelk.GymMe;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		314FACFB20D975F9005A5E7C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = GymMeTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tthrelk.GymMeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GymMe.app/GymMe";
+			};
+			name = Debug;
+		};
+		314FACFC20D975F9005A5E7C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = GymMeTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tthrelk.GymMeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GymMe.app/GymMe";
+			};
+			name = Release;
+		};
+		314FACFE20D975F9005A5E7C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = GymMeUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tthrelk.GymMeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = GymMe;
+			};
+			name = Debug;
+		};
+		314FACFF20D975F9005A5E7C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = GymMeUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tthrelk.GymMeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = GymMe;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		314FACCA20D975F9005A5E7C /* Build configuration list for PBXProject "GymMe" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				314FACF520D975F9005A5E7C /* Debug */,
+				314FACF620D975F9005A5E7C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		314FACF720D975F9005A5E7C /* Build configuration list for PBXNativeTarget "GymMe" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				314FACF820D975F9005A5E7C /* Debug */,
+				314FACF920D975F9005A5E7C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		314FACFA20D975F9005A5E7C /* Build configuration list for PBXNativeTarget "GymMeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				314FACFB20D975F9005A5E7C /* Debug */,
+				314FACFC20D975F9005A5E7C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		314FACFD20D975F9005A5E7C /* Build configuration list for PBXNativeTarget "GymMeUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				314FACFE20D975F9005A5E7C /* Debug */,
+				314FACFF20D975F9005A5E7C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 314FACC720D975F9005A5E7C /* Project object */;
+}
