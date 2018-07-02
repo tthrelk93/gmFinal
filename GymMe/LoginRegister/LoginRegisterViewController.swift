@@ -448,12 +448,12 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
                         }
                         
                         if userBool{
-                            Auth.auth().currentUser?.delete(completion: { (error) in
+                            /*Auth.auth().currentUser?.delete(completion: { (error) in
                                 if error != nil {
                                     print("Error unable to delete user")
                                     
                                 }
-                            })
+                            })*/
                             
                         } else {
                             self.performSegue(withIdentifier: "LoginToFeed", sender: self)
@@ -469,13 +469,13 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
             
         }
         
-        images.append(UIImage(named: "pexels-photo-241456.png")!)
+        //images.append(UIImage(named: "pexels-photo-241456.png")!)
         
-        firstImageView.image = images[0]
+        //firstImageView.image = images[0]
         print("hereee")
         UIView.animate(withDuration: 1.0, delay: 0, options: [UIViewAnimationOptions.autoreverse, UIViewAnimationOptions.repeat], animations: {
-            self.firstImageView.image = self.images[self.currentImageindex]
-            self.currentImageindex = (self.currentImageindex + 1) % self.images.count
+            //self.firstImageView.image = self.images[self.currentImageindex]
+           // self.currentImageindex = (self.currentImageindex + 1) % self.images.count
             
         }, completion: nil)
     }

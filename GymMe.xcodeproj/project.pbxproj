@@ -11,7 +11,6 @@
 		31359ECB20DC26C400F5ED11 /* CatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31359ECA20DC26C400F5ED11 /* CatCell.swift */; };
 		31359ECD20DC465000F5ED11 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31359ECC20DC465000F5ED11 /* ProfileViewController.swift */; };
 		314FACD320D975F9005A5E7C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314FACD220D975F9005A5E7C /* AppDelegate.swift */; };
-		314FACD520D975F9005A5E7C /* HomeFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314FACD420D975F9005A5E7C /* HomeFeedViewController.swift */; };
 		314FACD820D975F9005A5E7C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 314FACD620D975F9005A5E7C /* Main.storyboard */; };
 		314FACDD20D975F9005A5E7C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 314FACDB20D975F9005A5E7C /* LaunchScreen.storyboard */; };
 		314FACE820D975F9005A5E7C /* GymMeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314FACE720D975F9005A5E7C /* GymMeTests.swift */; };
@@ -20,7 +19,8 @@
 		3184C1F420E5468100A5EA19 /* PopCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3184C1F220E5468100A5EA19 /* PopCell.swift */; };
 		3184C1F520E5468100A5EA19 /* PopCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3184C1F320E5468100A5EA19 /* PopCell.xib */; };
 		3184C1F720E5631D00A5EA19 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3184C1F620E5631200A5EA19 /* Assets.xcassets */; };
-		31C48F1320D97EF600D8316E /* NewsFeedCellCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C48F1120D97EF600D8316E /* NewsFeedCellCollectionViewCell.swift */; };
+		3193061520E94B5A00942DCF /* HomeFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3193061420E94B5A00942DCF /* HomeFeedViewController.swift */; };
+		3193061920E94C5900942DCF /* NewsFeedCellCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3193061820E94C5900942DCF /* NewsFeedCellCollectionViewCell.swift */; };
 		31C48F1420D97EF600D8316E /* NewsFeedCellCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 31C48F1220D97EF600D8316E /* NewsFeedCellCollectionViewCell.xib */; };
 		31C48F1720D9845900D8316E /* NewsFeedPicCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C48F1520D9845900D8316E /* NewsFeedPicCollectionViewCell.swift */; };
 		31C48F1820D9845900D8316E /* NewsFeedPicCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 31C48F1620D9845900D8316E /* NewsFeedPicCollectionViewCell.xib */; };
@@ -62,7 +62,6 @@
 		31359ECC20DC465000F5ED11 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		314FACCF20D975F9005A5E7C /* GymMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GymMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		314FACD220D975F9005A5E7C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		314FACD420D975F9005A5E7C /* HomeFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedViewController.swift; sourceTree = "<group>"; };
 		314FACD720D975F9005A5E7C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		314FACDC20D975F9005A5E7C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		314FACDE20D975F9005A5E7C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -76,8 +75,9 @@
 		315C660C20E00F2E00188328 /* GymMe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GymMe.entitlements; sourceTree = "<group>"; };
 		3184C1F220E5468100A5EA19 /* PopCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopCell.swift; sourceTree = "<group>"; };
 		3184C1F320E5468100A5EA19 /* PopCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PopCell.xib; sourceTree = "<group>"; };
-		3184C1F620E5631200A5EA19 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		31C48F1120D97EF600D8316E /* NewsFeedCellCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsFeedCellCollectionViewCell.swift; sourceTree = "<group>"; };
+		3184C1F620E5631200A5EA19 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = GymMe/Assets.xcassets; sourceTree = SOURCE_ROOT; };
+		3193061420E94B5A00942DCF /* HomeFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFeedViewController.swift; sourceTree = "<group>"; };
+		3193061820E94C5900942DCF /* NewsFeedCellCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsFeedCellCollectionViewCell.swift; sourceTree = "<group>"; };
 		31C48F1220D97EF600D8316E /* NewsFeedCellCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewsFeedCellCollectionViewCell.xib; sourceTree = "<group>"; };
 		31C48F1520D9845900D8316E /* NewsFeedPicCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsFeedPicCollectionViewCell.swift; sourceTree = "<group>"; };
 		31C48F1620D9845900D8316E /* NewsFeedPicCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewsFeedPicCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -137,7 +137,7 @@
 		31359EC620DC16E700F5ED11 /* NewsFeedCells */ = {
 			isa = PBXGroup;
 			children = (
-				31C48F1120D97EF600D8316E /* NewsFeedCellCollectionViewCell.swift */,
+				3193061820E94C5900942DCF /* NewsFeedCellCollectionViewCell.swift */,
 				31C48F1220D97EF600D8316E /* NewsFeedCellCollectionViewCell.xib */,
 				31C48F1520D9845900D8316E /* NewsFeedPicCollectionViewCell.swift */,
 				31C48F1620D9845900D8316E /* NewsFeedPicCollectionViewCell.xib */,
@@ -148,7 +148,7 @@
 		31359EC720DC170200F5ED11 /* NewsFeed */ = {
 			isa = PBXGroup;
 			children = (
-				314FACD420D975F9005A5E7C /* HomeFeedViewController.swift */,
+				3193061420E94B5A00942DCF /* HomeFeedViewController.swift */,
 				31F0F13A20E4041700291263 /* Player.swift */,
 			);
 			path = NewsFeed;
@@ -193,9 +193,8 @@
 				31C48F1B20D98B6C00D8316E /* GoogleService-Info.plist */,
 				31359EC820DC183D00F5ED11 /* SearchViewController.swift */,
 				31EEAE6E20DEC7A60015B8B2 /* PostViewController.swift */,
-				31359ECA20DC26C400F5ED11 /* CatCell.swift */,
-				3184C1F220E5468100A5EA19 /* PopCell.swift */,
-				3184C1F320E5468100A5EA19 /* PopCell.xib */,
+				318043A220E7EBA900E1616F /* CategoryCell */,
+				31E6412120E7EB6C00BEB421 /* PopularPostsCell */,
 				3184C1F620E5631200A5EA19 /* Assets.xcassets */,
 			);
 			path = GymMe;
@@ -218,6 +217,24 @@
 				314FAD0020D97738005A5E7C /* GoogleService-Info.plist */,
 			);
 			path = GymMeUITests;
+			sourceTree = "<group>";
+		};
+		318043A220E7EBA900E1616F /* CategoryCell */ = {
+			isa = PBXGroup;
+			children = (
+				31359ECA20DC26C400F5ED11 /* CatCell.swift */,
+			);
+			name = CategoryCell;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		31E6412120E7EB6C00BEB421 /* PopularPostsCell */ = {
+			isa = PBXGroup;
+			children = (
+				3184C1F220E5468100A5EA19 /* PopCell.swift */,
+				3184C1F320E5468100A5EA19 /* PopCell.xib */,
+			);
+			path = PopularPostsCell;
 			sourceTree = "<group>";
 		};
 		31EEAE6B20DEB8250015B8B2 /* Profile */ = {
@@ -496,7 +513,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				31EEAE6F20DEC7A60015B8B2 /* PostViewController.swift in Sources */,
-				314FACD520D975F9005A5E7C /* HomeFeedViewController.swift in Sources */,
 				31C48F1A20D989BB00D8316E /* FeedData.swift in Sources */,
 				31359ECD20DC465000F5ED11 /* ProfileViewController.swift in Sources */,
 				31EEAE6D20DEB8600015B8B2 /* EditProfileView.swift in Sources */,
@@ -507,8 +523,9 @@
 				3184C1F420E5468100A5EA19 /* PopCell.swift in Sources */,
 				31C48F1720D9845900D8316E /* NewsFeedPicCollectionViewCell.swift in Sources */,
 				31359ECB20DC26C400F5ED11 /* CatCell.swift in Sources */,
-				31C48F1320D97EF600D8316E /* NewsFeedCellCollectionViewCell.swift in Sources */,
 				31F6C23C20DAF4EE00026C0B /* User.swift in Sources */,
+				3193061520E94B5A00942DCF /* HomeFeedViewController.swift in Sources */,
+				3193061920E94C5900942DCF /* NewsFeedCellCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -679,7 +696,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2A8TEKG3F8;
 				INFOPLIST_FILE = GymMe/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tthrelk.GymMee;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -697,7 +714,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2A8TEKG3F8;
 				INFOPLIST_FILE = GymMe/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.tthrelk.GymMee;
 				PRODUCT_NAME = "$(TARGET_NAME)";

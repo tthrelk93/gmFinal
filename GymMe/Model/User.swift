@@ -13,5 +13,6 @@ class User: NSObject {
     var username: String?
     var profPic: String?
     var posts: [String:Any]?
+    
 
 }

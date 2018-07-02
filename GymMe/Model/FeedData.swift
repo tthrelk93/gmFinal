@@ -13,10 +13,16 @@ class FeedData: NSObject {
     var posterUID: String?
     var posterName: String?
     var posterPicURL: String?
+    
     var datePosted: String?
+    
     var postText: String?
     var postPic: String?
-    var likes: Int?
+    var postVid: String?
+    
+    var shares: [String]?
+    var favorites: [String]?
+    var likes: [String]?
     var comments: [String:Any]?
     
 }

@@ -1,11 +1,3 @@
-//
-//  NewsFeedCellCollectionViewCell.swift
-//  GymMe
-//
-//  Created by Thomas Threlkeld on 6/19/18.
-//  Copyright © 2018 Thomas Threlkeld. All rights reserved.
-//
-
 import UIKit
 
 protocol PerformActionsInFeedDelegate {
@@ -15,14 +7,14 @@ protocol PerformActionsInFeedDelegate {
 }
 
 class NewsFeedCellCollectionViewCell: UICollectionViewCell {
-
+    
     @IBAction func tapGestureRec(_ sender: Any) {
         print("liked")
-       //if not liked
+        //if not liked
         self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
         //else {self.likeButton.setImage(UIImage(named:"like.png"), for: .normal)}
         
-    
+        
     }
     
     @IBOutlet weak var tapGesture: UITapGestureRecognizer!
@@ -89,5 +81,5 @@ class NewsFeedCellCollectionViewCell: UICollectionViewCell {
         print(self.gestureRecognizers)
         // Initialization code
     }
-
+    
 }

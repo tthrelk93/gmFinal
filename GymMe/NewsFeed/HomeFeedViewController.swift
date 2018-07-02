@@ -1,4 +1,3 @@
-//
 //  ViewController.swift
 //  GymMe
 //
@@ -21,7 +20,7 @@ class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UIColle
     var temp = FeedData()
     var temp2 = FeedData()
     var temp3 = FeedData()
-    var feedDataArray = [FeedData]()
+    
     public func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem){
         if item == tabBar.items![1]{
             performSegue(withIdentifier: "FeedToSearch", sender: self)
@@ -55,69 +54,118 @@ class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UIColle
         }
         performSegue(withIdentifier: "FeedToProfile", sender: self)
     }
-    var uidArray = ["Bob","Phil",Auth.auth().currentUser!.uid]
+    //var uidArray = ["Bob","Phil",Auth.auth().currentUser!.uid]
     var nameArray = ["Bob","Phil","Me"]
     var locArray = ["nowhere/test", "nowhere/test","Memphis, TN"]
     var typeOfCellAtIndexPath = [IndexPath:Int]()
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         print("hey")
-        if feedDataArray[indexPath.row].postPic == nil{
+        if feedDataArray[indexPath.row]["postPic"] == nil && feedDataArray[indexPath.row]["postVid"] == nil{
             typeOfCellAtIndexPath[indexPath] = 0
             let cell : NewsFeedCellCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "NewsFeedCellCollectionViewCell", for: indexPath) as! NewsFeedCellCollectionViewCell
             cell.delegate = self
-        
-            cell.posterUID = uidArray[indexPath.row]
-            cell.posterNameButton.setTitle(nameArray[indexPath.row], for: .normal)
+            if feedDataArray[indexPath.row]["postText"] != nil {
+                cell.postText.text = feedDataArray[indexPath.row]["postText"] as! String
+            }
+            cell.postText.text = (feedDataArray[indexPath.row]["postText"] as! String)
+            DispatchQueue.main.async {
+                
+                if let messageImageUrl = URL(string: self.feedDataArray[indexPath.row]["posterPicURL"] as! String) {
+                
+                if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                    cell.profImageView.image = UIImage(data: imageData as Data)
+                    
+                }
+                
+            }
+            }
+            
+            cell.layer.shouldRasterize = true
+            cell.layer.rasterizationScale = UIScreen.main.scale
+            cell.posterUID = (feedDataArray[indexPath.row]["posterUID"] as! String)
+            cell.posterNameButton.setTitle((feedDataArray[indexPath.row]["posterName"] as! String), for: .normal)
             cell.postLocationButton.setTitle(locArray[indexPath.row], for: .normal)
             cell.cellIndexPath = indexPath
             /*let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped(sender:)))
-            tap.numberOfTapsRequired = 2
-
-            cell.addGestureRecognizer(tap)*/
-           
+             tap.numberOfTapsRequired = 2
+             
+             cell.addGestureRecognizer(tap)*/
             
-
+            
+            
             
             return cell
         } else {
             typeOfCellAtIndexPath[indexPath] = 1
             let cell : NewsFeedPicCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "NewsFeedPicCollectionViewCell", for: indexPath) as! NewsFeedPicCollectionViewCell
             cell.delegate = self
-            cell.posterUID = uidArray[indexPath.row]
-            cell.posterNameButton.setTitle(nameArray[indexPath.row], for: .normal)
-            cell.postLocationButton.setTitle(locArray[indexPath.row], for: .normal)
-
+            cell.posterUID = (feedDataArray[indexPath.row]["posterUID"] as! String)
+            cell.layer.shouldRasterize = true
+            cell.layer.rasterizationScale = UIScreen.main.scale
+            DispatchQueue.main.async {
+                
+                if let messageImageUrl = URL(string: self.feedDataArray[indexPath.row]["posterPicURL"] as! String) {
+                
+                if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                    cell.posterPic.image = UIImage(data: imageData as Data)
+                    
+                }
+                
+            }
+            }
+            if feedDataArray[indexPath.row]["postText"] != nil {
+                cell.postText.text = feedDataArray[indexPath.row]["postText"] as! String
+            }
+            cell.posterNameButton.setTitle((feedDataArray[indexPath.row]["posterName"] as! String), for: .normal)
+            cell.postLocationButton.setTitle("post location", for: .normal)
+            
             cell.cellIndexPath = indexPath
-            cell.player?.playerDelegate = self
-            cell.player?.playbackDelegate = self
-            cell.player?.playbackLoops = true
-           cell.player?.playbackPausesWhenBackgrounded = true
-            cell.player?.playbackPausesWhenResigningActive
-            //var gest = UIGestureRecognizer(target: <#T##Any?#>, action: <#T##Selector?#>)
-            var vidFrame = CGRect(x: cell.postPic.frame.origin.x, y: cell.postPic.frame.origin.y, width: feedCollect.frame.width - 28, height: cell.postPic.frame.height)
-            cell.player?.view.frame = vidFrame
-            if cell.videoUrl == nil {
+            
+            
+            if feedDataArray[indexPath.row]["postVid"] == nil {
+                DispatchQueue.main.async{
+                if let messageImageUrl = URL(string: self.feedDataArray[indexPath.row]["postPic"] as! String) {
+                    
+                    if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                        cell.postPic.image = UIImage(data: imageData as Data)
+                        
+                    }
+                    
+                }
+                }
                 cell.viewCount.isHidden = true
                 
             } else {
-                cell.player?.view.isHidden = true
+                cell.player?.playerDelegate = self
+                cell.player?.playbackDelegate = self
+                cell.player?.playbackLoops = true
+                cell.player?.playbackPausesWhenBackgrounded = true
+                cell.player?.playbackPausesWhenResigningActive
+                //var gest = UIGestureRecognizer(target: <#T##Any?#>, action: <#T##Selector?#>)
+                
+                let vidFrame = CGRect(x: cell.postPic.frame.origin.x, y: cell.postPic.frame.origin.y, width: feedCollect.frame.width - 28, height: cell.postPic.frame.height)
+                cell.player?.view.frame = vidFrame
+                
+                cell.player?.url  = URL(string: feedDataArray[indexPath.row]["postVid"] as! String)
+                cell.player?.view.isHidden = false
                 cell.viewCount.isHidden = false
+                cell.player?.didMove(toParentViewController: self)
+                
+                //cell.player?.url = cell.videoUrl
+                
+                cell.player?.playbackLoops = true
+                
+                let tapGestureRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTapGestureRecognizer(_:)))
+                tapGestureRecognizer.numberOfTapsRequired = 1
+                cell.player?.view.addGestureRecognizer(tapGestureRecognizer)
             }
             
             //self.addChildViewController(cell.player)
             //self.view.addSubview(cell.player.view)
-            cell.player?.didMove(toParentViewController: self)
-            
-            cell.player?.url = cell.videoUrl
-            
-            cell.player?.playbackLoops = true
-            
-            let tapGestureRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTapGestureRecognizer(_:)))
-            tapGestureRecognizer.numberOfTapsRequired = 1
-            cell.player?.view.addGestureRecognizer(tapGestureRecognizer)
-            
-            
            
+            
+            
+            
             return cell
         }
         
@@ -125,7 +173,7 @@ class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UIColle
     var selectedCell = NewsFeedPicCollectionViewCell()
     @IBAction func dubTap(_ sender: Any) {
         let tappedPoint: CGPoint = (sender as! UITapGestureRecognizer).location(in: self.feedCollect)
-    
+        
         let tappedCellPath: IndexPath = self.feedCollect.indexPathForItem(at: tappedPoint)! // [self.collectionView indexPathForItemAtPoint:tappedPoint];
         if typeOfCellAtIndexPath[tappedCellPath] == 0{
             let tappedCell = self.feedCollect.cellForItem(at: tappedCellPath) as! NewsFeedCellCollectionViewCell
@@ -156,7 +204,7 @@ class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UIColle
             }
             
             
-           
+            
             
             
         }
@@ -172,9 +220,9 @@ class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UIColle
             selectedCell = collectionView.cellForItem(at: indexPath) as! NewsFeedPicCollectionViewCell
         }
     }
-
     
-   
+    
+    
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         print("here")
@@ -183,7 +231,7 @@ class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UIColle
         // the spaces between the cells, and then divide by N to find the final
         // dimension for the cell's width and height.
         
-        if feedDataArray[indexPath.row].postPic == nil {
+        if feedDataArray[indexPath.row]["postPic"] == nil {
             let width = collectionView.frame.width - 20
             let height = CGFloat(195)
             
@@ -196,12 +244,13 @@ class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UIColle
             return CGSize(width: width, height: height)
         }
         /*let cellsAcross: CGFloat = 1
-        let spaceBetweenCells: CGFloat = 10
-        let dim = (collectionView.bounds.width - (cellsAcross - 1) * spaceBetweenCells) / cellsAcross
-        return CGSize(width: dim, height: dim)*/
+         let spaceBetweenCells: CGFloat = 10
+         let dim = (collectionView.bounds.width - (cellsAcross - 1) * spaceBetweenCells) / cellsAcross
+         return CGSize(width: dim, height: dim)*/
     }
     //this may be slow if there are a ton of posts. Check back
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+    var curPlayingVidCell: NewsFeedPicCollectionViewCell?
+    /*func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         // var closestCell : UICollectionViewCell = feedCollect.visibleCells[0];
         for cell in feedCollect!.visibleCells as [UICollectionViewCell] {
             let indexPath = feedCollect.indexPath(for: cell)
@@ -219,17 +268,24 @@ class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UIColle
             //closestCell = cell
         }
         
-    }
+    }*/
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-       
+        
+    }
+    func scrollViewDidBeginDragging(_ scrollView: UIScrollView, willAccelerate accelerate: Bool) {
+        if curPlayingVidCell != nil{
+            curPlayingVidCell?.player?.stop()
+        }
     }
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        var closestCell : UICollectionViewCell = feedCollect.visibleCells[0];
+        var closestCell = UICollectionViewCell()
+        closestCell = feedCollect.visibleCells[0]
+        
         for cell in feedCollect!.visibleCells as [UICollectionViewCell] {
             let closestCellDelta = abs(closestCell.center.x - feedCollect.bounds.size.width/2.0 - feedCollect!.contentOffset.x)
             let cellDelta = abs(cell.center.x - feedCollect.bounds.size.width/2.0 - feedCollect.contentOffset.x)
             if (cellDelta < closestCellDelta){
-               closestCell = cell
+                closestCell = cell
             }
         }
         //let closestCellDelta = abs(closestCell.center.x - feedCollect.bounds.size.width/2.0 - feedCollect.contentOffset.x)
@@ -244,6 +300,7 @@ class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UIColle
                 
             } else {
                 cell.player?.playFromBeginning()
+                self.curPlayingVidCell = cell as! NewsFeedPicCollectionViewCell
             }
         }
     }
@@ -255,47 +312,66 @@ class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UIColle
     }
     
     
-
+    
     var gmRed = UIColor(red: 237/255, green: 28/255, blue: 39/255, alpha: 1.0)
     let refreshControl = UIRefreshControl()
     @IBOutlet weak var tabBar: UITabBar!
+    var feedDataArray = [[String:Any]]()
     override func viewDidLoad() {
         super.viewDidLoad()
         tabBar.delegate = self
         tabBar.selectedItem = tabBar.items?.first
-        temp.posterName = "Bill"
-        temp2.posterName = "Frank"
-        temp2.postPic = "FU"
-        temp3.posterName = "Hailey"
-        
-        
+       
         refreshControl.tintColor = gmRed
         refreshControl.addTarget(self, action: Selector("refresh"), for: .valueChanged)
         feedCollect.addSubview(refreshControl)
         feedCollect.alwaysBounceVertical = true
         
-        feedDataArray.append(temp)
-        feedDataArray.append(temp2)
-        feedDataArray.append(temp3)
+        //feedDataArray.append(temp)
+        //feedDataArray.append(temp2)
+        //feedDataArray.append(temp3)
         self.feedCollect.register(UINib(nibName: "NewsFeedCellCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "NewsFeedCellCollectionViewCell")
         self.feedCollect.register(UINib(nibName: "NewsFeedPicCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "NewsFeedPicCollectionViewCell")
         loadFeedData()
+        
+        
         // Do any additional setup after loading the view, typically from a nib.
     }
     @objc func refresh() {
         
         print("refresh")
-        self.feedCollect?.reloadData()
-        
-        refreshControl.endRefreshing()
+        feedDataArray.removeAll()
+        Database.database().reference().child("posts").observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                
+                for snap in snapshots{
+                    
+                    self.feedDataArray.append(snap.value as! [String:Any])
+                }
+            }
+            self.feedCollect?.reloadData()
+            self.refreshControl.endRefreshing()
+        })
         
     }
     func loadFeedData(){
+        Database.database().reference().child("posts").observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                
+                for snap in snapshots{
+                    self.feedDataArray.append(snap.value as! [String:Any])
+                }
+            }
+            self.feedCollect.delegate = self
+            self.feedCollect.dataSource = self
+            
+            
+        })
         
-        self.feedCollect.delegate = self
-        self.feedCollect.dataSource = self
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -324,17 +400,17 @@ class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UIColle
     
     
     
-       /* touchesBeganBool = false
-        
-        
-        if currentButtonFunc().isDisplayed == true{
-            displaySessionInfo()
-        }else{
-            hideSessionInfo()
-        }*/
+    /* touchesBeganBool = false
+     
+     
+     if currentButtonFunc().isDisplayed == true{
+     displaySessionInfo()
+     }else{
+     hideSessionInfo()
+     }*/
     
-
-
+    
+    
 }
 
 extension HomeFeedViewController:PlayerDelegate {
@@ -396,4 +472,3 @@ extension HomeFeedViewController {
     }
     
 }
-
