@@ -7,13 +7,66 @@
 //
 
 import UIKit
-import FirebaseStorage
+
 import FirebaseDatabase
+import FirebaseStorage
 import FirebaseAuth
 import SwiftOverlays
+import CoreLocation
 
-class PostViewController: UIViewController, UITabBarDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UITextViewDelegate {
+class PostCatSearchCell: UICollectionViewCell {
+    @IBOutlet weak var catLabel: UILabel!
+    
+    @IBOutlet weak var catCheck: UIImageView!
+}
 
+class PostViewController: UIViewController, UITabBarDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UITextViewDelegate, CLLocationManagerDelegate, UICollectionViewDelegate,
+UICollectionViewDataSource{
+    
+    @IBOutlet weak var addCat3TextPos: UIView!
+    @IBOutlet weak var addCat2TextPos: UIView!
+    @IBOutlet weak var addCat1TextPos: UIView!
+    @IBOutlet weak var whiteShadeView: UIView!
+    @IBOutlet weak var curCatsLabel: UILabel!
+    
+    var catLabels = ["Abs","Arms","Back","Chest","Legs","Shoulders"]
+    var catLabelsRefined = [String]()
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return catLabelsRefined.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell : PostCatSearchCell = collectionView.dequeueReusableCell(withReuseIdentifier: "PostCatSearchCell", for: indexPath) as! PostCatSearchCell
+        cell.catLabel.text = catLabelsRefined[indexPath.row]
+        let border = CALayer()
+        let width = CGFloat(1.0)
+        border.borderColor = UIColor.darkGray.cgColor
+        border.frame = CGRect(x: 0, y: cell.frame.size.height - width, width: cell.frame.size.width, height: cell.frame.size.height)
+        
+        border.borderWidth = width
+        cell.layer.addSublayer(border)
+        cell.layer.masksToBounds = true
+        return cell
+    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        var cellSelected = collectionView.visibleCells[indexPath.row] as! PostCatSearchCell
+        if cellSelected.catCheck.isHidden {
+            cellSelected.catCheck.isHidden = false
+        } else {
+            cellSelected.catCheck.isHidden = true
+        }
+        
+    }
+    
+    
+    @IBOutlet weak var addCatView: UIView!
+    
+    @IBOutlet weak var addCatCollect: UICollectionView!
+    var picPostTextViewPos: CGRect?
+    
+    @IBOutlet weak var textPostTextViewPos: UIView!
+    @IBOutlet weak var posterPicTextPos: UIView!
+    
     @IBOutlet weak var tabBar: UITabBar!
     @IBOutlet weak var postText: UIView!
     @IBOutlet weak var postPic: UIView!
@@ -32,6 +85,7 @@ class PostViewController: UIViewController, UITabBarDelegate, UIImagePickerContr
     var extended = false
     @IBOutlet weak var picButtonPositionOut: UIView!
     @IBAction func picVidPressed(_ sender: Any) {
+        
         UIView.animate(withDuration: 0.5, animations: {
             if self.extended == false {
             self.addPicButton.frame = self.picButtonPositionOut.frame
@@ -41,6 +95,7 @@ class PostViewController: UIViewController, UITabBarDelegate, UIImagePickerContr
                 self.addPicButton.alpha = 0.75
                 self.picVidButton.alpha = 0.8
                 self.extended = true
+                self.startLocationManager()
             } else {
                 self.addPicButton.frame = self.ogPicPosit
                 self.addVidButton.frame = self.ogVidPosit
@@ -51,6 +106,7 @@ class PostViewController: UIViewController, UITabBarDelegate, UIImagePickerContr
                 self.extended = false
             }
             
+            
         })
     }
     var ogVidPosit = CGRect()
@@ -59,26 +115,113 @@ class PostViewController: UIViewController, UITabBarDelegate, UIImagePickerContr
     var currentPicker = String()
     let picker = UIImagePickerController()
     let imagePicker = UIImagePickerController()
-    
+    var curCatsAdded = [String]()
+    @IBAction func backToPostPressed(_ sender: Any) {
+        var curString = ""
+        for cell in addCatCollect.visibleCells{
+            let temp = cell as! PostCatSearchCell
+            
+            if temp.catCheck.isHidden == false {
+                curCatsAdded.append(temp.catLabel.text!)
+                curString = curString + " " + temp.catLabel.text! + ","
+            }
+        }
+        curString.removeLast()
+        curCatsLabel.text = curString
+        addCatView.isHidden = true
+        addCatCollect.reloadData()
+        catLabelsRefined = catLabels
+        postButton.isHidden = false
+        cancelPostButton.isHidden = false
+        
+        
+    }
+    @IBOutlet weak var backToPostButton: UIButton!
+    @IBOutlet weak var tagPeopleButton: UIButton!
+    @IBOutlet weak var tagPeopleButtonIcon: UIButton!
+    @IBAction func tagPeopleButtonPressed(_ sender: Any) {
+    }
+    @IBOutlet weak var addToCatIconButton: UIButton!
+    @IBOutlet weak var addToCategoryButton: UIButton!
+    @IBAction func addToCategoryButtonPressed(_ sender: Any) {
+        addCatView.isHidden = false
+        postButton.isHidden = true
+        addCatCollect.delegate = self
+        addCatCollect.dataSource = self
+        //cancelPostButton.setTitle("Back", for: .normal)
+        cancelPostButton.isHidden = true
+        curCatsLabel.text = ""
+        curCatsAdded.removeAll()
+        
+        
+        
+        
+    }
+    @IBOutlet weak var shareIconButton: UIButton!
+    @IBOutlet weak var shareButton: UIButton!
+    @IBAction func shareButtonPressed(_ sender: Any) {
+    }
     @IBAction func textPostPressed(_ sender: Any) {
+        startLocationManager()
         self.postType = "text"
-        makePostView.isHidden = false
-        makePostImageView.isHidden = true
+        UIView.animate(withDuration: 0.5, animations: {
+            self.tagPeopleButton.isHidden = true
+            self.tagPeopleButtonIcon.isHidden = true
+            self.shareButton.isHidden = true
+            self.shareIconButton.isHidden = true
+            self.addToCatIconButton.isHidden = true
+            self.addToCategoryButton.isHidden = true
+            self.curCatsLabel.isHidden = true
+            self.addToCategoryButton.isHidden = false
+            self.addToCatIconButton.isHidden = false
+            self.curCatsLabel.isHidden = false
+            self.makePostTextView.frame = self.textPostTextViewPos.frame
+            self.addToCatIconButton.frame = self.addCat1TextPos.frame
+            self.addToCategoryButton.frame = self.addCat2TextPos.frame
+            self.curCatsLabel.frame = self.addCat3TextPos.frame
+            self.makePostTextView.text = "What's going on?"
+            self.cancelPostButton.isHidden = false
+            
+            
+            self.makePostView.isHidden = false
+            self.makePostImageView.isHidden = true
+            self.postPlayer?.view.isHidden = true
+            self.makePostView.backgroundColor = UIColor.white
+            self.postText.isHidden = true
+            self.postPic.isHidden = true
+            
+            
+        })
+       
     }
     @IBOutlet weak var addVidButton: UIButton!
     
+    @IBOutlet weak var posterPicIV: UIImageView!
     @IBOutlet weak var vidButtonPositionOut: UIView!
     @IBAction func chooseVidFromPhoneSelected(_ sender: AnyObject) {
         currentPicker = "vid"
         picker.mediaTypes = ["public.movie"]
         self.postType = "vid"
+        
         present(picker, animated: true, completion: nil)
+       // makePostView.isHidden = false
     }
-    
+    var ogCat1Pos = CGRect()
+    var ogCat2Pos = CGRect()
+    var ogCat3Pos = CGRect()
     var newPost: [String:Any]?
     override func viewDidLoad() {
         super.viewDidLoad()
         picker.delegate = self
+        self.picPostTextViewPos = makePostTextView.frame
+        self.ogCat1Pos = self.addToCatIconButton.frame
+        self.ogCat2Pos = self.addToCategoryButton.frame
+        self.ogCat3Pos = self.curCatsLabel.frame
+        self.posterPicIV.layer.cornerRadius = posterPicIV.frame.width/2
+        posterPicIV.layer.masksToBounds = true
+        makePostTextView.layer.borderColor = UIColor.black.cgColor
+        makePostTextView.layer.borderWidth = 1
+        whiteShadeView.layer.cornerRadius = 5
         imagePicker.delegate = self
         ogVidPosit = addVidButton.frame
         ogPicPosit = addPicButton.frame
@@ -87,6 +230,14 @@ class PostViewController: UIViewController, UITabBarDelegate, UIImagePickerContr
         tabBar.selectedItem = tabBar.items?[2]
         postPic.layer.cornerRadius = 15
         postText.layer.cornerRadius = 15
+        makePostTextView.delegate = self
+        catLabelsRefined = catLabels
+        
+        //locationManager delegate assignment etcc...
+        
+        
+        // here you can call the start location function
+        
         
         //make post video player setup
         postPlayer = Player()
@@ -106,7 +257,21 @@ class PostViewController: UIViewController, UITabBarDelegate, UIImagePickerContr
                 
                 for snap in snapshots{
                     if snap.key == "profPic"{
+                        var messImgUrl: String?
+                        if (snap.value as! String) == "profile-placeholder"{
+                            self.posterPicIV.image = UIImage(named: "profile-placeholder")
+                            self.curUser.profPic = "profile-placeholder"
+                            
+                        } else {
+                        
+                            if let messageImageUrl = URL(string: snap.value as! String) {
+                                
+                                if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                                    self.posterPicIV.image = UIImage(data: imageData as Data) } }
+                            
+                            
                         self.curUser.profPic = snap.value as! String
+                        }
                     } else if snap.key == "username"{
                         self.curUser.username = snap.value as! String
                     }
@@ -172,28 +337,11 @@ class PostViewController: UIViewController, UITabBarDelegate, UIImagePickerContr
                 }
                 //movieURLFromPicker = movieURL
                 dismiss(animated: true, completion: nil)
-                print("pastDismissPhoto")
+                print("pastDismissPhoto0")
                 self.makePostView.isHidden = false
                 self.cancelPostButton.isHidden = false
                 self.postPlayer?.url = movieURL as URL
-                //var tempArray1 = [String]()
-                /*if totalVidArray.count != 0{
-                    self.currentCollectID = "vidFromPhone"
-                    //self.isYoutubeCell = false
-                    self.totalVidArray.append(movieURL)
-                    self.vidFromPhoneCollectionView.performBatchUpdates({
-                        let insertionIndexPath = IndexPath(row: self.totalVidArray.count - 1, section: 0)
-                        self.vidFromPhoneCollectionView.insertItems(at: [insertionIndexPath])}, completion: nil)
-                }else{
-                    self.currentCollectID = "vidFromPhone"
-                    self.totalVidArray.insert(movieURL, at: 0)
-                    let cellNib = UINib(nibName: "VideoCollectionViewCell", bundle: nil)
-                    self.vidFromPhoneCollectionView.register(cellNib, forCellWithReuseIdentifier: "VideoCollectionViewCell")
-                    self.sizingCell = ((cellNib.instantiate(withOwner: nil, options: nil) as NSArray).firstObject as! VideoCollectionViewCell?)!
-                    self.vidFromPhoneCollectionView.backgroundColor = UIColor.clear
-                    self.vidFromPhoneCollectionView.dataSource = self
-                    self.vidFromPhoneCollectionView.delegate = self
-                }*/
+                
             }
         }
         
@@ -211,13 +359,23 @@ class PostViewController: UIViewController, UITabBarDelegate, UIImagePickerContr
     }
     var postPlayer: Player?
     
+    @IBOutlet weak var addLocationButton: UIButton!
+    @IBAction func addLocationPressed(_ sender: Any) {
+        print(self.city)
+       self.cityData = self.city
+        self.curCityLabel.text = self.city
+    }
     @IBOutlet weak var textPostPressedLine: UIView!
     @IBOutlet weak var textPostPressedLabel: UILabel!
+    
+    @IBOutlet weak var curCityLabel: UILabel!
     @IBAction func cancelPostButtonPressed(_ sender: Any) {
-        makePostTextView.text = "Type a description or caption here."
+        
         makePostImageView.image = nil
         postPlayer?.url = nil
-        makePostView.isHidden = true
+        
+        postText.isHidden = false
+        postPic.isHidden = false
         self.addPicButton.frame = self.ogPicPosit
         self.addVidButton.frame = self.ogVidPosit
         self.picVidButton.frame = self.ogPicVidPosit
@@ -228,22 +386,68 @@ class PostViewController: UIViewController, UITabBarDelegate, UIImagePickerContr
         //textPostPressedLabel.isHidden = true
         makePostImageView.isHidden = false
         cancelPostButton.isHidden = true
+        makePostView.backgroundColor = UIColor.white
+        makePostTextView.text = "Type a description or caption here. (optional)"
+        self.addToCatIconButton.isHidden = false
+        self.addToCategoryButton.isHidden = false
+        self.curCatsLabel.text = ""
+        self.curCatsLabel.isHidden = false
+        makePostTextView.frame = picPostTextViewPos!
+        addToCatIconButton.frame = ogCat1Pos
+        addToCategoryButton.frame = ogCat2Pos
+        curCatsLabel.frame = ogCat3Pos
+        makePostTextView.textColor = UIColor.darkGray
+        self.tagPeopleButton.isHidden = false
+        self.tagPeopleButtonIcon.isHidden = false
+        self.shareButton.isHidden = false
+        self.shareIconButton.isHidden = false
+       
+        self.cityData = nil
+        self.curCityLabel.text = ""
+        
+            
+        
         
         self.extended = false
+        makePostView.isHidden = true
         
     }
+    @IBOutlet weak var succesfulPostView: UIView!
     @IBOutlet weak var cancelPostButton: UIButton!
     var postType: String?
     var curUser = User()
     @IBAction func postButtonPressed(_ sender: Any) {
+    
+        
         SwiftOverlays.showBlockingWaitOverlayWithText("Posting to Feed...")
+        //makePostView.backgroundColor = UIColor.black
+        postText.isHidden = false
+        postPic.isHidden = false
+        
+        
         newPost = [String: Any]()
         if postType == "pic"{
             //newPost!["postPic"] = self.makePostImageView.image!
             newPost!["posterUID"] = Auth.auth().currentUser!.uid
             newPost!["posterName"] = self.curUser.username
-            newPost!["posterPicURL"] = curUser.profPic
-            if self.makePostTextView.text != "Type a description or caption here."{
+            print("cUpP2: \(curUser.profPic!)")
+            newPost!["posterPicURL"] = curUser.profPic!
+            self.newPost!["likes"] = [["x":"x"]]
+            self.newPost!["favorites"] = [["x":"x"]]
+            self.newPost!["shares"] = [["x":"x"]]
+            self.newPost!["comments"] = [["x":"x"]]
+            if self.curCatsAdded == nil || self.curCatsAdded.count == 0{
+                curCatsAdded.append("Other")
+            }
+            self.newPost!["categories"] = self.curCatsAdded
+            if self.cityData == nil {
+                self.newPost!["city"] = "-"
+            } else {
+                self.newPost!["city"] = self.cityData
+            }
+            //let curLoc = locationManager.location
+            //newPost![location]
+            if self.makePostTextView.text != "Type a description or caption here. (optional)"{
                 newPost!["postText"] = self.makePostTextView.text
             }
             
@@ -259,7 +463,10 @@ class PostViewController: UIViewController, UITabBarDelegate, UIImagePickerContr
                     self.newPost!["postPic"] = (metadata?.downloadURL()?.absoluteString)!
                     
             self.newPost!["datePosted"] = Date().description
-            
+                    
+                
+                    
+                    
             let key = Database.database().reference().child("posts").childByAutoId().key
             self.newPost!["postID"] = key
             let childUpdates = ["/posts/\(key)": self.newPost,
@@ -269,12 +476,32 @@ class PostViewController: UIViewController, UITabBarDelegate, UIImagePickerContr
                             print(error?.localizedDescription)
                             return
                         }
+                        self.makePostTextView.text = "Type a description or caption here. (optional)"
+                        self.makePostTextView.textColor = UIColor.darkGray
                         print("This never prints in the console")
                         self.postPlayer?.url = nil
                         self.makePostImageView.image = nil
                         self.makePostView.isHidden = true
                         self.cancelPostButton.isHidden = true
+                        
+                        self.addToCatIconButton.isHidden = false
+                        self.addToCategoryButton.isHidden = false
+                    
+                        self.curCatsLabel.text = ""
+                        self.curCatsLabel.isHidden = false
+                        self.makePostTextView.frame = self.picPostTextViewPos!
+                        self.addToCatIconButton.frame = self.ogCat1Pos
+                        self.addToCategoryButton.frame = self.ogCat2Pos
+                        self.curCatsLabel.frame = self.ogCat3Pos
+                        self.tagPeopleButton.isHidden = false
+                        self.tagPeopleButtonIcon.isHidden = false
+                        self.shareButton.isHidden = false
+                        self.shareIconButton.isHidden = false
                         SwiftOverlays.removeAllBlockingOverlays()
+                         self.succesfulPostView.isHidden = false
+                      
+                       // }
+                       
 
                 
             
@@ -287,8 +514,18 @@ class PostViewController: UIViewController, UITabBarDelegate, UIImagePickerContr
             print("uploadingVid")
             newPost!["posterUID"] = Auth.auth().currentUser!.uid
             newPost!["posterName"] = self.curUser.username
+            if self.curCatsAdded == nil || self.curCatsAdded.count == 0{
+                curCatsAdded.append("Other")
+            }
+            self.newPost!["categories"] = self.curCatsAdded
+            print("cUpP3: \(curUser.profPic!)")
             newPost!["posterPicURL"] = curUser.profPic!
-            if self.makePostTextView.text != "Type a description or caption here."{
+            if self.cityData == nil {
+                self.newPost!["city"] = "-"
+            } else {
+                self.newPost!["city"] = self.cityData
+            }
+            if self.makePostTextView.text != "Type a description or caption here. (optional)"{
                 newPost!["postText"] = self.makePostTextView.text
             }
                 let videoName = NSUUID().uuidString
@@ -308,7 +545,12 @@ class PostViewController: UIViewController, UITabBarDelegate, UIImagePickerContr
                     print("metaDataURL: \((metadata?.downloadURL()?.absoluteString)!)")
                     self.newPost!["postVid"] = (metadata?.downloadURL()?.absoluteString)!
                     self.newPost!["datePosted"] = Date().description
-                    
+                    self.newPost!["likes"] = [["x":"x"]]
+                    self.newPost!["favorites"] = [["x":"x"]]
+                    self.newPost!["shares"] = [["x":"x"]]
+                    self.newPost!["comments"] = [["x":"x"]]
+                    //self.newPost!["categories"] = self.curCatsAdded
+                    self.newPost!["posterPicURL"] = self.curUser.profPic!
                     let key = Database.database().reference().child("posts").childByAutoId().key
                     self.newPost!["postID"] = key
                     
@@ -319,34 +561,53 @@ class PostViewController: UIViewController, UITabBarDelegate, UIImagePickerContr
                             print(error?.localizedDescription)
                             return
                         }
+                        self.makePostTextView.text = "Type a description or caption here. (optional)"
+                        self.makePostTextView.textColor = UIColor.darkGray
                         print("This never prints in the console")
                         self.postPlayer?.url = nil
                         self.makePostImageView.image = nil
                         self.makePostView.isHidden = true
                         self.cancelPostButton.isHidden = true
                         SwiftOverlays.removeAllBlockingOverlays()
+                         self.succesfulPostView.isHidden = false
                     })
                     
                     
                    
                 }
         } else {
-            if self.makePostTextView.text == "Type a description or caption here." || self.makePostTextView.text == "" || self.makePostTextView.hasText == false{
+            if self.makePostTextView.hasText == false || self.makePostTextView.text == "Type a description or caption here. (optional)" || self.makePostTextView.text == "What's going on?" || self.makePostTextView.text == "" {
                 let alert = UIAlertController(title: "Missing Info", message: "You cannot make an empty post.", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
+                SwiftOverlays.removeAllBlockingOverlays()
                 return
             }
             newPost!["posterUID"] = Auth.auth().currentUser!.uid
             newPost!["posterName"] = self.curUser.username
+            print("cUpP: \(curUser.profPic!)")
             newPost!["posterPicURL"] = curUser.profPic!
+          
+            self.newPost!["comments"] = [["x":"x"]]
+            newPost!["likes"] = [["x":"x"]]
+            newPost!["favorites"] = [["x":"x"]]
+            newPost!["shares"] = [["x":"x"]]
+            if self.curCatsAdded == nil || self.curCatsAdded.count == 0{
+                curCatsAdded.append("Other")
+            }
+            self.newPost!["categories"] = self.curCatsAdded
            
                 newPost!["postText"] = self.makePostTextView.text
             
             self.newPost!["datePosted"] = Date().description
             let key = Database.database().reference().child("posts").childByAutoId().key
             self.newPost!["postID"] = key
-            
+            print("self.cityInPost: \(self.city)")
+            if self.cityData == nil {
+                self.newPost!["city"] = "-"
+            } else {
+                self.newPost!["city"] = self.cityData
+            }
             let childUpdates = ["/posts/\(key)": self.newPost,
                                 "/users/\(Auth.auth().currentUser!.uid)/posts/\(key)/": self.newPost]
             Database.database().reference().updateChildValues(childUpdates, withCompletionBlock: { (error, ref) in
@@ -354,20 +615,52 @@ class PostViewController: UIViewController, UITabBarDelegate, UIImagePickerContr
                     print(error?.localizedDescription)
                     return
                 }
+                
+                self.makePostTextView.text = "Type a description or caption here. (optional)"
+                self.makePostTextView.textColor = UIColor.darkGray
                 print("This never prints in the console")
                 self.postPlayer?.url = nil
                 self.makePostImageView.image = nil
                 self.makePostView.isHidden = true
                 self.cancelPostButton.isHidden = true
                 SwiftOverlays.removeAllBlockingOverlays()
+                
+                self.succesfulPostView.isHidden = false
+                    
+            
+                
             })
+        }
+        DispatchQueue.main.async{
+            self.makePostTextView.frame = self.picPostTextViewPos!
+            self.addToCatIconButton.frame = self.ogCat1Pos
+            self.addToCategoryButton.frame = self.ogCat2Pos
+            self.curCatsLabel.frame = self.ogCat3Pos
+            self.makePostImageView.isHidden = false
+            self.postPlayer?.view.isHidden = true
+            self.cityData = nil
+            
+            
         }
         
     }
+    
+    
     @IBOutlet weak var postButton: UIButton!
     @IBOutlet weak var makePostView: UIView!
     
     @IBOutlet weak var makePostImageView: UIImageView!
+    @IBAction func postSuccButtonPressed(_ sender: Any) {
+        self.curCityLabel.text = ""
+        for cell in self.addCatCollect.visibleCells{
+            let tempCell = cell as! PostCatSearchCell
+            tempCell.catCheck.isHidden = true
+        }
+        self.curCatsAdded.removeAll()
+        self.curCatsLabel.text = ""
+        succesfulPostView.isHidden = true
+        
+    }
     
     @IBOutlet weak var makePostTextView: UITextView!
     /*
@@ -379,6 +672,128 @@ class PostViewController: UIViewController, UITabBarDelegate, UIImagePickerContr
         // Pass the selected object to the new view controller.
     }
     */
+    //TextViewDelegate
+    //@available(iOS 2.0, *)
+    
+    public func textViewDidBeginEditing(_ textView: UITextView){
+        if textView.text == "Type a description or caption here. (optional)" || self.makePostTextView.text == "What's going on?"{
+            textView.text = ""
+        }
+            textView.textColor = UIColor.black
+    }
+    
+    //@available(iOS 2.0, *)
+    public func textViewDidEndEditing(_ textView: UITextView){
+        if textView.text == "" {
+            if makePostTextView.frame == textPostTextViewPos.frame {
+                makePostTextView.text = "What's going on?"
+            } else {
+                makePostTextView.text = "Type a description or caption here. (optional)"
+            }
+        }
+        textView.textColor = UIColor.darkGray
+        
+    }
+    
+    
+    //locationManagerDelegate
+    
+    var location: CLLocation?
+    
+    let geocoder = CLGeocoder()
+    var placemark: CLPlacemark?
+
+    var city: String?
+    var cityData: String?
+    var locDict = [String:Any]()
+    let locationManager = CLLocationManager()
+    
+    func startLocationManager() {
+        // always good habit to check if locationServicesEnabled
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager.startUpdatingLocation()
+        }
+    }
+    
+    func stopLocationManager() {
+        locationManager.stopUpdatingLocation()
+        locationManager.delegate = nil
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        // if you need to get latest data you can get locations.last to check it if the device has been moved
+        let latestLocation = locations.last!
+        
+        // here check if no need to continue just return still in the same place
+        if latestLocation.horizontalAccuracy < 0 {
+            return
+        }
+        // if it location is nil or it has been moved
+        if location == nil || location!.horizontalAccuracy > latestLocation.horizontalAccuracy {
+            
+            location = latestLocation
+            // stop location manager
+            stopLocationManager()
+            
+            // Here is the place you want to start reverseGeocoding
+            geocoder.reverseGeocodeLocation(latestLocation, completionHandler: { (placemarks, error) in
+                // always good to check if no error
+                // also we have to unwrap the placemark because it's optional
+                // I have done all in a single if but you check them separately
+                if error == nil, let placemark = placemarks, !placemark.isEmpty {
+                    var curPlacemark = placemark.last
+                    if let city = curPlacemark?.locality, !city.isEmpty {
+                        // here you have the city name
+                        // assign city name to our iVar
+                        self.city = city
+                        print("self.city: \(city)")
+                        
+                    }
+                }
+                // a new function where you start to parse placemarks to get the information you need
+                //self.parsePlacemarks()
+                
+            })
+        }
+    }
+    
+    
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        // print the error to see what went wrong
+        print("didFailwithError\(error)")
+        // stop location manager if failed
+        stopLocationManager()
+    }
+    
+    func lookUpCurrentLocation(completionHandler: @escaping (CLPlacemark?)
+        -> Void ) {
+        // Use the last reported location.
+        if let lastLocation = self.locationManager.location {
+            let geocoder = CLGeocoder()
+            
+            // Look up the location and pass it to the completion handler
+            geocoder.reverseGeocodeLocation(lastLocation,
+                                            completionHandler: { (placemarks, error) in
+                                                if error == nil {
+                                                    let firstLocation = placemarks?[0]
+                                                    completionHandler(firstLocation)
+                                                }
+                                                else {
+                                                    // An error occurred during geocoding.
+                                                    completionHandler(nil)
+                                                }
+            })
+        }
+        else {
+            // No location was available.
+            completionHandler(nil)
+        }
+    }
+    
+    
 
 }
 

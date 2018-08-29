@@ -25,4 +25,6 @@ class FeedData: NSObject {
     var likes: [String]?
     var comments: [String:Any]?
     
+    var city: String?
+    
 }
