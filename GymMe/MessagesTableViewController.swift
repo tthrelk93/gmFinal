@@ -44,7 +44,7 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
         messagesSearchBar.delegate = self
         
         //tableViewData = [[String:Any]]()//[["receiverUID":"dlIJLLijOBR6mOBXGNoO3oCPo7M2", "messageText": "blah bal  sdfkjlhhl lsdjkkj sjkdfkl hsdlf","receiverName": "Thomas","receiverPic":"picccccc"],["receiverUID":"reasdfaacieverUIDDddd", "messageText": "blaaaaasdfdaaaah bal  sdfkjlhhl lsdjkkj sjkdfkl hsdlf","receiverName": "Thomaaaaaas","receiverPic":"piaaaacccccc"]]
-       suggestedTableViewData = [["receiverUID":"dlIJLLijOBR6mOBXGNoO3oCPo7M2", "messageText": "blah ssssssssbal  sdfkjlhhl lsdjkkj sjkdfkl hsdlf","receiverName": "Thssssomas","receiverPic":"picccssssssccc"]]
+       //suggestedTableViewData = [["receiverUID":"dlIJLLijOBR6mOBXGNoO3oCPo7M2", "messageText": "blah ssssssssbal  sdfkjlhhl lsdjkkj sjkdfkl hsdlf","receiverName": "Thssssomas","receiverPic":"picccssssssccc"]]
         Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("messages").observeSingleEvent(of: .value, with: { (snapshot) in
             
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
@@ -123,7 +123,9 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
         //performSegue to chatViewController
          if(searchActive) {
             selectedRecip = (suggestedTableViewData[indexPath.row] )["receiverUID"] as! String
+            print("selectedRecip: \(self.selectedRecip)")
             self.curMessageKey = (suggestedTableViewData[indexPath.row] )["messageKey"] as! String
+            print("curMessageKey: \(self.curMessageKey)")
             performSegue(withIdentifier: "MessagesToChat", sender: self)
          } else {
         selectedRecip = (tableViewData[indexPath.row] )["receiverUID"] as! String
@@ -146,6 +148,8 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         if segue.identifier == "MessagesToChat"{
+            print("yo")
+            print(self.selectedRecip)
             if let vc = segue.destination as? ChatContainer{
                 vc.recipientID = self.selectedRecip
                 vc.curItemKey = self.selectedRecip
@@ -179,19 +183,19 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
             for (key, val) in (snapshot.value as! [String:Any]){
                     print("uName=\(key)")
                     let uName = key
-                    let rName = (val as! [String])[1]
+                    let rName = (val as! String)
                 let uRange = (uName as NSString).range(of: searchText, options: NSString.CompareOptions.literal)
                     let rRange = (rName as NSString).range(of: searchText, options: NSString.CompareOptions.literal)
                     print("rANDu: \(uRange) \(rRange)")
                 if uRange.location != NSNotFound {
-                    self.allSuggested.append((val as! [String]).first!)
+                    self.allSuggested.append(rName)
                     print("curTextu: \(searchText) allSuggested1: \(self.allSuggested)")
                 } else if rRange.location != NSNotFound{
-                        self.allSuggested.append((val as! [String]).first!)
+                        self.allSuggested.append(rName)
                         print("curText: \(searchText) allSuggested: \(self.allSuggested)")
-                } else if self.allSuggested.contains((val as! [String]).first!){
-                        if self.allSuggested.contains((val as! [String]).first!){
-                            self.allSuggested.remove(at: self.allSuggested.index(of: (val as! [String]).first!)!)
+                } else if self.allSuggested.contains(rName){
+                        if self.allSuggested.contains(rName){
+                            self.allSuggested.remove(at: self.allSuggested.index(of: rName)!)
                         }
                         
                 }
@@ -201,11 +205,13 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
                 Database.database().reference().child("users").observeSingleEvent(of: .value, with: { (snapshot) in
                     print("nowHereeeeee")
                     if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                        print("nowHereerrrrre")
+                        print("nowHereerrrrreeerererererererre")
                         for snap in snapshots{
+                            print("snapKey: \(snap.key)")
                             if self.allSuggested.contains(snap.key){
                                 var tempDict = [String:Any]()
                                 tempDict = snap.value as! [String:Any]
+                                print("snapVal: \(snap.value as! [String:Any])")
                                 var noName = "-"
                                 if (tempDict["realName"] as? String) != nil{
                                     noName = (tempDict["realName"] as! String)

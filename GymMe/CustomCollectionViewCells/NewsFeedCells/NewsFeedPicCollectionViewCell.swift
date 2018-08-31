@@ -194,6 +194,7 @@ class NewsFeedPicCollectionViewCell: UICollectionViewCell {
                     likesVal = 0
                     self.likesCountButton.setTitle("0", for: .normal)
                 } else {
+                    likesArray.remove(at: 0)
                     likesVal = likesArray.count
                     self.likesCountButton.setTitle(String(likesArray.count), for: .normal)
                 }

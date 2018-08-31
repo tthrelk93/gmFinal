@@ -96,7 +96,7 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
                                 let alertActionOkay = UIAlertAction(title: "Send", style: .default) {
                                     (_) in
                                     authResult!.sendEmailVerification(completion: nil)
-                                    self.signInButton.titleLabel?.text = "Resend Verification Email"
+                                    self.signInButton.setTitle("Resend Verification Email", for: .normal) 
                                     self.verificationTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.checkIfTheEmailIsVerified) , userInfo: nil, repeats: true)
                                 }
                                 let alertActionCancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)
@@ -217,7 +217,7 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
                     self.uploadData["followers"] = ["x"]
                     self.uploadData["realName"] = self.firstNameTextField.text! + " " + self.lastNameTextField.text!
                     
-                    Database.database().reference().child("usernames").updateChildValues([self.userNameTextField.text!: Auth.auth().currentUser!.uid])
+                    Database.database().reference().child("usernames").updateChildValues([self.uNameTextField.text!: Auth.auth().currentUser!.uid])
                     
                     
                             Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).updateChildValues(self.uploadData, withCompletionBlock: {(error, ref) in
