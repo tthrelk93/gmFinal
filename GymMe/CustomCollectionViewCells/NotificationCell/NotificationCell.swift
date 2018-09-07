@@ -1,19 +1,28 @@
 //
-//  PopCell.swift
+//  NotificationCell.swift
 //  GymMe
 //
-//  Created by Thomas Threlkeld on 6/28/18.
+//  Created by Thomas Threlkeld on 9/7/18.
 //  Copyright © 2018 Thomas Threlkeld. All rights reserved.
 //
 
 import UIKit
 
-class PopCell: UICollectionViewCell {
+class NotificationCell: UICollectionViewCell {
 
-    @IBOutlet weak var popText: UILabel!
-    @IBOutlet weak var popPic: UIImageView!
+    @IBOutlet weak var postTextLabel: UILabel!
+    @IBAction func postPicPressed(_ sender: Any) {
+    }
+    @IBOutlet weak var postPic: UIButton!
+    @IBOutlet weak var noteLabel: UILabel!
+    @IBAction func actionUserPressed(_ sender: Any) {
+    }
+    @IBOutlet weak var actionUserPicButton: UIButton!
     var player: Player?
     var videoUrl: URL?
+    var timeStamp: String?
+    var actionByUID: String?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -42,16 +51,14 @@ class PopCell: UICollectionViewCell {
     }
     override func prepareForReuse(){
         super.prepareForReuse()
-       
-        self.popPic.image = nil
-        self.popText.text = nil
+        
+        self.postPic.imageView?.image = nil
+        self.postTextLabel.text = nil
         self.player?.view.isHidden = true
         
         
         // exampleView.backgroundColor = nil
         //exampleView.layer.cornerRadius = 0
     }
-        
-    
 
 }

@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string></string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string></string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -20,8 +24,10 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>GymMe would like to access your location so that we may include a geo tag with your posts. GymMe takes your privacy as seriously as you do and only your general location will be included with each post. </string>
+    <key>NSCameraUsageDescription</key>
+    <string>GymMe needs to access your camera so that you can can film videos from your phone and upload them to the app.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>GymMe needs to access your microphone so that you can can select or film videos from your phone to upload.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>GymMe needs to access your photos so that you can can select images and videos from your phone to upload.</string>
 	<key>UILaunchStoryboardName</key>

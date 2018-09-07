@@ -23,7 +23,7 @@ class NewsFeedPicCollectionViewCell: UICollectionViewCell {
         
     }
     
-    
+    var selfData: [String:Any]?
     var delegate: PerformActionsInFeedDelegate?
     var posterUID: String?
     var curName: String?
@@ -60,32 +60,41 @@ class NewsFeedPicCollectionViewCell: UICollectionViewCell {
             Database.database().reference().child("posts").child(self.postID!).observeSingleEvent(of: .value, with: { snapshot in
                 let valDict = snapshot.value as! [String:Any]
                 
-                var favesArray = valDict["favorites"] as! [[String:Any]]
-                if favesArray.count == 1 && (favesArray.first! as! [String:String]) == ["x": "x"]{
-                    favesArray.remove(at: 0)
+                var favoritesArray = valDict["favorites"] as! [[String:Any]]
+                if favoritesArray.count == 1 && (favoritesArray.first! as! [String:String]) == ["x": "x"]{
+                    favoritesArray.remove(at: 0)
                 }
-                var favesVal = favesArray.count
+                var favesVal = favoritesArray.count
                 favesVal = favesVal + 1
-                favesArray.append(["uName": self.myUName!, "realName": self.myRealName, "uid": Auth.auth().currentUser!.uid, "pic": self.myPicString])
+                if self.myPicString == nil{
+                    self.myPicString = "profile-placeholder"
+                }
+                favoritesArray.append(["uName": self.myUName!, "realName": self.myRealName, "uid": Auth.auth().currentUser!.uid, "pic": self.myPicString])
                 
-                
-                Database.database().reference().child("posts").child(self.postID!).child("favorites").setValue(favesArray)
-                Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("favorited").observeSingleEvent(of: .value, with: { (snapshot) in
-                    print("snapshotttt: \(snapshot.value as! [String])")
-                    var favs = snapshot.value as! [String]
-                    if favs.count == 1 && favs[0] == "x"{
-                        favs.remove(at: 0)
-                        
-                        favs.append(self.postID!)
+                Database.database().reference().child("posts").child(self.postID!).child("favorites").setValue(favoritesArray)
+                Database.database().reference().child("users").child(self.posterUID!).child("posts").child(self.postID!).child("favorites").setValue(favoritesArray)
+                Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("favorited").setValue([self.postID!: self.selfData!])
+                self.favoritesCountButton.setTitle(String(favoritesArray.count), for: .normal)
+                Database.database().reference().child("users").child(self.posterUID!).observeSingleEvent(of: .value, with: { snapshot in
+                    var uploadDict = [String:Any]()
+                    var snapDict = snapshot.value as! [String:Any]
+                    var noteArray = [[String:Any]]()
+                    if snapDict["notifications"] != nil{
+                        noteArray = snapDict["notifications"] as! [[String:Any]]
+                        let sendString = self.myUName! + " favorited your post."
+                        let tempDict = ["actionByUsername": self.myUName! ,"actionText": sendString, "timeStamp": "","actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": self.myPicString, "postText": self.postText.text] as! [String:Any]
+                        noteArray.append(tempDict)
+                        Database.database().reference().child("users").child(self.posterUID!).updateChildValues(["notifications": noteArray])
                     } else {
-                        favs.append(self.postID!)
+                        let sendString = self.myUName! + " favorited your post."
+                        let tempDict = ["actionByUsername": self.myUName! ,"actionText": sendString, "timeStamp": "","actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": self.myPicString, "postText": self.postText.text] as [String : Any]
+                        Database.database().reference().child("users").child(self.posterUID!).updateChildValues(["notifications":[tempDict]])
                     }
-                    Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).updateChildValues(["favorited":favs])
-                    
-                    
                     
                 })
-                self.favoritesCountButton.setTitle(String(favesArray.count), for: .normal)
+                
+                //reload collect in delegate
+                
             })
             
             
@@ -104,42 +113,20 @@ class NewsFeedPicCollectionViewCell: UICollectionViewCell {
                     favesVal = 0
                     self.favoritesCountButton.setTitle("0", for: .normal)
                 } else {
+                    favesArray.remove(at: 0)
                     favesVal = favesArray.count
-                    //favesArray.remove(at: favesArray.index(of: ))
                     self.favoritesCountButton.setTitle(String(favesArray.count), for: .normal)
                 }
                 
                 
                 Database.database().reference().child("posts").child(self.postID!).child("favorites").setValue(favesArray)
-                //var uploadDictForUser =
-                Database.database().reference().child("users").child(self.posterUID!).child("posts").child(self.postID!).child("favorites").setValue(favesArray)
-                
-                Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("favorited").observeSingleEvent(of: .value, with: { (snapshot) in
-                    print("snapshot: \(snapshot.value as! [String])")
-                    var favs = snapshot.value as! [String]
-                    if favs.count == 1 && favs[0] != "x"{
-                        favs.remove(at: 0)
-                        
-                        favs.append("x")
-                    } else {
-                        
-                        if favs.count == 1 && favs[0] == "x" {
-                            favs.append(self.postID!)
-                            favs.remove(at: favs.index(of: "x")!)
-                        } else if favs.count >= 1{
-                            favs.remove(at: favs.index(of: self.postID!)!)
-                        }
-                        
-                    }
-                    Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).updateChildValues(["favorited":favs])
-                    
-                    self.favoritesCountButton.setTitle(String(favesArray.count), for: .normal)
-                    
-                })
                 
                 
+                Database.database().reference().child("users").child(self.posterUID!).child("posts").child(self.postID!).child("favorited").setValue(favesArray)
+                Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("favorited").setValue(favesArray)
                 
             })
+            
         }
         
     }
@@ -177,6 +164,24 @@ class NewsFeedPicCollectionViewCell: UICollectionViewCell {
                 Database.database().reference().child("users").child(self.posterUID!).child("posts").child(self.postID!).child("likes").setValue(likesArray)
                 self.likesCountButton.setTitle(String(likesArray.count), for: .normal)
                 self.delegate?.reloadDataAfterLike()
+                Database.database().reference().child("users").child(self.posterUID!).observeSingleEvent(of: .value, with: { snapshot in
+                    var uploadDict = [String:Any]()
+                    var snapDict = snapshot.value as! [String:Any]
+                    var noteArray = [[String:Any]]()
+                    if snapDict["notifications"] != nil{
+                        noteArray = snapDict["notifications"] as! [[String:Any]]
+                        let sendString = self.myUName! + " liked your post."
+                        let tempDict = ["actionByUsername": self.myUName! ,"actionText": sendString, "timeStamp": "time","actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": self.myPicString, "postText": self.postText.text] as! [String:Any]
+                        noteArray.append(tempDict)
+                        Database.database().reference().child("users").child(self.posterUID!).updateChildValues(["notifications": noteArray])
+                    } else {
+                        let sendString = self.myUName! + " liked your post."
+                        let tempDict = ["actionByUsername": self.myUName! ,"actionText": sendString, "timeStamp": "time","actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": self.myPicString, "postText": self.postText.text] as [String : Any]
+                        Database.database().reference().child("users").child(self.posterUID!).updateChildValues(["notifications":[tempDict]])
+                    }
+                    
+                })
+                
             })
             
             //update Database for post with new like count

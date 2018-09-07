@@ -2,12 +2,13 @@
 import UIKit
 import FirebaseAuth
 import FirebaseDatabase
+import FirebaseMessaging
 //import SwiftOverlays
 import UserNotifications
 //import FirebaseMessaging
 import FirebaseStorage
 
-class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate/*, MessagingDelegate*/ {
+class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, MessagingDelegate {
     @IBOutlet weak var logoSpinPosition2: UIImageView!
     var ogSignInPos = CGRect()
     var ogForgotLabelPos = CGRect()
@@ -210,11 +211,12 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
  */
                     
                     self.uploadData["profPic"] = "profile-placeholder"
-                    self.uploadData["favorited"] = ["x"]
+                    self.uploadData["favorited"] = [["x":"x"]]
                     self.uploadData["shared"] = ["x"]
                     self.uploadData["liked"] = ["x"]
                     self.uploadData["following"] = ["x"]
                     self.uploadData["followers"] = ["x"]
+                    //self.uploadData["notifications"] = 
                     self.uploadData["realName"] = self.firstNameTextField.text! + " " + self.lastNameTextField.text!
                     
                     Database.database().reference().child("usernames").updateChildValues([self.uNameTextField.text!: Auth.auth().currentUser!.uid])
@@ -526,7 +528,8 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
             handle = Auth.auth().addStateDidChangeListener { auth, user in
                 if let user = user {
                     self.authUser = user.uid
-                    /*Messaging.messaging().delegate = self*/
+                    Messaging.messaging().delegate = self
+                    self.authUser = user.uid
                     Database.database().reference().child("users").observeSingleEvent(of: .value, with: { (snapshot) in
                         if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                             for snap in snapshots{
@@ -545,7 +548,7 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
                              })*/
                             
                         } else {
-                            self.performSegue(withIdentifier: "LoginToFeed", sender: self)
+                           // self.performSegue(withIdentifier: "LoginToFeed", sender: self)
                         }
                     })
                     
@@ -720,6 +723,18 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
         
         dismiss(animated: true, completion: nil)
         
+    }
+    
+    func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
+        print("Firebase registration token: \(fcmToken)")
+        var tokenDict = [String: Any]()
+        
+        
+        tokenDict["deviceToken"] = [fcmToken: true] as [String: Any]?
+        Database.database().reference().child("users").child(self.authUser).updateChildValues(tokenDict)
+        
+        // TODO: If necessary send token to application server.
+        // Note: This callback is fired at each app startup and whenever a new token is generated.
     }
     
     

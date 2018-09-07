@@ -10,9 +10,11 @@ import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 import FirebaseStorage
+import CoreLocation
 
-var gmRed = UIColor(red: 180/255, green: 29/255, blue: 2/255, alpha: 1.0)
-class SearchViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarDelegate, UICollectionViewDelegateFlowLayout, UITextFieldDelegate {
+
+
+class SearchViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarDelegate, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, CLLocationManagerDelegate {
     @IBOutlet weak var backToCatButton: UIButton!
     
     @IBAction func backToAllCatPressed(_ sender: Any) {
@@ -31,7 +33,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         backToCatButton.isHidden = true
         //}
     }
-    
+    var gmRed = UIColor(red: 180/255, green: 29/255, blue: 2/255, alpha: 1.0)
     @IBAction func backButtonPressed(_ sender: Any) {
         UIView.animate(withDuration: 0.5, animations: {
             self.singlePostView3.frame = self.ogCommentPos
@@ -121,8 +123,11 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         border1.isHidden = true
         border2.isHidden = true
         border3.isHidden = false
-        popCollect.isHidden = true
+        popCollect.isHidden = false
         topBarPressed = false
+        locationManager.delegate = self
+        startLocationManager()
+        
     }
     var catCollectPics = ["bodybuilding-motivation-tips-part-2","dd3c303d81d5301e3c427f897bf5bd2e","thumb-1920-426586","bodybuilding-motivation-tips-part-2", "images-1", "images","thumb-1920-426586","bodybuilding-motivation-tips-part-2"]
     var catCollectData = ["Arms","Chest","Abs","Legs","Back", "Shoulders","Other"]
@@ -140,7 +145,8 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         super.viewDidLoad()
         ogCommentPos = singlePostView3.frame
         
-       
+        locationManager.requestAlwaysAuthorization()
+        locationManager.requestWhenInUseAuthorization()
         self.commentCollect.register(UINib(nibName: "LikedByCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "LikedByCollectionViewCell")
        ogSinglePostViewFrame = singlePostView.frame
         
@@ -188,6 +194,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     var myPicString = String()
     var keys = [String]()
     var myName = String()
+    
     func loadPopData(){
         Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: {(snapshot) in
             var snapDict = snapshot.value as! [String:Any]
@@ -236,7 +243,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         } else if item == tabBar.items![2]{
             performSegue(withIdentifier: "SearchToPost", sender: self)
         } else if item == tabBar.items![3]{
-            //performSegue(withIdentifier: "SearchToNotifications", sender: self)
+            performSegue(withIdentifier: "SearchToNotifications", sender: self)
         } else if item == tabBar.items![4]{
             performSegue(withIdentifier: "SearchToProfile", sender: self)
         } else {
@@ -273,23 +280,92 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             let cell : PopCell = (collectionView.dequeueReusableCell(withReuseIdentifier: "PopCell", for: indexPath) as! PopCell)
             cell.layer.borderWidth = 1
             cell.layer.borderColor = UIColor.white.cgColor
+            if topBarCat.titleLabel?.textColor == self.gmRed{
+                
+                //print("this popcelldata = \(popCollectData[indexPath.row] )")
+                if topBarPressed == true{
+                    if ((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["postPic"] == nil {
+                        if ((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["postVid"] == nil {
+                            cell.popPic.image = UIImage(named: "background2")
+                            UIView.animate(withDuration: 0.5, animations: {
+                                
+                                cell.popText.text = String(describing: ((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["postText"]!)
+                                cell.player?.view.isHidden = true
+                                cell.bringSubview(toFront: cell.popText)
+                            })
+                        } else {
+                            cell.popPic.isHidden = true
+                            cell.player?.url = URL(string: String(describing: ((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["postVid"]!))
+                            cell.player?.playerDelegate = self
+                            cell.player?.playbackDelegate = self
+                            cell.player?.playbackLoops = true
+                            cell.player?.playbackPausesWhenBackgrounded = true
+                            cell.player?.playbackPausesWhenResigningActive = true
+                            let vidFrame = CGRect(x: cell.popPic.frame.origin.x, y: cell.popPic.frame.origin.y, width: popCollect.frame.width - 28, height: cell.popPic.frame.height)
+                            cell.player?.view.frame = vidFrame
+                            cell.player?.view.isHidden = false
+                            cell.player?.didMove(toParentViewController: self)
+                            //cell.player?.url = cell.videoUrl
+                            cell.player?.playbackLoops = true
+                        }
+                    } else {
+                        if let messageImageUrl = URL(string: ((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["postPic"] as! String) {
+                            if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                                cell.popPic.image = UIImage(data: imageData as Data)
+                            }
+                        }
+                    }
+                    return cell
+                } else {
+                    if (((self.popCollectData[indexPath.row]).first?.value as! [String:Any]))["postPic"] == nil {
+                        if ((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["postVid"] == nil{
+                            UIView.animate(withDuration: 0.5, animations: {
+                                cell.popText.isHidden = false
+                                cell.popText.text = (String(describing: ((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["postText"]!))
+                                cell.player?.view.isHidden = true
+                                cell.bringSubview(toFront: cell.popText)
+                            })
+                        } else {
+                            cell.popText.textColor = UIColor.white
+                            cell.popPic.isHidden = true
+                            cell.player?.url = URL(string: String(describing: ((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["postVid"]!))
+                            cell.player?.playerDelegate = self
+                            cell.player?.playbackDelegate = self
+                            cell.player?.playbackLoops = true
+                            cell.player?.playbackPausesWhenBackgrounded = true
+                            cell.player?.playbackPausesWhenResigningActive = true
+                            let vidFrame = CGRect(x: cell.popPic.frame.origin.x, y: cell.popPic.frame.origin.y, width: popCollect.frame.width - 28, height: cell.popPic.frame.height)
+                            cell.player?.view.frame = vidFrame
+                            cell.player?.view.isHidden = false
+                            cell.player?.didMove(toParentViewController: self)
+                            cell.player?.playbackLoops = true
+                        }
+                    } else {
+                        cell.popText.textColor = UIColor.white
+                        if let messageImageUrl = URL(string: ((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["postPic"] as! String) {
+                            if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                                cell.popPic.image = UIImage(data: imageData as Data)
+                            }
+                        }
+                    }
+                }
+            
+            return cell
+            
+                
+            } else {
             //print("this popcelldata = \(popCollectData[indexPath.row] )")
             if topBarPressed == true{
                 if self.popCollectData[indexPath.row]["postPic"] == nil {
                     if (self.popCollectData[indexPath.row])["postVid"] == nil{
-                       // print("Text: \(String(describing: ((popCollectData[indexPath.row]).first?.value as! [String:Any])["postText"]!))")
+                        cell.popPic.image = UIImage(named: "background2")
                         UIView.animate(withDuration: 0.5, animations: {
                             
                             cell.popText.text = String(describing: ((self.popCollectData[indexPath.row])["postText"]!))
                             cell.player?.view.isHidden = true
                             cell.bringSubview(toFront: cell.popText)
-                            
                         })
-                        
                     } else {
-                       
-                        //cell.popPic.image = UIImage(named: "video-481821_960_720")
-                        //cell.videoUrl = URL(string: popCollectData[indexPath.row]["postVid"] as! String)
                         cell.popPic.isHidden = true
                         cell.player?.url = URL(string: String(describing: (popCollectData[indexPath.row])["postVid"]!))
                         cell.player?.playerDelegate = self
@@ -297,48 +373,34 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         cell.player?.playbackLoops = true
                         cell.player?.playbackPausesWhenBackgrounded = true
                         cell.player?.playbackPausesWhenResigningActive = true
-                        
-                        
                         let vidFrame = CGRect(x: cell.popPic.frame.origin.x, y: cell.popPic.frame.origin.y, width: popCollect.frame.width - 28, height: cell.popPic.frame.height)
                         cell.player?.view.frame = vidFrame
-                        
                         cell.player?.view.isHidden = false
-                        
                         cell.player?.didMove(toParentViewController: self)
-                        
                         //cell.player?.url = cell.videoUrl
-                        
                         cell.player?.playbackLoops = true
                     }
                 } else {
-                   
                     if let messageImageUrl = URL(string: self.popCollectData[indexPath.row]["postPic"] as! String) {
-                        
                         if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
                             cell.popPic.image = UIImage(data: imageData as Data)
-                            
                         }
-                        
-                        //}
                     }
-                    //cell.popPic.image =
                 }
                 return cell
-                
             } else {
-            if (self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["postPic"] == nil {
-                if (self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["postVid"] == nil{
+            if (self.popCollectData[indexPath.row])["postPic"] == nil {
+                if (self.popCollectData[indexPath.row])["postVid"] == nil{
                     UIView.animate(withDuration: 0.5, animations: {
                         cell.popText.isHidden = false
-                        cell.popText.text = (String(describing: ((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["postText"]!))
+                        cell.popText.text = (String(describing: ((self.popCollectData[indexPath.row]))["postText"]!))
                         cell.player?.view.isHidden = true
                         cell.bringSubview(toFront: cell.popText)
                     })
                 } else {
-                    //cell.popText.isHidden = true
                     cell.popText.textColor = UIColor.white
                     cell.popPic.isHidden = true
-                    cell.player?.url = URL(string: String(describing: ((popCollectData[indexPath.row]).first?.value as! [String:Any])["postVid"]!))
+                    cell.player?.url = URL(string: String(describing: (popCollectData[indexPath.row])["postVid"]!))
                     cell.player?.playerDelegate = self
                     cell.player?.playbackDelegate = self
                     cell.player?.playbackLoops = true
@@ -351,29 +413,24 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     cell.player?.playbackLoops = true
                 }
             } else {
-               
-                //cell.popText.isHidden = true
                 cell.popText.textColor = UIColor.white
-                if let messageImageUrl = URL(string: (self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["postPic"] as! String) {
-                
+                if let messageImageUrl = URL(string: (self.popCollectData[indexPath.row])["postPic"] as! String) {
                 if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
                     cell.popPic.image = UIImage(data: imageData as Data)
-                    
                     }
                 }
                 }
-            return cell
+                }
             }
-            
+                
+            return cell
+        
         } else {
                 let cell : LikedByCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "LikedByCollectionViewCell", for: indexPath) as! LikedByCollectionViewCell
             cell.backgroundColor = UIColor.clear
             cell.commentName.textColor = UIColor.white
             cell.commentTextView.textColor = UIColor.white
             cell.commentTimestamp.textColor = UIColor.white
-            
-            //cell.likedByImage.frame = CGRect(x: cell.likedByImage.frame.origin.x, y: cell.likedByImage.frame.origin.y, width: cell.frame.height - 20, height: cell.frame.height - 20)
-            
                 cell.likedByName.isHidden = true
                 cell.likedByUName.isHidden = true
                 cell.likedByFollowButton.isHidden = true
@@ -393,8 +450,8 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     }
                 }
                 return cell
-            }
-        
+        }
+            
     }
    // @IBOutlet weak var commentButton: UIButton!
     @IBOutlet weak var favoritesCount: UIButton!
@@ -441,294 +498,555 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
            
 
         } else if collectionView == popCollect{
-            backToCatButton.isHidden = true
             
-            let cellLabel = catCollectData[indexPath.row]
-            if allCatDataDict[cellLabel] == nil {
-                self.allCatDataDict[cellLabel] = [[String:Any]]()
-            }
-            //print("selectedData for \(cellLabel): \(self.popCollectData[indexPath.row])")
-            //show single post view
-            singlePostView.frame = (popCollect.visibleCells[indexPath.row] as! PopCell).frame
-            self.curCellFrame = (popCollect.visibleCells[indexPath.row] as! PopCell).frame
+            
+            if topBarCat.titleLabel?.textColor == self.gmRed{
+                backToCatButton.isHidden = true
+                
+                let cellLabel = catCollectData[indexPath.row]
+                if allCatDataDict[cellLabel] == nil {
+                    self.allCatDataDict[cellLabel] = [[String:Any]]()
+                }
+                //print("selectedData for \(cellLabel): \(self.popCollectData[indexPath.row])")
+                //show single post view
+                singlePostView.frame = (popCollect.visibleCells[indexPath.row] as! PopCell).frame
+                self.curCellFrame = (popCollect.visibleCells[indexPath.row] as! PopCell).frame
                 
                 //did select picture cell
-            if (self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["postPic"] as? String != nil {
-                if let messageImageUrl = URL(string: (self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["postPic"] as! String) {
-                
-                if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
-                    singlePostImageView.image = UIImage(data: imageData as Data)
+                if ((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["postPic"] as? String != nil {
+                    if let messageImageUrl = URL(string: ((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["postPic"] as! String) {
+                        
+                        if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                            singlePostImageView.image = UIImage(data: imageData as Data)
+                        }
                     }
-                }
-                
-                self.curCommentCell = (self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])
-                var likesPost: [String:Any]?
-                var favesPost: [String:Any]?
-                var commentsPost: [String:Any]?
-                for item in ((self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["comments"] as! [[String:Any]]){
                     
-                    commentsPost = item as! [String: Any]
-                    
-                }
-                for item in ((self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["likes"] as! [[String:Any]]){
-                    
-                    likesPost = item as! [String: Any]
-                    
-                }
-                if likesPost!["x"] != nil {
-                    
-                } else {
-                    
-                    likeButtonCount.setTitle(String(((self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["likes"] as! [[String:Any]]).count), for: .normal)
-                    
-                    if (likesPost!["uName"] as! String) == self.myName{
-                        self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
-                        //cell.likesCountButton.setTitle((feedDataArray[indexPath.row]["likes"] as! [[String:Any]]).count.description, for: .normal)
+                    self.curCommentCell = self.popCollectData[indexPath.row]
+                    var likesPost: [String:Any]?
+                    var favesPost: [String:Any]?
+                    var commentsPost: [String:Any]?
+                    for item in (((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["comments"] as! [[String:Any]]){
+                        
+                        commentsPost = item as! [String: Any]
+                        
                     }
-                }
-                //set comments count
-                if commentsPost!["x"] != nil {
-                    
-                } else {
-                    commentsCollectData.removeAll()
-                    print("showComments")
-                    //self.backFromLikedByViewButton.isHidden = false
-                    
-                    //self.commentTF.isHidden = false
-                    
-                    //self.topLabel.text = "Comments"
-                    if (((self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["comments"] as! [[String:Any]]).first as! [String:Any])["x"] != nil{
+                    for item in (((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["likes"] as! [[String:Any]]){
+                        
+                        likesPost = item as! [String: Any]
+                        
+                    }
+                    if likesPost!["x"] != nil {
+                        
+                    } else {
+                        
+                        likeButtonCount.setTitle(String((((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["likes"] as! [[String:Any]]).count), for: .normal)
+                        
+                        if (likesPost!["uName"] as! String) == self.myName{
+                            self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
+                            //cell.likesCountButton.setTitle((feedDataArray[indexPath.row]["likes"] as! [[String:Any]]).count.description, for: .normal)
+                        }
+                    }
+                    //set comments count
+                    if commentsPost!["x"] != nil {
+                        
+                    } else {
+                        commentsCollectData.removeAll()
+                        print("showComments")
+                        
+                        if ((((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["comments"] as! [[String:Any]]).first as! [String:Any])["x"] != nil{
+                            
+                            
+                            
+                        } else {
+                            
+                            
+                            
+                            commentsCollectData = (((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["comments"] as! [[String:Any]])
+                            
+                            //DispatchQueue.main.async {
+                            
+                            
+                            self.commentCollect.delegate = self
+                            self.commentCollect.dataSource = self
+                            DispatchQueue.main.async{
+                                self.commentCollect.reloadData()
+                            }
+                        }
                         
                         
+                    }
+                    
+                    for item in (((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["favorites"] as! [[String:Any]]){
+                        
+                        favesPost = item as! [String: Any]
+                        
+                    }
+                    if favesPost!["x"] != nil {
                         
                     } else {
                         
                         
-                        
-                        commentsCollectData = ((self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["comments"] as! [[String:Any]])
-                        
-                        //DispatchQueue.main.async {
-                        
-                        
-                        self.commentCollect.delegate = self
-                        self.commentCollect.dataSource = self
-                        DispatchQueue.main.async{
-                            self.commentCollect.reloadData()
+                        if (favesPost!["uName"] as! String) == self.myName{
+                            favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
+                            favoritesCount.setTitle((((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["favorites"] as! [[String:Any]]).count.description, for: .normal)
                         }
                     }
                     
-                    //commentCount.setTitle(String(((self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["comments"] as! [[String:Any]]).count), for: .normal)
+                    textPostTV.isHidden = true
+                    singlePostView2.isHidden = false
+                } else if (((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["postVid"] as? String != nil) {
+                    //vid post//////////
+                    //self.singlePostView3.frame = ogCommentPos
+                    self.player = Player()
+                    textPostTV.isHidden = true
+                    player?.url = URL(string:((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["postVid"] as! String)
+                    let playTap = UITapGestureRecognizer()
+                    playTap.numberOfTapsRequired = 1
+                    playTap.addTarget(self, action: #selector(SearchViewController.playOrPause))
+                    player?.view.addGestureRecognizer(playTap)
                     
-                }
-                
-                for item in ((self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["favorites"] as! [[String:Any]]){
+                    let vidFrame = CGRect(x: singlePostView1.frame.origin.x, y: singlePostView1.frame.origin.y, width: self.ogSinglePostViewFrame.width - 20, height: self.ogSinglePostViewFrame.height/2)
+                    self.player?.view.frame = vidFrame
+                    self.singlePostView1.addSubview((self.player?.view)!)
+                    self.player?.didMove(toParentViewController: self)
+                    singlePostView1.sendSubview(toBack: (player?.view)!)
                     
-                    favesPost = item as! [String: Any]
-                    
-                }
-                if favesPost!["x"] != nil {
-                    
-                } else {
-                    
-                    
-                    if (favesPost!["uName"] as! String) == self.myName{
-                        favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
-                        favoritesCount.setTitle(((self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["favorites"] as! [[String:Any]]).count.description, for: .normal)
-                    }
-                }
-                
-                textPostTV.isHidden = true
-                singlePostView2.isHidden = false
-            } else if ((self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["postVid"] as? String != nil) {
-                //vid post//////////
-                //self.singlePostView3.frame = ogCommentPos
-                self.player = Player()
-                textPostTV.isHidden = true
-                player?.url = URL(string:(self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["postVid"] as! String)
-                let playTap = UITapGestureRecognizer()
-                playTap.numberOfTapsRequired = 1
-                playTap.addTarget(self, action: #selector(SearchViewController.playOrPause))
-               player?.view.addGestureRecognizer(playTap)
-                
-                let vidFrame = CGRect(x: singlePostView1.frame.origin.x, y: singlePostView1.frame.origin.y, width: self.ogSinglePostViewFrame.width - 20, height: self.ogSinglePostViewFrame.height/2)
-                self.player?.view.frame = vidFrame
-                self.singlePostView1.addSubview((self.player?.view)!)
-                self.player?.didMove(toParentViewController: self)
-                singlePostView1.sendSubview(toBack: (player?.view)!)
-                
-                self.curCommentCell = (self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])
-                var likesPost: [String:Any]?
-                var favesPost: [String:Any]?
-                var commentsPost: [String:Any]?
-                for item in ((self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["comments"] as! [[String:Any]]){
-                    
-                    commentsPost = item as! [String: Any]
-                    
-                }
-                for item in ((self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["likes"] as! [[String:Any]]){
-                    
-                    likesPost = item as! [String: Any]
-                    
-                }
-                if likesPost!["x"] != nil {
-                    
-                } else {
-                    
-                    likeButtonCount.setTitle(String(((self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["likes"] as! [[String:Any]]).count), for: .normal)
-                    
-                    if (likesPost!["uName"] as! String) == self.myName{
-                        self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
-                        //cell.likesCountButton.setTitle((feedDataArray[indexPath.row]["likes"] as! [[String:Any]]).count.description, for: .normal)
-                    }
-                }
-                //set comments count
-                if commentsPost!["x"] != nil {
-                    
-                } else {
-                    commentsCollectData.removeAll()
-                    print("showComments")
-                    //self.backFromLikedByViewButton.isHidden = false
-                    
-                    //self.commentTF.isHidden = false
-                    
-                    //self.topLabel.text = "Comments"
-                    if (((self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["comments"] as! [[String:Any]]).first as! [String:Any])["x"] != nil{
+                    self.curCommentCell = self.popCollectData[indexPath.row].first?.value as! [String:Any]
+                    var likesPost: [String:Any]?
+                    var favesPost: [String:Any]?
+                    var commentsPost: [String:Any]?
+                    for item in (((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["comments"] as! [[String:Any]]){
                         
+                        commentsPost = item as! [String: Any]
                         
+                    }
+                    for item in (((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["likes"] as! [[String:Any]]){
+                        
+                        likesPost = item as! [String: Any]
+                        
+                    }
+                    if likesPost!["x"] != nil {
+                        
+                    } else {
+                        
+                        likeButtonCount.setTitle(String((((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["likes"] as! [[String:Any]]).count), for: .normal)
+                        
+                        if (likesPost!["uName"] as! String) == self.myName{
+                            self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
+                            //cell.likesCountButton.setTitle((feedDataArray[indexPath.row]["likes"] as! [[String:Any]]).count.description, for: .normal)
+                        }
+                    }
+                    //set comments count
+                    if commentsPost!["x"] != nil {
+                        
+                    } else {
+                        commentsCollectData.removeAll()
+                        print("showComments")
+                        if ((((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["comments"] as! [[String:Any]]).first as! [String:Any])["x"] != nil{
+                            
+                            
+                            
+                        } else {
+                            
+                            
+                            
+                            commentsCollectData = (((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["comments"] as! [[String:Any]])
+                            
+                            //DispatchQueue.main.async {
+                            
+                            
+                            self.commentCollect.delegate = self
+                            self.commentCollect.dataSource = self
+                            DispatchQueue.main.async{
+                                self.commentCollect.reloadData()
+                            }
+                        }
+                        
+                    }
+                    
+                    for item in (((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["favorites"] as! [[String:Any]]){
+                        
+                        favesPost = item as! [String: Any]
+                        
+                    }
+                    if favesPost!["x"] != nil {
                         
                     } else {
                         
                         
-                        
-                        commentsCollectData = ((self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["comments"] as! [[String:Any]])
-                        
-                        //DispatchQueue.main.async {
-                        
-                        
-                        self.commentCollect.delegate = self
-                        self.commentCollect.dataSource = self
-                        DispatchQueue.main.async{
-                            self.commentCollect.reloadData()
+                        if (favesPost!["uName"] as! String) == self.myName{
+                            favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
+                            favoritesCount.setTitle((((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["favorites"] as! [[String:Any]]).count.description, for: .normal)
                         }
                     }
                     
-                    //commentCount.setTitle(String(((self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["comments"] as! [[String:Any]]).count), for: .normal)
-                    
-                }
-                
-                for item in ((self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["favorites"] as! [[String:Any]]){
-                    
-                    favesPost = item as! [String: Any]
-                    
-                }
-                if favesPost!["x"] != nil {
-                    
+                    textPostTV.isHidden = true
+                    singlePostView2.isHidden = false
                 } else {
-                    
-                    
-                    if (favesPost!["uName"] as! String) == self.myName{
-                        favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
-                        favoritesCount.setTitle(((self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["favorites"] as! [[String:Any]]).count.description, for: .normal)
-                    }
-                }
-                
-                textPostTV.isHidden = true
-                singlePostView2.isHidden = false
-            } else {
-                //text post
-                self.curCommentCell = (self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])
-                var likesPost: [String:Any]?
-                var favesPost: [String:Any]?
-                var commentsPost: [String:Any]?
-                for item in ((self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["comments"] as! [[String:Any]]){
-                    
-                    commentsPost = item as! [String: Any]
-                    
-                }
-                for item in ((self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["likes"] as! [[String:Any]]){
-                    
-                    likesPost = item as! [String: Any]
-                    
-                }
-                if likesPost!["x"] != nil {
-                    
-                } else {
-                    
-                    likeButtonCount.setTitle(String(((self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["likes"] as! [[String:Any]]).count), for: .normal)
-                    
-                    if (likesPost!["uName"] as! String) == self.myName{
-                        self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
-                        //cell.likesCountButton.setTitle((feedDataArray[indexPath.row]["likes"] as! [[String:Any]]).count.description, for: .normal)
-                    }
-                }
-                //set comments count
-                if commentsPost!["x"] != nil {
-                    
-                } else {
-                    commentsCollectData.removeAll()
-                    print("showComments")
-                    //self.backFromLikedByViewButton.isHidden = false
-                    
-                    //self.commentTF.isHidden = false
-                    
-                    //self.topLabel.text = "Comments"
-                    if (((self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["comments"] as! [[String:Any]]).first as! [String:Any])["x"] != nil{
+                    //text post
+                    self.curCommentCell = ((self.popCollectData[indexPath.row]).first?.value as! [String:Any])
+                    var likesPost: [String:Any]?
+                    var favesPost: [String:Any]?
+                    var commentsPost: [String:Any]?
+                    for item in (((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["comments"] as! [[String:Any]]){
                         
+                        commentsPost = item as! [String: Any]
                         
+                    }
+                    for item in (((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["likes"] as! [[String:Any]]){
+                        
+                        likesPost = item as! [String: Any]
+                        
+                    }
+                    if likesPost!["x"] != nil {
                         
                     } else {
                         
+                        likeButtonCount.setTitle(String((((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["likes"] as! [[String:Any]]).count), for: .normal)
                         
+                        if (likesPost!["uName"] as! String) == self.myName{
+                            self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
+                            //cell.likesCountButton.setTitle((feedDataArray[indexPath.row]["likes"] as! [[String:Any]]).count.description, for: .normal)
+                        }
+                    }
+                    //set comments count
+                    if commentsPost!["x"] != nil {
                         
-                        commentsCollectData = ((self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["comments"] as! [[String:Any]])
+                    } else {
+                        commentsCollectData.removeAll()
+                        print("showComments")
+                        //self.backFromLikedByViewButton.isHidden = false
                         
-                        //DispatchQueue.main.async {
+                        //self.commentTF.isHidden = false
                         
-                        
-                        self.commentCollect.delegate = self
-                        self.commentCollect.dataSource = self
-                        DispatchQueue.main.async{
-                            self.commentCollect.reloadData()
+                        //self.topLabel.text = "Comments"
+                        if ((((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["comments"] as! [[String:Any]]).first as! [String:Any])["x"] != nil{
+                            
+                            
+                            
+                        } else {
+                            
+                            
+                            
+                            commentsCollectData = (((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["comments"] as! [[String:Any]])
+                            
+                            //DispatchQueue.main.async {
+                            
+                            
+                            self.commentCollect.delegate = self
+                            self.commentCollect.dataSource = self
+                            DispatchQueue.main.async{
+                                self.commentCollect.reloadData()
+                            }
                         }
                     }
                     
-                    //commentCount.setTitle(String(((self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["comments"] as! [[String:Any]]).count), for: .normal)
-                    
-                }
-                
-                for item in ((self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["favorites"] as! [[String:Any]]){
-                    
-                    favesPost = item as! [String: Any]
-                    
-                }
-                if favesPost!["x"] != nil {
-                    
-                } else {
-                    
-                    
-                    if (favesPost!["uName"] as! String) == self.myName{
-                        favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
-                        favoritesCount.setTitle(((self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["favorites"] as! [[String:Any]]).count.description, for: .normal)
+                    for item in (((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["favorites"] as! [[String:Any]]){
+                        
+                        favesPost = item as! [String: Any]
+                        
                     }
+                    if favesPost!["x"] != nil {
+                        
+                    } else {
+                        if (favesPost!["uName"] as! String) == self.myName{
+                            favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
+                            favoritesCount.setTitle((((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["favorites"] as! [[String:Any]]).count.description, for: .normal)
+                        }
+                    }
+                    textPostTV.isHidden = false
+                    singlePostView2.isHidden = true
+                    UIView.animate(withDuration: 0.5, animations: {
+                        self.singlePostView3.frame = self.textPostOnlyCommentsPost.frame
+                    })
                 }
-                textPostTV.isHidden = false
-                singlePostView2.isHidden = true
+                textPostTV.text = (((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["postText"] as! String)
+                singlePostTextView.text = (((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["postText"] as! String)
                 UIView.animate(withDuration: 0.5, animations: {
+                    self.singlePostView.isHidden = false
+                    self.singlePostView.frame = self.ogSinglePostViewFrame
                     
-                    self.singlePostView3.frame = self.textPostOnlyCommentsPost.frame
-                   
+                })
+                //^%%%%%%%%
+            } else {
+                backToCatButton.isHidden = true
+                
+                let cellLabel = catCollectData[indexPath.row]
+                if allCatDataDict[cellLabel] == nil {
+                    self.allCatDataDict[cellLabel] = [[String:Any]]()
+                }
+                //print("selectedData for \(cellLabel): \(self.popCollectData[indexPath.row])")
+                //show single post view
+                singlePostView.frame = (popCollect.visibleCells[indexPath.row] as! PopCell).frame
+                self.curCellFrame = (popCollect.visibleCells[indexPath.row] as! PopCell).frame
+                
+                //did select picture cell
+                if (self.popCollectData[indexPath.row])["postPic"] as? String != nil {
+                    if let messageImageUrl = URL(string: (self.popCollectData[indexPath.row])["postPic"] as! String) {
+                        
+                        if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                            singlePostImageView.image = UIImage(data: imageData as Data)
+                        }
+                    }
+                    
+                    self.curCommentCell = self.popCollectData[indexPath.row]
+                    var likesPost: [String:Any]?
+                    var favesPost: [String:Any]?
+                    var commentsPost: [String:Any]?
+                    for item in ((self.popCollectData[indexPath.row])["comments"] as! [[String:Any]]){
+                        
+                        commentsPost = item as! [String: Any]
+                        
+                    }
+                    for item in ((self.popCollectData[indexPath.row])["likes"] as! [[String:Any]]){
+                        
+                        likesPost = item as! [String: Any]
+                        
+                    }
+                    if likesPost!["x"] != nil {
+                        
+                    } else {
+                        
+                        likeButtonCount.setTitle(String(((self.popCollectData[indexPath.row])["likes"] as! [[String:Any]]).count), for: .normal)
+                        
+                        if (likesPost!["uName"] as! String) == self.myName{
+                            self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
+                            //cell.likesCountButton.setTitle((feedDataArray[indexPath.row]["likes"] as! [[String:Any]]).count.description, for: .normal)
+                        }
+                    }
+                    //set comments count
+                    if commentsPost!["x"] != nil {
+                        
+                    } else {
+                        commentsCollectData.removeAll()
+                        print("showComments")
+                        //self.backFromLikedByViewButton.isHidden = false
+                        
+                        //self.commentTF.isHidden = false
+                        
+                        //self.topLabel.text = "Comments"
+                        if (((self.popCollectData[indexPath.row])["comments"] as! [[String:Any]]).first as! [String:Any])["x"] != nil{
+                            
+                            
+                            
+                        } else {
+                            
+                            
+                            
+                            commentsCollectData = ((self.popCollectData[indexPath.row])["comments"] as! [[String:Any]])
+                            
+                            //DispatchQueue.main.async {
+                            
+                            
+                            self.commentCollect.delegate = self
+                            self.commentCollect.dataSource = self
+                            DispatchQueue.main.async{
+                                self.commentCollect.reloadData()
+                            }
+                        }
+                        
+                        
+                    }
+                    
+                    for item in ((self.popCollectData[indexPath.row])["favorites"] as! [[String:Any]]){
+                        
+                        favesPost = item as! [String: Any]
+                        
+                    }
+                    if favesPost!["x"] != nil {
+                        
+                    } else {
+                        
+                        
+                        if (favesPost!["uName"] as! String) == self.myName{
+                            favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
+                            favoritesCount.setTitle(((self.popCollectData[indexPath.row])["favorites"] as! [[String:Any]]).count.description, for: .normal)
+                        }
+                    }
+                    
+                    textPostTV.isHidden = true
+                    singlePostView2.isHidden = false
+                } else if ((self.popCollectData[indexPath.row])["postVid"] as? String != nil) {
+                    //vid post//////////
+                    //self.singlePostView3.frame = ogCommentPos
+                    self.player = Player()
+                    textPostTV.isHidden = true
+                    player?.url = URL(string:(self.popCollectData[indexPath.row])["postVid"] as! String)
+                    let playTap = UITapGestureRecognizer()
+                    playTap.numberOfTapsRequired = 1
+                    playTap.addTarget(self, action: #selector(SearchViewController.playOrPause))
+                    player?.view.addGestureRecognizer(playTap)
+                    
+                    let vidFrame = CGRect(x: singlePostView1.frame.origin.x, y: singlePostView1.frame.origin.y, width: self.ogSinglePostViewFrame.width - 20, height: self.ogSinglePostViewFrame.height/2)
+                    self.player?.view.frame = vidFrame
+                    self.singlePostView1.addSubview((self.player?.view)!)
+                    self.player?.didMove(toParentViewController: self)
+                    singlePostView1.sendSubview(toBack: (player?.view)!)
+                    
+                    self.curCommentCell = self.popCollectData[indexPath.row]
+                    var likesPost: [String:Any]?
+                    var favesPost: [String:Any]?
+                    var commentsPost: [String:Any]?
+                    for item in ((self.popCollectData[indexPath.row])["comments"] as! [[String:Any]]){
+                        
+                        commentsPost = item as! [String: Any]
+                        
+                    }
+                    for item in ((self.popCollectData[indexPath.row])["likes"] as! [[String:Any]]){
+                        
+                        likesPost = item as! [String: Any]
+                        
+                    }
+                    if likesPost!["x"] != nil {
+                        
+                    } else {
+                        
+                        likeButtonCount.setTitle(String(((self.popCollectData[indexPath.row])["likes"] as! [[String:Any]]).count), for: .normal)
+                        
+                        if (likesPost!["uName"] as! String) == self.myName{
+                            self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
+                            //cell.likesCountButton.setTitle((feedDataArray[indexPath.row]["likes"] as! [[String:Any]]).count.description, for: .normal)
+                        }
+                    }
+                    //set comments count
+                    if commentsPost!["x"] != nil {
+                        
+                    } else {
+                        commentsCollectData.removeAll()
+                        print("showComments")
+                        //self.backFromLikedByViewButton.isHidden = false
+                        
+                        //self.commentTF.isHidden = false
+                        
+                        //self.topLabel.text = "Comments"
+                        if (((self.popCollectData[indexPath.row])["comments"] as! [[String:Any]]).first as! [String:Any])["x"] != nil{
+                            
+                            
+                            
+                        } else {
+                            
+                            
+                            
+                            commentsCollectData = ((self.popCollectData[indexPath.row])["comments"] as! [[String:Any]])
+                            
+                            //DispatchQueue.main.async {
+                            
+                            
+                            self.commentCollect.delegate = self
+                            self.commentCollect.dataSource = self
+                            DispatchQueue.main.async{
+                                self.commentCollect.reloadData()
+                            }
+                        }
+                        
+                    }
+                    
+                    for item in ((self.popCollectData[indexPath.row])["favorites"] as! [[String:Any]]){
+                        
+                        favesPost = item as! [String: Any]
+                        
+                    }
+                    if favesPost!["x"] != nil {
+                        
+                    } else {
+                        
+                        
+                        if (favesPost!["uName"] as! String) == self.myName{
+                            favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
+                            favoritesCount.setTitle(((self.popCollectData[indexPath.row])["favorites"] as! [[String:Any]]).count.description, for: .normal)
+                        }
+                    }
+                    
+                    textPostTV.isHidden = true
+                    singlePostView2.isHidden = false
+                } else {
+                    //text post
+                    self.curCommentCell = (self.popCollectData[indexPath.row])
+                    var likesPost: [String:Any]?
+                    var favesPost: [String:Any]?
+                    var commentsPost: [String:Any]?
+                    for item in ((self.popCollectData[indexPath.row])["comments"] as! [[String:Any]]){
+                        
+                        commentsPost = item as! [String: Any]
+                        
+                    }
+                    for item in ((self.popCollectData[indexPath.row])["likes"] as! [[String:Any]]){
+                        
+                        likesPost = item as! [String: Any]
+                        
+                    }
+                    if likesPost!["x"] != nil {
+                        
+                    } else {
+                        
+                        likeButtonCount.setTitle(String(((self.popCollectData[indexPath.row])["likes"] as! [[String:Any]]).count), for: .normal)
+                        
+                        if (likesPost!["uName"] as! String) == self.myName{
+                            self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
+                            //cell.likesCountButton.setTitle((feedDataArray[indexPath.row]["likes"] as! [[String:Any]]).count.description, for: .normal)
+                        }
+                    }
+                    //set comments count
+                    if commentsPost!["x"] != nil {
+                        
+                    } else {
+                        commentsCollectData.removeAll()
+                        print("showComments")
+                        //self.backFromLikedByViewButton.isHidden = false
+                        
+                        //self.commentTF.isHidden = false
+                        
+                        //self.topLabel.text = "Comments"
+                        if (((self.popCollectData[indexPath.row])["comments"] as! [[String:Any]]).first as! [String:Any])["x"] != nil{
+                            
+                            
+                            
+                        } else {
+                            
+                            
+                            
+                            commentsCollectData = ((self.popCollectData[indexPath.row])["comments"] as! [[String:Any]])
+                            
+                            //DispatchQueue.main.async {
+                            
+                            
+                            self.commentCollect.delegate = self
+                            self.commentCollect.dataSource = self
+                            DispatchQueue.main.async{
+                                self.commentCollect.reloadData()
+                            }
+                        }
+                    }
+                    
+                    for item in ((self.popCollectData[indexPath.row])["favorites"] as! [[String:Any]]){
+                        
+                        favesPost = item as! [String: Any]
+                        
+                    }
+                    if favesPost!["x"] != nil {
+                        
+                    } else {
+                        if (favesPost!["uName"] as! String) == self.myName{
+                            favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
+                            favoritesCount.setTitle(((self.popCollectData[indexPath.row])["favorites"] as! [[String:Any]]).count.description, for: .normal)
+                        }
+                    }
+                    textPostTV.isHidden = false
+                    singlePostView2.isHidden = true
+                    UIView.animate(withDuration: 0.5, animations: {
+                        self.singlePostView3.frame = self.textPostOnlyCommentsPost.frame
+                    })
+                }
+                textPostTV.text = ((self.popCollectData[indexPath.row])["postText"] as! String)
+                singlePostTextView.text = ((self.popCollectData[indexPath.row])["postText"] as! String)
+                UIView.animate(withDuration: 0.5, animations: {
+                    self.singlePostView.isHidden = false
+                    self.singlePostView.frame = self.ogSinglePostViewFrame
+                    
                 })
             }
-        
-                textPostTV.text = ((self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["postText"] as! String)
-                singlePostTextView.text = ((self.popCollectData[indexPath.row][self.popCollectData[indexPath.row].keys.first!] as! [String:Any])["postText"] as! String)
-                
-            UIView.animate(withDuration: 0.5, animations: {
-                self.singlePostView.isHidden = false
-                self.singlePostView.frame = self.ogSinglePostViewFrame
-                
-            })
-        }
+            }
+           
         
     }
     
@@ -804,6 +1122,122 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             
         })
     } // may be called if
+    
+    var location: CLLocation?
+    
+    let geocoder = CLGeocoder()
+    var placemark: CLPlacemark?
+    
+    var city: String?
+    var cityData: String?
+    var locDict = [String:Any]()
+    let locationManager = CLLocationManager()
+    
+    func startLocationManager() {
+        print("startLocMan")
+        // always good habit to check if locationServicesEnabled
+        if CLLocationManager.locationServicesEnabled() {
+            print("startLocManIF")
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager.startUpdatingLocation()
+            print(locationManager.location)
+        }
+    }
+    
+    func stopLocationManager() {
+        locationManager.stopUpdatingLocation()
+        locationManager.delegate = nil
+    }
+    
+    
+    public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        // if you need to get latest data you can get locations.last to check it if the device has been moved
+        print("inDidUpdateLoc")
+        let latestLocation = locations.last!
+        
+        // here check if no need to continue just return still in the same place
+        if latestLocation.horizontalAccuracy < 0 {
+            return
+        }
+        // if it location is nil or it has been moved
+        if location == nil || location!.horizontalAccuracy > latestLocation.horizontalAccuracy {
+            
+            location = latestLocation
+            // stop location manager
+            //stopLocationManager()
+            
+            // Here is the place you want to start reverseGeocoding
+            geocoder.reverseGeocodeLocation(latestLocation, completionHandler: { (placemarks, error) in
+                // always good to check if no error
+                // also we have to unwrap the placemark because it's optional
+                // I have done all in a single if but you check them separately
+                if error == nil, let placemark = placemarks, !placemark.isEmpty {
+                    var curPlacemark = placemark.last
+                    if let city = curPlacemark?.locality, !city.isEmpty {
+                        // here you have the city name
+                        // assign city name to our iVar
+                        self.city = city
+                        print("self.city: \(city)")
+                        Database.database().reference().child("posts").observeSingleEvent(of: .value, with: {(snapshot) in
+                            var tempArr = [[String:Any]]()
+                            for (key, val) in (snapshot.value as! [String:Any]) {
+                                let tempDict = val as! [String:Any]
+                                if tempDict["city"] as! String == self.city{
+                                    tempArr.append(tempDict)
+                                }
+                            }
+                            self.popCollectData = tempArr
+                            DispatchQueue.main.async{
+                                self.popCollect.reloadData()
+                            }
+                            
+                        })
+                        
+                    }
+                }
+                // a new function where you start to parse placemarks to get the information you need
+                //self.parsePlacemarks()
+                
+            })
+        }
+    }
+    
+    
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        // print the error to see what went wrong
+        print("didFailwithError\(error)")
+        // stop location manager if failed
+        stopLocationManager()
+    }
+    
+    func lookUpCurrentLocation(completionHandler: @escaping (CLPlacemark?)
+        -> Void ) {
+        // Use the last reported location.
+        print("lookupLoc")
+        if let lastLocation = self.locationManager.location {
+            let geocoder = CLGeocoder()
+            
+            // Look up the location and pass it to the completion handler
+            geocoder.reverseGeocodeLocation(lastLocation,
+                                            completionHandler: { (placemarks, error) in
+                                                if error == nil {
+                                                    let firstLocation = placemarks?[0]
+                                                    completionHandler(firstLocation)
+                                                }
+                                                else {
+                                                    // An error occurred during geocoding.
+                                                    completionHandler(nil)
+                                                }
+            })
+        }
+        else {
+            // No location was available.
+            completionHandler(nil)
+        }
+    }
+    
 
 }
 extension SearchViewController:PlayerDelegate {

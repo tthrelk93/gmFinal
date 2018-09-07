@@ -7,12 +7,16 @@
 //
 
 import UIKit
-
+import YPImagePicker
 import FirebaseDatabase
 import FirebaseStorage
 import FirebaseAuth
+import AVFoundation
+import AVKit
+import Photos
 import SwiftOverlays
 import CoreLocation
+
 
 class PostCatSearchCell: UICollectionViewCell {
     @IBOutlet weak var catLabel: UILabel!
@@ -76,16 +80,32 @@ UICollectionViewDataSource{
     @IBOutlet weak var addPicButton: UIButton!
     @IBAction func addPicTouched(_ sender: AnyObject) {
         currentPicker = "photo"
-        imagePicker.allowsEditing = true
+        /*imagePicker.allowsEditing = true
         //imagePicker.mediaTypes = ["kUTTypeImage"] //[.kUTTypeImage as String]
         self.postType = "pic"
-        present(imagePicker, animated: true, completion: nil)
+        present(imagePicker, animated: true, completion: nil)*/
+        let picker = YPImagePicker()
+        self.postType = "pic"
+        picker.didFinishPicking { [unowned picker] items, _ in
+            if let photo = items.singlePhoto {
+                print(photo.fromCamera) // Image source (camera or library)
+                print(photo.image) // Final image selected by the user
+                print(photo.originalImage) // original image selected by the user, unfiltered
+                print(photo.modifiedImage) // Transformed image, can be nil
+                print(photo.exifMeta) // Print exif meta data of original image.
+                self.makePostView.isHidden = false
+                self.cancelPostButton.isHidden = false
+                self.makePostImageView.image = photo.image
+            }
+            picker.dismiss(animated: true, completion: nil)
+        }
+        present(picker, animated: true, completion: nil)
         
     }
     var extended = false
     @IBOutlet weak var picButtonPositionOut: UIView!
     @IBAction func picVidPressed(_ sender: Any) {
-        
+        startLocationManager()
         UIView.animate(withDuration: 0.5, animations: {
             if self.extended == false {
             self.addPicButton.frame = self.picButtonPositionOut.frame
@@ -95,7 +115,7 @@ UICollectionViewDataSource{
                 self.addPicButton.alpha = 0.75
                 self.picVidButton.alpha = 0.8
                 self.extended = true
-                self.startLocationManager()
+                
             } else {
                 self.addPicButton.frame = self.ogPicPosit
                 self.addVidButton.frame = self.ogVidPosit
@@ -199,12 +219,40 @@ UICollectionViewDataSource{
     @IBOutlet weak var posterPicIV: UIImageView!
     @IBOutlet weak var vidButtonPositionOut: UIView!
     @IBAction func chooseVidFromPhoneSelected(_ sender: AnyObject) {
-        currentPicker = "vid"
+       /* currentPicker = "vid"
         picker.mediaTypes = ["public.movie"]
         self.postType = "vid"
         
         present(picker, animated: true, completion: nil)
-       // makePostView.isHidden = false
+       // makePostView.isHidden = false*/
+        // Here we configure the picker to only show videos, no photos.
+        self.postType = "vid"
+        var config = YPImagePickerConfiguration()
+        config.screens = [.library, .video]
+        config.library.mediaType = .video
+        
+        let picker = YPImagePicker(configuration: config)
+        picker.didFinishPicking { [unowned picker] items, _ in
+            if let video = items.singleVideo {
+                print(video.fromCamera)
+                print(video.thumbnail)
+                print(video.url)
+                self.makePostView.isHidden = false
+                self.cancelPostButton.isHidden = false
+                self.postPlayer?.url = video.url
+                let videoURL = video.url as! NSURL
+                do {
+                    let video1 = try NSData(contentsOf: videoURL as URL, options: .mappedIfSafe)
+                    self.vidData = video1
+                } catch {
+                    print(error)
+                    return
+                }
+                
+            }
+            picker.dismiss(animated: true, completion: nil)
+        }
+        present(picker, animated: true, completion: nil)
     }
     var ogCat1Pos = CGRect()
     var ogCat2Pos = CGRect()
@@ -213,6 +261,7 @@ UICollectionViewDataSource{
     override func viewDidLoad() {
         super.viewDidLoad()
         picker.delegate = self
+        
         self.picPostTextViewPos = makePostTextView.frame
         self.ogCat1Pos = self.addToCatIconButton.frame
         self.ogCat2Pos = self.addToCategoryButton.frame
@@ -234,7 +283,14 @@ UICollectionViewDataSource{
         catLabelsRefined = catLabels
         
         //locationManager delegate assignment etcc...
-        
+        locationManager.requestAlwaysAuthorization()
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.delegate = self
+       
+        //DispatchQueue.main.async{
+            print("loc: \(self.locationManager.location)")
+          //  self.startLocationManager()
+       // }
         
         // here you can call the start location function
         
@@ -297,7 +353,7 @@ UICollectionViewDataSource{
         } else if item == tabBar.items![2]{
             //performSegue(withIdentifier: "", sender: self)
         } else if item == tabBar.items![3]{
-            //performSegue(withIdentifier: "FeedToNote", sender: self)
+            performSegue(withIdentifier: "PostToNotifications", sender: self)
         } else {
             performSegue(withIdentifier: "PostToProfile", sender: self)
         }
@@ -364,6 +420,7 @@ UICollectionViewDataSource{
         print(self.city)
        self.cityData = self.city
         self.curCityLabel.text = self.city
+        locationManager.requestLocation()
     }
     @IBOutlet weak var textPostPressedLine: UIView!
     @IBOutlet weak var textPostPressedLabel: UILabel!
@@ -453,12 +510,13 @@ UICollectionViewDataSource{
             
             let imageName = NSUUID().uuidString
             let storageRef = Storage.storage().reference().child("FeedPosts").child("ImagePosts").child(Auth.auth().currentUser!.uid).child("\(imageName).jpg")
+            print("makePostImageView: \(self.makePostImageView.image!)")
             if let uploadData = UIImageJPEGRepresentation(self.makePostImageView.image!, 0.1) {
                 storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
                     if error != nil {
                         print(error!)
                         return  };
-                    
+                    print("makePostImageView: \(self.makePostImageView.image!)")
 
                     self.newPost!["postPic"] = (metadata?.downloadURL()?.absoluteString)!
                     
@@ -709,11 +767,14 @@ UICollectionViewDataSource{
     let locationManager = CLLocationManager()
     
     func startLocationManager() {
+        print("startLocMan")
         // always good habit to check if locationServicesEnabled
         if CLLocationManager.locationServicesEnabled() {
+            print("startLocManIF")
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.startUpdatingLocation()
+            print(locationManager.location)
         }
     }
     
@@ -722,8 +783,10 @@ UICollectionViewDataSource{
         locationManager.delegate = nil
     }
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    
+    public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         // if you need to get latest data you can get locations.last to check it if the device has been moved
+        print("inDidUpdateLoc")
         let latestLocation = locations.last!
         
         // here check if no need to continue just return still in the same place
@@ -735,7 +798,7 @@ UICollectionViewDataSource{
             
             location = latestLocation
             // stop location manager
-            stopLocationManager()
+            //stopLocationManager()
             
             // Here is the place you want to start reverseGeocoding
             geocoder.reverseGeocodeLocation(latestLocation, completionHandler: { (placemarks, error) in
@@ -771,6 +834,7 @@ UICollectionViewDataSource{
     func lookUpCurrentLocation(completionHandler: @escaping (CLPlacemark?)
         -> Void ) {
         // Use the last reported location.
+        print("lookupLoc")
         if let lastLocation = self.locationManager.location {
             let geocoder = CLGeocoder()
             
