@@ -219,7 +219,7 @@
                     <connections>
                         <outlet property="notifyCollect" destination="DCc-Uv-0gX" id="cPZ-Eq-4fi"/>
                         <outlet property="tabBar" destination="JxG-CB-zQX" id="ee4-To-PNU"/>
-                        <segue destination="KzI-0v-zhz" kind="showDetail" identifier="NotificationToProfile" id="9cr-qi-3Tc"/>
+                        <segue destination="KzI-0v-zhz" kind="showDetail" identifier="NotificationsToProfile" id="9cr-qi-3Tc"/>
                         <segue destination="JWU-v2-2yg" kind="showDetail" identifier="NotificationsToPost" id="rKv-Bj-ALo"/>
                         <segue destination="BYZ-38-t0r" kind="showDetail" identifier="NotificationsToFeed" id="U5Q-zZ-fsC"/>
                         <segue destination="5I3-vc-uva" kind="showDetail" identifier="NotificationsToSearch" id="LRt-ib-yd7"/>
@@ -2321,7 +2321,7 @@
         <segue reference="9cr-qi-3Tc"/>
         <segue reference="LRt-ib-yd7"/>
         <segue reference="Y6C-ea-O0s"/>
-        <segue reference="zNh-1b-ste"/>
+        <segue reference="AX2-zg-reW"/>
         <segue reference="7Cy-Gz-xNk"/>
     </inferredMetricsTieBreakers>
 </document>
