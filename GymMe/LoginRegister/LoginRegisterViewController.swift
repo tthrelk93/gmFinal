@@ -211,7 +211,7 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
  */
                     
                     self.uploadData["profPic"] = "profile-placeholder"
-                    self.uploadData["favorited"] = [["x":"x"]]
+                    self.uploadData["favorited"] = ["x":"x"]
                     self.uploadData["shared"] = ["x"]
                     self.uploadData["liked"] = ["x"]
                     self.uploadData["following"] = ["x"]
@@ -285,7 +285,7 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
                 //self.logo.isHidden = true
                 
                 self.signUpButton.setTitle("Back", for: .normal)
-                self.signInButton.titleLabel?.text = "Create"
+                self.signInButton.setTitle("Sign Up", for: .normal)
                 
                 self.whiteLineForUName.isHidden = false
             }, completion: {(error) in
@@ -314,7 +314,7 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
                 self.forgotPasswordButton.isHidden = false
                 self.confirmPasswordTextField.isHidden = true
                 self.uNameTextField.isHidden = true
-                self.signUpButton.setTitle("Create Account", for: .normal)
+                self.signUpButton.setTitle("Don't have an account? Sign Up!", for: .normal)
                 self.signInButton.titleLabel?.text = "Sign In"
                 self.selectProfPicView.isHidden = true
                // self.logo.isHidden = false

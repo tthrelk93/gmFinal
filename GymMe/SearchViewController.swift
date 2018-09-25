@@ -104,6 +104,14 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 
             }
             self.popCollectData = tempData.sorted(by: { ($0["likes"] as! [[String:Any]]).count > ($1["likes"] as! [[String:Any]]).count })
+            var count = 0
+            for dict in popCollectData{
+                if (dict["postPic"] == nil && dict["postVid"] == nil){
+                    print("textBeingRemoved")
+                    popCollectData.remove(at: count)
+                }
+                count = count + 1
+            }
             self.popCollect.reloadData()
             print("blue53: \(self.popCollectData)")
             print("x")
@@ -489,6 +497,14 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 self.allCatDataDict[cellLabel] = [[String:Any]]()
             }
             self.popCollectData = self.allCatDataDict[cellLabel]!
+            var count = 0
+            for dict in popCollectData{
+                if (dict["postPic"] == nil && dict["postVid"] == nil){
+                    print("textBeingRemoved")
+                    popCollectData.remove(at: count)
+                }
+                count = count + 1
+            }
            
             DispatchQueue.main.async{
                     self.popCollect.reloadData()
@@ -1188,6 +1204,14 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                                 }
                             }
                             self.popCollectData = tempArr
+                            var count = 0
+                            for dict in popCollectData{
+                                if (dict["postPic"] == nil && dict["postVid"] == nil){
+                                    print("textBeingRemoved")
+                                    popCollectData.remove(at: count)
+                                }
+                                count = count + 1
+                            }
                             DispatchQueue.main.async{
                                 self.popCollect.reloadData()
                             }

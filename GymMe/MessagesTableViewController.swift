@@ -109,7 +109,7 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
         //cell.receiverPic.image = recPic
         cell.messageKey = ((tableViewData[indexPath.row] )["messageKey"] as! String)
         cell.receiverUID = ((tableViewData[indexPath.row] )["receiverUID"] as! String)
-        cell.messageText.text = ((tableViewData[indexPath.row] )["messageText"] as! String)
+        cell.messageText.text = ((tableViewData[indexPath.row] )["messageText"]! as! String)
         cell.receiverName.text = ((tableViewData[indexPath.row] )["receiverName"] as! String)
         
         return cell

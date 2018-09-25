@@ -73,7 +73,7 @@ class NewsFeedPicCollectionViewCell: UICollectionViewCell {
                 
                 Database.database().reference().child("posts").child(self.postID!).child("favorites").setValue(favoritesArray)
                 Database.database().reference().child("users").child(self.posterUID!).child("posts").child(self.postID!).child("favorites").setValue(favoritesArray)
-                Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("favorited").setValue([self.postID!: self.selfData!])
+                Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("favorited").updateChildValues([self.postID!: self.selfData!])
                 self.favoritesCountButton.setTitle(String(favoritesArray.count), for: .normal)
                 Database.database().reference().child("users").child(self.posterUID!).observeSingleEvent(of: .value, with: { snapshot in
                     var uploadDict = [String:Any]()
@@ -82,9 +82,11 @@ class NewsFeedPicCollectionViewCell: UICollectionViewCell {
                     if snapDict["notifications"] != nil{
                         noteArray = snapDict["notifications"] as! [[String:Any]]
                         let sendString = self.myUName! + " favorited your post."
-                        let tempDict = ["actionByUsername": self.myUName! ,"actionText": sendString, "timeStamp": "","actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": self.myPicString, "postText": self.postText.text] as! [String:Any]
+                        let tempDict = ["actionByUsername": self.myUName! ,"actionText": sendString, "timeStamp": "","actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": self.myPicString, "postText": self.postText.text as! String] as! [String:Any]
                         noteArray.append(tempDict)
-                        Database.database().reference().child("users").child(self.posterUID!).updateChildValues(["notifications": noteArray])
+                        Database.database().reference().child("users").child(self.posterUID!).updateChildValues(["notifications": noteArray] as [AnyHashable:Any]){ err, ref in
+                            print("done")
+                        }
                     } else {
                         let sendString = self.myUName! + " favorited your post."
                         let tempDict = ["actionByUsername": self.myUName! ,"actionText": sendString, "timeStamp": "","actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": self.myPicString, "postText": self.postText.text] as [String : Any]
@@ -96,9 +98,6 @@ class NewsFeedPicCollectionViewCell: UICollectionViewCell {
                 //reload collect in delegate
                 
             })
-            
-            
-            
         } else {
             self.favoritesButton.setBackgroundImage(UIImage(named:"favoritesUnfilled.png"), for: .normal)
             
