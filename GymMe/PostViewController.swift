@@ -9,6 +9,7 @@
 import UIKit
 import YPImagePicker
 import FirebaseDatabase
+//import Firebase
 import FirebaseStorage
 import FirebaseAuth
 import AVFoundation
@@ -33,7 +34,10 @@ UICollectionViewDataSource{
     @IBOutlet weak var whiteShadeView: UIView!
     @IBOutlet weak var curCatsLabel: UILabel!
     
-    var catLabels = ["Abs","Arms","Back","Chest","Legs","Shoulders"]
+    @IBOutlet weak var shadeView2: UIView!
+    @IBOutlet weak var shadeView1: UIView!
+    var catLabels = ["Arms","Chest","Abs","Legs","Back", "Shoulders","Cardio","Sports","Nutrition","Stretching","Crossfit","Body Building","Speed and Agility"]
+    //var catLabels = ["Abs","Arms","Back","Chest","Legs","Shoulders"]
     var catLabelsRefined = [String]()
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return catLabelsRefined.count
@@ -54,10 +58,10 @@ UICollectionViewDataSource{
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         var cellSelected = collectionView.visibleCells[indexPath.row] as! PostCatSearchCell
-        if cellSelected.catCheck.isHidden {
-            cellSelected.catCheck.isHidden = false
+        if cellSelected.catLabel.textColor == UIColor.red {
+            cellSelected.catLabel.textColor = UIColor.black
         } else {
-            cellSelected.catCheck.isHidden = true
+            cellSelected.catLabel.textColor = UIColor.red
         }
         
     }
@@ -106,7 +110,53 @@ UICollectionViewDataSource{
     @IBOutlet weak var picButtonPositionOut: UIView!
     @IBAction func picVidPressed(_ sender: Any) {
         startLocationManager()
-        UIView.animate(withDuration: 0.5, animations: {
+        
+                
+                
+                
+                var config = YPImagePickerConfiguration()
+                config.screens = [.library, .video]
+                config.library.mediaType = .photoAndVideo
+                
+                let picker = YPImagePicker(configuration: config)
+                picker.didFinishPicking { [unowned picker] items, _ in
+                    
+                    if let firstItem = items.first {
+                        switch firstItem {
+                        case .photo(let photo):
+                            if let photo = items.singlePhoto {
+                                print(photo.fromCamera) // Image source (camera or library)
+                                print(photo.image) // Final image selected by the user
+                                print(photo.originalImage) // original image selected by the user, unfiltered
+                                print(photo.modifiedImage) // Transformed image, can be nil
+                                print(photo.exifMeta) // Print exif meta data of original image.
+                                self.makePostView.isHidden = false
+                                self.cancelPostButton.isHidden = false
+                                self.makePostImageView.image = photo.image
+                            }
+                        case .video(let video):
+                            if let video = items.singleVideo {
+                                print(video.fromCamera)
+                                print(video.thumbnail)
+                                print(video.url)
+                                self.makePostView.isHidden = false
+                                self.cancelPostButton.isHidden = false
+                                self.postPlayer?.url = video.url
+                                let videoURL = video.url as! NSURL
+                                do {
+                                    let video1 = try NSData(contentsOf: videoURL as URL, options: .mappedIfSafe)
+                                    self.vidData = video1
+                                } catch {
+                                    print(error)
+                                    return
+                                }
+                            }
+                        }
+                         picker.dismiss(animated: true, completion: nil)
+                    }
+                }
+                present(picker, animated: true, completion: nil)
+        /*UIView.animate(withDuration: 0.5, animations: {
             if self.extended == false {
             self.addPicButton.frame = self.picButtonPositionOut.frame
             self.addVidButton.frame = self.vidButtonPositionOut.frame
@@ -127,7 +177,7 @@ UICollectionViewDataSource{
             }
             
             
-        })
+        })*/
     }
     var ogVidPosit = CGRect()
     var ogPicPosit = CGRect()
@@ -141,7 +191,7 @@ UICollectionViewDataSource{
         for cell in addCatCollect.visibleCells{
             let temp = cell as! PostCatSearchCell
             
-            if temp.catCheck.isHidden == false {
+            if temp.catLabel.textColor == UIColor.red {
                 curCatsAdded.append(temp.catLabel.text!)
                 curString = curString + " " + temp.catLabel.text! + ","
             }
@@ -153,6 +203,7 @@ UICollectionViewDataSource{
         catLabelsRefined = catLabels
         postButton.isHidden = false
         cancelPostButton.isHidden = false
+        makePostTextView.resignFirstResponder()
         
         
     }
@@ -183,6 +234,7 @@ UICollectionViewDataSource{
     }
     @IBAction func textPostPressed(_ sender: Any) {
         startLocationManager()
+        makePostTextView.becomeFirstResponder()
         self.postType = "text"
         UIView.animate(withDuration: 0.5, animations: {
             self.tagPeopleButton.isHidden = true
@@ -214,6 +266,9 @@ UICollectionViewDataSource{
         })
        
     }
+    override func viewDidDisappear(_ animated: Bool) {
+        makePostTextView.resignFirstResponder()
+    }
     @IBOutlet weak var addVidButton: UIButton!
     
     @IBOutlet weak var posterPicIV: UIImageView!
@@ -229,7 +284,7 @@ UICollectionViewDataSource{
         self.postType = "vid"
         var config = YPImagePickerConfiguration()
         config.screens = [.library, .video]
-        config.library.mediaType = .video
+        config.library.mediaType = .photoAndVideo
         
         let picker = YPImagePicker(configuration: config)
         picker.didFinishPicking { [unowned picker] items, _ in
@@ -261,6 +316,12 @@ UICollectionViewDataSource{
     override func viewDidLoad() {
         super.viewDidLoad()
         picker.delegate = self
+        shadeView1.layer.cornerRadius = 14
+        shadeView2.layer.cornerRadius = 14
+        postPic.layer.borderColor = UIColor.lightGray.cgColor
+        postText.layer.borderWidth = 2
+        postText.layer.borderColor = UIColor.lightGray.cgColor
+        postPic.layer.borderWidth = 2
         
         self.picPostTextViewPos = makePostTextView.frame
         self.ogCat1Pos = self.addToCatIconButton.frame
@@ -556,8 +617,7 @@ UICollectionViewDataSource{
                         self.shareButton.isHidden = false
                         self.shareIconButton.isHidden = false
                         SwiftOverlays.removeAllBlockingOverlays()
-                         self.succesfulPostView.isHidden = false
-                      
+                         self.performSegue(withIdentifier: "PostToFeed", sender: self)
                        // }
                        
 
@@ -627,7 +687,8 @@ UICollectionViewDataSource{
                         self.makePostView.isHidden = true
                         self.cancelPostButton.isHidden = true
                         SwiftOverlays.removeAllBlockingOverlays()
-                         self.succesfulPostView.isHidden = false
+                        self.performSegue(withIdentifier: "PostToFeed", sender: self)
+                         
                     })
                     
                     
@@ -683,7 +744,7 @@ UICollectionViewDataSource{
                 self.cancelPostButton.isHidden = true
                 SwiftOverlays.removeAllBlockingOverlays()
                 
-                self.succesfulPostView.isHidden = false
+                self.performSegue(withIdentifier: "PostToFeed", sender: self)
                     
             
                 
@@ -712,7 +773,7 @@ UICollectionViewDataSource{
         self.curCityLabel.text = ""
         for cell in self.addCatCollect.visibleCells{
             let tempCell = cell as! PostCatSearchCell
-            tempCell.catCheck.isHidden = true
+            tempCell.catLabel.textColor = UIColor.black
         }
         self.curCatsAdded.removeAll()
         self.curCatsLabel.text = ""

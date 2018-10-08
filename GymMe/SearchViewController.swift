@@ -104,14 +104,16 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 
             }
             self.popCollectData = tempData.sorted(by: { ($0["likes"] as! [[String:Any]]).count > ($1["likes"] as! [[String:Any]]).count })
-            var count = 0
-            for dict in popCollectData{
-                if (dict["postPic"] == nil && dict["postVid"] == nil){
-                    print("textBeingRemoved")
-                    popCollectData.remove(at: count)
+            var tempData2 = [[String:Any]]()
+            for dict in self.popCollectData{
+                if ((dict as! [String:Any])["postPic"] == nil && (dict as! [String:Any])["postVid"] == nil){
+                    print("textBeingRemoved2")
+                    // popCollectData.remove(at: popCollectData.index(of: dict))
+                } else {
+                    tempData2.append(dict)
                 }
-                count = count + 1
             }
+                self.popCollectData = tempData2
             self.popCollect.reloadData()
             print("blue53: \(self.popCollectData)")
             print("x")
@@ -122,7 +124,11 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     }
     
     @IBOutlet weak var topBarNearby: UIButton!
+    @IBOutlet weak var commentedByButton: UIButton!
     
+    @IBAction func commentedByButtonPressed(_ sender: Any) {
+        singlePostView3.isHidden = false
+    }
     @IBAction func topBarNearbyPressed(_ sender: Any) {
         topBarCat.setTitleColor(UIColor.black, for: .normal)
         topBarPop.setTitleColor(UIColor.black, for: .normal)
@@ -137,8 +143,8 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         startLocationManager()
         
     }
-    var catCollectPics = ["bodybuilding-motivation-tips-part-2","dd3c303d81d5301e3c427f897bf5bd2e","thumb-1920-426586","bodybuilding-motivation-tips-part-2", "images-1", "images","thumb-1920-426586","bodybuilding-motivation-tips-part-2"]
-    var catCollectData = ["Arms","Chest","Abs","Legs","Back", "Shoulders","Other"]
+    var catCollectPics = ["arms","chest","abs","legs", "back", "shoulders","cardio","sports","nutrition","stretching","crossfit","bodybuilding","agility"]
+    var catCollectData = ["Arms","Chest","Abs","Legs","Back", "Shoulders","Cardio","Sports","Nutrition","Stretching","Crossfit","Body Building","Speed and Agility"]
      //let border = CALayer()
      //let border2 = CALayer()
      //let border3 = CALayer()
@@ -149,10 +155,15 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     @IBOutlet weak var popCollect: UICollectionView!
     @IBOutlet weak var border1: UIView!
     
+    @IBAction func hideCommentsPressed(_ sender: Any) {
+        singlePostView3.isHidden = true
+    }
+    @IBOutlet weak var hideComments: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
         ogCommentPos = singlePostView3.frame
-        
+        posterPicButton.layer.cornerRadius = posterPicButton.frame.width/2
+        posterPicButton.layer.masksToBounds = true
         locationManager.requestAlwaysAuthorization()
         locationManager.requestWhenInUseAuthorization()
         self.commentCollect.register(UINib(nibName: "LikedByCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "LikedByCollectionViewCell")
@@ -177,6 +188,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         let screenHeight = screenSize.height
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 2.5, left: 2.5, bottom: 2.5, right: 2.5)
+        //layout.itemSize = CGSize(width: screenWidth/2.035, height: screenWidth/2.7)
         layout.itemSize = CGSize(width: screenWidth/2.035, height: screenWidth/2.035)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 1
@@ -482,6 +494,12 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     @IBAction func likeButtonPressed(_ sender: Any) {
     }
     
+    @IBAction func posterNameButtonPressed(_ sender: Any) {
+    }
+    @IBOutlet weak var posterNameButton: UIButton!
+    @IBAction func posterPicButtonPressed(_ sender: Any) {
+    }
+    @IBOutlet weak var posterPicButton: UIButton!
     @IBOutlet weak var textPostTV: UITextView!
     var player: Player?
     var selectedCat = String()
@@ -497,16 +515,27 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 self.allCatDataDict[cellLabel] = [[String:Any]]()
             }
             self.popCollectData = self.allCatDataDict[cellLabel]!
-            var count = 0
+            
+            print("popCollectDataBefore: \(popCollectData)")
+            var tempData = [[String:Any]]()
             for dict in popCollectData{
-                if (dict["postPic"] == nil && dict["postVid"] == nil){
-                    print("textBeingRemoved")
-                    popCollectData.remove(at: count)
+                print("dict1: \(dict)")
+                if ((dict.first?.value as! [String:Any])["postPic"] == nil && (dict.first?.value as! [String:Any])["postVid"] == nil){
+                    print("textBeingRemoved1")
+                   // popCollectData.remove(at: popCollectData.index(of: dict))
+                } else {
+                    print("dict: \(dict)")
+                    tempData.append(dict)
                 }
-                count = count + 1
+                
+                //print("popCollectData: \(popCollectData)" \(count))
+               // count = count + 1
             }
-           
+            self.popCollectData = tempData
+           print("popCollectDataAfter: \(popCollectData)")
             DispatchQueue.main.async{
+            //self.popCollect.delegate = self
+            //self.popCollect.dataSource = self
                     self.popCollect.reloadData()
             }
                     self.popCollect.isHidden = false
@@ -536,7 +565,13 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                             singlePostImageView.image = UIImage(data: imageData as Data)
                         }
                     }
-                    
+                    if let messageImageUrl = URL(string: ((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["posterPicURL"] as! String) {
+                        
+                        if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                            posterPicButton.setImage(UIImage(data: imageData as Data), for: .normal)
+                        }
+                    }
+                    self.posterNameButton.setTitle(((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["posterName"] as? String, for: .normal)
                     self.curCommentCell = self.popCollectData[indexPath.row]
                     var likesPost: [String:Any]?
                     var favesPost: [String:Any]?
@@ -1101,7 +1136,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     var curCommentCell: [String:Any]?
     public func textFieldDidEndEditing(_ textField: UITextField){
         //add comment to post
-        Database.database().reference().child("posts").child((curCommentCell?["postID"]!) as! String).observeSingleEvent(of: .value, with: { snapshot in
+        Database.database().reference().child("posts").child((self.curCommentCell?["postID"]!) as! String).observeSingleEvent(of: .value, with: { snapshot in
             let valDict = snapshot.value as! [String:Any]
             
             var commentsArray = valDict["comments"] as! [[String:Any]]
@@ -1110,7 +1145,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             }
             var commentsVal = commentsArray.count
             commentsVal = commentsVal + 1
-            if self.myPicString == nil{
+            if self.myPicString == nil {
                 self.myPicString = "profile-placeholder"
             }
             //add current users id and uName to comment object and upload to database
@@ -1119,9 +1154,6 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             Database.database().reference().child("users").child((self.curCommentCell?["posterUID"]!) as! String).child("posts").child((self.curCommentCell?["postID"]!) as! String).child("comments").setValue(commentsArray)
             
             self.typeCommentTF.text = nil
-            //self.curCommentCell?.commentsCountButton.setTitle(String(commentsArray.count), for: .normal)
-            //reload collect in delegate
-            //print("commentsArray: \(commentsArray)")
             self.commentsCollectData = commentsArray
             if commentsArray.count == 1{
                 DispatchQueue.main.async{
@@ -1204,19 +1236,23 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                                 }
                             }
                             self.popCollectData = tempArr
-                            var count = 0
-                            for dict in popCollectData{
-                                if (dict["postPic"] == nil && dict["postVid"] == nil){
-                                    print("textBeingRemoved")
-                                    popCollectData.remove(at: count)
+                            var tempData = [[String:Any]]()
+                            for dict in self.popCollectData{
+                                if ((dict.first?.value as! [String:Any])["postPic"] == nil && (dict.first?.value as! [String:Any])["postVid"] == nil){
+                                    print("textBeingRemoved3")
+                                    // popCollectData.remove(at: popCollectData.index(of: dict))
+                                } else {
+                                    tempData.append(dict)
                                 }
-                                count = count + 1
                             }
-                            DispatchQueue.main.async{
-                                self.popCollect.reloadData()
-                            }
+                            print("here")
+                                self.popCollectData = tempData
+                            
                             
                         })
+                        DispatchQueue.main.async{
+                            self.popCollect.reloadData()
+                        }
                         
                     }
                 }

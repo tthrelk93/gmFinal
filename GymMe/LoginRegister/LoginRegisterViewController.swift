@@ -73,16 +73,41 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
                                 return
                             }
                         }
-                        
-                        
-                    
-                        self.user.username = self.uNameTextField.text
+                    self.user.username = self.uNameTextField.text
                     self.user.email = self.userNameTextField.text
+                    Auth.auth().createUser(withEmail: self.user.email!, password: self.passwordTextField.text!, completion: { (authResult, error) in
+                        if error != nil {
+                            let alert = UIAlertController(title: "Login/Register Failed", message: "Check that you entered the correct information.", preferredStyle: UIAlertControllerStyle.alert)
+                            alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
+                            self.present(alert, animated: true, completion: nil)
+                            return
+                        }
+                    
+                        
                         self.uploadData["username"] = self.uNameTextField.text
                     self.uploadData["email"] = self.userNameTextField.text
+                    let imageName = NSUUID().uuidString
+                    let storageRef = Storage.storage().reference().child("profile_images").child(Auth.auth().currentUser!.uid).child("\(imageName).jpg")
+                    self.uploadData["profPic"] = "profile-placeholder"
+                    self.uploadData["favorited"] = ["x":"x"]
+                    self.uploadData["shared"] = ["x"]
+                    self.uploadData["liked"] = ["x"]
+                    self.uploadData["following"] = ["x"]
+                    self.uploadData["followers"] = ["x"]
+                    //self.uploadData["notifications"] =
+                    self.uploadData["realName"] = self.firstNameTextField.text! + " " + self.lastNameTextField.text!
+                    
+                    Database.database().reference().child("usernames").updateChildValues([self.uNameTextField.text!: Auth.auth().currentUser!.uid])
                     
                     
-                    if !self.emailVerificationSent {
+                    Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).updateChildValues(self.uploadData, withCompletionBlock: {(error, ref) in
+                        self.performSegue(withIdentifier: "LoginToFeed", sender: self)
+                        return
+                    })
+                    })
+                    
+                    
+                    /*if !self.emailVerificationSent {
                         Auth.auth().createUser(withEmail: self.user.email!, password: self.passwordTextField.text!, completion: { (authResult, error) in
                             if error != nil {
                                 let alert = UIAlertController(title: "Login/Register Failed", message: "Check that you entered the correct information.", preferredStyle: UIAlertControllerStyle.alert)
@@ -125,7 +150,7 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
                         alertVC.addAction(alertActionOkay)
                         self.present(alertVC, animated: true, completion: nil)
                         self.emailVerificationSent = true
-                    }
+                    }*/
                 } else {
                     
                     let alert = UIAlertController(title: "Login/Register Failed", message: "Check that you entered the correct information.", preferredStyle: UIAlertControllerStyle.alert)

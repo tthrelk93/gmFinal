@@ -164,7 +164,7 @@ class NewsFeedCellCollectionViewCell: UICollectionViewCell {
                     if snapDict["notifications"] != nil{
                         noteArray = snapDict["notifications"] as! [[String:Any]]
                         let sendString = self.myUName! + " liked your post."
-                        let tempDict = ["actionByUsername": self.myUName! ,"actionText": sendString, "timeStamp": "","actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": self.myPicString, "postText": self.postText.text] as! [String:Any]
+                        let tempDict = ["actionByUsername": self.myUName! ,"actionText": sendString, "timeStamp": "","actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": self.myPicString, "postText": self.postText.text as! String] as! [String:Any]
                         noteArray.append(tempDict)
                         Database.database().reference().child("users").child(self.posterUID!).updateChildValues(["notifications": noteArray])
                     } else {

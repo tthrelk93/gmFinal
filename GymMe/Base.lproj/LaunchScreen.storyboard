@@ -4,6 +4,7 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -21,15 +22,10 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="signup-background" translatesAutoresizingMaskIntoConstraints="NO" id="GKR-GN-p7L">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="GymMe-Final-White" translatesAutoresizingMaskIntoConstraints="NO" id="GKR-GN-p7L">
+                                        <rect key="frame" x="88" y="188" width="198" height="191"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     </imageView>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1jB-GP-Xc5">
-                                        <rect key="frame" x="-11" y="-7" width="392" height="682"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" red="0.92941176469999998" green="0.10980392160000001" blue="0.1529411765" alpha="0.43309859150000002" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <viewLayoutGuide key="safeArea" id="fA2-zF-ExE"/>
@@ -45,6 +41,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="signup-background" width="360" height="640"/>
+        <image name="GymMe-Final-White" width="346" height="308"/>
     </resources>
 </document>
