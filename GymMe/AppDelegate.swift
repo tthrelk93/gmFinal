@@ -10,6 +10,9 @@ import UIKit
 import Firebase
 import FirebaseMessaging
 import IQKeyboardManagerSwift
+import GooglePlaces
+import GoogleMaps
+import GooglePlacePicker
 
 
 @UIApplicationMain
@@ -22,6 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         FirebaseApp.configure()
         IQKeyboardManager.shared.enable = true
+        GMSPlacesClient.provideAPIKey("AIzaSyDvw0LOBxWRxlY56O3sbE5nCqs3T3K1u-M")
+        GMSServices.provideAPIKey("AIzaSyADVDZNEDAirfuVo92hECXnvCvTay8gXqo")
         //BITHockeyManager.shared().configure(withIdentifier: "APP_IDENTIFIER")
        // BITHockeyManager.shared().start()
        // BITHockeyManager.shared().authenticator.authenticateInstallation() // This line is obsolete in the crash only builds

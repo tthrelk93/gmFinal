@@ -15,6 +15,18 @@ import FirebaseAuth
 class NewsFeedPicCollectionViewCell: UICollectionViewCell {
 
     
+    @IBAction func soundTogglePressed(_ sender: Any) {
+        if soundToggle.imageView?.image! == UIImage(named: "Octicons-mute.svg"){
+            self.player?.muted = true
+        soundToggle.setImage(UIImage(named: "unmute-512"), for: .normal)
+        } else {
+            
+            
+            self.player?.muted = true
+            soundToggle.setImage(UIImage(named: "Octicons-mute.svg"), for: .normal)
+        }
+    }
+    @IBOutlet weak var soundToggle: UIButton!
     @IBOutlet weak var timeStampLabel: UILabel!
     
     @IBAction func tapGestureRec(_ sender: Any) {
@@ -38,6 +50,10 @@ class NewsFeedPicCollectionViewCell: UICollectionViewCell {
     var posterName: String?
     @IBAction func shareButtonPressed(_ sender: Any) {
     }
+    
+   
+  
+    
     @IBAction func commentsCountButtonPressed(_ sender: Any) {
         delegate?.showLikedByViewPicCell(sentBy: "showComments", cell: self)
     }
@@ -219,7 +235,8 @@ class NewsFeedPicCollectionViewCell: UICollectionViewCell {
         
     }
     @IBOutlet weak var likeButton: UIButton!
-    @IBOutlet weak var postText: UITextView!
+    
+    @IBOutlet weak var postText: UILabel!
     @IBOutlet weak var postLocationButton: UIButton!
     @IBOutlet weak var posterNameButton: UIButton!
     @IBAction func goToPosterPressed(_ sender: Any) {
@@ -234,6 +251,7 @@ class NewsFeedPicCollectionViewCell: UICollectionViewCell {
         posterPic.layer.cornerRadius = posterPic.frame.width/2
         posterPic.layer.masksToBounds = true
         self.player = Player()
+        self.player!.muted = true
         let playTap = UITapGestureRecognizer()
         playTap.numberOfTapsRequired = 1
         playTap.addTarget(self, action: #selector(NewsFeedPicCollectionViewCell.playOrPause))

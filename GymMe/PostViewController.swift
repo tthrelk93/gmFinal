@@ -16,7 +16,11 @@ import AVFoundation
 import AVKit
 import Photos
 import SwiftOverlays
+import GooglePlaces
+import GoogleMaps
+import GooglePlacePicker
 import CoreLocation
+
 
 
 class PostCatSearchCell: UICollectionViewCell {
@@ -38,6 +42,8 @@ UICollectionViewDataSource{
     @IBOutlet weak var shadeView1: UIView!
     var catLabels = ["Arms","Chest","Abs","Legs","Back", "Shoulders","Cardio","Sports","Nutrition","Stretching","Crossfit","Body Building","Speed and Agility"]
     //var catLabels = ["Abs","Arms","Back","Chest","Legs","Shoulders"]
+    var placeAddress = String()
+    var place: GMSPlace?
     var catLabelsRefined = [String]()
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return catLabelsRefined.count
@@ -113,6 +119,7 @@ UICollectionViewDataSource{
                 var config = YPImagePickerConfiguration()
                 config.screens = [.library, .video]
                 config.library.mediaType = .photoAndVideo
+        
                 
                 let picker = YPImagePicker(configuration: config)
                 picker.didFinishPicking { [unowned picker] items, _ in
@@ -128,6 +135,7 @@ UICollectionViewDataSource{
                                 print(photo.exifMeta) // Print exif meta data of original image.
                                 self.makePostView.isHidden = false
                                 self.cancelPostButton.isHidden = false
+                                // var //tempImage = photo.image.
                                 self.makePostImageView.image = photo.image
                                 self.postType = "pic"
                                 
@@ -482,10 +490,13 @@ UICollectionViewDataSource{
     
     @IBOutlet weak var addLocationButton: UIButton!
     @IBAction func addLocationPressed(_ sender: Any) {
-        print(self.city)
-       self.cityData = self.city
-        self.curCityLabel.text = self.city
-        locationManager.requestLocation()
+        //print(self.city)
+       //self.cityData = self.city
+        //self.curCityLabel.text = self.city
+        //locationManager.requestLocation()
+        let autocompleteController = GMSAutocompleteViewController()
+        autocompleteController.delegate = self
+        present(autocompleteController, animated: true, completion: nil)
     }
     @IBOutlet weak var textPostPressedLine: UIView!
     @IBOutlet weak var textPostPressedLabel: UILabel!
@@ -991,5 +1002,38 @@ extension PostViewController {
         }
     }
     
+    
+}
+
+extension PostViewController: GMSAutocompleteViewControllerDelegate {
+    // Handle the user's selection.
+    func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
+        print("Place name: \(place.name)")
+        print("Place address: \(place.formattedAddress)")
+        print("Place attributions: \(place.attributions)")
+        curCityLabel.text = place.name
+        //jobPost.location = place.formattedAddress
+        self.place = place
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
+        // TODO: handle the error.
+        print("Error: ", error.localizedDescription)
+    }
+    
+    // User canceled the operation.
+    func wasCancelled(_ viewController: GMSAutocompleteViewController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    // Turn the network activity indicator on and off again.
+    func didRequestAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+    }
+    
+    func didUpdateAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+    }
 }
 

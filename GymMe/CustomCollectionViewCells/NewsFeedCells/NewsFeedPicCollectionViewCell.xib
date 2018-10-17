@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,10 +19,17 @@
                 <rect key="frame" x="0.0" y="0.0" width="373" height="563"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cds-1W-l6D">
-                        <rect key="frame" x="8" y="16" width="45" height="45"/>
+                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MQo-o1-4G3">
+                        <rect key="frame" x="163" y="455" width="19" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                    </imageView>
+                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="18"/>
+                        <state key="normal" title="0">
+                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                        </state>
+                        <connections>
+                            <action selector="favoritesCountButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="u0J-Jd-rVl"/>
+                        </connections>
+                    </button>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AvE-2T-Fdl">
                         <rect key="frame" x="55" y="16" width="227" height="25"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
@@ -34,46 +41,19 @@
                             <action selector="goToPosterPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="4hp-Cs-mfP"/>
                         </connections>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oFt-jN-FjC">
-                        <rect key="frame" x="8" y="16" width="45" height="45"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
-                        <state key="normal">
-                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                        </state>
-                        <connections>
-                            <action selector="goToPosterPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="iB1-dY-b7S"/>
-                        </connections>
-                    </button>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZIq-XQ-cQT">
-                        <rect key="frame" x="8" y="69" width="357" height="1"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </view>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="edY-a9-oxU">
-                        <rect key="frame" x="4" y="77" width="365" height="358"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="edY-a9-oxU">
+                        <rect key="frame" x="0.0" y="71" width="373" height="364"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     </imageView>
-                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="96M-Ig-Oux">
-                        <rect key="frame" x="3" y="476" width="367" height="82"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                    </textView>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Fn-Y8-blE">
-                        <rect key="frame" x="70" y="38" width="205" height="25"/>
+                        <rect key="frame" x="55" y="38" width="220" height="25"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
                         <state key="normal" title="Atlanta, Ga">
                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                         </state>
                     </button>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="64113" translatesAutoresizingMaskIntoConstraints="NO" id="SnL-a9-vGa">
-                        <rect key="frame" x="55" y="42" width="15" height="15"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                    </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="3,000 views" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="exr-LD-aSP">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="exr-LD-aSP">
                         <rect key="frame" x="241" y="436" width="124" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -97,19 +77,60 @@
                             <action selector="likeButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="xSf-n1-ez1"/>
                         </connections>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t1H-Uv-e2M">
-                        <rect key="frame" x="26" y="442" width="18" height="22"/>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t1H-Uv-e2M">
+                        <rect key="frame" x="10" y="472" width="78" height="15"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="18"/>
-                        <state key="normal" title="0">
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
+                        <state key="normal" title="0 Likes">
                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                         </state>
                         <connections>
                             <action selector="likesCountButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="BFJ-nL-PBf"/>
                         </connections>
                     </button>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Cds-1W-l6D">
+                        <rect key="frame" x="13" y="20" width="35" height="35"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                    </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oFt-jN-FjC">
+                        <rect key="frame" x="13" y="20" width="35" height="35"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                        <state key="normal">
+                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                        </state>
+                        <connections>
+                            <action selector="goToPosterPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="iB1-dY-b7S"/>
+                        </connections>
+                    </button>
+                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fC2-DQ-xQx">
+                        <rect key="frame" x="18" y="83" width="30" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                        <state key="normal" image="Octicons-mute.svg"/>
+                        <connections>
+                            <action selector="soundTogglePressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="DIG-rG-mqa"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mkl-09-Svq">
+                        <rect key="frame" x="10" y="528" width="209" height="27"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                        <state key="normal" title="View all comments">
+                            <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                        <connections>
+                            <action selector="commentButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="cBs-gm-hmH"/>
+                            <action selector="commentsCountButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="nzP-3z-a5l"/>
+                        </connections>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="sdfg sdfg sf gsdfg sdfjg sdljgf sdfhgljsdh glshdf ljhsldfj hlsjdh lkjsdfhglkjsdhf lgksflkghslglksjdfhg kjsdhglksdhgkld" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rg9-z0-SZO">
+                        <rect key="frame" x="10" y="481" width="355" height="55"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ahd-gy-b1s">
-                        <rect key="frame" x="47" y="442" width="23" height="22"/>
+                        <rect key="frame" x="36" y="442" width="23" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <state key="normal" image="Comment">
                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -118,19 +139,8 @@
                             <action selector="commentButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="C4T-eh-MrT"/>
                         </connections>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8dW-km-D2O">
-                        <rect key="frame" x="68" y="442" width="20" height="22"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="18"/>
-                        <state key="normal" title="0">
-                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                        </state>
-                        <connections>
-                            <action selector="commentsCountButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="wle-Vg-Ncd"/>
-                        </connections>
-                    </button>
                     <button opaque="NO" alpha="0.80000001192092896" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jfb-Sb-Irr">
-                        <rect key="frame" x="89" y="439" width="28" height="26"/>
+                        <rect key="frame" x="63" y="440" width="28" height="26"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <state key="normal" backgroundImage="favoritesUnfilled">
                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -139,32 +149,16 @@
                             <action selector="favoritesButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="lNf-6n-zHk"/>
                         </connections>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MQo-o1-4G3">
-                        <rect key="frame" x="113" y="442" width="19" height="22"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="18"/>
-                        <state key="normal" title="0">
-                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                        </state>
-                        <connections>
-                            <action selector="favoritesCountButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="u0J-Jd-rVl"/>
-                        </connections>
-                    </button>
                     <button opaque="NO" alpha="0.75" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jcN-Dd-IeQ">
-                        <rect key="frame" x="133" y="439" width="28" height="29"/>
+                        <rect key="frame" x="96" y="442" width="23" height="23"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                        <state key="normal" backgroundImage="shareUnfilled">
+                        <state key="normal" backgroundImage="shareIcon-1">
                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                         </state>
                         <connections>
                             <action selector="shareButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="2XH-gG-SI1"/>
                         </connections>
                     </button>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1Ot-1c-hgH">
-                        <rect key="frame" x="4" y="470" width="365" height="1"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </view>
                 </subviews>
             </view>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -172,7 +166,7 @@
             <size key="customSize" width="460" height="705"/>
             <connections>
                 <outlet property="commentButton" destination="ahd-gy-b1s" id="Hor-aN-1ZP"/>
-                <outlet property="commentsCountButton" destination="8dW-km-D2O" id="aIv-sU-ZgA"/>
+                <outlet property="commentsCountButton" destination="Mkl-09-Svq" id="83O-0t-wth"/>
                 <outlet property="favoritesButton" destination="jfb-Sb-Irr" id="mUu-Xh-Ais"/>
                 <outlet property="favoritesCountButton" destination="MQo-o1-4G3" id="TPg-nO-a47"/>
                 <outlet property="goToPosterProfile" destination="oFt-jN-FjC" id="epA-Rc-DZS"/>
@@ -180,20 +174,21 @@
                 <outlet property="likesCountButton" destination="t1H-Uv-e2M" id="ic2-Ag-d9E"/>
                 <outlet property="postLocationButton" destination="4Fn-Y8-blE" id="Jtk-7b-jxo"/>
                 <outlet property="postPic" destination="edY-a9-oxU" id="ANw-Vu-N5i"/>
-                <outlet property="postText" destination="96M-Ig-Oux" id="imM-Jc-aCy"/>
+                <outlet property="postText" destination="rg9-z0-SZO" id="rcu-1O-wfr"/>
                 <outlet property="posterNameButton" destination="AvE-2T-Fdl" id="PIk-Ha-z1l"/>
                 <outlet property="posterPic" destination="Cds-1W-l6D" id="mcS-em-DwT"/>
+                <outlet property="soundToggle" destination="fC2-DQ-xQx" id="ks1-zR-7qr"/>
                 <outlet property="timeStampLabel" destination="tNi-0g-Iqc" id="QCx-fv-u23"/>
                 <outlet property="viewCount" destination="exr-LD-aSP" id="XKt-mo-j3a"/>
             </connections>
-            <point key="canvasLocation" x="-401.5" y="276.5"/>
+            <point key="canvasLocation" x="-402.39999999999998" y="275.71214392803603"/>
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="64113" width="512" height="512"/>
         <image name="Comment" width="43" height="41"/>
-        <image name="favoritesUnfilled" width="50" height="50"/>
+        <image name="Octicons-mute.svg" width="2000" height="2286"/>
+        <image name="favoritesUnfilled" width="37.5" height="37.5"/>
         <image name="like" width="46" height="41"/>
-        <image name="shareUnfilled" width="50" height="50"/>
+        <image name="shareIcon-1" width="30" height="30"/>
     </resources>
 </document>
