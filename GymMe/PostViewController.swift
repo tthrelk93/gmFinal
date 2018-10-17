@@ -57,7 +57,7 @@ UICollectionViewDataSource{
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        var cellSelected = collectionView.visibleCells[indexPath.row] as! PostCatSearchCell
+        var cellSelected = collectionView.cellForItem(at: indexPath) as! PostCatSearchCell
         if cellSelected.catLabel.textColor == UIColor.red {
             cellSelected.catLabel.textColor = UIColor.black
         } else {
@@ -110,10 +110,6 @@ UICollectionViewDataSource{
     @IBOutlet weak var picButtonPositionOut: UIView!
     @IBAction func picVidPressed(_ sender: Any) {
         startLocationManager()
-        
-                
-                
-                
                 var config = YPImagePickerConfiguration()
                 config.screens = [.library, .video]
                 config.library.mediaType = .photoAndVideo
@@ -133,6 +129,8 @@ UICollectionViewDataSource{
                                 self.makePostView.isHidden = false
                                 self.cancelPostButton.isHidden = false
                                 self.makePostImageView.image = photo.image
+                                self.postType = "pic"
+                                
                             }
                         case .video(let video):
                             if let video = items.singleVideo {
@@ -146,6 +144,7 @@ UICollectionViewDataSource{
                                 do {
                                     let video1 = try NSData(contentsOf: videoURL as URL, options: .mappedIfSafe)
                                     self.vidData = video1
+                                    self.postType = "vid"
                                 } catch {
                                     print(error)
                                     return
@@ -199,8 +198,9 @@ UICollectionViewDataSource{
         curString.removeLast()
         curCatsLabel.text = curString
         addCatView.isHidden = true
-        addCatCollect.reloadData()
         catLabelsRefined = catLabels
+        addCatCollect.reloadData()
+        
         postButton.isHidden = false
         cancelPostButton.isHidden = false
         makePostTextView.resignFirstResponder()
@@ -227,6 +227,7 @@ UICollectionViewDataSource{
         
         
         
+        
     }
     @IBOutlet weak var shareIconButton: UIButton!
     @IBOutlet weak var shareButton: UIButton!
@@ -234,8 +235,11 @@ UICollectionViewDataSource{
     }
     @IBAction func textPostPressed(_ sender: Any) {
         startLocationManager()
-        makePostTextView.becomeFirstResponder()
         self.postType = "text"
+        makePostTextView.delegate = self
+        makePostTextView.becomeFirstResponder()
+        makePostTextView.selectAll(nil)
+        
         UIView.animate(withDuration: 0.5, animations: {
             self.tagPeopleButton.isHidden = true
             self.tagPeopleButtonIcon.isHidden = true
@@ -322,7 +326,7 @@ UICollectionViewDataSource{
         postText.layer.borderWidth = 2
         postText.layer.borderColor = UIColor.lightGray.cgColor
         postPic.layer.borderWidth = 2
-        
+        makePostTextView.delegate = self
         self.picPostTextViewPos = makePostTextView.frame
         self.ogCat1Pos = self.addToCatIconButton.frame
         self.ogCat2Pos = self.addToCategoryButton.frame
@@ -340,7 +344,7 @@ UICollectionViewDataSource{
         tabBar.selectedItem = tabBar.items?[2]
         postPic.layer.cornerRadius = 15
         postText.layer.cornerRadius = 15
-        makePostTextView.delegate = self
+        
         catLabelsRefined = catLabels
         
         //locationManager delegate assignment etcc...
@@ -795,6 +799,13 @@ UICollectionViewDataSource{
     //@available(iOS 2.0, *)
     
     public func textViewDidBeginEditing(_ textView: UITextView){
+        print("tvEdit")
+        if postType == "text"{
+        DispatchQueue.main.async{
+            self.makePostTextView.selectAll(nil)
+        }
+        }
+       
         if textView.text == "Type a description or caption here. (optional)" || self.makePostTextView.text == "What's going on?"{
             textView.text = ""
         }

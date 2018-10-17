@@ -89,7 +89,7 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
                     let imageName = NSUUID().uuidString
                     let storageRef = Storage.storage().reference().child("profile_images").child(Auth.auth().currentUser!.uid).child("\(imageName).jpg")
                     self.uploadData["profPic"] = "profile-placeholder"
-                    self.uploadData["favorited"] = ["x":"x"]
+                        self.uploadData["favorited"] = ["x":"x"]
                     self.uploadData["shared"] = ["x"]
                     self.uploadData["liked"] = ["x"]
                     self.uploadData["following"] = ["x"]
