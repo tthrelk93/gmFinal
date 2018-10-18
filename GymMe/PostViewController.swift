@@ -328,6 +328,8 @@ UICollectionViewDataSource{
     override func viewDidLoad() {
         super.viewDidLoad()
         picker.delegate = self
+        addToCategoryButton.layer.cornerRadius = 8
+        addToCategoryButton.layer.masksToBounds = true
         shadeView1.layer.cornerRadius = 14
         shadeView2.layer.cornerRadius = 14
         postPic.layer.borderColor = UIColor.lightGray.cgColor
@@ -573,11 +575,8 @@ UICollectionViewDataSource{
                 curCatsAdded.append("Other")
             }
             self.newPost!["categories"] = self.curCatsAdded
-            if self.cityData == nil {
-                self.newPost!["city"] = "-"
-            } else {
-                self.newPost!["city"] = self.cityData
-            }
+            self.newPost!["city"] = self.addLocationButton.titleLabel!.text!
+          
             //let curLoc = locationManager.location
             //newPost![location]
             if self.makePostTextView.text != "Type a description or caption here. (optional)"{
