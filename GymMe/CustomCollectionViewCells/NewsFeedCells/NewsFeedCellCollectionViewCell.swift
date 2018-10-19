@@ -136,6 +136,12 @@ class NewsFeedCellCollectionViewCell: UICollectionViewCell {
     var myUName: String?
     
     @IBAction func likeButtonPressed(_ sender: Any) {
+        var myPic = String()
+        Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { snapshot in
+            let valDict = snapshot.value as! [String:Any]
+            myPic = valDict["profPic"] as! String
+            
+        })
         if self.likeButton.imageView?.image == UIImage(named: "like.png"){
             self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
             // let curLikes = Int((self.likesCountButton.titleLabel?.text)!)
@@ -149,10 +155,10 @@ class NewsFeedCellCollectionViewCell: UICollectionViewCell {
                 }
                 var likesVal = likesArray.count
                 likesVal = likesVal + 1
-                if self.myPicString == nil{
-                    self.myPicString = "profile-placeholder"
-                }
-                likesArray.append(["uName": self.myUName!, "realName": self.myRealName, "uid": Auth.auth().currentUser!.uid, "pic": self.myPicString])
+                //if self.myPicString == nil{
+                 //   self.myPicString = "profile-placeholder"
+                //}
+                likesArray.append(["uName": self.myUName!, "realName": self.myRealName, "uid": Auth.auth().currentUser!.uid, "pic": myPic])
                 
                 
                 Database.database().reference().child("posts").child(self.postID!).child("likes").setValue(likesArray)
@@ -164,12 +170,12 @@ class NewsFeedCellCollectionViewCell: UICollectionViewCell {
                     if snapDict["notifications"] != nil{
                         noteArray = snapDict["notifications"] as! [[String:Any]]
                         let sendString = self.myUName! + " liked your post."
-                        let tempDict = ["actionByUsername": self.myUName! ,"actionText": sendString, "timeStamp": "","actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": self.myPicString, "postText": self.postText.text as! String] as! [String:Any]
+                        let tempDict = ["actionByUsername": self.myUName! ,"actionText": sendString, "timeStamp": "","actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": myPic, "postText": self.postText.text as! String] as! [String:Any]
                         noteArray.append(tempDict)
                         Database.database().reference().child("users").child(self.posterUID!).updateChildValues(["notifications": noteArray])
                     } else {
                         let sendString = self.myUName! + " liked your post."
-                        let tempDict = ["actionByUsername": self.myUName! ,"actionText": sendString, "timeStamp": "","actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": self.myPicString, "postText": self.postText.text] as [String : Any]
+                        let tempDict = ["actionByUsername": self.myUName! ,"actionText": sendString, "timeStamp": "","actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": myPic, "postText": self.postText.text] as [String : Any]
                         Database.database().reference().child("users").child(self.posterUID!).updateChildValues(["notifications":[tempDict]])
                     }
                     

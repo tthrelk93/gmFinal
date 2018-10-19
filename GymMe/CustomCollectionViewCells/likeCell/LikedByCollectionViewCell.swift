@@ -94,7 +94,10 @@ class LikedByCollectionViewCell: UICollectionViewCell {
     }
     
     
+    @IBAction func selectButton(_ sender: Any) {
+    }
     
+    @IBOutlet weak var selectButton: UIButton!
     var delegate: PerformActionsInFeedDelegate?
     var postID: String?
     override func awakeFromNib() {

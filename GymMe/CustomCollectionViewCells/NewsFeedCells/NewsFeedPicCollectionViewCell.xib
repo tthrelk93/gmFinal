@@ -103,14 +103,6 @@
                             <action selector="goToPosterPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="iB1-dY-b7S"/>
                         </connections>
                     </button>
-                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fC2-DQ-xQx">
-                        <rect key="frame" x="18" y="83" width="30" height="32"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                        <state key="normal" image="Octicons-mute.svg"/>
-                        <connections>
-                            <action selector="soundTogglePressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="DIG-rG-mqa"/>
-                        </connections>
-                    </button>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mkl-09-Svq">
                         <rect key="frame" x="10" y="528" width="209" height="27"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
@@ -157,6 +149,14 @@
                         </state>
                         <connections>
                             <action selector="shareButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="2XH-gG-SI1"/>
+                        </connections>
+                    </button>
+                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fC2-DQ-xQx">
+                        <rect key="frame" x="18" y="83" width="30" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                        <state key="normal" image="Octicons-mute.svg"/>
+                        <connections>
+                            <action selector="soundTogglePressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="DIG-rG-mqa"/>
                         </connections>
                     </button>
                 </subviews>
