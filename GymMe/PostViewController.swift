@@ -408,6 +408,7 @@ UICollectionViewDataSource{
                     }
                 }
             }
+            SwiftOverlays.removeAllBlockingOverlays()
         })
         
         
@@ -575,7 +576,7 @@ UICollectionViewDataSource{
                 curCatsAdded.append("Other")
             }
             self.newPost!["categories"] = self.curCatsAdded
-            self.newPost!["city"] = self.addLocationButton.titleLabel!.text!
+            self.newPost!["city"] = self.curCityLabel.text
           
             //let curLoc = locationManager.location
             //newPost![location]

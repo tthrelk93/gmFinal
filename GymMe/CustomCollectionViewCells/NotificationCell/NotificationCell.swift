@@ -28,6 +28,9 @@ class NotificationCell: UICollectionViewCell {
         // Initialization code
         self.player = Player()
         
+        self.actionUserPicButton.layer.cornerRadius = actionUserPicButton.frame.width/2
+        self.actionUserPicButton.layer.masksToBounds = true
+        
         let playTap = UITapGestureRecognizer()
         playTap.numberOfTapsRequired = 1
         playTap.addTarget(self, action: #selector(NewsFeedPicCollectionViewCell.playOrPause))
@@ -35,7 +38,6 @@ class NotificationCell: UICollectionViewCell {
         let vidFrame = CGRect(x: self.frame.origin.x, y: self.frame.origin.y, width: self.frame.width, height: self.frame.height)
         self.player?.view.frame = vidFrame
         self.addSubview((self.player?.view)!)
-        
         // Initialization code
     }
     @objc func playOrPause(){

@@ -74,14 +74,14 @@ class NewsFeedCellCollectionViewCell: UICollectionViewCell {
                     if snapDict["notifications"] != nil{
                         noteArray = snapDict["notifications"] as! [[String:Any]]
                         let sendString = self.myUName! + " favorited your post."
-                        let tempDict = ["actionByUsername": self.myUName! ,"actionText": sendString, "timeStamp": "","actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": self.myPicString, "postText": self.postText.text as! String] as! [String:Any]
+                        let tempDict = ["actionByUsername": self.myUName! ,"postID": self.postID!, "actionText": sendString, "timeStamp": "","actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": self.myPicString, "postText": self.postText.text as! String] as! [String:Any]
                         noteArray.append(tempDict)
                         Database.database().reference().child("users").child(self.posterUID!).updateChildValues(["notifications": noteArray] as [AnyHashable:Any]){ err, ref in
                             print("done")
                         }
                     } else {
                         let sendString = self.myUName! + " favorited your post."
-                        let tempDict = ["actionByUsername": self.myUName! ,"actionText": sendString, "timeStamp": "","actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": self.myPicString, "postText": self.postText.text as! String] as! [String : Any]
+                        let tempDict = ["actionByUsername": self.myUName! ,"postID": self.postID, "actionText": sendString, "timeStamp": "","actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": self.myPicString, "postText": self.postText.text as! String] as! [String : Any]
                         Database.database().reference().child("users").child(self.posterUID!).updateChildValues(["notifications":[tempDict]])
                     }
                     
@@ -170,12 +170,12 @@ class NewsFeedCellCollectionViewCell: UICollectionViewCell {
                     if snapDict["notifications"] != nil{
                         noteArray = snapDict["notifications"] as! [[String:Any]]
                         let sendString = self.myUName! + " liked your post."
-                        let tempDict = ["actionByUsername": self.myUName! ,"actionText": sendString, "timeStamp": "","actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": myPic, "postText": self.postText.text as! String] as! [String:Any]
+                        let tempDict = ["actionByUsername": self.myUName!, "postID": self.postID!, "actionText": sendString, "timeStamp": "","actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": myPic, "postText": self.postText.text as! String] as! [String:Any]
                         noteArray.append(tempDict)
                         Database.database().reference().child("users").child(self.posterUID!).updateChildValues(["notifications": noteArray])
                     } else {
                         let sendString = self.myUName! + " liked your post."
-                        let tempDict = ["actionByUsername": self.myUName! ,"actionText": sendString, "timeStamp": "","actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": myPic, "postText": self.postText.text] as [String : Any]
+                        let tempDict = ["actionByUsername": self.myUName! , "postID": self.postID!, "actionText": sendString, "timeStamp": "","actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": myPic, "postText": self.postText.text] as [String : Any]
                         Database.database().reference().child("users").child(self.posterUID!).updateChildValues(["notifications":[tempDict]])
                     }
                     
@@ -183,8 +183,18 @@ class NewsFeedCellCollectionViewCell: UICollectionViewCell {
                 
                 
                 
+                var likesString = String()
+                if likesArray.count == 1 {
+                    if(likesArray.first! as! [String:String]) == ["x": "x"]{
+                        likesString = "0 likes"
+                    } else {
+                        likesString = "\(likesArray.count) like"
+                    }
+                } else {
+                    likesString = "\(likesArray.count) likes"
+                }
+                self.likesCountButton.setTitle(likesString, for: .normal)
                 
-                self.likesCountButton.setTitle(String(likesArray.count), for: .normal)
                 //reload collect in delegate
                 
             })
@@ -202,12 +212,23 @@ class NewsFeedCellCollectionViewCell: UICollectionViewCell {
                     likesArray.remove(at: 0)
                     likesArray.append(["x": "x"])
                     likesVal = 0
-                    self.likesCountButton.setTitle("0", for: .normal)
+                   
                 } else {
                     likesArray.remove(at: 0)
                     likesVal = likesArray.count
-                    self.likesCountButton.setTitle(String(likesArray.count), for: .normal)
+                    
                 }
+                var likesString = String()
+                if likesArray.count == 1 {
+                    if(likesArray.first! as! [String:String]) == ["x": "x"]{
+                        likesString = "0 likes"
+                    } else {
+                        likesString = "\(likesArray.count) like"
+                    }
+                } else {
+                    likesString = "\(likesArray.count) likes"
+                }
+                self.likesCountButton.setTitle(likesString, for: .normal)
                 
                 
                 Database.database().reference().child("posts").child(self.postID!).child("likes").setValue(likesArray)

@@ -10,6 +10,7 @@ import UIKit
 import FirebaseDatabase
 import FirebaseStorage
 import FirebaseAuth
+import SwiftOverlays
 
 class NotificationsViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarDelegate {
     
@@ -33,6 +34,7 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
     @IBOutlet weak var notifyCollect: UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.notifyCollect.register(UINib(nibName: "NotificationCell", bundle: nil), forCellWithReuseIdentifier: "NotificationCell")
         tabBar.delegate = self
         tabBar.selectedItem = tabBar.items?[3]
@@ -49,6 +51,7 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
             }
             self.notifyCollect.delegate = self
             self.notifyCollect.dataSource = self
+            SwiftOverlays.removeAllBlockingOverlays()
         })
 
         // Do any additional setup after loading the view.
@@ -70,6 +73,7 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
         cell.noteLabel.text = sendString
         cell.actionByUID = noteCollectData![indexPath.row]["actionByUID"] as! String
             cell.postTextLabel.text = noteCollectData![indexPath.row]["postText"] as? String
+        cell.postTextLabel.isHidden = true
         
         if noteCollectData![indexPath.row]["actionByUserPic"] as! String == "profile-placeholder"{
                 cell.actionUserPicButton.setImage(UIImage(named: "profile-placeholder"), for: .normal)
@@ -87,9 +91,12 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
             //cell.delegate = self
             return cell
         }
-        
+        var selectedPostID = String()
         func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath){
+            var notifCell = collectionView.cellForItem(at: indexPath) as! NotificationCell
+            self.selectedPostID = (noteCollectData![indexPath.row] as! [String:Any])["postID"] as! String
             
+            performSegue(withIdentifier: "postSelected", sender: self)
         }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -100,14 +107,19 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
         }
     
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "postSelected"{
+            if let vc = segue.destination as? HomeFeedViewController{
+                vc.fromNotifPostID = self.selectedPostID
+            }
     }
-    */
+    }
+    
 
 }
