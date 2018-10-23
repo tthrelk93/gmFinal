@@ -605,6 +605,7 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        print("Auth: \(Auth.auth().currentUser!.uid)")
         if Auth.auth().currentUser != nil {
             // User is signed in.
             // ...

@@ -205,12 +205,12 @@
                                     <tabBarItem image="Home" id="AG9-Fc-O1z">
                                         <color key="badgeColor" red="0.8014086788" green="0.12823767659999999" blue="0.0093107193880000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tabBarItem>
-                                    <tabBarItem title="" image="searchIcon-1" id="TLR-4A-5Sw">
+                                    <tabBarItem title="" image="Search" id="TLR-4A-5Sw">
                                         <color key="badgeColor" red="0.8014086788" green="0.12823767659999999" blue="0.0093107193880000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tabBarItem>
                                     <tabBarItem title="" image="Post" id="Boy-8R-DKr"/>
-                                    <tabBarItem title="" image="notificaitonsIcon" id="qsW-er-IRc"/>
-                                    <tabBarItem image="profileIcon-1" id="dMR-jr-AFd"/>
+                                    <tabBarItem title="" image="Icon-App-20x20-1" id="qsW-er-IRc"/>
+                                    <tabBarItem image="Profile" id="dMR-jr-AFd"/>
                                 </items>
                                 <color key="selectedImageTintColor" red="0.92941176469999998" green="0.10980392160000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </tabBar>
@@ -248,12 +248,12 @@
                                     <tabBarItem image="Home" id="kMp-VC-ylP">
                                         <color key="badgeColor" red="0.8014086788" green="0.12823767659999999" blue="0.0093107193880000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tabBarItem>
-                                    <tabBarItem title="" image="searchIcon-1" id="srI-XC-4Lc">
+                                    <tabBarItem title="" image="Search" id="srI-XC-4Lc">
                                         <color key="badgeColor" red="0.8014086788" green="0.12823767659999999" blue="0.0093107193880000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tabBarItem>
                                     <tabBarItem title="" image="Post" id="dfE-Aj-4tH"/>
-                                    <tabBarItem title="" image="notificaitonsIcon" id="dSk-s2-Wat"/>
-                                    <tabBarItem image="profileIcon-1" id="OZ9-Kd-3MT"/>
+                                    <tabBarItem title="" image="Icon-App-20x20-1" id="dSk-s2-Wat"/>
+                                    <tabBarItem image="Profile" id="OZ9-Kd-3MT"/>
                                 </items>
                                 <color key="selectedImageTintColor" red="0.92941176469999998" green="0.10980392160000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </tabBar>
@@ -369,7 +369,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="2A0-fO-ewm">
-                                        <rect key="frame" x="0.0" y="56" width="375" height="497"/>
+                                        <rect key="frame" x="0.0" y="131" width="375" height="366"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Nwz-yk-Jbj">
@@ -389,9 +389,9 @@
                                             </collectionViewCell>
                                         </cells>
                                     </collectionView>
-                                    <searchBar contentMode="redraw" fixedFrame="YES" placeholder="Search Friends" translatesAutoresizingMaskIntoConstraints="NO" id="aNu-Fo-avE">
-                                        <rect key="frame" x="0.0" y="492" width="375" height="56"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                    <searchBar contentMode="scaleToFill" fixedFrame="YES" searchBarStyle="minimal" placeholder="Search Friends" translatesAutoresizingMaskIntoConstraints="NO" id="aNu-Fo-avE">
+                                        <rect key="frame" x="0.0" y="497" width="375" height="56"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </searchBar>
                                 </subviews>
@@ -452,6 +452,7 @@
                         <outlet property="findFriendsView" destination="g0r-XX-xMI" id="mGa-jb-lwX"/>
                         <outlet property="inboxButton" destination="LbC-tK-Eg2" id="Z2R-a5-QAu"/>
                         <outlet property="likedByCollect" destination="V9O-BK-vWG" id="e2g-Yp-n6O"/>
+                        <outlet property="searchDisplayController" destination="XNl-XA-oOt" id="Ezu-gy-9V5"/>
                         <outlet property="selfCommentPic" destination="nVs-pm-AZe" id="z28-2P-qGE"/>
                         <outlet property="shareFinalizeButton" destination="Cjq-K9-H7O" id="tUq-Na-0UG"/>
                         <outlet property="shareSearchBar" destination="VAp-E4-7bd" id="CK4-Px-Snr"/>
@@ -477,6 +478,14 @@
                         <outlet property="delegate" destination="BYZ-38-t0r" id="L71-nE-PdN"/>
                     </connections>
                 </tapGestureRecognizer>
+                <searchDisplayController id="XNl-XA-oOt">
+                    <connections>
+                        <outlet property="delegate" destination="BYZ-38-t0r" id="RvD-3k-PB7"/>
+                        <outlet property="searchContentsController" destination="BYZ-38-t0r" id="Fvf-oE-6u6"/>
+                        <outlet property="searchResultsDataSource" destination="BYZ-38-t0r" id="bn5-DH-a6m"/>
+                        <outlet property="searchResultsDelegate" destination="BYZ-38-t0r" id="AyW-pu-h3K"/>
+                    </connections>
+                </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="-210.40000000000001" y="-87.706146926536732"/>
         </scene>
@@ -496,12 +505,12 @@
                                     <tabBarItem image="Home" id="x2g-S2-TxB">
                                         <color key="badgeColor" red="0.8014086788" green="0.12823767659999999" blue="0.0093107193880000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tabBarItem>
-                                    <tabBarItem title="" image="searchIcon-1" id="IQV-ip-vKf">
+                                    <tabBarItem title="" image="Search" id="IQV-ip-vKf">
                                         <color key="badgeColor" red="0.8014086788" green="0.12823767659999999" blue="0.0093107193880000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tabBarItem>
                                     <tabBarItem title="" image="Post" id="r2j-3h-840"/>
-                                    <tabBarItem title="" image="notificaitonsIcon" id="fOz-fd-8Sx"/>
-                                    <tabBarItem image="profileIcon-1" id="piQ-si-BD8"/>
+                                    <tabBarItem title="" image="Icon-App-20x20-1" id="fOz-fd-8Sx"/>
+                                    <tabBarItem image="Profile" id="piQ-si-BD8"/>
                                 </items>
                                 <color key="selectedImageTintColor" red="0.92941176469999998" green="0.10980392160000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </tabBar>
@@ -1176,21 +1185,21 @@
                                         <rect key="frame" x="109" y="-89" width="154" height="154"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="full name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jPO-ev-b31">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jPO-ev-b31">
                                         <rect key="frame" x="96" y="66" width="179" height="36"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="200" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QPV-IA-HlO">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QPV-IA-HlO">
                                         <rect key="frame" x="96" y="94" width="90" height="41"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="200" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZJA-iU-W9v">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZJA-iU-W9v">
                                         <rect key="frame" x="185" y="94" width="90" height="41"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
@@ -1227,7 +1236,6 @@
                                         </state>
                                         <connections>
                                             <action selector="editProfButtonPressed:" destination="EVH-bU-Nj2" eventType="touchUpInside" id="gZG-uo-Q41"/>
-                                            <action selector="followUnfollowPressed:" destination="EVH-bU-Nj2" eventType="touchUpInside" id="v4k-rW-Ud1"/>
                                         </connections>
                                     </button>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ed3-kY-2b6">
@@ -1239,6 +1247,7 @@
                                         </state>
                                         <connections>
                                             <action selector="editProfButtonPressed:" destination="EVH-bU-Nj2" eventType="touchUpInside" id="Rj3-gS-7qY"/>
+                                            <action selector="followUnfollowPressed:" destination="EVH-bU-Nj2" eventType="touchUpInside" id="i1T-dz-UeR"/>
                                         </connections>
                                     </button>
                                     <tabBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T2b-uI-KaA">
@@ -1246,7 +1255,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <items>
-                                            <tabBarItem image="icons8-health-data-25" id="VCE-zV-xfI">
+                                            <tabBarItem image="Icon-App-20x20-2" id="VCE-zV-xfI">
                                                 <inset key="imageInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="-10"/>
                                                 <inset key="largeContentSizeImageInsets" minX="0.0" minY="1" maxX="0.0" maxY="0.0"/>
                                                 <color key="badgeColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1296,12 +1305,12 @@
                                     <tabBarItem image="Home" id="G5h-HR-9ap">
                                         <color key="badgeColor" red="0.8014086788" green="0.12823767659999999" blue="0.0093107193880000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tabBarItem>
-                                    <tabBarItem title="" image="searchIcon-1" id="NNs-KZ-NA6">
+                                    <tabBarItem title="" image="Search" id="NNs-KZ-NA6">
                                         <color key="badgeColor" red="0.8014086788" green="0.12823767659999999" blue="0.0093107193880000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tabBarItem>
                                     <tabBarItem title="" image="Post" id="TEo-QQ-olT"/>
-                                    <tabBarItem title="" image="notificaitonsIcon" id="8qd-ah-bob"/>
-                                    <tabBarItem image="profileIcon-1" id="J0Z-jJ-FJw"/>
+                                    <tabBarItem title="" image="Icon-App-20x20-1" id="8qd-ah-bob"/>
+                                    <tabBarItem image="Profile" largeContentSizeImage="Profile" id="J0Z-jJ-FJw"/>
                                 </items>
                                 <color key="selectedImageTintColor" red="0.92941176469999998" green="0.10980392160000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </tabBar>
@@ -1523,7 +1532,7 @@
                         <viewLayoutGuide key="safeArea" id="wIP-Qh-Agd"/>
                     </view>
                     <connections>
-                        <outlet property="FollowUnfollowButton" destination="wet-b9-f8v" id="mp7-ao-lbo"/>
+                        <outlet property="FollowUnfollowButton" destination="Ed3-kY-2b6" id="fwR-Dy-0aE"/>
                         <outlet property="bioTextView" destination="w2P-CN-kVA" id="tzZ-WH-elC"/>
                         <outlet property="editBioTextView" destination="eqf-at-WKI" id="w1E-iC-inp"/>
                         <outlet property="editEmailTF" destination="hkc-Hl-xRj" id="PnK-Ck-Mwk"/>
@@ -1623,12 +1632,12 @@
                                     <tabBarItem image="Home" id="fmX-bJ-gWX">
                                         <color key="badgeColor" red="0.8014086788" green="0.12823767659999999" blue="0.0093107193880000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tabBarItem>
-                                    <tabBarItem title="" image="searchIcon-1" id="3J9-5x-yrw">
+                                    <tabBarItem title="" image="Search" id="3J9-5x-yrw">
                                         <color key="badgeColor" red="0.8014086788" green="0.12823767659999999" blue="0.0093107193880000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tabBarItem>
                                     <tabBarItem title="" image="Post" id="JFb-C9-Gev"/>
-                                    <tabBarItem title="" image="notificaitonsIcon" id="Yhk-P8-y2I"/>
-                                    <tabBarItem image="profileIcon-1" id="gNG-ta-5qs"/>
+                                    <tabBarItem title="" image="Icon-App-20x20-1" id="Yhk-P8-y2I"/>
+                                    <tabBarItem image="Profile" id="gNG-ta-5qs"/>
                                 </items>
                                 <color key="selectedImageTintColor" red="0.92941176469999998" green="0.10980392160000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </tabBar>
@@ -2287,25 +2296,24 @@
         <image name="GymMe-Final-White" width="346" height="308"/>
         <image name="GymMeSoloLogo" width="72.360000610351562" height="69.120002746582031"/>
         <image name="Home" width="21" height="23"/>
+        <image name="Icon-App-20x20-1" width="20" height="20"/>
+        <image name="Icon-App-20x20-2" width="20" height="20"/>
         <image name="Post" width="20" height="19"/>
-        <image name="Search" width="23" height="22"/>
+        <image name="Profile" width="20" height="20"/>
+        <image name="Search" width="20" height="20"/>
         <image name="add_friends_233058" width="491.51998901367188" height="491.51998901367188"/>
         <image name="camera-1265913_960_720" width="960" height="707"/>
         <image name="commentIcon" width="409.60000610351562" height="409.60000610351562"/>
         <image name="favoritesUnfilled" width="37.5" height="37.5"/>
         <image name="gjwr8" width="512" height="512"/>
         <image name="icons8-christmas-star-25" width="18.75" height="18.75"/>
-        <image name="icons8-health-data-25" width="9" height="9"/>
         <image name="icons8-menu-25" width="9.6000003814697266" height="9.6000003814697266"/>
         <image name="like" width="46" height="41"/>
         <image name="messages" width="512" height="512"/>
-        <image name="notificaitonsIcon" width="30" height="30"/>
         <image name="paragraph" width="625" height="213"/>
         <image name="pinIcon" width="30" height="30"/>
         <image name="profile-placeholder" width="225" height="225"/>
-        <image name="profileIcon-1" width="30" height="30"/>
         <image name="redAbstract" width="320" height="180"/>
-        <image name="searchIcon-1" width="48" height="48"/>
         <image name="shareIcon" width="48" height="48"/>
         <image name="share_PNG53" width="819.20001220703125" height="819.20001220703125"/>
         <image name="signup-background" width="360" height="640"/>
@@ -2314,11 +2322,11 @@
         <image name="vizio-smart-tv-800x800" width="786" height="448"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="y2H-Z7-9BL"/>
-        <segue reference="Csi-KT-zKj"/>
-        <segue reference="usj-ZK-sIq"/>
-        <segue reference="Y6C-ea-O0s"/>
-        <segue reference="i1H-Qm-pPb"/>
+        <segue reference="MbO-8b-EqP"/>
+        <segue reference="Q4a-Rs-R2V"/>
+        <segue reference="teL-o1-Xid"/>
+        <segue reference="F6u-0z-dfT"/>
+        <segue reference="h9m-Zb-6Q9"/>
         <segue reference="7Cy-Gz-xNk"/>
     </inferredMetricsTieBreakers>
 </document>

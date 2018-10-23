@@ -49,8 +49,10 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
                     
                 }
             }
+            if self.noteCollectData?.count != 0 && self.noteCollectData != nil {
             self.notifyCollect.delegate = self
             self.notifyCollect.dataSource = self
+            }
             SwiftOverlays.removeAllBlockingOverlays()
         })
 
