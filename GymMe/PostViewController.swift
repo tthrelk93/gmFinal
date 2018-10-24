@@ -127,6 +127,9 @@ UICollectionViewDataSource, UISearchBarDelegate{
         }
         sportsView.isHidden = true
     }
+    
+    @IBOutlet weak var tagPeopleLabel: UILabel!
+    
     var selectedSports = [String]()
     var taggedFriends = [[String:Any]]()
     @IBOutlet weak var doneWithSportsButton: UIButton!
@@ -138,30 +141,43 @@ UICollectionViewDataSource, UISearchBarDelegate{
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == tagCollect{
             var cell = collectionView.cellForItem(at: indexPath) as! LikedByCollectionViewCell
-            if cell.backgroundColor == UIColor.white {
-                cell.backgroundColor = UIColor.lightGray
+            var containsUid = false
+            var count = 0
+            for dict in taggedFriends {
+                if dict["uid"] as! String == (findFriendsData[indexPath.row])["uid"] as! String{
+                    containsUid = true
+                    break
+                }
+                count = count + 1
+            }
+            if containsUid == false{
+                //cell.backgroundColor = UIColor.lightGray
                 taggedFriends.append(findFriendsData[indexPath.row] as! [String:Any])
             } else {
-                cell.backgroundColor = UIColor.white
-                var count = 0
-                for dict in taggedFriends{
-                    if (dict["uid"] as! String) == (findFriendsData[indexPath.row]["uid"] as! String) {
-                        taggedFriends.remove(at: count)
-                        break
-                    }
-                    count = count + 1
-                }
-
+               // cell.backgroundColor = UIColor.white
+                
+                
+                taggedFriends.remove(at: count)
             }
+                
+                
+    
+                
             print("taggedFriends: \(taggedFriends)")
             taggedString = ""
             for dict in taggedFriends{
                 taggedString = taggedString + " " + (dict["realName"] as! String) + ","
             }
             print("taggedString: \(taggedString)")
+            tagPeopleLabel.text = taggedString
             tagView.isHidden = true
-            findFriendsData.removeAll()
+            tagSearchBar.text = ""
             tagSearchBar.endEditing(true)
+            tagSearchBar.resignFirstResponder()
+            findFriendsData.removeAll()
+            DispatchQueue.main.async{
+            self.tagCollect.reloadData()
+            }
             
             
             
@@ -701,6 +717,7 @@ UICollectionViewDataSource, UISearchBarDelegate{
             self.newPost!["favorites"] = [["x":"x"]]
             self.newPost!["shares"] = [["x":"x"]]
             self.newPost!["comments"] = [["x":"x"]]
+            self.newPost!["tagged"] = self.taggedFriends
             if self.curCatsAdded == nil || self.curCatsAdded.count == 0{
                 curCatsAdded.append("Other")
             }

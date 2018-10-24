@@ -1931,6 +1931,13 @@
                                         <color key="textColor" red="0.92941176469999998" green="0.10980392160000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="R6x-SB-Nqj">
+                                        <rect key="frame" x="175" y="372" width="162" height="43"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FbG-cA-9bi">
                                         <rect key="frame" x="148" y="87" width="189" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
@@ -2054,7 +2061,7 @@
                                 <rect key="frame" x="0.0" y="63" width="375" height="552"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <searchBar contentMode="redraw" fixedFrame="YES" barStyle="black" searchBarStyle="minimal" translatesAutoresizingMaskIntoConstraints="NO" id="3Eu-Xm-cx0">
+                                    <searchBar contentMode="redraw" fixedFrame="YES" barStyle="black" searchBarStyle="minimal" placeholder="Search for Friends" translatesAutoresizingMaskIntoConstraints="NO" id="3Eu-Xm-cx0">
                                         <rect key="frame" x="8" y="0.0" width="359" height="56"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                         <textInputTraits key="textInputTraits"/>
@@ -2136,6 +2143,7 @@
                         <outlet property="tagCollect" destination="M0Z-wL-lNq" id="UR4-Xs-qbM"/>
                         <outlet property="tagPeopleButton" destination="Ml4-On-HG3" id="9yP-r7-obW"/>
                         <outlet property="tagPeopleButtonIcon" destination="C8g-J7-jcL" id="gGc-Jh-e2M"/>
+                        <outlet property="tagPeopleLabel" destination="R6x-SB-Nqj" id="6Gc-wc-KRo"/>
                         <outlet property="tagSearchBar" destination="3Eu-Xm-cx0" id="R0A-mW-FFt"/>
                         <outlet property="tagView" destination="s4x-Hh-tWg" id="0lp-2t-tmi"/>
                         <outlet property="textPostPressedLabel" destination="KXP-HK-drd" id="BC8-KQ-Ppn"/>
@@ -2472,7 +2480,7 @@
         <image name="vizio-smart-tv-800x800" width="786" height="448"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="4Kj-ri-BvQ"/>
+        <segue reference="y2H-Z7-9BL"/>
         <segue reference="qgT-Qx-6lv"/>
         <segue reference="tzB-TR-nek"/>
         <segue reference="9f8-Nw-DLd"/>
