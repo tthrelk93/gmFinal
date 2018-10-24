@@ -22,7 +22,11 @@ import GooglePlacePicker
 import CoreLocation
 
 
-
+class PostCatSearchSportsCell: UICollectionViewCell {
+    @IBOutlet weak var catSportLabel: UILabel!
+    
+    
+}
 class PostCatSearchCell: UICollectionViewCell {
     @IBOutlet weak var catLabel: UILabel!
     
@@ -30,8 +34,9 @@ class PostCatSearchCell: UICollectionViewCell {
 }
 
 class PostViewController: UIViewController, UITabBarDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UITextViewDelegate, CLLocationManagerDelegate, UICollectionViewDelegate,
-UICollectionViewDataSource{
+UICollectionViewDataSource, UISearchBarDelegate{
     
+    @IBOutlet weak var tagSearchBar: UISearchBar!
     @IBOutlet weak var addCat3TextPos: UIView!
     @IBOutlet weak var addCat2TextPos: UIView!
     @IBOutlet weak var addCat1TextPos: UIView!
@@ -45,11 +50,53 @@ UICollectionViewDataSource{
     var placeAddress = String()
     var place: GMSPlace?
     var catLabelsRefined = [String]()
+    
+    
+    @IBOutlet weak var sportsCollect: UICollectionView!
+    @IBOutlet weak var sportsView: UIView!
+    var catSportsData = ["Soccer","Football","Lacross", "Track & Field", "Tennis","Baseball","Swimming"]
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+         if collectionView == sportsCollect{
+            return catSportsData.count
+         } else if collectionView == addCatCollect {
         return catLabelsRefined.count
+         } else {
+            return findFriendsData.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if collectionView == tagCollect {
+            
+            let cell : LikedByCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "LikedByCollectionViewCell", for: indexPath) as! LikedByCollectionViewCell
+          
+            cell.likedByFollowButton.isHidden = true
+            cell.likedByName.isHidden = false
+            cell.likedByUName.isHidden = false
+            
+            cell.commentName.isHidden = true
+            cell.commentTextView.isHidden = true
+            cell.commentTimestamp.isHidden = true
+            cell.likedByUName.text = ((findFriendsData[indexPath.row] )["uName"] as! String)
+            
+            cell.likedByUID = ((findFriendsData[indexPath.row])["uid"] as! String)
+            
+            cell.likedByName.text = ((findFriendsData[indexPath.row] )["realName"] as! String)
+            if ((findFriendsData[indexPath.row])["picString"] as! String) == "profile-placeholder"{
+                cell.likedByImage.image = UIImage(named: "profile-placeholder")
+                
+            } else {
+                cell.likedByImage.image = ((findFriendsData[indexPath.row])["profPic"] as! UIImage)
+            }
+            return cell
+            
+            
+        } else if collectionView == sportsCollect{
+            let cell : PostCatSearchSportsCell = collectionView.dequeueReusableCell(withReuseIdentifier: "PostCatSearchSportsCell", for: indexPath) as! PostCatSearchSportsCell
+            cell.catSportLabel.text = catSportsData[indexPath.row]
+            
+            return cell
+        } else {
         let cell : PostCatSearchCell = collectionView.dequeueReusableCell(withReuseIdentifier: "PostCatSearchCell", for: indexPath) as! PostCatSearchCell
         cell.catLabel.text = catLabelsRefined[indexPath.row]
         let border = CALayer()
@@ -60,14 +107,81 @@ UICollectionViewDataSource{
         border.borderWidth = width
         cell.layer.addSublayer(border)
         cell.layer.masksToBounds = true
-        return cell
+            return cell
+        }
+        
     }
+    
+    @IBAction func doneWithSportsButtonPressed(_ sender: Any) {
+        for row in 0...self.sportsCollect.numberOfItems(inSection: 0) - 1
+        {
+            let indexPath = IndexPath(row: row, section: 0)
+            
+            print("indexPatht:\(indexPath)")
+            
+            if ((sportsCollect.cellForItem(at: indexPath) as! PostCatSearchSportsCell).catSportLabel.textColor == UIColor.red) {
+                if((sportsCollect.cellForItem(at: indexPath as IndexPath) as! PostCatSearchSportsCell).catSportLabel.text! != "Sports"){
+                curCatsAdded.append((sportsCollect.cellForItem(at: indexPath as IndexPath) as! PostCatSearchSportsCell).catSportLabel.text!)
+                }
+            }
+        }
+        sportsView.isHidden = true
+    }
+    var selectedSports = [String]()
+    var taggedFriends = [[String:Any]]()
+    @IBOutlet weak var doneWithSportsButton: UIButton!
+    
+    
+    
+    @IBOutlet weak var tagView: UIView!
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView == tagCollect{
+            var cell = collectionView.cellForItem(at: indexPath) as! LikedByCollectionViewCell
+            if cell.backgroundColor == UIColor.white {
+                cell.backgroundColor = UIColor.lightGray
+                taggedFriends.append(findFriendsData[indexPath.row] as! [String:Any])
+            } else {
+                cell.backgroundColor = UIColor.white
+                var count = 0
+                for dict in taggedFriends{
+                    if (dict["uid"] as! String) == (findFriendsData[indexPath.row]["uid"] as! String) {
+                        taggedFriends.remove(at: count)
+                        break
+                    }
+                    count = count + 1
+                }
+
+            }
+            print("taggedFriends: \(taggedFriends)")
+            taggedString = ""
+            for dict in taggedFriends{
+                taggedString = taggedString + " " + (dict["realName"] as! String) + ","
+            }
+            print("taggedString: \(taggedString)")
+            tagView.isHidden = true
+            findFriendsData.removeAll()
+            tagSearchBar.endEditing(true)
+            
+            
+            
+        } else if collectionView == sportsCollect{
+            var sportCellSelected = collectionView.cellForItem(at: indexPath) as! PostCatSearchSportsCell
+            if sportCellSelected.catSportLabel.textColor == UIColor.red {
+                sportCellSelected.catSportLabel.textColor = UIColor.black
+            } else {
+                sportCellSelected.catSportLabel.textColor = UIColor.red
+            }
+         } else {
         var cellSelected = collectionView.cellForItem(at: indexPath) as! PostCatSearchCell
+        if cellSelected.catLabel.text == "Sports"{
+            sportsView.isHidden = false
+        }
         if cellSelected.catLabel.textColor == UIColor.red {
             cellSelected.catLabel.textColor = UIColor.black
         } else {
             cellSelected.catLabel.textColor = UIColor.red
+        }
         }
         
     }
@@ -193,6 +307,12 @@ UICollectionViewDataSource{
     let picker = UIImagePickerController()
     let imagePicker = UIImagePickerController()
     var curCatsAdded = [String]()
+    var taggedString = String()
+    @IBAction func backFromTag(_ sender: Any) {
+        
+        
+    }
+    
     @IBAction func backToPostPressed(_ sender: Any) {
         var curString = ""
         for cell in addCatCollect.visibleCells{
@@ -219,6 +339,8 @@ UICollectionViewDataSource{
     @IBOutlet weak var tagPeopleButton: UIButton!
     @IBOutlet weak var tagPeopleButtonIcon: UIButton!
     @IBAction func tagPeopleButtonPressed(_ sender: Any) {
+        tagView.isHidden = false
+        
     }
     @IBOutlet weak var addToCatIconButton: UIButton!
     @IBOutlet weak var addToCategoryButton: UIButton!
@@ -328,6 +450,7 @@ UICollectionViewDataSource{
     override func viewDidLoad() {
         super.viewDidLoad()
         picker.delegate = self
+        tagSearchBar.delegate = self
         addToCategoryButton.layer.cornerRadius = 8
         addToCategoryButton.layer.masksToBounds = true
         shadeView1.layer.cornerRadius = 14
@@ -355,6 +478,12 @@ UICollectionViewDataSource{
         postPic.layer.cornerRadius = 15
         postText.layer.cornerRadius = 15
         
+       // self.sportsCollect.register(UINib(nibName: "PostCatSearchSportsCell", bundle: nil), forCellWithReuseIdentifier: "PostCatSearchSportsCell")
+        tagCollect.register(UINib(nibName: "LikedByCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "LikedByCollectionViewCell")
+        tagCollect.delegate = self
+        tagCollect.dataSource = self
+        sportsCollect.delegate = self
+        sportsCollect.dataSource = self
         catLabelsRefined = catLabels
         
         //locationManager delegate assignment etcc...
@@ -869,7 +998,7 @@ UICollectionViewDataSource{
     
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         // if you need to get latest data you can get locations.last to check it if the device has been moved
-        print("inDidUpdateLoc")
+       // print("inDidUpdateLoc")
         let latestLocation = locations.last!
         
         // here check if no need to continue just return still in the same place
@@ -939,6 +1068,131 @@ UICollectionViewDataSource{
             completionHandler(nil)
         }
     }
+    
+    var searchActive = Bool()
+    public func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        //findFriendsSearchBar.showsCancelButton = false
+        searchActive = true;
+    }
+    
+    public func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchActive = false;
+        
+    }
+    
+    public func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchActive = false;
+        self.tagSearchBar.endEditing(true)
+    }
+    var findFriendsData = [[String:Any]]()
+    var allSuggested = [String]()
+    public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String){
+        print("SB text did change: \(searchText)")
+        findFriendsData.removeAll()
+        allSuggested.removeAll()
+        
+        var tempUserDict = [String:Any]()
+        Database.database().reference().child("users").observeSingleEvent(of: .value, with: {(snapshot) in
+            print("here: \(snapshot.value)")
+            //let snapshotss = snapshot.value as? [DataSnapshot]
+            print("hereNow")
+            for (key, val) in (snapshot.value as! [String:Any]){
+                print("uName=\(((val as! [String:Any])["username"] as! String))")
+                let uName = ((val as! [String:Any])["username"] as! String)
+                let rName = ((val as! [String:Any])["realName"] as! String)
+                let picString = ((val as! [String:Any])["profPic"] as! String)
+                let uid = key
+                var pic: UIImage?
+                if picString == "profile-placeholder"{
+                    //  pic = "profile-placeholder"
+                    pic = UIImage(named: "profile-placeholder")
+                } else {
+                    if let messageImageUrl = URL(string: picString) {
+                        
+                        if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                            pic = UIImage(data: imageData as Data)
+                            //self.editProfImageView.image = UIImage(data: imageData as Data)
+                        }
+                    }
+                }
+                
+                let uRange = (uName as NSString).range(of: searchText, options: NSString.CompareOptions.literal)
+                let rRange = (rName as NSString).range(of: searchText, options: NSString.CompareOptions.literal)
+                print("rANDu: \(uRange) \(rRange)")
+                if uRange.location != NSNotFound {
+                    tempUserDict[key] = ["uName":uName, "rName":rName, "pic": pic!, "uid": uid]
+                    self.allSuggested.append(rName)
+                    print("curTextu: \(searchText) allSuggested1: \(self.allSuggested)")
+                } else if rRange.location != NSNotFound{
+                    
+                    tempUserDict[key] = ["uName":uName, "rName":rName, "pic": pic!,"picString":picString, "uid": uid]
+                    
+                    
+                    self.allSuggested.append(key)
+                    print("curText: \(searchText) allSuggested: \(self.allSuggested)")
+                } else if self.allSuggested.contains(key){
+                    if self.allSuggested.contains(rName){
+                        tempUserDict.removeValue(forKey: key)
+                        self.allSuggested.remove(at: self.allSuggested.index(of: key)!)
+                        //self.findFriendsData.remove(at: fin)
+                    }
+                    
+                }
+                
+            }
+            print("nowHereee")
+            var tempCurUids = [String]()
+            for dict in self.findFriendsData{
+                tempCurUids.append(dict["uid"] as! String)
+                
+            }
+            for (key, val) in tempUserDict {
+                print("snapKey: \(key)")
+                if self.allSuggested.contains(key){
+                    
+                    var tempDict = [String:Any]()
+                    tempDict = val as! [String:Any]
+                    print("snapVal: \(val as! [String:Any])")
+                    var noName = "-"
+                    var uName = tempDict["uName"] as! String
+                    
+                    
+                    var picString2 = tempDict["picString"] as! String
+                    if (tempDict["rName"] as? String) != nil{
+                        noName = (tempDict["rName"] as! String)
+                    }
+                    
+                    let cellDict = ["uName":uName,"profPic": tempDict["pic"]!, "picString": picString2, "realName": noName, "uid": key] as [String:Any]
+                    
+                    if tempCurUids.contains(key){
+                        break
+                    } else {
+                        self.findFriendsData.append(cellDict)
+                    }
+                }
+            }
+            if(self.findFriendsData.count == 0){
+                self.searchActive = false;
+            } else {
+                self.searchActive = true;
+            }
+            
+            
+            
+            DispatchQueue.main.async{
+                self.tagCollect.reloadData()
+            }
+            
+        })
+        
+    } // called when text changes (including clear)
+    
+    @IBOutlet weak var tagCollect: UICollectionView!
+    
+    public func searchBarSearchButtonClicked(_ searchBar: UISearchBar){
+        self.searchActive = false
+        print("in search pressed")
+    } // called when keyboard
     
     
 

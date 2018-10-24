@@ -18,6 +18,13 @@ import SwiftOverlays
 class SearchViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarDelegate, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, CLLocationManagerDelegate {
     @IBOutlet weak var backToCatButton: UIButton!
     
+    var sportsCollectData = ["Soccer","Football","Lacross", "Track & Field", "Tennis","Baseball","Swimming"]
+    
+    @IBOutlet weak var sportsView: UIView!
+    
+    
+    @IBOutlet weak var sportsCollect: UICollectionView!
+    
     @IBAction func backToAllCatPressed(_ sender: Any) {
         topBarCat.setTitleColor(gmRed, for: .normal)
         topBarPop.setTitleColor(UIColor.black, for: .normal)
@@ -184,7 +191,8 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         
         //shareCollect.delegate = self
         //shareCollect.dataSource = self
-        
+        sportsCollect.delegate = self
+        sportsCollect.dataSource = self
         popCollect.delegate = self
         popCollect.dataSource = self
         typeCommentTF.delegate = self
@@ -284,7 +292,9 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     @IBOutlet weak var feedCollect: UICollectionView!
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if collectionView == categoriesCollect{
+        if collectionView == sportsCollect {
+            return sportsCollectData.count
+        } else if collectionView == categoriesCollect{
             return catCollectData.count
         } else if collectionView == popCollect {
             return popCollectData.count
@@ -295,7 +305,13 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     var topBarPressed = false
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         print("hey345345")
-        if collectionView == categoriesCollect{
+        if collectionView == sportsCollect{
+            print("sportsCollecttttt")
+            let cell : PostCatSearchSportsCell = collectionView.dequeueReusableCell(withReuseIdentifier: "PostCatSearchSportsCell", for: indexPath) as! PostCatSearchSportsCell
+            cell.catSportLabel.text = sportsCollectData[indexPath.row]
+            
+            return cell
+        } else if collectionView == categoriesCollect{
         
         let cell : UICollectionViewCell = (collectionView.dequeueReusableCell(withReuseIdentifier: "CatCell", for: indexPath) as! CatCell)
         cell.layer.borderWidth = 2
@@ -751,9 +767,49 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("cell touched")
         
-        if collectionView == categoriesCollect{
+        if collectionView == sportsCollect {
+            
+            let cellLabel = sportsCollectData[indexPath.row]
+            if allCatDataDict[cellLabel] == nil {
+                self.allCatDataDict[cellLabel] = [[String:Any]]()
+            }
+            self.popCollectData = self.allCatDataDict[cellLabel]!
+            
+            print("popCollectDataBefore: \(popCollectData)")
+            var tempData = [[String:Any]]()
+            for dict in popCollectData{
+                print("dict1: \(dict)")
+                if ((dict.first?.value as! [String:Any])["postPic"] == nil && (dict.first?.value as! [String:Any])["postVid"] == nil){
+                    print("textBeingRemoved1")
+                    // popCollectData.remove(at: popCollectData.index(of: dict))
+                } else {
+                    print("dict: \(dict)")
+                    tempData.append(dict)
+                }
+                
+                
+                //print("popCollectData: \(popCollectData)" \(count))
+                // count = count + 1
+            }
+            self.popCollectData = tempData
+            print("popCollectDataAfter: \(popCollectData)")
+            DispatchQueue.main.async{
+                //self.popCollect.delegate = self
+                //self.popCollect.dataSource = self
+                self.popCollect.reloadData()
+            }
+            self.popCollect.isHidden = false
+            self.categoriesCollect.isHidden = true
+            sportsView.isHidden = true
+            
+            
+            
+        } else if collectionView == categoriesCollect{
             backToCatButton.isHidden = false
         let cellLabel = catCollectData[indexPath.row]
+            if cellLabel == "Sports"{
+                sportsView.isHidden = false
+            } else {
             if allCatDataDict[cellLabel] == nil {
                 self.allCatDataDict[cellLabel] = [[String:Any]]()
             }
@@ -782,9 +838,10 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     self.popCollect.reloadData()
             }
                     self.popCollect.isHidden = false
+            sportsCollect.isHidden = true
                     self.categoriesCollect.isHidden = true
            
-
+            }
         } else if collectionView == shareCollect {
             
             let cell : LikedByCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "LikedByCollectionViewCell", for: indexPath) as! LikedByCollectionViewCell
