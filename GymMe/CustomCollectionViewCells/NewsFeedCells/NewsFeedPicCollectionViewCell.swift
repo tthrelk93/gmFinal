@@ -54,6 +54,7 @@ class NewsFeedPicCollectionViewCell: UICollectionViewCell {
     
    
   
+    @IBOutlet weak var tagLabel: UILabel!
     
     @IBAction func commentsCountButtonPressed(_ sender: Any) {
         delegate?.showLikedByViewPicCell(sentBy: "showComments", cell: self)

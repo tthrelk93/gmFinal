@@ -18,7 +18,7 @@ import SwiftOverlays
 class SearchViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarDelegate, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, CLLocationManagerDelegate {
     @IBOutlet weak var backToCatButton: UIButton!
     
-    var sportsCollectData = ["Soccer","Football","Lacross", "Track & Field", "Tennis","Baseball","Swimming"]
+    var sportsCollectData = ["Soccer","Football","Lacrosse", "Track & Field", "Tennis","Baseball","Swimming"]
     
     @IBOutlet weak var sportsView: UIView!
     
@@ -837,6 +837,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             //self.popCollect.dataSource = self
                     self.popCollect.reloadData()
             }
+                
                     self.popCollect.isHidden = false
             sportsCollect.isHidden = true
                     self.categoriesCollect.isHidden = true

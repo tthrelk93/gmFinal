@@ -54,7 +54,7 @@ UICollectionViewDataSource, UISearchBarDelegate{
     
     @IBOutlet weak var sportsCollect: UICollectionView!
     @IBOutlet weak var sportsView: UIView!
-    var catSportsData = ["Soccer","Football","Lacross", "Track & Field", "Tennis","Baseball","Swimming"]
+    var catSportsData = ["Soccer","Football","Lacrosse", "Track & Field", "Tennis","Baseball","Swimming"]
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
          if collectionView == sportsCollect{
             return catSportsData.count
@@ -120,11 +120,12 @@ UICollectionViewDataSource, UISearchBarDelegate{
             print("indexPatht:\(indexPath)")
             
             if ((sportsCollect.cellForItem(at: indexPath) as! PostCatSearchSportsCell).catSportLabel.textColor == UIColor.red) {
-                if((sportsCollect.cellForItem(at: indexPath as IndexPath) as! PostCatSearchSportsCell).catSportLabel.text! != "Sports"){
+                
                 curCatsAdded.append((sportsCollect.cellForItem(at: indexPath as IndexPath) as! PostCatSearchSportsCell).catSportLabel.text!)
-                }
+                
             }
         }
+        print("curCatsAdded: \(curCatsAdded)")
         sportsView.isHidden = true
     }
     
@@ -190,17 +191,25 @@ UICollectionViewDataSource, UISearchBarDelegate{
             }
          } else {
         var cellSelected = collectionView.cellForItem(at: indexPath) as! PostCatSearchCell
-        if cellSelected.catLabel.text == "Sports"{
+            print("wtf: \(cellSelected.catLabel.text!)")
+        if (cellSelected.catLabel.text as! String) == "Sports"{
             sportsView.isHidden = false
         }
         if cellSelected.catLabel.textColor == UIColor.red {
             cellSelected.catLabel.textColor = UIColor.black
+            
+            selectedCellsArr.remove(at: selectedCellsArr.firstIndex(of: cellSelected)!)
+            
+            
         } else {
             cellSelected.catLabel.textColor = UIColor.red
+            selectedCellsArr.append(cellSelected)
         }
+            
         }
         
     }
+    var selectedCellsArr = [PostCatSearchCell]()
     
     
     @IBOutlet weak var addCatView: UIView!
@@ -328,17 +337,33 @@ UICollectionViewDataSource, UISearchBarDelegate{
         
         
     }
-    
+    var curString = ""
     @IBAction func backToPostPressed(_ sender: Any) {
-        var curString = ""
-        for cell in addCatCollect.visibleCells{
-            let temp = cell as! PostCatSearchCell
+       // DispatchQueue.main.async{
+        for cell in selectedCellsArr {
+           
+ 
             
-            if temp.catLabel.textColor == UIColor.red {
-                curCatsAdded.append(temp.catLabel.text!)
-                curString = curString + " " + temp.catLabel.text! + ","
+            
+            
+            
+            
+            if cell.catLabel.textColor == UIColor.red && cell.catLabel.text != "Sports" {
+                self.curCatsAdded.append(cell.catLabel.text!)
+                
             }
+            
+           
+            
+            }
+      //  }
+        
+        for str in curCatsAdded {
+            curString = curString + " " + str + ","
         }
+       
+       
+        
         curString.removeLast()
         curCatsLabel.text = curString
         addCatView.isHidden = true
@@ -717,7 +742,15 @@ UICollectionViewDataSource, UISearchBarDelegate{
             self.newPost!["favorites"] = [["x":"x"]]
             self.newPost!["shares"] = [["x":"x"]]
             self.newPost!["comments"] = [["x":"x"]]
-            self.newPost!["tagged"] = self.taggedFriends
+            var finalTag = [[String:Any]]()
+            
+            for dict in taggedFriends{
+                var temp = dict as! [String:Any]
+                temp.removeValue(forKey: "profPic")
+                finalTag.append(temp)
+            }
+            
+            self.newPost!["tagged"] = finalTag
             if self.curCatsAdded == nil || self.curCatsAdded.count == 0{
                 curCatsAdded.append("Other")
             }
@@ -866,7 +899,7 @@ UICollectionViewDataSource, UISearchBarDelegate{
             newPost!["posterUID"] = Auth.auth().currentUser!.uid
             newPost!["posterName"] = self.curUser.username
             print("cUpP: \(curUser.profPic!)")
-            newPost!["posterPicURL"] = curUser.profPic!
+            newPost!["posterPicURL"] = curUser.profPic
           
             self.newPost!["comments"] = [["x":"x"]]
             newPost!["likes"] = [["x":"x"]]
@@ -1137,7 +1170,7 @@ UICollectionViewDataSource, UISearchBarDelegate{
                 let rRange = (rName as NSString).range(of: searchText, options: NSString.CompareOptions.literal)
                 print("rANDu: \(uRange) \(rRange)")
                 if uRange.location != NSNotFound {
-                    tempUserDict[key] = ["uName":uName, "rName":rName, "pic": pic!, "uid": uid]
+                    tempUserDict[key] = ["uName":uName, "rName":rName, "pic": pic!, "uid": uid, "picString": picString]
                     self.allSuggested.append(rName)
                     print("curTextu: \(searchText) allSuggested1: \(self.allSuggested)")
                 } else if rRange.location != NSNotFound{
