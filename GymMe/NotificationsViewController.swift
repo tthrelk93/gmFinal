@@ -50,6 +50,7 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
                 }
             }
             if self.noteCollectData?.count != 0 && self.noteCollectData != nil {
+                self.noteCollectData?.reverse()
             self.notifyCollect.delegate = self
             self.notifyCollect.dataSource = self
             }

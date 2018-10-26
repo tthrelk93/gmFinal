@@ -29,6 +29,8 @@ class NewsFeedCellCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var shareButton: UIButton!
     @IBAction func shareButtonPressed(_ sender: Any) {
+        
+         delegate?.showLikedByViewTextCell(sentBy: "share", cell: self)
     }
     @IBAction func commentsCountButtonPressed(_ sender: Any) {
         delegate?.showLikedByViewTextCell(sentBy: "showComments", cell: self)

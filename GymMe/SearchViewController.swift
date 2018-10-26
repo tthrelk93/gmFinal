@@ -331,6 +331,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 if topBarPressed == true{
                     if ((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["postPic"] == nil {
                         if ((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["postVid"] == nil {
+                            
                             cell.popPic.image = UIImage(named: "background2")
                             UIView.animate(withDuration: 0.5, animations: {
                                 
@@ -340,12 +341,14 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                             })
                         } else {
                             cell.popPic.isHidden = true
+                            DispatchQueue.main.async{
                             cell.player?.url = URL(string: String(describing: ((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["postVid"]!))
                             cell.player?.playerDelegate = self
                             cell.player?.playbackDelegate = self
                             cell.player?.playbackLoops = true
                             cell.player?.playbackPausesWhenBackgrounded = true
                             cell.player?.playbackPausesWhenResigningActive = true
+                            }
                             let vidFrame = CGRect(x: cell.popPic.frame.origin.x, y: cell.popPic.frame.origin.y, width: popCollect.frame.width - 28, height: cell.popPic.frame.height)
                             cell.player?.view.frame = vidFrame
                             cell.player?.view.isHidden = false
@@ -354,10 +357,12 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                             cell.player?.playbackLoops = true
                         }
                     } else {
+                        DispatchQueue.main.async{
                         if let messageImageUrl = URL(string: ((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["postPic"] as! String) {
                             if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
                                 cell.popPic.image = UIImage(data: imageData as Data)
                             }
+                        }
                         }
                     }
                     return cell
@@ -373,12 +378,14 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         } else {
                             cell.popText.textColor = UIColor.white
                             cell.popPic.isHidden = true
+                            DispatchQueue.main.async{
                             cell.player?.url = URL(string: String(describing: ((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["postVid"]!))
                             cell.player?.playerDelegate = self
                             cell.player?.playbackDelegate = self
                             cell.player?.playbackLoops = true
                             cell.player?.playbackPausesWhenBackgrounded = true
                             cell.player?.playbackPausesWhenResigningActive = true
+                            }
                             let vidFrame = CGRect(x: cell.popPic.frame.origin.x, y: cell.popPic.frame.origin.y, width: popCollect.frame.width - 28, height: cell.popPic.frame.height)
                             cell.player?.view.frame = vidFrame
                             cell.player?.view.isHidden = false
@@ -387,10 +394,12 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         }
                     } else {
                         cell.popText.textColor = UIColor.white
+                        DispatchQueue.main.async{
                         if let messageImageUrl = URL(string: ((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["postPic"] as! String) {
                             if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
                                 cell.popPic.image = UIImage(data: imageData as Data)
                             }
+                        }
                         }
                     }
                 }
@@ -403,7 +412,9 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             if topBarPressed == true{
                 if self.popCollectData[indexPath.row]["postPic"] == nil {
                     if (self.popCollectData[indexPath.row])["postVid"] == nil{
+                        DispatchQueue.main.async{
                         cell.popPic.image = UIImage(named: "background2")
+                        }
                         UIView.animate(withDuration: 0.5, animations: {
                             
                             cell.popText.text = String(describing: ((self.popCollectData[indexPath.row])["postText"]!))
@@ -412,12 +423,14 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         })
                     } else {
                         cell.popPic.isHidden = true
-                        cell.player?.url = URL(string: String(describing: (popCollectData[indexPath.row])["postVid"]!))
+                         DispatchQueue.main.async{
+                            cell.player?.url = URL(string: String(describing: (self.popCollectData[indexPath.row])["postVid"]!))
                         cell.player?.playerDelegate = self
                         cell.player?.playbackDelegate = self
                         cell.player?.playbackLoops = true
                         cell.player?.playbackPausesWhenBackgrounded = true
                         cell.player?.playbackPausesWhenResigningActive = true
+                        }
                         let vidFrame = CGRect(x: cell.popPic.frame.origin.x, y: cell.popPic.frame.origin.y, width: popCollect.frame.width - 28, height: cell.popPic.frame.height)
                         cell.player?.view.frame = vidFrame
                         cell.player?.view.isHidden = false
@@ -426,10 +439,12 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         cell.player?.playbackLoops = true
                     }
                 } else {
+                     DispatchQueue.main.async{
                     if let messageImageUrl = URL(string: self.popCollectData[indexPath.row]["postPic"] as! String) {
                         if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
                             cell.popPic.image = UIImage(data: imageData as Data)
                         }
+                    }
                     }
                 }
                 return cell
@@ -438,19 +453,23 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 if (self.popCollectData[indexPath.row])["postVid"] == nil{
                     UIView.animate(withDuration: 0.5, animations: {
                         cell.popText.isHidden = false
+                        if ((self.popCollectData[indexPath.row])["postText"] as? String) != nil {
                         cell.popText.text = (String(describing: ((self.popCollectData[indexPath.row]))["postText"]!))
+                        }
                         cell.player?.view.isHidden = true
                         cell.bringSubview(toFront: cell.popText)
                     })
                 } else {
                     cell.popText.textColor = UIColor.white
                     cell.popPic.isHidden = true
-                    cell.player?.url = URL(string: String(describing: (popCollectData[indexPath.row])["postVid"]!))
+                     DispatchQueue.main.async{
+                        cell.player?.url = URL(string: String(describing: (self.popCollectData[indexPath.row])["postVid"]!))
                     cell.player?.playerDelegate = self
                     cell.player?.playbackDelegate = self
                     cell.player?.playbackLoops = true
                     cell.player?.playbackPausesWhenBackgrounded = true
                     cell.player?.playbackPausesWhenResigningActive = true
+                    }
                     let vidFrame = CGRect(x: cell.popPic.frame.origin.x, y: cell.popPic.frame.origin.y, width: popCollect.frame.width - 28, height: cell.popPic.frame.height)
                     cell.player?.view.frame = vidFrame
                     cell.player?.view.isHidden = false
@@ -459,14 +478,17 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 }
             } else {
                 cell.popText.textColor = UIColor.white
+                 DispatchQueue.main.async{
                 if let messageImageUrl = URL(string: (self.popCollectData[indexPath.row])["postPic"] as! String) {
                 if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
                     cell.popPic.image = UIImage(data: imageData as Data)
+                    
+                    }
                     }
                 }
                 }
-                }
             }
+        }
                 
             return cell
         
@@ -484,16 +506,18 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 cell.commentTimestamp.isHidden = false
             cell.commentTextView.text = commentsCollectData[indexPath.row]["commentText"] as! String
             cell.commentName.text = commentsCollectData[indexPath.row]["commentorName"] as! String
-            if commentsCollectData[indexPath.row]["commentorPic"] as! String == "profile-placeholder"{
+             DispatchQueue.main.async{
+                if self.commentsCollectData[indexPath.row]["commentorPic"] as! String == "profile-placeholder"{
                     cell.likedByImage.image = UIImage(named: "profile-placeholder")
                 } else {
-                    if let messageImageUrl = URL(string: commentsCollectData[indexPath.row]["commentorPic"] as! String) {
+                    if let messageImageUrl = URL(string: self.commentsCollectData[indexPath.row]["commentorPic"] as! String) {
                         
                         if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
                             cell.likedByImage.image = UIImage(data: imageData as Data)
                         }
                     }
                 }
+            }
                 return cell
         }
             

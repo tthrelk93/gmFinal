@@ -832,11 +832,7 @@ UICollectionViewDataSource, UISearchBarDelegate{
             self.newPost!["categories"] = self.curCatsAdded
             print("cUpP3: \(curUser.profPic!)")
             newPost!["posterPicURL"] = curUser.profPic!
-            if self.cityData == nil {
-                self.newPost!["city"] = "-"
-            } else {
-                self.newPost!["city"] = self.cityData
-            }
+            self.newPost!["city"] = self.curCityLabel.text
             if self.makePostTextView.text != "Type a description or caption here. (optional)"{
                 newPost!["postText"] = self.makePostTextView.text
             }
@@ -916,11 +912,7 @@ UICollectionViewDataSource, UISearchBarDelegate{
             let key = Database.database().reference().child("posts").childByAutoId().key
             self.newPost!["postID"] = key
             print("self.cityInPost: \(self.city)")
-            if self.cityData == nil {
-                self.newPost!["city"] = "-"
-            } else {
-                self.newPost!["city"] = self.cityData
-            }
+            self.newPost!["city"] = self.curCityLabel.text
             let childUpdates = ["/posts/\(key)": self.newPost,
                                 "/users/\(Auth.auth().currentUser!.uid)/posts/\(key)/": self.newPost]
             Database.database().reference().updateChildValues(childUpdates, withCompletionBlock: { (error, ref) in
