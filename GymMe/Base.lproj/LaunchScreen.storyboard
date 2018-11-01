@@ -18,20 +18,32 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="93j-X4-cDJ">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="93j-X4-cDJ">
+                                <rect key="frame" x="0.0" y="0.0" width="374" height="667"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="GymMe-Final-White" translatesAutoresizingMaskIntoConstraints="NO" id="GKR-GN-p7L">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="GymMe-Final-White" translatesAutoresizingMaskIntoConstraints="NO" id="GKR-GN-p7L">
                                         <rect key="frame" x="88" y="188" width="198" height="198"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="198" id="5mA-p8-nXZ"/>
+                                            <constraint firstAttribute="height" constant="198" id="PDJ-xQ-bFz"/>
+                                        </constraints>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="GKR-GN-p7L" firstAttribute="leading" secondItem="fA2-zF-ExE" secondAttribute="leading" constant="88" id="lPo-pk-gxj"/>
+                                    <constraint firstItem="GKR-GN-p7L" firstAttribute="centerX" secondItem="93j-X4-cDJ" secondAttribute="centerX" id="qwj-og-mEn"/>
+                                    <constraint firstItem="GKR-GN-p7L" firstAttribute="top" secondItem="fA2-zF-ExE" secondAttribute="top" constant="168" id="uPE-VC-aal"/>
+                                </constraints>
                                 <viewLayoutGuide key="safeArea" id="fA2-zF-ExE"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="93j-X4-cDJ" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="2us-6A-hIH"/>
+                            <constraint firstItem="93j-X4-cDJ" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="DI4-s9-Myf"/>
+                            <constraint firstItem="93j-X4-cDJ" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="riD-co-1lc"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>

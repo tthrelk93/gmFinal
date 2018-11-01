@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		166C95C741C225FEE9D43F90 /* Pods_GymMe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 198CD5FAC7E44BD3D1962AD8 /* Pods_GymMe.framework */; };
+		2F8446301A330DA5766626E9 /* Pods_GymMeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62707C49A25866596B56ECFD /* Pods_GymMeTests.framework */; };
 		31359EC920DC183D00F5ED11 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31359EC820DC183D00F5ED11 /* SearchViewController.swift */; };
 		31359ECB20DC26C400F5ED11 /* CatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31359ECA20DC26C400F5ED11 /* CatCell.swift */; };
 		31359ECD20DC465000F5ED11 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31359ECC20DC465000F5ED11 /* ProfileViewController.swift */; };
@@ -44,9 +46,7 @@
 		31F0F13B20E4041700291263 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F0F13A20E4041700291263 /* Player.swift */; };
 		31F4E0CB20E6993300624E5B /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 31F4E0CA20E6993200624E5B /* HockeySDKResources.bundle */; };
 		31F6C23C20DAF4EE00026C0B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F6C23B20DAF4EE00026C0B /* User.swift */; };
-		461F65DC7168BAC8908DDC4A /* Pods_GymMe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92FE7D5D1062C8601C19E19A /* Pods_GymMe.framework */; };
-		5B378339C9B2C125FFBD028A /* Pods_GymMeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A900AF5F2854F02995C8D857 /* Pods_GymMeTests.framework */; };
-		71F3FC4E8E26405A0AE19ECF /* Pods_GymMeUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FEF60CB97958C6674E03ACB5 /* Pods_GymMeUITests.framework */; };
+		C79BEECF1CC315AF37CAA56D /* Pods_GymMeUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A1BDFF040FBBE622175D425 /* Pods_GymMeUITests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +67,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		198CD5FAC7E44BD3D1962AD8 /* Pods_GymMe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GymMe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		236D98557CE61B8C6E7B85D4 /* Pods-GymMe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GymMe.release.xcconfig"; path = "Pods/Target Support Files/Pods-GymMe/Pods-GymMe.release.xcconfig"; sourceTree = "<group>"; };
 		31359EC820DC183D00F5ED11 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		31359ECA20DC26C400F5ED11 /* CatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatCell.swift; sourceTree = "<group>"; };
 		31359ECC20DC465000F5ED11 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -111,15 +113,13 @@
 		31F0F13A20E4041700291263 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		31F4E0CA20E6993200624E5B /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = HockeySDKResources.bundle; path = "Vendor/HockeySDK-iOS/HockeySDK.embeddedframework/HockeySDKResources.bundle"; sourceTree = "<group>"; };
 		31F6C23B20DAF4EE00026C0B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		33890363EDFD0CF2BEFABF4D /* Pods-GymMe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GymMe.release.xcconfig"; path = "Pods/Target Support Files/Pods-GymMe/Pods-GymMe.release.xcconfig"; sourceTree = "<group>"; };
-		634FF6C73D9E2FAD7209B77D /* Pods-GymMeUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GymMeUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-GymMeUITests/Pods-GymMeUITests.release.xcconfig"; sourceTree = "<group>"; };
-		8377A3EE18E01F686A0FE390 /* Pods-GymMeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GymMeTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GymMeTests/Pods-GymMeTests.debug.xcconfig"; sourceTree = "<group>"; };
-		92FE7D5D1062C8601C19E19A /* Pods_GymMe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GymMe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A58A19E8D52384E1DD14665E /* Pods-GymMeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GymMeTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-GymMeTests/Pods-GymMeTests.release.xcconfig"; sourceTree = "<group>"; };
-		A900AF5F2854F02995C8D857 /* Pods_GymMeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GymMeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D90866A642A72FDA5600E3D1 /* Pods-GymMe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GymMe.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GymMe/Pods-GymMe.debug.xcconfig"; sourceTree = "<group>"; };
-		EFF19038C6ACE97282D795F4 /* Pods-GymMeUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GymMeUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GymMeUITests/Pods-GymMeUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		FEF60CB97958C6674E03ACB5 /* Pods_GymMeUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GymMeUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		62707C49A25866596B56ECFD /* Pods_GymMeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GymMeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		72FCABD82E62AC4994F4BE46 /* Pods-GymMeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GymMeTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GymMeTests/Pods-GymMeTests.debug.xcconfig"; sourceTree = "<group>"; };
+		74A88D05873AF34D6B91AAD3 /* Pods-GymMeUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GymMeUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-GymMeUITests/Pods-GymMeUITests.release.xcconfig"; sourceTree = "<group>"; };
+		86327B0BD044F8E0809F7DE1 /* Pods-GymMe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GymMe.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GymMe/Pods-GymMe.debug.xcconfig"; sourceTree = "<group>"; };
+		8A1BDFF040FBBE622175D425 /* Pods_GymMeUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GymMeUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BDD1493C54B23E9EA2342143 /* Pods-GymMeUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GymMeUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GymMeUITests/Pods-GymMeUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		E4DC6CFA3344A217BB907792 /* Pods-GymMeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GymMeTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-GymMeTests/Pods-GymMeTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,7 +127,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				461F65DC7168BAC8908DDC4A /* Pods_GymMe.framework in Frameworks */,
+				166C95C741C225FEE9D43F90 /* Pods_GymMe.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,7 +135,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5B378339C9B2C125FFBD028A /* Pods_GymMeTests.framework in Frameworks */,
+				2F8446301A330DA5766626E9 /* Pods_GymMeTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,21 +143,24 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				71F3FC4E8E26405A0AE19ECF /* Pods_GymMeUITests.framework in Frameworks */,
+				C79BEECF1CC315AF37CAA56D /* Pods_GymMeUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2E44CA2771BA77E3784B0EEB /* Frameworks */ = {
+		0B78349C72C6B542D8A8B1DC /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				92FE7D5D1062C8601C19E19A /* Pods_GymMe.framework */,
-				A900AF5F2854F02995C8D857 /* Pods_GymMeTests.framework */,
-				FEF60CB97958C6674E03ACB5 /* Pods_GymMeUITests.framework */,
+				86327B0BD044F8E0809F7DE1 /* Pods-GymMe.debug.xcconfig */,
+				236D98557CE61B8C6E7B85D4 /* Pods-GymMe.release.xcconfig */,
+				72FCABD82E62AC4994F4BE46 /* Pods-GymMeTests.debug.xcconfig */,
+				E4DC6CFA3344A217BB907792 /* Pods-GymMeTests.release.xcconfig */,
+				BDD1493C54B23E9EA2342143 /* Pods-GymMeUITests.debug.xcconfig */,
+				74A88D05873AF34D6B91AAD3 /* Pods-GymMeUITests.release.xcconfig */,
 			);
-			name = Frameworks;
+			name = Pods;
 			sourceTree = "<group>";
 		};
 		31359EC520DC16AD00F5ED11 /* LoginRegister */ = {
@@ -219,8 +222,8 @@
 				314FACE620D975F9005A5E7C /* GymMeTests */,
 				314FACF120D975F9005A5E7C /* GymMeUITests */,
 				314FACD020D975F9005A5E7C /* Products */,
-				F0A78B44790E654E91FB6E49 /* Pods */,
-				2E44CA2771BA77E3784B0EEB /* Frameworks */,
+				0B78349C72C6B542D8A8B1DC /* Pods */,
+				C30564D800280693916781F0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -342,17 +345,14 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		F0A78B44790E654E91FB6E49 /* Pods */ = {
+		C30564D800280693916781F0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D90866A642A72FDA5600E3D1 /* Pods-GymMe.debug.xcconfig */,
-				33890363EDFD0CF2BEFABF4D /* Pods-GymMe.release.xcconfig */,
-				8377A3EE18E01F686A0FE390 /* Pods-GymMeTests.debug.xcconfig */,
-				A58A19E8D52384E1DD14665E /* Pods-GymMeTests.release.xcconfig */,
-				EFF19038C6ACE97282D795F4 /* Pods-GymMeUITests.debug.xcconfig */,
-				634FF6C73D9E2FAD7209B77D /* Pods-GymMeUITests.release.xcconfig */,
+				198CD5FAC7E44BD3D1962AD8 /* Pods_GymMe.framework */,
+				62707C49A25866596B56ECFD /* Pods_GymMeTests.framework */,
+				8A1BDFF040FBBE622175D425 /* Pods_GymMeUITests.framework */,
 			);
-			name = Pods;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -362,12 +362,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 314FACF720D975F9005A5E7C /* Build configuration list for PBXNativeTarget "GymMe" */;
 			buildPhases = (
-				9BADBBED0EE4003BBD19D281 /* [CP] Check Pods Manifest.lock */,
+				9D63CCB2EB828C001C77AA2F /* [CP] Check Pods Manifest.lock */,
 				314FACCB20D975F9005A5E7C /* Sources */,
 				314FACCC20D975F9005A5E7C /* Frameworks */,
 				314FACCD20D975F9005A5E7C /* Resources */,
-				8170992D7FB63BF46048B535 /* [CP] Embed Pods Frameworks */,
-				C696F5F10E3106E19B45A064 /* [CP] Copy Pods Resources */,
+				915DF7DD4BD6031173EFF93B /* [CP] Embed Pods Frameworks */,
+				C95CE30788DA9D586C8FF7EE /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -382,7 +382,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 314FACFA20D975F9005A5E7C /* Build configuration list for PBXNativeTarget "GymMeTests" */;
 			buildPhases = (
-				1C34BB2698DA5A74BFACC16E /* [CP] Check Pods Manifest.lock */,
+				1382BCEEB823D2BD5644C02C /* [CP] Check Pods Manifest.lock */,
 				314FACDF20D975F9005A5E7C /* Sources */,
 				314FACE020D975F9005A5E7C /* Frameworks */,
 				314FACE120D975F9005A5E7C /* Resources */,
@@ -401,7 +401,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 314FACFD20D975F9005A5E7C /* Build configuration list for PBXNativeTarget "GymMeUITests" */;
 			buildPhases = (
-				5616BDB66CC59E561C9C2C94 /* [CP] Check Pods Manifest.lock */,
+				334A35BBAB036D1C983DEC8E /* [CP] Check Pods Manifest.lock */,
 				314FACEA20D975F9005A5E7C /* Sources */,
 				314FACEB20D975F9005A5E7C /* Frameworks */,
 				314FACEC20D975F9005A5E7C /* Resources */,
@@ -505,7 +505,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1C34BB2698DA5A74BFACC16E /* [CP] Check Pods Manifest.lock */ = {
+		1382BCEEB823D2BD5644C02C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -523,7 +523,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		5616BDB66CC59E561C9C2C94 /* [CP] Check Pods Manifest.lock */ = {
+		334A35BBAB036D1C983DEC8E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -541,7 +541,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		8170992D7FB63BF46048B535 /* [CP] Embed Pods Frameworks */ = {
+		915DF7DD4BD6031173EFF93B /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -579,7 +579,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-GymMe/Pods-GymMe-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		9BADBBED0EE4003BBD19D281 /* [CP] Check Pods Manifest.lock */ = {
+		9D63CCB2EB828C001C77AA2F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -597,7 +597,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C696F5F10E3106E19B45A064 /* [CP] Copy Pods Resources */ = {
+		C95CE30788DA9D586C8FF7EE /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -813,7 +813,7 @@
 		};
 		314FACF820D975F9005A5E7C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D90866A642A72FDA5600E3D1 /* Pods-GymMe.debug.xcconfig */;
+			baseConfigurationReference = 86327B0BD044F8E0809F7DE1 /* Pods-GymMe.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -821,6 +821,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2A8TEKG3F8;
+				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = GymMe/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -835,7 +836,7 @@
 		};
 		314FACF920D975F9005A5E7C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 33890363EDFD0CF2BEFABF4D /* Pods-GymMe.release.xcconfig */;
+			baseConfigurationReference = 236D98557CE61B8C6E7B85D4 /* Pods-GymMe.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -843,6 +844,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2A8TEKG3F8;
+				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = GymMe/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -858,7 +860,7 @@
 		};
 		314FACFB20D975F9005A5E7C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8377A3EE18E01F686A0FE390 /* Pods-GymMeTests.debug.xcconfig */;
+			baseConfigurationReference = 72FCABD82E62AC4994F4BE46 /* Pods-GymMeTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -875,7 +877,7 @@
 		};
 		314FACFC20D975F9005A5E7C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A58A19E8D52384E1DD14665E /* Pods-GymMeTests.release.xcconfig */;
+			baseConfigurationReference = E4DC6CFA3344A217BB907792 /* Pods-GymMeTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -892,7 +894,7 @@
 		};
 		314FACFE20D975F9005A5E7C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EFF19038C6ACE97282D795F4 /* Pods-GymMeUITests.debug.xcconfig */;
+			baseConfigurationReference = BDD1493C54B23E9EA2342143 /* Pods-GymMeUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -908,7 +910,7 @@
 		};
 		314FACFF20D975F9005A5E7C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 634FF6C73D9E2FAD7209B77D /* Pods-GymMeUITests.release.xcconfig */;
+			baseConfigurationReference = 74A88D05873AF34D6B91AAD3 /* Pods-GymMeUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;

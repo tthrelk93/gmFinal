@@ -3,7 +3,7 @@ import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 import FirebaseMessaging
-//import SwiftOverlays
+import SwiftOverlays
 import UserNotifications
 //import FirebaseMessaging
 import FirebaseStorage
@@ -101,6 +101,7 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
                     
                     
                     Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).updateChildValues(self.uploadData, withCompletionBlock: {(error, ref) in
+                        SwiftOverlays.showBlockingWaitOverlayWithText("Loading Feed")
                         self.performSegue(withIdentifier: "LoginToFeed", sender: self)
                         return
                     })
@@ -187,6 +188,7 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
                         // self.user = (user?.uid)!
                         print("Successful Login")
                         var userBool = false
+                         SwiftOverlays.showBlockingWaitOverlayWithText("Loading Feed")
                         self.performSegue(withIdentifier: "LoginToFeed", sender: self)
                         
                     }
@@ -248,6 +250,7 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
                     
                     
                             Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).updateChildValues(self.uploadData, withCompletionBlock: {(error, ref) in
+                                 SwiftOverlays.showBlockingWaitOverlayWithText("Loading Feed")
                                 self.performSegue(withIdentifier: "LoginToFeed", sender: self)
                                 return
                             })
@@ -609,7 +612,8 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
         if Auth.auth().currentUser != nil {
             // User is signed in.
             // ...
-            self.performSegue(withIdentifier: "LoginToFeed", sender: self)
+            // SwiftOverlays.showBlockingWaitOverlayWithText("Loading Feed")
+            //self.performSegue(withIdentifier: "LoginToFeed", sender: self)
         } else {
             // No user is signed in.
             // ...
