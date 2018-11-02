@@ -262,6 +262,9 @@ class NewsFeedCellCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var goToPosterProfile: UIButton!
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        self.profImageView.frame = CGRect(x: self.profImageView.frame.origin.x, y: self.profImageView.frame.origin.y, width: 34, height: 34)
+        goToPosterProfile.frame = profImageView.frame
         self.profImageView.layer.cornerRadius = self.profImageView.frame.width/2
         self.profImageView.layer.masksToBounds = true
         

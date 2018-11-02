@@ -41,6 +41,7 @@
 		31C48F1720D9845900D8316E /* NewsFeedPicCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C48F1520D9845900D8316E /* NewsFeedPicCollectionViewCell.swift */; };
 		31C48F1820D9845900D8316E /* NewsFeedPicCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 31C48F1620D9845900D8316E /* NewsFeedPicCollectionViewCell.xib */; };
 		31C48F1A20D989BB00D8316E /* FeedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C48F1920D989BB00D8316E /* FeedData.swift */; };
+		31C9CAE2218CDEC1005FB93E /* SinglePostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C9CAE1218CDEC1005FB93E /* SinglePostViewController.swift */; };
 		31EEAE6D20DEB8600015B8B2 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EEAE6C20DEB8600015B8B2 /* EditProfileView.swift */; };
 		31EEAE6F20DEC7A60015B8B2 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EEAE6E20DEC7A60015B8B2 /* PostViewController.swift */; };
 		31F0F13B20E4041700291263 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F0F13A20E4041700291263 /* Player.swift */; };
@@ -108,6 +109,7 @@
 		31C48F1520D9845900D8316E /* NewsFeedPicCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsFeedPicCollectionViewCell.swift; sourceTree = "<group>"; };
 		31C48F1620D9845900D8316E /* NewsFeedPicCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewsFeedPicCollectionViewCell.xib; sourceTree = "<group>"; };
 		31C48F1920D989BB00D8316E /* FeedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedData.swift; sourceTree = "<group>"; };
+		31C9CAE1218CDEC1005FB93E /* SinglePostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglePostViewController.swift; sourceTree = "<group>"; };
 		31EEAE6C20DEB8600015B8B2 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		31EEAE6E20DEC7A60015B8B2 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		31F0F13A20E4041700291263 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
@@ -260,6 +262,7 @@
 				31BF011E2101295E0012F933 /* ChatContainer.swift */,
 				31BF0120210129B00012F933 /* ChatViewController.swift */,
 				31AA6E8B214306D000CF0EFE /* NotificationsViewController.swift */,
+				31C9CAE1218CDEC1005FB93E /* SinglePostViewController.swift */,
 			);
 			path = GymMe;
 			sourceTree = "<group>";
@@ -640,6 +643,7 @@
 				314FACD320D975F9005A5E7C /* AppDelegate.swift in Sources */,
 				31BF0121210129B00012F933 /* ChatViewController.swift in Sources */,
 				3184C1F420E5468100A5EA19 /* PopCell.swift in Sources */,
+				31C9CAE2218CDEC1005FB93E /* SinglePostViewController.swift in Sources */,
 				31C48F1720D9845900D8316E /* NewsFeedPicCollectionViewCell.swift in Sources */,
 				31AA6E8F2143072800CF0EFE /* NotificationCell.swift in Sources */,
 				31359ECB20DC26C400F5ED11 /* CatCell.swift in Sources */,
