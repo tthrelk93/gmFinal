@@ -7,14 +7,23 @@
 //
 
 import UIKit
+import FirebaseDatabase
+import FirebaseStorage
+import FirebaseAuth
 
-class SinglePostViewController: UIViewController {
+class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
 
     @IBAction func backPressed(_ sender: Any) {
         performSegue(withIdentifier: "backToProfile", sender: self)
     }
     var thisPostData = [String:Any]()
+    var activityViewController:UIActivityViewController?
     @IBAction func sharePressed(_ sender: Any) {
+        activityViewController = UIActivityViewController(
+            activityItems: ["Download GymMe today!"],
+            applicationActivities: nil)
+        
+        present(activityViewController!, animated: true, completion: nil)
     }
     @IBAction func favoritesButtonPressed(_ sender: Any) {
     }
@@ -26,14 +35,137 @@ class SinglePostViewController: UIViewController {
     @IBOutlet weak var commentButton: UIButton!
     @IBOutlet weak var postText: UILabel!
     @IBAction func commentsCountPressed(_ sender: Any) {
+        commentView.isHidden = false
+        commentView.isHidden = false
+        commentsCollect.isHidden = false
+        likesCollect.isHidden = true
     }
     @IBOutlet weak var commentsCountButton: UIButton!
     @IBOutlet weak var likesCountButton: UIButton!
     @IBOutlet weak var likeButton: UIButton!
     
     @IBAction func likesCountButtonPressed(_ sender: Any) {
+        commentView.isHidden = false
+        commentsCollect.isHidden = true
+        likesCollect.isHidden = false
     }
     @IBAction func likeButtonPressed(_ sender: Any) {
+        print("like")
+        var myPic = String()
+        print("fuqqqqq")
+        Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { snapshot in
+            let valDict = snapshot.value as! [String:Any]
+            myPic = valDict["profPic"] as! String
+            
+        })
+        
+        if self.likeButton.imageView?.image == UIImage(named: "like.png"){
+            self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
+            // let curLikes = Int((self.likesCountButton.titleLabel?.text)!)
+            //self.likesCountButton.setTitle(String(curLikes! + 1), for: .normal)
+            Database.database().reference().child("posts").child(self.postID).observeSingleEvent(of: .value, with: { snapshot in
+                let valDict = snapshot.value as! [String:Any]
+                
+                var likesArray = valDict["likes"] as! [[String:Any]]
+                if likesArray.count == 1 && (likesArray.first! as! [String:String]) == ["x": "x"]{
+                    likesArray.remove(at: 0)
+                }
+                var likesVal = likesArray.count
+                likesVal = likesVal + 1
+                // if self.myPicString == nil{
+                // self.myPicString = "profile-placeholder"
+                //}
+                likesArray.append(["uName": self.myUName, "realName": self.myUName, "uid": Auth.auth().currentUser!.uid, "pic": myPic])
+                
+                
+                Database.database().reference().child("posts").child(self.postID).child("likes").setValue(likesArray)
+                Database.database().reference().child("users").child(self.posterUID).child("posts").child(self.postID).child("likes").setValue(likesArray)
+                
+                
+                var likesString = String()
+                if likesArray.count == 1 {
+                    if(likesArray.first! as! [String:String]) == ["x": "x"]{
+                        likesString = "0 likes"
+                    } else {
+                        likesString = "\(likesArray.count) like"
+                    }
+                } else {
+                    likesString = "\(likesArray.count) likes"
+                }
+                self.likesCountButton.setTitle(likesString, for: .normal)
+                
+                //self.delegate?.reloadDataAfterLike()
+                Database.database().reference().child("users").child(self.posterUID).observeSingleEvent(of: .value, with: { snapshot in
+                    var uploadDict = [String:Any]()
+                    var snapDict = snapshot.value as! [String:Any]
+                    var noteArray = [[String:Any]]()
+                    if snapDict["notifications"] != nil{
+                        noteArray = snapDict["notifications"] as! [[String:Any]]
+                        let sendString = self.myUName + " liked your post."
+                        let tempDict = ["actionByUsername": self.myUName ,"postID": self.postID,"actionText": sendString, "timeStamp": "time","actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": myPic, "postText": "notification"] as! [String:Any]
+                        noteArray.append(tempDict)
+                        Database.database().reference().child("users").child(self.posterUID).updateChildValues(["notifications": noteArray])
+                    } else {
+                        let sendString = self.myUName + " liked your post."
+                        let tempDict = ["actionByUsername": self.myUName ,"postID": self.postID,"actionText": sendString, "timeStamp": "time","actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": myPic, "postText": "notification"] as [String : Any]
+                        Database.database().reference().child("users").child(self.posterUID).updateChildValues(["notifications":[tempDict]])
+                    }
+                    
+                })
+                
+            })
+            
+            //update Database for post with new like count
+            
+        } else {
+            self.likeButton.setImage(UIImage(named:"like.png"), for: .normal)
+            
+            Database.database().reference().child("posts").child(self.postID).observeSingleEvent(of: .value, with: { snapshot in
+                let valDict = snapshot.value as! [String:Any]
+                var likesVal = Int()
+                var likesArray = valDict["likes"] as! [[String: Any]]
+                var likesString = String()
+                if likesArray.count == 1 {
+                    likesArray.remove(at: 0)
+                    likesArray.append(["x":"x"])
+                    likesVal = 0
+                    
+                } else {
+                    likesArray.remove(at: 0)
+                    likesVal = likesArray.count
+                    //likesString = "\(likesArray.count) likes"
+                    
+                }
+                if likesArray.count == 1 {
+                    if(likesArray.first! as! [String:String]) == ["x": "x"]{
+                        likesString = "0 likes"
+                    } else {
+                        likesString = "\(likesArray.count) like"
+                    }
+                } else {
+                    likesString = "\(likesArray.count) likes"
+                }
+                
+                self.likesCountButton.setTitle(likesString, for: .normal)
+                
+                
+                
+                
+                
+                Database.database().reference().child("posts").child(self.postID).child("likes").setValue(likesArray)
+                
+                
+                Database.database().reference().child("users").child(self.posterUID).child("posts").child(self.postID).child("likes").setValue(likesArray)
+                
+                
+                DispatchQueue.main.async{
+                    self.likesCollect.reloadData()
+                }
+            })
+        }
+        DispatchQueue.main.async {
+            // self.delegate?.reloadDataAfterLike()
+        }
     }
     @IBOutlet weak var postPic: UIImageView!
     @IBOutlet weak var cityButton: UIButton!
@@ -41,6 +173,7 @@ class SinglePostViewController: UIViewController {
     
     @IBOutlet weak var commentsCollect: UICollectionView!
     @IBAction func closeCommentsButtonPressed(_ sender: Any) {
+        commentView.isHidden = true
     }
     @IBOutlet weak var commentView: UIView!
     
@@ -49,14 +182,23 @@ class SinglePostViewController: UIViewController {
     @IBOutlet weak var posterNameButton: UIButton!
     
     @IBOutlet weak var posterPicButton: UIButton!
+    var postID = String()
+    var posterUID = String()
     var player: Player?
     var myUName = String()
+    var commentsArray = [[String:Any]]()
+    var likesArray = [[String:Any]]()
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.postID = thisPostData["postID"] as! String
+        self.posterUID = thisPostData["posterUID"] as! String
         posterPicButton.layer.cornerRadius = posterPicButton.frame.width/2
         posterPicButton.layer.masksToBounds = true
         
+        commentsCollect.register(UINib(nibName: "CommentCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "CommentCollectionViewCell")
+        
+        likesCollect.register(UINib(nibName: "LikedByCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "LikedByCollectionViewCell")
         
 
         if thisPostData["postVid"] == nil && thisPostData["postPic"] == nil{
@@ -97,6 +239,10 @@ class SinglePostViewController: UIViewController {
                 }
                 
                 var tempPost: [String:Any]?
+                self.likesArray = ((self.thisPostData["likes"] as? [[String: Any]])!)
+                
+                likesCollect.delegate = self
+                likesCollect.dataSource = self
                 for item in (self.thisPostData["likes"] as? [[String: Any]])!{
                     
                     tempPost = item as! [String: Any]
@@ -149,6 +295,11 @@ class SinglePostViewController: UIViewController {
                 }
                 
                 //set comments count
+                 self.commentsArray = ((self.thisPostData["comments"] as? [[String: Any]])!)
+                
+                commentsCollect.delegate = self
+                commentsCollect.delegate = self
+                
                 if commentsPost!["x"] != nil {
                     
                 } else {
@@ -174,8 +325,113 @@ class SinglePostViewController: UIViewController {
                 self.view.addSubview((self.player?.view)!)
             }
         }
+        
         print("thisData: \(self.thisPostData)")
         // Do any additional setup after loading the view.
+    }
+    var curCollect = String()
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
+        if curCollect == "comments"{
+            return commentsArray.count
+        } else {
+            return likesArray.count
+        }
+    }
+    
+    var following = [String]()
+    
+    @IBOutlet weak var likesCollect: UICollectionView!
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if collectionView == likesCollect{
+        let cell : LikedByCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "LikedByCollectionViewCell", for: indexPath) as! LikedByCollectionViewCell
+            if (self.likesArray.count == 1 && (self.likesArray[indexPath.row])["x"] != nil){
+                
+                return cell
+                
+            } else {
+        DispatchQueue.main.async{
+            
+            if (self.following.contains(self.likesArray[indexPath.row]["uid"] as! String)){
+                cell.likedByFollowButton.setTitle("Unfollow", for: .normal)
+            }
+            cell.likedByName.isHidden = false
+            cell.likedByUName.isHidden = false
+            cell.likedByFollowButton.isHidden = false
+            cell.commentName.isHidden = true
+            cell.commentTextView.isHidden = true
+            cell.commentTimestamp.isHidden = true
+            cell.likedByUName.text = self.likesArray[indexPath.row]["uName"] as! String
+            
+            cell.likedByUID = self.likesArray[indexPath.row]["uid"] as! String
+            
+            cell.likedByName.text = self.likesArray[indexPath.row]["realName"] as! String
+            if self.likesArray[indexPath.row]["pic"] as! String == "profile-placeholder"{
+                DispatchQueue.main.async{
+                    cell.likedByImage.image = UIImage(named: "profile-placeholder")
+                }
+            } else {
+                if let messageImageUrl = URL(string: self.likesArray[indexPath.row]["pic"] as! String) {
+                    
+                    if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                        DispatchQueue.main.async{
+                            cell.likedByImage.image = UIImage(data: imageData as Data)
+                        }
+                        
+                    }
+                    
+                    //}
+                }
+            }
+        }
+            
+        return cell
+            }
+    } else {
+    //commentTF.becomeFirstResponder()
+    let cell : CommentCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CommentCollectionViewCell", for: indexPath) as! CommentCollectionViewCell
+    DispatchQueue.main.async{
+    cell.commentorPic.layer.cornerRadius = cell.commentorPic.frame.width/2
+    cell.commentorPic.layer.masksToBounds = true
+    let nameAndComment = (self.commentsArray[indexPath.row]["commentorName"] as! String) + " " +  (self.commentsArray[indexPath.row]["commentText"] as! String)
+    print("name&Comment: \(nameAndComment)")
+        
+        
+        let boldNameAndComment = self.attributedText(withString: nameAndComment, boldString: (self.commentsArray[indexPath.row]["commentorName"] as! String), font: (cell.commentTextView.font!))
+        
+    print("boldName&Comment: \(boldNameAndComment)")
+    cell.commentTextView.attributedText = boldNameAndComment
+    let tStampDateString = self.commentsArray[indexPath.row]["commentDate"] as! String
+    
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+    
+    let date = dateFormatter.date(from: tStampDateString)
+    
+    let now = Date()
+    //print("tStampDateString: \(tStampDateString), date: \(date!), now: \(now)")
+    let hoursBetween = now.hours(from: date!)
+    //let tString = dateFormatter.string(from: tDate!)
+    cell.commentTimeStamp.text = "\(hoursBetween) hours ago"
+    
+    if self.commentsArray[indexPath.row]["commentorPic"] as! String == "profile-placeholder"{
+    cell.commentorPic.setImage(UIImage(named: "profile-placeholder"), for: .normal)
+    } else {
+    if let messageImageUrl = URL(string: self.commentsArray[indexPath.row]["commentorPic"] as! String) {
+    
+    if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+    cell.commentorPic.setImage(UIImage(data: imageData as Data), for: .normal)
+    }
+    }
+        }
+            }
+    return cell
+        }
+        
+    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        //select
     }
     
 
@@ -188,5 +444,13 @@ class SinglePostViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    func attributedText(withString string: String, boldString: String, font: UIFont) -> NSAttributedString {
+        let attributedString = NSMutableAttributedString(string: string,
+                                                         attributes: [NSAttributedStringKey.font: font])
+        let boldFontAttribute: [NSAttributedStringKey: Any] = [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: font.pointSize)]
+        let range = (string as NSString).range(of: boldString)
+        attributedString.addAttributes(boldFontAttribute, range: range)
+        return attributedString
+    }
 
 }

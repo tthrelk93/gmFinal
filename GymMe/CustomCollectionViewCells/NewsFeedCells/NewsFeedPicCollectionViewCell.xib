@@ -68,7 +68,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cgY-Y1-vLx">
-                        <rect key="frame" x="13" y="398" width="22" height="20"/>
+                        <rect key="frame" x="11" y="398" width="25" height="25"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <state key="normal" image="like">
                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -78,7 +78,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t1H-Uv-e2M">
-                        <rect key="frame" x="10" y="425" width="78" height="14"/>
+                        <rect key="frame" x="10" y="430" width="78" height="14"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
                         <state key="normal" title="0 Likes">
@@ -104,7 +104,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mkl-09-Svq">
-                        <rect key="frame" x="10" y="475" width="209" height="24"/>
+                        <rect key="frame" x="10" y="486" width="209" height="24"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <state key="normal" title="View all comments">
                             <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -115,14 +115,14 @@
                         </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="sdfg sdfg sf gsdfg sdfjg sdljgf sdfhgljsdh glshdf ljhsldfj hlsjdh lkjsdfhglkjsdhf lgksflkghslglksjdfhg kjsdhglksdhgkld" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rg9-z0-SZO">
-                        <rect key="frame" x="10" y="433" width="355" height="49"/>
+                        <rect key="frame" x="10" y="442" width="355" height="49"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ahd-gy-b1s">
-                        <rect key="frame" x="45" y="398" width="24" height="20"/>
+                        <rect key="frame" x="47" y="398" width="26" height="23"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <state key="normal" image="Comment">
                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -132,7 +132,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" alpha="0.80000001192092896" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jfb-Sb-Irr">
-                        <rect key="frame" x="77" y="396" width="29" height="23"/>
+                        <rect key="frame" x="82" y="396" width="26" height="25"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <state key="normal" backgroundImage="favoritesUnfilled">
                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -142,7 +142,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" alpha="0.75" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jcN-Dd-IeQ">
-                        <rect key="frame" x="116" y="398" width="22" height="21"/>
+                        <rect key="frame" x="118" y="396" width="25" height="25"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <state key="normal" backgroundImage="shareIcon-1">
                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
