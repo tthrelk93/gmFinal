@@ -614,6 +614,12 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
             // ...
             SwiftOverlays.showBlockingWaitOverlayWithText("Loading Feed")
             self.performSegue(withIdentifier: "LoginToFeed", sender: self)
+            //print(Auth.auth().currentUser!.uid)
+            //try! Auth.auth().signOut()
+            //print("dfgdfg")
+            //print(Auth.auth().currentUser!.uid)
+            
+            
         } else {
             // No user is signed in.
             // ...

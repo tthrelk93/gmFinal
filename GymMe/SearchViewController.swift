@@ -26,7 +26,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     @IBOutlet weak var sportsCollect: UICollectionView!
     
     @IBAction func backToAllCatPressed(_ sender: Any) {
-        topBarCat.setTitleColor(gmRed, for: .normal)
+        topBarCat.setTitleColor(UIColor.red, for: .normal)
         topBarPop.setTitleColor(UIColor.black, for: .normal)
         topBarNearby.setTitleColor(UIColor.black, for: .normal)
         categoriesCollect.isHidden = false
@@ -41,25 +41,23 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         backToCatButton.isHidden = true
         //}
     }
-    var gmRed = UIColor(red: 180/255, green: 29/255, blue: 2/255, alpha: 1.0)
+   // var gmRed = UIColor(red: 180/255, green: 29/255, blue: 2/255, alpha: 1.0)
     @IBAction func backButtonPressed(_ sender: Any) {
         UIView.animate(withDuration: 0.5, animations: {
-            self.singlePostView3.frame = self.ogCommentPos
+            //self.singlePostView3.frame = self.ogCommentPos
             self.singlePostView.isHidden = true
             self.singlePostView.frame = self.curCellFrame
             self.singlePostImageView.image = nil
-            self.singlePostTextView.text = nil
+           // self.singlePostTextView.text = nil
             self.player = nil
-            self.singlePostView1.isHidden = false
+            //self.singlePostView1.isHidden = false
            self.backToCatButton.isHidden = false
           
         })
        
     }
-    @IBOutlet weak var singlePostView1: UIView!
-    @IBOutlet weak var singlePostView2: UIView!
-    @IBOutlet weak var singlePostView3: UIView!
-    @IBOutlet weak var singlePostTextView: UITextView!
+   
+    
     @IBOutlet weak var singlePostImageView: UIImageView!
     @IBOutlet weak var singlePostView: UIView!
     
@@ -72,7 +70,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     @IBOutlet weak var topBarCat: UIButton!
     
     @IBAction func topBarCatPressed(_ sender: Any) {
-        topBarCat.setTitleColor(gmRed, for: .normal)
+        topBarCat.setTitleColor(UIColor.red, for: .normal)
         topBarPop.setTitleColor(UIColor.black, for: .normal)
         topBarNearby.setTitleColor(UIColor.black, for: .normal)
         categoriesCollect.isHidden = false
@@ -92,7 +90,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     var popData = [[String:Any]]()
     @IBAction func topBarPopPressed(_ sender: Any) {
         topBarCat.setTitleColor(UIColor.black, for: .normal)
-        topBarPop.setTitleColor(gmRed, for: .normal)
+        topBarPop.setTitleColor(UIColor.red, for: .normal)
         topBarNearby.setTitleColor(UIColor.black, for: .normal)
         categoriesCollect.isHidden = true
         border1.isHidden = true
@@ -131,16 +129,18 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         
     }
     
+    @IBOutlet weak var commentView: UIView!
     @IBOutlet weak var topBarNearby: UIButton!
     @IBOutlet weak var commentedByButton: UIButton!
     
     @IBAction func commentedByButtonPressed(_ sender: Any) {
-        singlePostView3.isHidden = false
+        commentView.isHidden = false
+       // singlePostView3.isHidden = false
     }
     @IBAction func topBarNearbyPressed(_ sender: Any) {
         topBarCat.setTitleColor(UIColor.black, for: .normal)
         topBarPop.setTitleColor(UIColor.black, for: .normal)
-        topBarNearby.setTitleColor(gmRed, for: .normal)
+        topBarNearby.setTitleColor(UIColor.red, for: .normal)
         categoriesCollect.isHidden = true
         border1.isHidden = true
         border2.isHidden = true
@@ -164,18 +164,21 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     @IBOutlet weak var border1: UIView!
     
     @IBAction func hideCommentsPressed(_ sender: Any) {
-        singlePostView3.isHidden = true
+        commentView.isHidden = true
     }
     @IBOutlet weak var hideComments: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
-        ogCommentPos = singlePostView3.frame
+        ogCommentPos = commentView.frame
         posterPicButton.layer.cornerRadius = posterPicButton.frame.width/2
         posterPicButton.layer.masksToBounds = true
         locationManager.requestAlwaysAuthorization()
         locationManager.requestWhenInUseAuthorization()
-        self.commentCollect.register(UINib(nibName: "LikedByCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "LikedByCollectionViewCell")
-        shareCollect.register(UINib(nibName: "LikedByCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "LikedByCollectionViewCell")
+      
+        commentCollect.register(UINib(nibName: "CommentCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "CommentCollectionViewCell")
+        
+        likesCollect.register(UINib(nibName: "LikedByCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "LikedByCollectionViewCell")
+        //shareCollect.register(UINib(nibName: "LikedByCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "LikedByCollectionViewCell")
        ogSinglePostViewFrame = singlePostView.frame
         
         
@@ -216,7 +219,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         popCollect.isHidden = true
         
         tabBar.selectedItem = tabBar.items?[1]
-        topBarCat.setTitleColor(gmRed, for: .normal)
+        topBarCat.setTitleColor(UIColor.red, for: .normal)
         topBarPop.setTitleColor(UIColor.black, for: .normal)
         topBarNearby.setTitleColor(UIColor.black, for: .normal)
         categoriesCollect.isHidden = false
@@ -298,8 +301,10 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             return catCollectData.count
         } else if collectionView == popCollect {
             return popCollectData.count
-        } else {
+        } else if collectionView == commentCollect{
             return commentsCollectData.count
+        } else {
+            return likedCollectData.count
         }
     }
     var topBarPressed = false
@@ -325,7 +330,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             let cell : PopCell = (collectionView.dequeueReusableCell(withReuseIdentifier: "PopCell", for: indexPath) as! PopCell)
             cell.layer.borderWidth = 1
             cell.layer.borderColor = UIColor.white.cgColor
-            if topBarCat.titleLabel?.textColor == self.gmRed{
+            if topBarCat.titleLabel?.textColor == UIColor.red{
                 
                 //print("this popcelldata = \(popCollectData[indexPath.row] )")
                 if topBarPressed == true{
@@ -492,43 +497,111 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 
             return cell
         
-        } else {
-                let cell : LikedByCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "LikedByCollectionViewCell", for: indexPath) as! LikedByCollectionViewCell
-            cell.backgroundColor = UIColor.clear
-            cell.commentName.textColor = UIColor.white
-            cell.commentTextView.textColor = UIColor.white
-            cell.commentTimestamp.textColor = UIColor.white
-                cell.likedByName.isHidden = true
-                cell.likedByUName.isHidden = true
-                cell.likedByFollowButton.isHidden = true
-                cell.commentName.isHidden = false
-                cell.commentTextView.isHidden = false
-                cell.commentTimestamp.isHidden = false
-            cell.commentTextView.text = commentsCollectData[indexPath.row]["commentText"] as! String
-            cell.commentName.text = commentsCollectData[indexPath.row]["commentorName"] as! String
-             DispatchQueue.main.async{
+        } else if collectionView == commentCollect {
+            let cell : CommentCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CommentCollectionViewCell", for: indexPath) as! CommentCollectionViewCell
+            DispatchQueue.main.async{
+                cell.commentorPic.layer.cornerRadius = cell.commentorPic.frame.width/2
+                cell.commentorPic.layer.masksToBounds = true
+                let nameAndComment = (self.commentsCollectData[indexPath.row]["commentorName"] as! String) + " " +  (self.commentsCollectData[indexPath.row]["commentText"] as! String)
+                
+                print("name&Comment: \(nameAndComment)")
+                
+                
+                let boldNameAndComment = self.attributedText(withString: nameAndComment, boldString: (self.commentsCollectData[indexPath.row]["commentorName"] as! String), font: (cell.commentTextView.font!))
+                
+                print("boldName&Comment: \(boldNameAndComment)")
+                cell.commentTextView.attributedText = boldNameAndComment
+                let tStampDateString = self.commentsCollectData[indexPath.row]["commentDate"] as! String
+                
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+                dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+                
+                let date = dateFormatter.date(from: tStampDateString)
+                
+                let now = Date()
+                //print("tStampDateString: \(tStampDateString), date: \(date!), now: \(now)")
+                let hoursBetween = now.hours(from: date!)
+                //let tString = dateFormatter.string(from: tDate!)
+                cell.commentTimeStamp.text = "\(hoursBetween) hours ago"
+                
                 if self.commentsCollectData[indexPath.row]["commentorPic"] as! String == "profile-placeholder"{
-                    cell.likedByImage.image = UIImage(named: "profile-placeholder")
+                    cell.commentorPic.setImage(UIImage(named: "profile-placeholder"), for: .normal)
                 } else {
                     if let messageImageUrl = URL(string: self.commentsCollectData[indexPath.row]["commentorPic"] as! String) {
                         
                         if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
-                            cell.likedByImage.image = UIImage(data: imageData as Data)
+                            cell.commentorPic.setImage(UIImage(data: imageData as Data), for: .normal)
                         }
                     }
                 }
             }
+            return cell
+        } else {
+            let cell : LikedByCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "LikedByCollectionViewCell", for: indexPath) as! LikedByCollectionViewCell
+            if (self.likedCollectData .count == 1 && (self.likedCollectData[indexPath.row])["x"] != nil){
+                
                 return cell
+                
+            } else {
+                DispatchQueue.main.async{
+                    
+                    /*if (self.following.contains(self.likedCollectData[indexPath.row]["uid"] as! String)){
+                        cell.likedByFollowButton.setTitle("Unfollow", for: .normal)
+                    }*/
+                    cell.likedByName.isHidden = false
+                    cell.likedByUName.isHidden = false
+                    cell.likedByFollowButton.isHidden = true
+                    cell.commentName.isHidden = true
+                    cell.commentTextView.isHidden = true
+                    cell.commentTimestamp.isHidden = true
+                    cell.likedByUName.text = self.likedCollectData[indexPath.row]["uName"] as! String
+                    
+                    cell.likedByUID = self.likedCollectData[indexPath.row]["uid"] as! String
+                    
+                    cell.likedByName.text = self.likedCollectData[indexPath.row]["realName"] as! String
+                    if self.likedCollectData[indexPath.row]["pic"] as! String == "profile-placeholder"{
+                        DispatchQueue.main.async{
+                            cell.likedByImage.image = UIImage(named: "profile-placeholder")
+                        }
+                    } else {
+                        if let messageImageUrl = URL(string: self.likedCollectData[indexPath.row]["pic"] as! String) {
+                            
+                            if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                                DispatchQueue.main.async{
+                                    cell.likedByImage.image = UIImage(data: imageData as Data)
+                                }
+                                
+                            }
+                            
+                            //}
+                        }
+                    }
+                }
+            }
+            
+            return cell
         }
             
     }
+    
+   
+    
     @IBOutlet weak var shareCollectView: UIView!
     @IBOutlet weak var shareCollect: UICollectionView!
     // @IBOutlet weak var commentButton: UIButton!
     @IBOutlet weak var favoritesCount: UIButton!
     var commentsCollectData = [[String:Any]]()
     @IBOutlet weak var commentCollect: UICollectionView!
+    
+     var activityViewController:UIActivityViewController?
     @IBAction func shareButtonPressed(_ sender: Any) {
+        
+        activityViewController = UIActivityViewController(
+            activityItems: ["Download GymMe today!"],
+            applicationActivities: nil)
+        
+        present(activityViewController!, animated: true, completion: nil)
         //shareFinalizeButton.isHidden = false
         //self.inboxButton.isHidden = true
         
@@ -536,7 +609,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         //shareSearchBar.isHidden = true
         
         //commentTF.isHidden = true
-        Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { snapshot in
+       /* Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { snapshot in
             let valDict = snapshot.value as! [String:Any]
             
             
@@ -569,7 +642,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 
             })
             
-        })
+        })*/
     }
     var likedCollectData = [[String:Any]]()
     @IBOutlet weak var shareButton: UIButton!
@@ -651,7 +724,9 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     @IBOutlet weak var favoritesButton: UIButton!
     //@IBAction func commentPressed(_ sender: Any) {
     //}
+    @IBOutlet weak var commentButton: UIButton!
     
+    @IBOutlet weak var likesCollect: UICollectionView!
     //@IBOutlet weak var commentCount: UIButton!
     @IBOutlet weak var likeButtonCount: UIButton!
     
@@ -774,6 +849,21 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
            // self.delegate?.reloadDataAfterLike()
         }
     }
+    
+    
+    
+    @IBOutlet weak var postText: UILabel!
+    @IBAction func commentPressed(_ sender: Any) {
+        commentView.isHidden = false
+        commentView.isHidden = false
+        commentCollect.isHidden = false
+        likesCollect.isHidden = true
+       // print("commentsArray: \(commentsArray)")
+        commentCollect.delegate = self
+        commentCollect.dataSource = self
+        //commentTF.isHidden = false
+    }
+    
     var postID = String()
     var posterUID = String()
     var selfData = [String:Any]()
@@ -783,7 +873,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     @IBAction func posterPicButtonPressed(_ sender: Any) {
     }
     @IBOutlet weak var posterPicButton: UIButton!
-    @IBOutlet weak var textPostTV: UITextView!
+    //@IBOutlet weak var textPostTV: UITextView!
     var player: Player?
     var selectedCat = String()
     var allCatDataDict = [String:[[String:Any]]]()
@@ -913,7 +1003,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         } else if collectionView == popCollect{
             
             
-            if topBarCat.titleLabel?.textColor == self.gmRed{
+            if topBarCat.titleLabel?.textColor == UIColor.red{
                 backToCatButton.isHidden = true
                 
                 let cellLabel = catCollectData[indexPath.row]
@@ -928,6 +1018,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 
                 self.posterUID = (((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["posterUID"] as? String)!
                 
+                self.cityLabel.titleLabel!.text = ((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["city"] as? String
                 
                 self.postID =  (((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["postID"] as? String)!
                 
@@ -945,6 +1036,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                             posterPicButton.setImage(UIImage(data: imageData as Data), for: .normal)
                         }
                     }
+                   self.likedCollectData = (((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["likes"] as! [[String:Any]])
                     self.posterNameButton.setTitle(((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["posterName"] as? String, for: .normal)
                     self.curCommentCell = self.popCollectData[indexPath.row]
                     var likesPost: [String:Any]?
@@ -1013,28 +1105,28 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         
                         if (favesPost!["uName"] as! String) == self.myName{
                             favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
-                            favoritesCount.setTitle((((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["favorites"] as! [[String:Any]]).count.description, for: .normal)
+                            //favoritesCount.setTitle((((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["favorites"] as! [[String:Any]]).count.description, for: .normal)
                         }
                     }
                     
-                    textPostTV.isHidden = true
-                    singlePostView2.isHidden = false
+                   // textPostTV.isHidden = true
+                   // singlePostView2.isHidden = false
                 } else if (((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["postVid"] as? String != nil) {
                     //vid post//////////
                     //self.singlePostView3.frame = ogCommentPos
                     self.player = Player()
-                    textPostTV.isHidden = true
+                   // textPostTV.isHidden = true
                     player?.url = URL(string:((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["postVid"] as! String)
                     let playTap = UITapGestureRecognizer()
                     playTap.numberOfTapsRequired = 1
                     playTap.addTarget(self, action: #selector(SearchViewController.playOrPause))
                     player?.view.addGestureRecognizer(playTap)
                     
-                    let vidFrame = CGRect(x: singlePostView1.frame.origin.x, y: singlePostView1.frame.origin.y, width: self.ogSinglePostViewFrame.width - 20, height: self.ogSinglePostViewFrame.height/2)
+                    let vidFrame = singlePostImageView.frame
                     self.player?.view.frame = vidFrame
-                    self.singlePostView1.addSubview((self.player?.view)!)
+                    self.singlePostView.addSubview((self.player?.view)!)
                     self.player?.didMove(toParentViewController: self)
-                    singlePostView1.sendSubview(toBack: (player?.view)!)
+                    singlePostView.sendSubview(toBack: (player?.view)!)
                     
                     self.curCommentCell = self.popCollectData[indexPath.row].first?.value as! [String:Any]
                     var likesPost: [String:Any]?
@@ -1101,12 +1193,12 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         
                         if (favesPost!["uName"] as! String) == self.myName{
                             favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
-                            favoritesCount.setTitle((((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["favorites"] as! [[String:Any]]).count.description, for: .normal)
+                            //favoritesCount.setTitle((((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["favorites"] as! [[String:Any]]).count.description, for: .normal)
                         }
                     }
                     
-                    textPostTV.isHidden = true
-                    singlePostView2.isHidden = false
+                    //textPostTV.isHidden = true
+                    //singlePostView2.isHidden = false
                 } else {
                     //text post
                     self.curCommentCell = ((self.popCollectData[indexPath.row]).first?.value as! [String:Any])
@@ -1176,17 +1268,17 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     } else {
                         if (favesPost!["uName"] as! String) == self.myName{
                             favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
-                            favoritesCount.setTitle((((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["favorites"] as! [[String:Any]]).count.description, for: .normal)
+                            //favoritesCount.setTitle((((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["favorites"] as! [[String:Any]]).count.description, for: .normal)
                         }
                     }
-                    textPostTV.isHidden = false
-                    singlePostView2.isHidden = true
+                    //textPostTV.isHidden = false
+                    //singlePostView2.isHidden = true
                     UIView.animate(withDuration: 0.5, animations: {
-                        self.singlePostView3.frame = self.textPostOnlyCommentsPost.frame
+                        //self.singlePostView3.frame = self.textPostOnlyCommentsPost.frame
                     })
                 }
-                textPostTV.text = (((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["postText"] as! String)
-                singlePostTextView.text = (((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["postText"] as! String)
+                postText.text = (((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["postText"] as! String)
+                //singlePostTextView.text = (((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["postText"] as! String)
                 UIView.animate(withDuration: 0.5, animations: {
                     self.singlePostView.isHidden = false
                     self.singlePostView.frame = self.ogSinglePostViewFrame
@@ -1204,6 +1296,8 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 //show single post view
                 singlePostView.frame = (popCollect.visibleCells[indexPath.row] as! PopCell).frame
                 self.curCellFrame = (popCollect.visibleCells[indexPath.row] as! PopCell).frame
+                
+                self.cityLabel.titleLabel!.text = ((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["city"] as? String
                 
                 //did select picture cell
                 if (self.popCollectData[indexPath.row])["postPic"] as? String != nil {
@@ -1288,28 +1382,28 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         
                         if (favesPost!["uName"] as! String) == self.myName{
                             favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
-                            favoritesCount.setTitle(((self.popCollectData[indexPath.row])["favorites"] as! [[String:Any]]).count.description, for: .normal)
+                            //favoritesCount.setTitle(((self.popCollectData[indexPath.row])["favorites"] as! [[String:Any]]).count.description, for: .normal)
                         }
                     }
                     
-                    textPostTV.isHidden = true
-                    singlePostView2.isHidden = false
+                    //textPostTV.isHidden = true
+                   // singlePostView2.isHidden = false
                 } else if ((self.popCollectData[indexPath.row])["postVid"] as? String != nil) {
                     //vid post//////////
                     //self.singlePostView3.frame = ogCommentPos
                     self.player = Player()
-                    textPostTV.isHidden = true
+                    //textPostTV.isHidden = true
                     player?.url = URL(string:(self.popCollectData[indexPath.row])["postVid"] as! String)
                     let playTap = UITapGestureRecognizer()
                     playTap.numberOfTapsRequired = 1
                     playTap.addTarget(self, action: #selector(SearchViewController.playOrPause))
                     player?.view.addGestureRecognizer(playTap)
                     
-                    let vidFrame = CGRect(x: singlePostView1.frame.origin.x, y: singlePostView1.frame.origin.y, width: self.ogSinglePostViewFrame.width - 20, height: self.ogSinglePostViewFrame.height/2)
+                    let vidFrame = singlePostImageView.frame
                     self.player?.view.frame = vidFrame
-                    self.singlePostView1.addSubview((self.player?.view)!)
+                    self.singlePostView.addSubview((self.player?.view)!)
                     self.player?.didMove(toParentViewController: self)
-                    singlePostView1.sendSubview(toBack: (player?.view)!)
+                    singlePostView.sendSubview(toBack: (player?.view)!)
                     
                     self.curCommentCell = self.popCollectData[indexPath.row]
                     var likesPost: [String:Any]?
@@ -1381,12 +1475,12 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         
                         if (favesPost!["uName"] as! String) == self.myName{
                             favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
-                            favoritesCount.setTitle(((self.popCollectData[indexPath.row])["favorites"] as! [[String:Any]]).count.description, for: .normal)
+                            //favoritesCount.setTitle(((self.popCollectData[indexPath.row])["favorites"] as! [[String:Any]]).count.description, for: .normal)
                         }
                     }
                     
-                    textPostTV.isHidden = true
-                    singlePostView2.isHidden = false
+                    //textPostTV.isHidden = true
+                   // singlePostView2.isHidden = false
                 } else {
                     //text post
                     self.curCommentCell = (self.popCollectData[indexPath.row])
@@ -1456,17 +1550,14 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     } else {
                         if (favesPost!["uName"] as! String) == self.myName{
                             favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
-                            favoritesCount.setTitle(((self.popCollectData[indexPath.row])["favorites"] as! [[String:Any]]).count.description, for: .normal)
+                            //favoritesCount.setTitle(((self.popCollectData[indexPath.row])["favorites"] as! [[String:Any]]).count.description, for: .normal)
                         }
                     }
-                    textPostTV.isHidden = false
-                    singlePostView2.isHidden = true
-                    UIView.animate(withDuration: 0.5, animations: {
-                        self.singlePostView3.frame = self.textPostOnlyCommentsPost.frame
-                    })
+                   // textPostTV.isHidden = false
+                    //singlePostView2.isHidden = true
                 }
-                textPostTV.text = ((self.popCollectData[indexPath.row])["postText"] as! String)
-                singlePostTextView.text = ((self.popCollectData[indexPath.row])["postText"] as! String)
+                postText.text = ((self.popCollectData[indexPath.row])["postText"] as! String)
+                //singlePostTextView.text = ((self.popCollectData[indexPath.row])["postText"] as! String)
                 UIView.animate(withDuration: 0.5, animations: {
                     self.singlePostView.isHidden = false
                     self.singlePostView.frame = self.ogSinglePostViewFrame
@@ -1481,8 +1572,8 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     var ogTextPos = CGRect()
     var ogCommentPos = CGRect()
     
-    @IBOutlet weak var textPostOnlyCommentsPost: UIView!
-    @IBOutlet weak var textPostOnlyView: UIView!
+    //@IBOutlet weak var textPostOnlyCommentsPost: UIView!
+    //@IBOutlet weak var textPostOnlyView: UIView!
     @IBOutlet weak var typeCommentTF: UITextField!
     @objc func playOrPause(){
         if self.player?.playbackState == PlaybackState.paused || self.player?.playbackState == PlaybackState.stopped{
@@ -1547,6 +1638,19 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             
         })
     } // may be called if
+    
+    @IBOutlet weak var cityLabel: UIButton!
+    
+    
+    
+    func attributedText(withString string: String, boldString: String, font: UIFont) -> NSAttributedString {
+        let attributedString = NSMutableAttributedString(string: string,
+                                                         attributes: [NSAttributedStringKey.font: font])
+        let boldFontAttribute: [NSAttributedStringKey: Any] = [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: font.pointSize)]
+        let range = (string as NSString).range(of: boldString)
+        attributedString.addAttributes(boldFontAttribute, range: range)
+        return attributedString
+    }
     
     var location: CLLocation?
     
