@@ -91,8 +91,40 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
                     //}
                 }
             }
+        Database.database().reference().child("posts").child(((noteCollectData![indexPath.row] as! [String:Any])["postID"] as! String)).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                var postP = "nah"
+                var postV = "nah"
+                for snap in snapshots{
+                    if snap.key == "postPic"{
+                        postP = snap.value as! String
+                    } else {
+                        postV = snap.value as! String
+                    }
+                }
+                if postP == "nah" && postV == "nah"{
+                    
+                } else {
+                    if postV == "nah"{
+                        if let messageImageUrl = URL(string: postP) {
+                            
+                            if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                                cell.postPic.setImage(UIImage(data: imageData as Data), for: .normal)
+                                
+                            }
+                            
+                            //}
+                        }
+                    } else {
+                        
+                    }
+                }
+            }
             //cell.delegate = self
+        })
             return cell
+        
         }
         var selectedPostID = String()
         func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath){

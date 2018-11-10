@@ -407,6 +407,8 @@ UICollectionViewDataSource, UISearchBarDelegate{
     @IBAction func textPostPressed(_ sender: Any) {
         startLocationManager()
         self.postType = "text"
+        makePostTextView.layer.borderColor = UIColor.clear.cgColor
+        addToCategoryButton.isHidden = true
         makePostTextView.delegate = self
         makePostTextView.becomeFirstResponder()
         makePostTextView.selectAll(nil)
@@ -457,6 +459,10 @@ UICollectionViewDataSource, UISearchBarDelegate{
        // makePostView.isHidden = false*/
         // Here we configure the picker to only show videos, no photos.
         self.postType = "vid"
+        
+        makePostTextView.layer.borderColor = UIColor.lightGray.cgColor
+        addToCategoryButton.isHidden = false
+        
         var config = YPImagePickerConfiguration()
         config.screens = [.library, .video]
         config.library.mediaType = .photoAndVideo
@@ -490,6 +496,8 @@ UICollectionViewDataSource, UISearchBarDelegate{
     var newPost: [String:Any]?
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.makePostTextView.layer.cornerRadius = 10
+        self.backToPostButton.layer.cornerRadius = 10
         picker.delegate = self
         tagSearchBar.delegate = self
         addToCategoryButton.layer.cornerRadius = 8
@@ -1308,6 +1316,7 @@ extension PostViewController: GMSAutocompleteViewControllerDelegate {
         print("Place address: \(place.formattedAddress)")
         print("Place attributions: \(place.attributions)")
         curCityLabel.text = place.name
+        addLocationButton.setTitle(place.name, for: .normal)
         //jobPost.location = place.formattedAddress
         self.place = place
         dismiss(animated: true, completion: nil)
