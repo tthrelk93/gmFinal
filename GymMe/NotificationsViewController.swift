@@ -99,7 +99,7 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
                 for snap in snapshots{
                     if snap.key == "postPic"{
                         postP = snap.value as! String
-                    } else {
+                    } else if snap.key == "postVid"{
                         postV = snap.value as! String
                     }
                 }
