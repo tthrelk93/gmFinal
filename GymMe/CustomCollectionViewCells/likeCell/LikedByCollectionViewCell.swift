@@ -104,6 +104,7 @@ class LikedByCollectionViewCell: UICollectionViewCell {
     var postID: String?
     override func awakeFromNib() {
         super.awakeFromNib()
+        likedByFollowButton.layer.cornerRadius = 10
         self.likedByImage.layer.cornerRadius = likedByImage.frame.height/2
         self.likedByImage.layer.masksToBounds = true
         // Initialization code

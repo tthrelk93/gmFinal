@@ -91,34 +91,44 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
                     //}
                 }
             }
-        Database.database().reference().child("posts").child(((noteCollectData![indexPath.row] as! [String:Any])["postID"] as! String)).observeSingleEvent(of: .value, with: { (snapshot) in
+        Database.database().reference().child("posts").observeSingleEvent(of: .value, with: { (snapshot) in
             
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                var postP = "nah"
-                var postV = "nah"
+                
                 for snap in snapshots{
-                    if snap.key == "postPic"{
-                        postP = snap.value as! String
-                    } else if snap.key == "postVid"{
-                        postV = snap.value as! String
-                    }
-                }
-                if postP == "nah" && postV == "nah"{
-                    
-                } else {
-                    if postV == "nah"{
-                        if let messageImageUrl = URL(string: postP) {
-                            
-                            if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
-                                cell.postPic.setImage(UIImage(data: imageData as Data), for: .normal)
-                                
-                            }
-                            
-                            //}
-                        }
-                    } else {
+                    var postP = "nah"
+                    var postV = "nah"
+                    var tempDict = [String:Any]()
+                    print("id: \((self.noteCollectData![indexPath.row] as! [String:Any])["postID"] as! String), \(snap.key)")
+                    if snap.key == (self.noteCollectData![indexPath.row] as! [String:Any])["postID"] as! String{
+                        print("yassssssssss")
+                        tempDict = snap.value as! [String:Any]
+                    if tempDict["postPic"] != nil {
+                        postP = tempDict["postPic"] as! String
+                    } else if tempDict["postVid"] != nil {
+                        postV = tempDict["postVid"] as! String
                         
+                        }
+                        if postP == "nah" && postV == "nah"{
+                            print("yo: \(snap.key)")
+                        } else {
+                            if postV == "nah"{
+                                if let messageImageUrl = URL(string: postP) {
+                                    
+                                    if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                                        cell.postPic.setImage(UIImage(data: imageData as Data), for: .normal)
+                                        
+                                    }
+                                    
+                                    //}
+                                }
+                            } else {
+                                print("what is this else")
+                            }
+                        }
                     }
+                
+               
                 }
             }
             //cell.delegate = self

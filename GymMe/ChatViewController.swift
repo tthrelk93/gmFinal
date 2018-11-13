@@ -88,8 +88,20 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
     var thisUser = DatabaseReference()
     var thisUserIsTypingRef = DatabaseReference()
     var thisUsersTypingQuery = DatabaseReference()
+    var myName = String()
     override func viewDidLoad() {
         super.viewDidLoad()
+        Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                
+                for snap in snapshots{
+                    if snap.key == "realName"{
+                        self.myName = snap.value as! String
+                    }
+                }
+            }
+        })
         /*Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("messages").observeSingleEvent(of: .value, with: { (snapshot) in
             
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
@@ -323,7 +335,7 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
             // 2
             let messageItem = [
                 "senderId": Auth.auth().currentUser!.uid,
-                "senderName": "Sender Name",
+                "senderName": self.myName,
                 "text": text!
                 ]
             
@@ -347,7 +359,7 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
         let messageItem = [
             "photoURL": imageURLNotSetKey,
             "senderId": Auth.auth().currentUser!.uid,
-            "senderName": "test sender"
+            "senderName": self.myName
         ]
         
         itemRef.setValue(messageItem)

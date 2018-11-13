@@ -101,7 +101,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jmL-mb-sxe">
-                        <rect key="frame" x="44" y="108" width="26" height="23"/>
+                        <rect key="frame" x="44" y="108" width="26" height="25"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <state key="normal" image="Comment">
                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -121,7 +121,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" alpha="0.75" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5sg-DW-2qr">
-                        <rect key="frame" x="115" y="106" width="25" height="25"/>
+                        <rect key="frame" x="115" y="108" width="21" height="23"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <state key="normal" backgroundImage="shareIcon-1">
                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -153,9 +153,9 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="Comment" width="43" height="41"/>
-        <image name="favoritesUnfilled" width="37.5" height="37.5"/>
-        <image name="like" width="46" height="41"/>
-        <image name="shareIcon-1" width="30" height="30"/>
+        <image name="Comment" width="204.80000305175781" height="204.80000305175781"/>
+        <image name="favoritesUnfilled" width="204.80000305175781" height="204.80000305175781"/>
+        <image name="like" width="204.80000305175781" height="204.80000305175781"/>
+        <image name="shareIcon-1" width="204.80000305175781" height="204.80000305175781"/>
     </resources>
 </document>
