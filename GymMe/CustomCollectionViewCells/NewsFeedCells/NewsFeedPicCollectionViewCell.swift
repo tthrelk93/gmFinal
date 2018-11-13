@@ -68,7 +68,7 @@ class NewsFeedPicCollectionViewCell: UICollectionViewCell {
     
     @IBAction func favoritesCountButtonPressed(_ sender: Any) {
     }
-    @IBOutlet weak var favoritesCountButton: UIButton!
+    //@IBOutlet weak var favoritesCountButton: UIButton!
     @IBAction func favoritesButtonPressed(_ sender: Any) {
         print("here000")
         print("df: \(self.favoritesButton.currentBackgroundImage)")
@@ -92,7 +92,7 @@ class NewsFeedPicCollectionViewCell: UICollectionViewCell {
                 Database.database().reference().child("posts").child(self.postID!).child("favorites").setValue(favoritesArray)
                 Database.database().reference().child("users").child(self.posterUID!).child("posts").child(self.postID!).child("favorites").setValue(favoritesArray)
                 Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("favorited").updateChildValues([self.postID!: self.selfData!])
-                self.favoritesCountButton.setTitle(String(favoritesArray.count), for: .normal)
+               // self.favoritesCountButton.setTitle(String(favoritesArray.count), for: .normal)
                 Database.database().reference().child("users").child(self.posterUID!).observeSingleEvent(of: .value, with: { snapshot in
                     var uploadDict = [String:Any]()
                     var snapDict = snapshot.value as! [String:Any]
@@ -128,11 +128,11 @@ class NewsFeedPicCollectionViewCell: UICollectionViewCell {
                     favesArray.remove(at: 0)
                     favesArray.append(["x": "x"])
                     favesVal = 0
-                    self.favoritesCountButton.setTitle("0", for: .normal)
+                    //self.favoritesCountButton.setTitle("0", for: .normal)
                 } else {
                     favesArray.remove(at: 0)
                     favesVal = favesArray.count
-                    self.favoritesCountButton.setTitle(String(favesArray.count), for: .normal)
+                    //self.favoritesCountButton.setTitle(String(favesArray.count), for: .normal)
                 }
                 
                 

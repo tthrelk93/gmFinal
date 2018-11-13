@@ -122,9 +122,9 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ahd-gy-b1s">
-                        <rect key="frame" x="47" y="398" width="26" height="23"/>
+                        <rect key="frame" x="47" y="398" width="26" height="25"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                        <state key="normal" image="Comment">
+                        <state key="normal" image="commentIcon">
                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                         </state>
                         <connections>
@@ -175,7 +175,6 @@
                 <outlet property="commentButton" destination="ahd-gy-b1s" id="Hor-aN-1ZP"/>
                 <outlet property="commentsCountButton" destination="Mkl-09-Svq" id="83O-0t-wth"/>
                 <outlet property="favoritesButton" destination="jfb-Sb-Irr" id="mUu-Xh-Ais"/>
-                <outlet property="favoritesCountButton" destination="MQo-o1-4G3" id="TPg-nO-a47"/>
                 <outlet property="goToPosterProfile" destination="oFt-jN-FjC" id="epA-Rc-DZS"/>
                 <outlet property="likeButton" destination="cgY-Y1-vLx" id="Lfo-SB-x09"/>
                 <outlet property="likesCountButton" destination="t1H-Uv-e2M" id="ic2-Ag-d9E"/>
@@ -193,10 +192,10 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="Comment" width="43" height="41"/>
         <image name="Octicons-mute.svg" width="2000" height="2286"/>
-        <image name="favoritesUnfilled" width="37.5" height="37.5"/>
-        <image name="like" width="46" height="41"/>
-        <image name="shareIcon-1" width="30" height="30"/>
+        <image name="commentIcon" width="204.80000305175781" height="204.80000305175781"/>
+        <image name="favoritesUnfilled" width="204.80000305175781" height="204.80000305175781"/>
+        <image name="like" width="204.80000305175781" height="204.80000305175781"/>
+        <image name="shareIcon-1" width="204.80000305175781" height="204.80000305175781"/>
     </resources>
 </document>

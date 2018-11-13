@@ -53,6 +53,7 @@ class LikedByCollectionViewCell: UICollectionViewCell {
                         Database.database().reference().child("users").child(self.likedByUID!).updateChildValues(uploadDict2)
                     }
                     self.likedByFollowButton.setTitle("Unfollow", for: .normal)
+                    self.likedByFollowButton.backgroundColor = UIColor.red
                 })
             })
                     
@@ -88,6 +89,7 @@ class LikedByCollectionViewCell: UICollectionViewCell {
                         Database.database().reference().child("users").child(self.likedByUID!).updateChildValues(uploadDict2)
                     }
                     self.likedByFollowButton.setTitle("Follow", for: .normal)
+                    self.likedByFollowButton.backgroundColor = UIColor.green
                 })
             })
         }

@@ -511,7 +511,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 
                 print("boldName&Comment: \(boldNameAndComment)")
                 cell.commentTextView.attributedText = boldNameAndComment
-                let tStampDateString = self.commentsCollectData[indexPath.row]["commentDate"] as! String
+                let tStampDateString = (self.curCommentCell!.first?.value as! [String:Any])["datePosted"]! as! String
                 
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
@@ -667,7 +667,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 Database.database().reference().child("posts").child(self.postID).child("favorites").setValue(favoritesArray)
                 Database.database().reference().child("users").child(self.posterUID).child("posts").child(self.postID).child("favorites").setValue(favoritesArray)
                 Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("favorited").updateChildValues([self.postID: self.selfData])
-                self.favoritesButton.setTitle(String(favoritesArray.count), for: .normal)
+                //self.favoritesButton.setTitle(String(favoritesArray.count), for: .normal)
                 Database.database().reference().child("users").child(self.posterUID).observeSingleEvent(of: .value, with: { snapshot in
                     var uploadDict = [String:Any]()
                     var snapDict = snapshot.value as! [String:Any]
@@ -703,11 +703,11 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     favesArray.remove(at: 0)
                     favesArray.append(["x": "x"])
                     favesVal = 0
-                    self.favoritesButton.setTitle("0", for: .normal)
+                    //self.favoritesButton.setTitle("0", for: .normal)
                 } else {
                     favesArray.remove(at: 0)
                     favesVal = favesArray.count
-                    self.favoritesButton.setTitle(String(favesArray.count), for: .normal)
+                    //self.favoritesButton.setTitle(String(favesArray.count), for: .normal)
                 }
                 
                 
@@ -841,7 +841,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 
                 
                 DispatchQueue.main.async{
-                    self.shareCollect.reloadData()
+                    //self.shareCollect.reloadData()
                 }
             })
         }
@@ -1055,8 +1055,15 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     if likesPost!["x"] != nil {
                         
                     } else {
-                        
-                        likeButtonCount.setTitle(String((((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["likes"] as! [[String:Any]]).count), for: .normal)
+                        if (((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["likes"] as! [[String:Any]]).count == 1{
+                       var tempString = "\((((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["likes"] as! [[String:Any]]).count) like"
+                        likeButtonCount.setTitle(tempString, for: .normal)
+                            
+                        } else {
+                            var tempString = "\((((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["likes"] as! [[String:Any]]).count) likes"
+                            likeButtonCount.setTitle(tempString, for: .normal)
+                            
+                        }
                         
                         if (likesPost!["uName"] as! String) == self.myUName{
                             self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
@@ -1604,7 +1611,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     var curCommentCell: [String:Any]?
     public func textFieldDidEndEditing(_ textField: UITextField){
         //add comment to post
-        Database.database().reference().child("posts").child((self.curCommentCell?["postID"]!) as! String).observeSingleEvent(of: .value, with: { snapshot in
+        Database.database().reference().child("posts").child((self.curCommentCell!.first?.value as! [String:Any])["postID"]! as! String).observeSingleEvent(of: .value, with: { snapshot in
             let valDict = snapshot.value as! [String:Any]
             
             var commentsArray = valDict["comments"] as! [[String:Any]]
@@ -1618,8 +1625,8 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             }
             //add current users id and uName to comment object and upload to database
             commentsArray.append(["commentorName": self.myName, "commentorID": Auth.auth().currentUser!.uid, "commentorPic": self.myPicString, "commentText": self.typeCommentTF.text])
-            Database.database().reference().child("posts").child((self.curCommentCell?["postID"]!) as! String).child("comments").setValue(commentsArray)
-            Database.database().reference().child("users").child((self.curCommentCell?["posterUID"]!) as! String).child("posts").child((self.curCommentCell?["postID"]!) as! String).child("comments").setValue(commentsArray)
+            Database.database().reference().child("posts").child((self.curCommentCell!.first?.value as! [String:Any])["postID"]! as! String).child("comments").setValue(commentsArray)
+            Database.database().reference().child("users").child((self.curCommentCell!.first?.value as! [String:Any])["posterUID"]! as! String).child("posts").child((self.curCommentCell!.first?.value as! [String:Any])["postID"]! as! String).child("comments").setValue(commentsArray)
             
             self.typeCommentTF.text = nil
             self.commentsCollectData = commentsArray
