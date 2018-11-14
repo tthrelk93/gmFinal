@@ -31,6 +31,8 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
     }
     
 
+    var idArray = [String]()
+    var picDict = [String:UIImage]()
     @IBOutlet weak var notifyCollect: UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,6 +56,41 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
             self.notifyCollect.delegate = self
             self.notifyCollect.dataSource = self
             }
+            for dict in self.noteCollectData!{
+               // var temp = dict as! [String:Any]
+                self.idArray.append(dict["postID"] as! String)
+            }
+            Database.database().reference().child("posts").observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                    
+                    for snap in snapshots{
+                        var temp = snap.value as! [String:Any]
+                        if(self.idArray.contains(snap.key)){
+                            if temp["postPic"] != nil{
+                                if let messageImageUrl = URL(string: temp["postPic"] as! String) {
+                                    
+                                    if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                                        self.picDict[snap.key] = UIImage(data: imageData as Data)
+                                        
+                                    }
+                                    
+                                    //}
+                                }
+                                
+                          
+                            } else if temp["postVid"] != nil {
+                                //vid
+                            } else {
+                                //text
+                            }
+                        }
+                            
+                       
+                }
+                }
+                //cell.delegate = self
+            })
             SwiftOverlays.removeAllBlockingOverlays()
         })
 
@@ -69,6 +106,7 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
     }
     var noteCollectData: [[String:Any]]?
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         let cell : NotificationCell = collectionView.dequeueReusableCell(withReuseIdentifier: "NotificationCell", for: indexPath) as! NotificationCell
         
         var sendString = (noteCollectData![indexPath.row]["actionText"] as! String) + (noteCollectData![indexPath.row]["timeStamp"] as! String)
@@ -77,11 +115,11 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
         cell.actionByUID = noteCollectData![indexPath.row]["actionByUID"] as! String
             cell.postTextLabel.text = noteCollectData![indexPath.row]["postText"] as? String
         cell.postTextLabel.isHidden = true
-        
-        if noteCollectData![indexPath.row]["actionByUserPic"] as! String == "profile-placeholder"{
+        DispatchQueue.main.async{
+            if self.noteCollectData![indexPath.row]["actionByUserPic"] as! String == "profile-placeholder"{
                 cell.actionUserPicButton.setImage(UIImage(named: "profile-placeholder"), for: .normal)
             } else {
-                if let messageImageUrl = URL(string: noteCollectData![indexPath.row]["actionByUserPic"] as! String) {
+            if let messageImageUrl = URL(string: self.noteCollectData![indexPath.row]["actionByUserPic"] as! String) {
                     
                     if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
                         cell.actionUserPicButton.setImage(UIImage(data: imageData as Data), for: .normal)
@@ -91,48 +129,13 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
                     //}
                 }
             }
-        Database.database().reference().child("posts").observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                
-                for snap in snapshots{
-                    var postP = "nah"
-                    var postV = "nah"
-                    var tempDict = [String:Any]()
-                    print("id: \((self.noteCollectData![indexPath.row] as! [String:Any])["postID"] as! String), \(snap.key)")
-                    if snap.key == (self.noteCollectData![indexPath.row] as! [String:Any])["postID"] as! String{
-                        print("yassssssssss")
-                        tempDict = snap.value as! [String:Any]
-                    if tempDict["postPic"] != nil {
-                        postP = tempDict["postPic"] as! String
-                    } else if tempDict["postVid"] != nil {
-                        postV = tempDict["postVid"] as! String
-                        
-                        }
-                        if postP == "nah" && postV == "nah"{
-                            print("yo: \(snap.key)")
-                        } else {
-                            if postV == "nah"{
-                                if let messageImageUrl = URL(string: postP) {
-                                    
-                                    if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
-                                        cell.postPic.setImage(UIImage(data: imageData as Data), for: .normal)
-                                        
-                                    }
-                                    
-                                    //}
-                                }
-                            } else {
-                                print("what is this else")
-                            }
-                        }
-                    }
-                
-               
-                }
-            }
-            //cell.delegate = self
-        })
+            if self.picDict[self.noteCollectData![indexPath.row]["postID"] as! String] != nil{
+                cell.postPic.layer.cornerRadius = cell.postPic.frame.width/2
+                cell.postPic.layer.masksToBounds = true
+                cell.postPic.setImage(self.picDict[self.noteCollectData![indexPath.row]["postID"] as! String], for: .normal)
+        }
+        }
+       
             return cell
         
         }

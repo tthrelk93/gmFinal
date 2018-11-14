@@ -53,7 +53,7 @@ class NotificationCell: UICollectionViewCell {
     }
     override func prepareForReuse(){
         super.prepareForReuse()
-        
+       
         self.postPic.imageView?.image = nil
         self.postTextLabel.text = nil
         self.player?.view.isHidden = true
