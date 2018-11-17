@@ -33,7 +33,7 @@ class NewsFeedCellCollectionViewCell: UICollectionViewCell {
          delegate?.showLikedByViewTextCell(sentBy: "share", cell: self)
     }
     @IBAction func commentsCountButtonPressed(_ sender: Any) {
-        delegate?.showLikedByViewTextCell(sentBy: "showComments", cell: self)
+        delegate?.showLikedByViewTextCell(sentBy: "showCommentsCount", cell: self)
     }
     @IBOutlet weak var commentsCountButton: UIButton!
     @IBAction func commentButtonPressed(_ sender: Any) {
