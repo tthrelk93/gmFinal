@@ -130,8 +130,8 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
                 }
             }
             if self.picDict[self.noteCollectData![indexPath.row]["postID"] as! String] != nil{
-                cell.postPic.layer.cornerRadius = cell.postPic.frame.width/2
-                cell.postPic.layer.masksToBounds = true
+                //cell.postPic.layer.cornerRadius = cell.postPic.frame.width/2
+                //cell.postPic.layer.masksToBounds = true
                 cell.postPic.setImage(self.picDict[self.noteCollectData![indexPath.row]["postID"] as! String], for: .normal)
         }
         }

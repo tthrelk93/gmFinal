@@ -213,6 +213,10 @@ UICollectionViewDataSource, UISearchBarDelegate{
     }
     var selectedCellsArr = [PostCatSearchCell]()
     
+    @IBOutlet weak var picViewLine1: UIView!
+    @IBOutlet weak var picViewLine2: UIView!
+    @IBOutlet weak var picViewLine3: UIView!
+    
     
     @IBOutlet weak var addCatView: UIView!
     
@@ -253,10 +257,20 @@ UICollectionViewDataSource, UISearchBarDelegate{
         present(picker, animated: true, completion: nil)
         
     }
+    
+    @IBOutlet weak var catTopLabel: UILabel!
+    
+    
     var extended = false
     @IBOutlet weak var picButtonPositionOut: UIView!
     @IBAction func picVidPressed(_ sender: Any) {
         startLocationManager()
+        postLine.isHidden = true
+        picViewLine1.isHidden = false
+        picViewLine2.isHidden = false
+        picViewLine3.isHidden = false
+        catTopLabel.isHidden = true
+        
                 var config = YPImagePickerConfiguration()
                 config.screens = [.library, .video]
                 config.library.mediaType = .photoAndVideo
@@ -369,7 +383,9 @@ UICollectionViewDataSource, UISearchBarDelegate{
         curString.removeLast()
         curCatsLabel.text = curString
         addCatView.isHidden = true
-        catLabelsRefined = catLabels
+        var catLabelsSorted = catLabels.sorted { $0.localizedCaseInsensitiveCompare($1) == ComparisonResult.orderedAscending }
+        
+        catLabelsRefined = catLabelsSorted
         addCatCollect.reloadData()
         
         postButton.isHidden = false
@@ -407,9 +423,14 @@ UICollectionViewDataSource, UISearchBarDelegate{
     @IBAction func shareButtonPressed(_ sender: Any) {
     }
     @IBAction func textPostPressed(_ sender: Any) {
+        postLine.isHidden = true
+        picViewLine1.isHidden = true
+        picViewLine2.isHidden = true
+        picViewLine3.isHidden = true
+        
         startLocationManager()
         self.postType = "text"
-        makePostTextView.layer.borderColor = UIColor.clear.cgColor
+        //makePostTextView.layer.borderColor = UIColor.clear.cgColor
         addToCategoryButton.isHidden = true
         makePostTextView.delegate = self
         makePostTextView.becomeFirstResponder()
@@ -423,9 +444,9 @@ UICollectionViewDataSource, UISearchBarDelegate{
             self.addToCatIconButton.isHidden = true
             self.addToCategoryButton.isHidden = true
             self.curCatsLabel.isHidden = true
-            self.addToCategoryButton.isHidden = false
-            self.addToCatIconButton.isHidden = false
-            self.curCatsLabel.isHidden = false
+            self.addToCategoryButton.isHidden = true
+            self.addToCatIconButton.isHidden = true
+            self.curCatsLabel.isHidden = true
             self.makePostTextView.frame = self.textPostTextViewPos.frame
             self.addToCatIconButton.frame = self.addCat1TextPos.frame
             self.addToCategoryButton.frame = self.addCat2TextPos.frame
@@ -451,6 +472,9 @@ UICollectionViewDataSource, UISearchBarDelegate{
     @IBOutlet weak var addVidButton: UIButton!
     
     @IBOutlet weak var posterPicIV: UIImageView!
+    
+    @IBOutlet weak var postLine: UIView!
+    
     @IBOutlet weak var vidButtonPositionOut: UIView!
     @IBAction func chooseVidFromPhoneSelected(_ sender: AnyObject) {
        /* currentPicker = "vid"
@@ -462,7 +486,7 @@ UICollectionViewDataSource, UISearchBarDelegate{
         // Here we configure the picker to only show videos, no photos.
         self.postType = "vid"
         
-        makePostTextView.layer.borderColor = UIColor.lightGray.cgColor
+       // makePostTextView.layer.borderColor = UIColor.lightGray.cgColor
         addToCategoryButton.isHidden = false
         
         var config = YPImagePickerConfiguration()
@@ -492,13 +516,16 @@ UICollectionViewDataSource, UISearchBarDelegate{
         }
         present(picker, animated: true, completion: nil)
     }
+    
+    
     var ogCat1Pos = CGRect()
     var ogCat2Pos = CGRect()
     var ogCat3Pos = CGRect()
     var newPost: [String:Any]?
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.makePostTextView.layer.cornerRadius = 10
+        //self.makePostTextView.layer.cornerRadius = 10
+        posterPicIV.frame = CGRect(x: posterPicIV.frame.origin.x, y: posterPicIV.frame.origin.y, width: 28, height: 28)
         self.backToPostButton.layer.cornerRadius = 10
         picker.delegate = self
         tagSearchBar.delegate = self
@@ -517,8 +544,8 @@ UICollectionViewDataSource, UISearchBarDelegate{
         self.ogCat3Pos = self.curCatsLabel.frame
         self.posterPicIV.layer.cornerRadius = posterPicIV.frame.width/2
         posterPicIV.layer.masksToBounds = true
-        makePostTextView.layer.borderColor = UIColor.black.cgColor
-        makePostTextView.layer.borderWidth = 1
+        //makePostTextView.layer.borderColor = UIColor.black.cgColor
+        //makePostTextView.layer.borderWidth = 1
         whiteShadeView.layer.cornerRadius = 5
         imagePicker.delegate = self
         ogVidPosit = addVidButton.frame
@@ -703,7 +730,7 @@ UICollectionViewDataSource, UISearchBarDelegate{
         makePostImageView.isHidden = false
         cancelPostButton.isHidden = true
         makePostView.backgroundColor = UIColor.white
-        makePostTextView.text = "Type a description or caption here. (optional)"
+        makePostTextView.text = "Write a caption..."
         self.addToCatIconButton.isHidden = false
         self.addToCategoryButton.isHidden = false
         self.curCatsLabel.text = ""
@@ -769,7 +796,7 @@ UICollectionViewDataSource, UISearchBarDelegate{
           
             //let curLoc = locationManager.location
             //newPost![location]
-            if self.makePostTextView.text != "Type a description or caption here. (optional)"{
+            if self.makePostTextView.text != "Write a caption..."{
                 newPost!["postText"] = self.makePostTextView.text
             }
             
@@ -799,7 +826,7 @@ UICollectionViewDataSource, UISearchBarDelegate{
                             print(error?.localizedDescription)
                             return
                         }
-                        self.makePostTextView.text = "Type a description or caption here. (optional)"
+                        self.makePostTextView.text = "Write a caption..."
                         self.makePostTextView.textColor = UIColor.darkGray
                         print("This never prints in the console")
                         self.postPlayer?.url = nil
@@ -843,7 +870,7 @@ UICollectionViewDataSource, UISearchBarDelegate{
             print("cUpP3: \(curUser.profPic!)")
             newPost!["posterPicURL"] = curUser.profPic!
             self.newPost!["city"] = self.curCityLabel.text
-            if self.makePostTextView.text != "Type a description or caption here. (optional)"{
+            if self.makePostTextView.text != "Write a caption..."{
                 newPost!["postText"] = self.makePostTextView.text
             }
                 let videoName = NSUUID().uuidString
@@ -879,7 +906,7 @@ UICollectionViewDataSource, UISearchBarDelegate{
                             print(error?.localizedDescription)
                             return
                         }
-                        self.makePostTextView.text = "Type a description or caption here. (optional)"
+                        self.makePostTextView.text = "Write a caption..."
                         self.makePostTextView.textColor = UIColor.darkGray
                         print("This never prints in the console")
                         self.postPlayer?.url = nil
@@ -895,7 +922,7 @@ UICollectionViewDataSource, UISearchBarDelegate{
                    
                 }
         } else {
-            if self.makePostTextView.hasText == false || self.makePostTextView.text == "Type a description or caption here. (optional)" || self.makePostTextView.text == "What's going on?" || self.makePostTextView.text == "" {
+            if self.makePostTextView.hasText == false || self.makePostTextView.text == "Write a caption..." || self.makePostTextView.text == "What's going on?" || self.makePostTextView.text == "" {
                 let alert = UIAlertController(title: "Missing Info", message: "You cannot make an empty post.", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
@@ -931,7 +958,7 @@ UICollectionViewDataSource, UISearchBarDelegate{
                     return
                 }
                 
-                self.makePostTextView.text = "Type a description or caption here. (optional)"
+                self.makePostTextView.text = "Write a caption..."
                 self.makePostTextView.textColor = UIColor.darkGray
                 print("This never prints in the console")
                 self.postPlayer?.url = nil
@@ -998,7 +1025,7 @@ UICollectionViewDataSource, UISearchBarDelegate{
         }
         }
        
-        if textView.text == "Type a description or caption here. (optional)" || self.makePostTextView.text == "What's going on?"{
+        if textView.text == "Write a caption..." || self.makePostTextView.text == "What's going on?"{
             textView.text = ""
         }
             textView.textColor = UIColor.black
@@ -1010,7 +1037,7 @@ UICollectionViewDataSource, UISearchBarDelegate{
             if makePostTextView.frame == textPostTextViewPos.frame {
                 makePostTextView.text = "What's going on?"
             } else {
-                makePostTextView.text = "Type a description or caption here. (optional)"
+                makePostTextView.text = "Write a caption..."
             }
         }
         textView.textColor = UIColor.darkGray
