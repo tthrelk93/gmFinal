@@ -64,6 +64,7 @@ var myUName = String()
         searchCollect.register(UINib(nibName: "LikedByCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "LikedByCollectionViewCell")
         searchCollect.delegate = self
         searchCollect.dataSource = self
+        searchBar.delegate = self
         
         // Do any additional setup after loading the view.
     }
@@ -253,6 +254,49 @@ var myUName = String()
                     }
                 }
             }
+                var tempCurUids = [String]()
+                for dict in self.findFriendsData{
+                    tempCurUids.append(dict["uid"] as! String)
+                    
+                }
+                for (key, val) in tempUserDict {
+                    // print("snapKey: \(key)")
+                    if self.allSuggested.contains(key){
+                        
+                        var tempDict = [String:Any]()
+                        tempDict = val as! [String:Any]
+                        // print("snapVal: \(val as! [String:Any])")
+                        var noName = "-"
+                        var uName = tempDict["uName"] as! String
+                        
+                        
+                        var picString2 = tempDict["picString"] as! String
+                        if (tempDict["rName"] as? String) != nil{
+                            noName = (tempDict["rName"] as! String)
+                        }
+                        
+                        let cellDict = ["uName":uName,"profPic": tempDict["pic"]!, "picString": picString2, "realName": noName, "uid": key] as [String:Any]
+                        
+                        if tempCurUids.contains(key){
+                            break
+                        } else {
+                            self.findFriendsData.append(cellDict)
+                        }
+                    }
+                }
+                if(self.findFriendsData.count == 0){
+                    self.searchActive = false;
+                } else {
+                    self.searchActive = true;
+                }
+                
+                
+                
+                DispatchQueue.main.async{
+                    print("hey: \(self.findFriendsData)")
+                    self.searchCollect.reloadData()
+                }
+                
             })
         } else if searchSegment.selectedSegmentIndex == 1 {
             
@@ -283,29 +327,76 @@ var myUName = String()
                 let uid = ((val as! [String:Any])["posterUID"] as! String)
                 var pic: UIImage?
                 if picString != nil {
+                    
+                } else {
+                    picString = profPicString
+                    }
                 if picString == "profile-placeholder"{
                     pic = UIImage(named: "profile-placeholder")
                 } else {
                     if let messageImageUrl = URL(string: picString!) {
                 if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
                 pic = UIImage(data: imageData as Data)
+                        }
                     }
-                    }
-                    }
-                    }
+                    
+                }
                 let uRange = (location as NSString).range(of: searchText, options: NSString.CompareOptions.literal)
                // print("rANDu: \(uRange) \(rRange)")
                 if uRange.location != NSNotFound {
                 tempUserDict[key] = ["uName":posterName, "rName":location, "pic": pic!, "uid": uid]
-                self.allSuggested.append(location)
+                self.allSuggested.append(key)
                 //print("curTextu: \(searchText) allSuggested1: \(self.allSuggested)")
                 } else if self.allSuggested.contains(key){
-                if self.allSuggested.contains(location){
-                    tempUserDict.removeValue(forKey: key)
-                    self.allSuggested.remove(at: self.allSuggested.index(of: location)!)
+               // if self.allSuggested.contains(location){
+                   // tempUserDict.removeValue(forKey: key)
+                    //self.allSuggested.remove(at: self.allSuggested.index(of: location)!)
+                   // }
                     }
                     }
+                    var tempCurUids = [String]()
+                    for dict in self.findFriendsData{
+                        tempCurUids.append(dict["uid"] as! String)
+                        
                     }
+                    for (key, val) in tempUserDict {
+                        // print("snapKey: \(key)")
+                        if self.allSuggested.contains(key){
+                            
+                            var tempDict = [String:Any]()
+                            tempDict = val as! [String:Any]
+                            // print("snapVal: \(val as! [String:Any])")
+                            var noName = "-"
+                            var uName = tempDict["uName"] as! String
+                            
+                            
+                            var picString2 = picString
+                            if (tempDict["rName"] as? String) != nil{
+                                noName = (tempDict["rName"] as! String)
+                            }
+                            
+                            let cellDict = ["uName":uName,"profPic": tempDict["pic"]!, "picString": picString2, "realName": noName, "uid": key] as [String:Any]
+                            
+                            if tempCurUids.contains(key){
+                                break
+                            } else {
+                                self.findFriendsData.append(cellDict)
+                            }
+                        }
+                    }
+                    if(self.findFriendsData.count == 0){
+                        self.searchActive = false;
+                    } else {
+                        self.searchActive = true;
+                    }
+                    
+                    
+                    
+                    DispatchQueue.main.async{
+                        print("hey: \(self.findFriendsData)")
+                        self.searchCollect.reloadData()
+                    }
+                    
                     
             })
                 } else {
@@ -362,6 +453,49 @@ var myUName = String()
                         }
                     }
                 }
+                var tempCurUids = [String]()
+                for dict in self.findFriendsData{
+                    tempCurUids.append(dict["uid"] as! String)
+                    
+                }
+                for (key, val) in tempUserDict {
+                    // print("snapKey: \(key)")
+                    if self.allSuggested.contains(key){
+                        
+                        var tempDict = [String:Any]()
+                        tempDict = val as! [String:Any]
+                        // print("snapVal: \(val as! [String:Any])")
+                        var noName = "-"
+                        var uName = tempDict["uName"] as! String
+                        
+                        
+                        var picString2 = tempDict["picString"] as! String
+                        if (tempDict["rName"] as? String) != nil{
+                            noName = (tempDict["rName"] as! String)
+                        }
+                        
+                        let cellDict = ["uName":uName,"profPic": tempDict["pic"]!, "picString": picString2, "realName": noName, "uid": key] as [String:Any]
+                        
+                        if tempCurUids.contains(key){
+                            break
+                        } else {
+                            self.findFriendsData.append(cellDict)
+                        }
+                    }
+                }
+                if(self.findFriendsData.count == 0){
+                    self.searchActive = false;
+                } else {
+                    self.searchActive = true;
+                }
+                
+                
+                
+                DispatchQueue.main.async{
+                    print("hey: \(self.findFriendsData)")
+                    self.searchCollect.reloadData()
+                }
+                
             })
             
             
@@ -370,47 +504,6 @@ var myUName = String()
             }
     
             //print("nowHereee")
-            var tempCurUids = [String]()
-            for dict in self.findFriendsData{
-                tempCurUids.append(dict["uid"] as! String)
-                
-            }
-            for (key, val) in tempUserDict {
-               // print("snapKey: \(key)")
-                if self.allSuggested.contains(key){
-                    
-                    var tempDict = [String:Any]()
-                    tempDict = val as! [String:Any]
-                   // print("snapVal: \(val as! [String:Any])")
-                    var noName = "-"
-                    var uName = tempDict["uName"] as! String
-                    
-                    
-                    var picString2 = tempDict["picString"] as! String
-                    if (tempDict["rName"] as? String) != nil{
-                        noName = (tempDict["rName"] as! String)
-                    }
-                    
-                    let cellDict = ["uName":uName,"profPic": tempDict["pic"]!, "picString": picString2, "realName": noName, "uid": key] as [String:Any]
-                    
-                    if tempCurUids.contains(key){
-                        break
-                    } else {
-                        self.findFriendsData.append(cellDict)
-                    }
-                }
-            }
-            if(self.findFriendsData.count == 0){
-                self.searchActive = false;
-            } else {
-                self.searchActive = true;
-            }
-            
-            
-            
-            DispatchQueue.main.async{
-                self.searchCollect.reloadData()
-            }
         
         
         
