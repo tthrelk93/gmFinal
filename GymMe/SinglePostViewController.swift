@@ -192,12 +192,12 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                     if snapDict["notifications"] != nil{
                         noteArray = snapDict["notifications"] as! [[String:Any]]
                         let sendString = self.myUName + " liked your post."
-                        let tempDict = ["actionByUsername": self.myUName ,"postID": self.postID,"actionText": sendString, "timeStamp": "time","actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": myPic, "postText": "notification"] as! [String:Any]
+                        let tempDict = ["actionByUsername": self.myUName ,"postID": self.postID,"actionText": sendString, "timeStamp": "","actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": myPic, "postText": "notification"] as! [String:Any]
                         noteArray.append(tempDict)
                         Database.database().reference().child("users").child(self.posterUID).updateChildValues(["notifications": noteArray])
                     } else {
                         let sendString = self.myUName + " liked your post."
-                        let tempDict = ["actionByUsername": self.myUName ,"postID": self.postID,"actionText": sendString, "timeStamp": "time","actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": myPic, "postText": "notification"] as [String : Any]
+                        let tempDict = ["actionByUsername": self.myUName ,"postID": self.postID,"actionText": sendString, "timeStamp": "","actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": myPic, "postText": "notification"] as [String : Any]
                         Database.database().reference().child("users").child(self.posterUID).updateChildValues(["notifications":[tempDict]])
                     }
                     
@@ -590,7 +590,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                     } else {
                         
                         var tempString = "\(self.myUName) commented on your post" as! String
-                        var tempDict = (["actionByUID": Auth.auth().currentUser!.uid, "postID": self.postID, "actionByUserPic": self.myPicString,"actionByUsername": self.myUName,"actionText": tempString,"postText": "postText", "timeStamp": "tStamp"] as! [String : Any])
+                        var tempDict = (["actionByUID": Auth.auth().currentUser!.uid, "postID": self.postID, "actionByUserPic": self.myPicString,"actionByUsername": self.myUName,"actionText": tempString,"postText": "postText", "timeStamp": ""] as! [String : Any])
                         
                         //Database.database().reference().child("users").child(uid).updateChildValues((["notifications": [tempDict]] as! [String:Any]))
                         

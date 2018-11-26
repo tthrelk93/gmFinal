@@ -64,6 +64,8 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     @IBOutlet weak var tabBar: UITabBar!
     @IBOutlet weak var categoriesCollect: UICollectionView!
     @IBAction func topBarSearchPressed(_ sender: Any) {
+        performSegue(withIdentifier:"generalToSpecificSearch", sender: self)
+        
     }
     @IBOutlet weak var topBarSearchButton: UIButton!
     

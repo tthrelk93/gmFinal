@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		043C521EC721BA391C27F4C3 /* Pods_GymMeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE40AEB988F54F9A672365C /* Pods_GymMeTests.framework */; };
 		310481EC21AC63FC0014FD15 /* FolloweringViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310481EB21AC63FC0014FD15 /* FolloweringViewController.swift */; };
+		310481EE21AC85BF0014FD15 /* SpecificSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310481ED21AC85BF0014FD15 /* SpecificSearchViewController.swift */; };
 		31359EC920DC183D00F5ED11 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31359EC820DC183D00F5ED11 /* SearchViewController.swift */; };
 		31359ECB20DC26C400F5ED11 /* CatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31359ECA20DC26C400F5ED11 /* CatCell.swift */; };
 		31359ECD20DC465000F5ED11 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31359ECC20DC465000F5ED11 /* ProfileViewController.swift */; };
@@ -72,6 +73,7 @@
 		0C0FBF86C35881D300F782F8 /* Pods-GymMe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GymMe.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GymMe/Pods-GymMe.debug.xcconfig"; sourceTree = "<group>"; };
 		1B82A05367346CF2A84B6D88 /* Pods-GymMeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GymMeTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GymMeTests/Pods-GymMeTests.debug.xcconfig"; sourceTree = "<group>"; };
 		310481EB21AC63FC0014FD15 /* FolloweringViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolloweringViewController.swift; sourceTree = "<group>"; };
+		310481ED21AC85BF0014FD15 /* SpecificSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecificSearchViewController.swift; sourceTree = "<group>"; };
 		31359EC820DC183D00F5ED11 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		31359ECA20DC26C400F5ED11 /* CatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatCell.swift; sourceTree = "<group>"; };
 		31359ECC20DC465000F5ED11 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -276,6 +278,7 @@
 				31AA6E8B214306D000CF0EFE /* NotificationsViewController.swift */,
 				31C9CAE1218CDEC1005FB93E /* SinglePostViewController.swift */,
 				310481EB21AC63FC0014FD15 /* FolloweringViewController.swift */,
+				310481ED21AC85BF0014FD15 /* SpecificSearchViewController.swift */,
 			);
 			path = GymMe;
 			sourceTree = "<group>";
@@ -646,6 +649,7 @@
 				313EFA7120FFC63600D3CFD0 /* LikedByCollectionViewCell.swift in Sources */,
 				314FACD320D975F9005A5E7C /* AppDelegate.swift in Sources */,
 				31BF0121210129B00012F933 /* ChatViewController.swift in Sources */,
+				310481EE21AC85BF0014FD15 /* SpecificSearchViewController.swift in Sources */,
 				3184C1F420E5468100A5EA19 /* PopCell.swift in Sources */,
 				31C9CAE2218CDEC1005FB93E /* SinglePostViewController.swift in Sources */,
 				31C48F1720D9845900D8316E /* NewsFeedPicCollectionViewCell.swift in Sources */,
