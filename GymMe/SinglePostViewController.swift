@@ -12,9 +12,15 @@ import FirebaseStorage
 import FirebaseAuth
 
 class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITextFieldDelegate {
-
+    
+    var senderScreen = String()
+    
     @IBAction func backPressed(_ sender: Any) {
-        performSegue(withIdentifier: "backToProfile", sender: self)
+        if senderScreen == "notification"{
+            performSegue(withIdentifier: "backToNote", sender: self)
+        } else {
+            performSegue(withIdentifier: "backToProfile", sender: self)
+        }
     }
     var thisPostData = [String:Any]()
     var activityViewController:UIActivityViewController?

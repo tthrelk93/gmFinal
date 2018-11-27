@@ -163,6 +163,7 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
             return cell
         
         }
+    var senderScreen = String()
         var selectedPostID = String()
         func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath){
             var notifCell = collectionView.cellForItem(at: indexPath) as! NotificationCell
@@ -197,7 +198,7 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
                 print("wuttttttt: \(self.selectedData)")
                 
                 
-                
+                vc.senderScreen = "notification"
                 vc.thisPostData = self.selectedData
                 vc.myUName = self.myUName
                 vc.following = self.following

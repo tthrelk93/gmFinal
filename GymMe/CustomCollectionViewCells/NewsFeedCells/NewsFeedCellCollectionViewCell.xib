@@ -100,7 +100,7 @@
                             <action selector="likeButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="gji-S4-QdI"/>
                         </connections>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jmL-mb-sxe">
+                    <button opaque="NO" alpha="0.69999999999999996" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jmL-mb-sxe">
                         <rect key="frame" x="44" y="108" width="26" height="25"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <state key="normal" image="Comment">
@@ -110,8 +110,8 @@
                             <action selector="commentButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="fWi-oQ-mYL"/>
                         </connections>
                     </button>
-                    <button opaque="NO" alpha="0.80000001192092896" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qbe-cG-vJ1">
-                        <rect key="frame" x="79" y="106" width="26" height="25"/>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qbe-cG-vJ1">
+                        <rect key="frame" x="81" y="106" width="26" height="25"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <state key="normal" backgroundImage="favoritesUnfilled">
                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -120,8 +120,8 @@
                             <action selector="favoritesButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="4hm-Z7-hKY"/>
                         </connections>
                     </button>
-                    <button opaque="NO" alpha="0.75" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5sg-DW-2qr">
-                        <rect key="frame" x="115" y="108" width="21" height="23"/>
+                    <button opaque="NO" alpha="0.65000000000000002" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5sg-DW-2qr">
+                        <rect key="frame" x="118" y="108" width="21" height="23"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <state key="normal" backgroundImage="shareIcon-1">
                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -153,7 +153,7 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="Comment" width="204.80000305175781" height="204.80000305175781"/>
+        <image name="Comment" width="64" height="50"/>
         <image name="favoritesUnfilled" width="204.80000305175781" height="204.80000305175781"/>
         <image name="like" width="204.80000305175781" height="204.80000305175781"/>
         <image name="shareIcon-1" width="204.80000305175781" height="204.80000305175781"/>

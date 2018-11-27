@@ -122,18 +122,18 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ahd-gy-b1s">
-                        <rect key="frame" x="47" y="398" width="26" height="25"/>
+                    <button opaque="NO" alpha="0.69999999999999996" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ahd-gy-b1s">
+                        <rect key="frame" x="48" y="398" width="26" height="25"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                        <state key="normal" image="commentIcon">
+                        <state key="normal" image="Comment">
                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                         </state>
                         <connections>
                             <action selector="commentButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="C4T-eh-MrT"/>
                         </connections>
                     </button>
-                    <button opaque="NO" alpha="0.80000001192092896" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jfb-Sb-Irr">
-                        <rect key="frame" x="82" y="396" width="26" height="25"/>
+                    <button opaque="NO" alpha="0.90000000000000002" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jfb-Sb-Irr">
+                        <rect key="frame" x="85" y="396" width="26" height="25"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <state key="normal" backgroundImage="favoritesUnfilled">
                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -142,8 +142,8 @@
                             <action selector="favoritesButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="lNf-6n-zHk"/>
                         </connections>
                     </button>
-                    <button opaque="NO" alpha="0.75" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jcN-Dd-IeQ">
-                        <rect key="frame" x="118" y="398" width="22" height="23"/>
+                    <button opaque="NO" alpha="0.65000000000000002" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jcN-Dd-IeQ">
+                        <rect key="frame" x="124" y="398" width="22" height="23"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <state key="normal" backgroundImage="shareIcon-1">
                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -193,8 +193,8 @@
         </collectionViewCell>
     </objects>
     <resources>
+        <image name="Comment" width="64" height="50"/>
         <image name="Octicons-mute.svg" width="2000" height="2286"/>
-        <image name="commentIcon" width="204.80000305175781" height="204.80000305175781"/>
         <image name="favoritesUnfilled" width="204.80000305175781" height="204.80000305175781"/>
         <image name="like" width="204.80000305175781" height="204.80000305175781"/>
         <image name="shareIcon-1" width="204.80000305175781" height="204.80000305175781"/>

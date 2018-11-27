@@ -2,17 +2,16 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "icons8-christmas-star-24.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "icons8-christmas-star-48.png",
+      "filename" : "iconfinder_star_172558-5.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "icons8-christmas-star-96.png",
+      "filename" : "iconfinder_star_172558-6.png",
       "scale" : "3x"
     }
   ],
