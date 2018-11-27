@@ -34,6 +34,10 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
     var idArray = [String]()
     var picDict = [String:UIImage]()
     @IBOutlet weak var notifyCollect: UICollectionView!
+    var myUName = String()
+    var myPicString = String()
+    var following = [String]()
+    var myRealName = String()
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -47,6 +51,26 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
                 for snap in snapshots{
                     if snap.key == "notifications"{
                         self.noteCollectData = (snap.value as! [[String:Any]])
+                    } else if snap.key == "username"{
+                        self.myUName = snap.value as! String
+                    } else if snap.key == "following"{
+                        self.following = snap.value as! [String]
+                    } else if snap.key == "profPic"{
+                        self.myPicString = snap.value as! String
+                        if let messageImageUrl = URL(string: snap.value as! String) {
+                            
+                            // self.myPicString = messageImageUrl
+                            
+                            if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                                //self.myPic = UIImage(data: imageData as Data)
+                                //self.selfCommentPic.image = UIImage(data: imageData as Data)
+                                
+                            }
+                            
+                            // }
+                        }
+                    } else if snap.key == "realName"{
+                        self.myRealName = snap.value as! String
                     }
                     
                 }
@@ -143,8 +167,12 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
         func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath){
             var notifCell = collectionView.cellForItem(at: indexPath) as! NotificationCell
             self.selectedPostID = (noteCollectData![indexPath.row] as! [String:Any])["postID"] as! String
+            Database.database().reference().child("posts").child(self.selectedPostID).observeSingleEvent(of: .value, with: { (snapshot) in
+                print("postData = \(snapshot.value as! [String:Any])")
+                self.selectedData = snapshot.value as! [String:Any]
             
-            performSegue(withIdentifier: "postSelected", sender: self)
+            self.performSegue(withIdentifier: "NoteToSinglePost", sender: self)
+            })
         }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -159,12 +187,23 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
+    var selectedData = [String:Any]()
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-        if segue.identifier == "postSelected"{
-            if let vc = segue.destination as? HomeFeedViewController{
-                vc.fromNotifPostID = self.selectedPostID
+        
+        if segue.identifier == "NoteToSinglePost"{
+            if let vc = segue.destination as? SinglePostViewController{
+                print("wuttttttt: \(self.selectedData)")
+                
+                
+                
+                vc.thisPostData = self.selectedData
+                vc.myUName = self.myUName
+                vc.following = self.following
+                vc.myPicString = self.myPicString
+            
+            
             }
     }
     }

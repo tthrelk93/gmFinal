@@ -173,7 +173,7 @@ var myUName = String()
         } else {
             selectedCurAuthProfile = false
         }
-        performSegue(withIdentifier: "FeedToProfile", sender: self)
+        performSegue(withIdentifier: "advanceSearchToProfile", sender: self)
     }
     
 
@@ -184,6 +184,21 @@ var myUName = String()
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        
+        
+        if segue.identifier == "advanceSearchToProfile"{
+            if let vc = segue.destination as? ProfileViewController{
+                vc.curUID = self.selectedCellUID
+                if selectedCurAuthProfile == true{
+                    vc.viewerIsCurAuth = true
+                    
+                } else {
+                    vc.viewerIsCurAuth = false
+                }
+                vc.curName = self.curName
+                
+            }
+        }
     }
     
     
@@ -208,13 +223,15 @@ var myUName = String()
     var allSuggested = [String]()
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String){
         print("SB text did change: \(searchText)")
-        findFriendsData.removeAll()
-        allSuggested.removeAll()
+        
         
         var tempUserDict = [String:Any]()
         if searchSegment.selectedSegmentIndex == 0 {
             
             Database.database().reference().child("users").observeSingleEvent(of: .value, with: {(snapshot) in
+                
+                self.findFriendsData.removeAll()
+                self.allSuggested.removeAll()
             //print("here: \(snapshot.value)")
             //let snapshotss = snapshot.value as? [DataSnapshot]
             print("hereNow")
@@ -301,13 +318,17 @@ var myUName = String()
         } else if searchSegment.selectedSegmentIndex == 1 {
             
             //search for places
-                Database.database().reference().child("posts").observeSingleEvent(of: .value, with: {(snapshot) in
+               var picString: String?
+            Database.database().reference().child("posts").observeSingleEvent(of: .value, with: {(snapshot) in
+                
+                self.findFriendsData.removeAll()
+                self.allSuggested.removeAll()
                 //print("here: \(snapshot.value)")
                 print("hereNow")
                 for (key, val) in (snapshot.value as! [String:Any]){
                 //print("uName=\(((val as! [String:Any])["username"] as! String))")
                 let location = ((val as! [String:Any])["city"] as! String)
-                var picString: String?
+                
                 var profPicString: String?
                 var posterName = ((val as! [String:Any])["posterName"] as! String)
                 
@@ -403,6 +424,9 @@ var myUName = String()
             
             //search for category
             Database.database().reference().child("posts").observeSingleEvent(of: .value, with: {(snapshot) in
+                
+                self.findFriendsData.removeAll()
+                self.allSuggested.removeAll()
                 //print("here: \(snapshot.value)")
                 //print("hereNow")
                 for (key, val) in (snapshot.value as! [String:Any]){
@@ -419,9 +443,11 @@ var myUName = String()
                         
                     } else if ((val as! [String:Any])["postVid"] as? String) != nil {
                         profPicString = ((val as! [String:Any])["posterPicURL"] as! String)
+                        picString = ((val as! [String:Any])["posterPicURL"] as! String)
                         
                     } else {
                         profPicString = ((val as! [String:Any])["posterPicURL"] as! String)
+                        picString = ((val as! [String:Any])["posterPicURL"] as! String)
                         
                     }
                     let postID = key
@@ -438,12 +464,15 @@ var myUName = String()
                             }
                         }
                     }
+                    
                     for cat in categories{
+                        
                     let uRange = (cat as NSString).range(of: searchText, options: NSString.CompareOptions.literal)
-                    //print("rANDu: \(uRange) \(rRange)")
+                    print("rANDu: \(uRange)")
+                        print("cats: \(cat)")
                     if uRange.location != NSNotFound {
                         tempUserDict[key] = ["uName":posterName, "rName":cat, "pic": pic!, "uid": uid]
-                        self.allSuggested.append(cat)
+                        self.allSuggested.append(postID)
                         //print("curTextu: \(searchText) allSuggested1: \(self.allSuggested)")
                     } else if self.allSuggested.contains(key){
                         if self.allSuggested.contains(cat){
@@ -459,7 +488,8 @@ var myUName = String()
                     
                 }
                 for (key, val) in tempUserDict {
-                    // print("snapKey: \(key)")
+                     print("snapKey: \(key)")
+                    print("allSugg: \(self.allSuggested)")
                     if self.allSuggested.contains(key){
                         
                         var tempDict = [String:Any]()
@@ -469,12 +499,12 @@ var myUName = String()
                         var uName = tempDict["uName"] as! String
                         
                         
-                        var picString2 = tempDict["picString"] as! String
+                        //var picString2 = picString
                         if (tempDict["rName"] as? String) != nil{
                             noName = (tempDict["rName"] as! String)
                         }
                         
-                        let cellDict = ["uName":uName,"profPic": tempDict["pic"]!, "picString": picString2, "realName": noName, "uid": key] as [String:Any]
+                        let cellDict = ["uName":uName,"profPic": tempDict["pic"]!, "picString": "pic", "realName": noName, "uid": key] as [String:Any]
                         
                         if tempCurUids.contains(key){
                             break

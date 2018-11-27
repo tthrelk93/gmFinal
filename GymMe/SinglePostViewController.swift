@@ -280,7 +280,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
     var likesArray = [[String:Any]]()
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        posterPicButton.frame = CGRect(x: posterPicButton.frame.origin.x, y: posterPicButton.frame.origin.y, width: 40.0, height: 40.0)
         self.postID = thisPostData["postID"] as! String
         self.posterUID = thisPostData["posterUID"] as! String
         posterPicButton.layer.cornerRadius = posterPicButton.frame.width/2
@@ -295,6 +295,108 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
         
         if thisPostData["postVid"] == nil && thisPostData["postPic"] == nil{
             //textPost
+            posterNameButton.setTitle((thisPostData["posterName"] as! String), for: .normal)
+            
+            if let messageImageUrl = URL(string: (self.thisPostData["posterPicURL"] as! String)) {
+                if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                    
+                    posterPicButton.setImage(UIImage(data: imageData as Data), for: .normal)
+                    
+                }
+            }
+           
+            if thisPostData["postText"] == nil{
+                
+            } else {
+                postText.text = (thisPostData["postText"] as! String)
+            }
+            if thisPostData["city"] != nil{
+                cityButton.setTitle((thisPostData["city"] as! String), for: .normal)
+            }
+            
+            var commentsPost: [String:Any]?
+            for item in (self.thisPostData["comments"] as? [[String: Any]])!{
+                
+                commentsPost = item as! [String: Any]
+                
+            }
+            
+            var tempPost: [String:Any]?
+            self.likesArray = ((self.thisPostData["likes"] as? [[String: Any]])!)
+            
+            likesCollect.delegate = self
+            likesCollect.dataSource = self
+            for item in (self.thisPostData["likes"] as? [[String: Any]])!{
+                
+                tempPost = item as! [String: Any]
+                
+            }
+            if tempPost!["x"] != nil {
+                
+            } else {
+                
+                
+                let countStringNum = String((self.thisPostData["likes"] as? [[String: Any]])!.count)
+                
+                var fullString1 = String()
+                if countStringNum == "1"{
+                    fullString1 = "\(countStringNum) like"
+                } else {
+                    fullString1 = "\(countStringNum) likes"
+                }
+                self.likesCountButton.setTitle(fullString1, for: .normal)
+                
+                if (thisPostData["posterName"] as? String) == self.myUName{
+                    self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
+                    let countStringNum = String((self.thisPostData["likes"] as? [[String: Any]])!.count)
+                    var fullString = String()
+                    if countStringNum == "1"{
+                        fullString = "\(countStringNum) like"
+                    } else {
+                        fullString = "\(countStringNum) likes"
+                    }
+                    self.likesCountButton.setTitle(fullString, for: .normal)
+                    
+                }
+            }
+            
+            var favesPost: [String:Any]?
+            for item in (thisPostData["favorites"] as? [[String: Any]])!{
+                
+                favesPost = item as! [String: Any]
+                
+            }
+            if favesPost!["x"] != nil {
+                
+            } else {
+                
+                
+                if (favesPost!["uName"] as! String) == self.myUName{
+                    self.favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
+                    //cell.favoritesCountButton.setTitle((self.feedDataArray[indexPath.row]["favorites"] as! [[String:Any]]).count.description, for: .normal)
+                }
+            }
+            
+            //set comments count
+            self.commentsArray = ((self.thisPostData["comments"] as? [[String: Any]])!)
+            
+            
+            if commentsPost!["x"] != nil {
+                
+            } else {
+                let commStringNum = String((self.thisPostData["comments"] as? [[String: Any]])!.count)
+                var commString = String()
+                if commStringNum == "1"{
+                    commString = "View \(commStringNum) comment"
+                } else {
+                    commString = "View \(commStringNum) comments"
+                }
+                self.commentsCountButton.setTitle(commString, for: .normal)
+                
+            }
+            
+            
+            
         } else {
             if thisPostData["postVid"] == nil{
                 //pic post

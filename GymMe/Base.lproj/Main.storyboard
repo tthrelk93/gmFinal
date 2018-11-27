@@ -241,6 +241,7 @@
                         <segue destination="5I3-vc-uva" kind="showDetail" identifier="NotificationsToSearch" id="LRt-ib-yd7"/>
                         <segue destination="BYZ-38-t0r" kind="showDetail" identifier="postSelected" id="mdp-vm-HTg"/>
                         <segue destination="iYc-aa-vyQ" kind="showDetail" identifier="NotificationsToProfile" id="anS-gs-5HP"/>
+                        <segue destination="tfZ-fY-cOO" kind="showDetail" identifier="NoteToSinglePost" id="7j1-Bd-hQl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xjn-SZ-yj4" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -444,7 +445,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <button opaque="NO" alpha="0.45000000000000001" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="pnB-ym-Ou9">
-                                <rect key="frame" x="10" y="34" width="30" height="25"/>
+                                <rect key="frame" x="10" y="34" width="29" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="addFriends">
                                     <color key="titleColor" red="0.92941176469999998" green="0.10980392160000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -575,7 +576,7 @@
                                 </cells>
                             </collectionView>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" springLoaded="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rbe-ZJ-BMe">
-                                <rect key="frame" x="16" y="128" width="343" height="29"/>
+                                <rect key="frame" x="15" y="128" width="343" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="0.83999999999999997" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <segments>
@@ -586,7 +587,7 @@
                                 <color key="tintColor" red="1" green="0.034500510880000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </segmentedControl>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eqM-1j-JmW">
-                                <rect key="frame" x="11" y="28" width="26" height="22"/>
+                                <rect key="frame" x="10" y="28" width="26" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <state key="normal" backgroundImage="icons8-back-34"/>
                                 <connections>
@@ -603,6 +604,7 @@
                         <outlet property="searchDisplayController" destination="BZJ-tC-XVj" id="CMy-es-BrN"/>
                         <outlet property="searchSegment" destination="Rbe-ZJ-BMe" id="XKn-Mf-rr7"/>
                         <segue destination="5I3-vc-uva" kind="showDetail" identifier="specificToGeneralSearch" id="D15-DS-Hif"/>
+                        <segue destination="iYc-aa-vyQ" kind="showDetail" identifier="advanceSearchToProfile" id="Miz-DP-T9e"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wIt-a7-yGF" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1007,7 +1009,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CNg-eQ-vPs">
-                                        <rect key="frame" x="52" y="52" width="147" height="23"/>
+                                        <rect key="frame" x="51" y="52" width="147" height="23"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="name">
                                             <color key="titleColor" white="0.0" alpha="0.90195862680000005" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1017,7 +1019,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XoQ-SJ-zww">
-                                        <rect key="frame" x="52" y="70" width="147" height="23"/>
+                                        <rect key="frame" x="51" y="70" width="147" height="23"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="city">
                                             <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1097,7 +1099,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vOQ-Za-xTp">
-                                        <rect key="frame" x="12" y="22" width="26" height="30"/>
+                                        <rect key="frame" x="12" y="22" width="25" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                         <state key="normal" backgroundImage="icons8-back-34">
@@ -1524,12 +1526,12 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KG3-0n-4b8">
-                                        <rect key="frame" x="29" y="360" width="122" height="33"/>
+                                        <rect key="frame" x="28" y="360" width="122" height="33"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="0.48811619718309857" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ml4-On-HG3">
-                                        <rect key="frame" x="58" y="360" width="105" height="33"/>
+                                        <rect key="frame" x="57" y="360" width="105" height="33"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Tag People">
@@ -1540,7 +1542,7 @@
                                         </connections>
                                     </button>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="profile-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="L58-T6-SFC">
-                                        <rect key="frame" x="12" y="75" width="28" height="28"/>
+                                        <rect key="frame" x="12" y="75" width="27" height="28"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Write a caption..." translatesAutoresizingMaskIntoConstraints="NO" id="mTO-FY-DYh">
@@ -1572,7 +1574,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h5S-Wi-X9Q">
-                                        <rect key="frame" x="61" y="77" width="88" height="26"/>
+                                        <rect key="frame" x="60" y="77" width="88" height="26"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <state key="normal" title="Add Location">
@@ -2009,7 +2011,7 @@
                                                         </connections>
                                                     </button>
                                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1g7-0T-n4c">
-                                                        <rect key="frame" x="109" y="150" width="154" height="30"/>
+                                                        <rect key="frame" x="109" y="170" width="154" height="30"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                         <color key="backgroundColor" red="0.71725225449999996" green="0.2475895286" blue="0.19010689850000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <state key="normal" title="Follow">
@@ -2231,7 +2233,7 @@
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                         <subviews>
                                                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Email" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ayz-rk-9PR">
-                                                                <rect key="frame" x="8" y="49" width="341" height="30"/>
+                                                                <rect key="frame" x="7" y="49" width="342" height="30"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -2239,7 +2241,7 @@
                                                                 <textInputTraits key="textInputTraits"/>
                                                             </textField>
                                                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Current Password" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fBk-0O-pHW">
-                                                                <rect key="frame" x="8" y="84" width="341" height="30"/>
+                                                                <rect key="frame" x="7" y="84" width="342" height="30"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -2247,7 +2249,7 @@
                                                                 <textInputTraits key="textInputTraits"/>
                                                             </textField>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Enter current email and password and press Verify" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="FhD-kX-kHr">
-                                                                <rect key="frame" x="8" y="8" width="341" height="33"/>
+                                                                <rect key="frame" x="7" y="8" width="342" height="33"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -2482,7 +2484,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q18-Jg-7Mv">
-                                <rect key="frame" x="52" y="52" width="147" height="23"/>
+                                <rect key="frame" x="62" y="52" width="179" height="23"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="name">
                                     <color key="titleColor" white="0.0" alpha="0.90195862680000005" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -2492,7 +2494,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lV9-Nu-CNU">
-                                <rect key="frame" x="52" y="70" width="147" height="23"/>
+                                <rect key="frame" x="62" y="70" width="136" height="23"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="city">
                                     <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -2575,7 +2577,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pP4-4L-w94">
-                                <rect key="frame" x="15" y="25" width="30" height="30"/>
+                                <rect key="frame" x="14" y="30" width="23" height="23"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <state key="normal" backgroundImage="icons8-back-34">
@@ -3045,11 +3047,12 @@
         <image name="vizio-smart-tv-800x800" width="786" height="448"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="XXo-FE-nZY"/>
-        <segue reference="4Kj-ri-BvQ"/>
-        <segue reference="usj-ZK-sIq"/>
-        <segue reference="Y6C-ea-O0s"/>
-        <segue reference="zNh-1b-ste"/>
+        <segue reference="7j1-Bd-hQl"/>
+        <segue reference="e8g-AE-9su"/>
+        <segue reference="rKv-Bj-ALo"/>
+        <segue reference="LRt-ib-yd7"/>
+        <segue reference="mdp-vm-HTg"/>
+        <segue reference="yP5-AV-FPG"/>
         <segue reference="7Cy-Gz-xNk"/>
     </inferredMetricsTieBreakers>
 </document>
