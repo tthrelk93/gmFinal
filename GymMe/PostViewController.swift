@@ -47,7 +47,7 @@ UICollectionViewDataSource, UISearchBarDelegate{
     
     @IBOutlet weak var shadeView2: UIView!
     @IBOutlet weak var shadeView1: UIView!
-    var catLabels = ["Arms","Chest","Abs","Legs","Back", "Shoulders","Cardio","Sports","Nutrition","Stretching","Crossfit","Body Building","Speed and Agility"]
+    var catLabels = ["Abs","Arms","Back","Body Building","Cardio","Chest","Crossfit", "Legs","Nutrition", "Shoulders","Sports","Stretching","Speed and Agility"]
     //var catLabels = ["Abs","Arms","Back","Chest","Legs","Shoulders"]
     var placeAddress = String()
     var place: GMSPlace?
@@ -269,7 +269,7 @@ UICollectionViewDataSource, UISearchBarDelegate{
         picViewLine1.isHidden = false
         picViewLine2.isHidden = false
         picViewLine3.isHidden = false
-        catTopLabel.isHidden = true
+        //catTopLabel.isHidden = true
         
                 var config = YPImagePickerConfiguration()
                 config.screens = [.library, .video]
@@ -358,6 +358,9 @@ UICollectionViewDataSource, UISearchBarDelegate{
     @IBAction func backFromTheCat(_ sender: Any) {
         
         
+    }
+    @IBAction func backFuq(_ sender: Any){
+        addCatView.isHidden = true
     }
 
     var curString = ""

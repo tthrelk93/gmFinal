@@ -19,12 +19,9 @@
                 <rect key="frame" x="0.0" y="0.0" width="485" height="100"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2fu-r1-1uX">
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2fu-r1-1uX">
                         <rect key="frame" x="14" y="8" width="35" height="35"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="35" id="Dpg-uG-DhT"/>
-                            <constraint firstAttribute="height" constant="35" id="Isx-wa-oV0"/>
-                        </constraints>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <state key="normal" image="profile-placeholder"/>
                         <connections>
                             <action selector="commentorPicButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="UeH-nx-ozd"/>
