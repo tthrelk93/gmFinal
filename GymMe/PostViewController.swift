@@ -353,6 +353,13 @@ UICollectionViewDataSource, UISearchBarDelegate{
         
         
     }
+
+
+    @IBAction func backFromTheCat(_ sender: Any) {
+        
+        
+    }
+
     var curString = ""
     @IBAction func backToPostPressed(_ sender: Any) {
        // DispatchQueue.main.async{
