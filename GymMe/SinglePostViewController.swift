@@ -289,8 +289,8 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
         posterPicButton.frame = CGRect(x: posterPicButton.frame.origin.x, y: posterPicButton.frame.origin.y, width: 40.0, height: 40.0)
         self.postID = thisPostData["postID"] as! String
         self.posterUID = thisPostData["posterUID"] as! String
-        posterPicButton.layer.cornerRadius = posterPicButton.frame.width/2
-        posterPicButton.layer.masksToBounds = true
+        //posterPicButton.layer.cornerRadius = posterPicButton.frame.width/2
+        //posterPicButton.layer.masksToBounds = true
         
         commentsCollect.register(UINib(nibName: "CommentCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "CommentCollectionViewCell")
         

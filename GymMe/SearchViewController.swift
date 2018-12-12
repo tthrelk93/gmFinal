@@ -172,8 +172,8 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     override func viewDidLoad() {
         super.viewDidLoad()
         ogCommentPos = commentView.frame
-        posterPicButton.layer.cornerRadius = posterPicButton.frame.width/2
-        posterPicButton.layer.masksToBounds = true
+        //posterPicButton.layer.cornerRadius = posterPicButton.frame.width/2
+        //posterPicButton.layer.masksToBounds = true
         locationManager.requestAlwaysAuthorization()
         locationManager.requestWhenInUseAuthorization()
       

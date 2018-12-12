@@ -22,6 +22,7 @@ class CommentCollectionViewCell: UICollectionViewCell {
         //button.contentVerticalAlignment = .Top
     }
     @IBAction func likeButtonPressed(_ sender: Any) {
+        
     }
     
     @IBAction func commentorPicButtonPressed(_ sender: Any) {

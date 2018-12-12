@@ -52,6 +52,7 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
                  print("messageDictSnapshot: \(snapshot)")
                 for snap in snapshots{
                    
+                    //ERRROR shouldnt be messageDict first but rather last
                     var messageDict = snap.value as! [String:Any]
                     print("md: \(messageDict)")
                     var tempDict = ["receiverUID":snap.key, "messageText":((messageDict.first?.value as! [String:Any])["text"] as? String), "receiverName":((messageDict.first?.value as! [String:Any])["senderName"] as! String), "messageKey": messageDict.first?.key]

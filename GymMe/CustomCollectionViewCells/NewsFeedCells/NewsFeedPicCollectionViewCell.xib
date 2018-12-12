@@ -104,7 +104,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mkl-09-Svq">
-                        <rect key="frame" x="10" y="486" width="209" height="24"/>
+                        <rect key="frame" x="10" y="494" width="209" height="24"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <state key="normal" title="View all comments">
@@ -116,13 +116,13 @@
                         </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="sdfg sdfg sf gsdfg sdfjg sdljgf sdfhgljsdh glshdf ljhsldfj hlsjdh lkjsdfhglkjsdhf lgksflkghslglksjdfhg kjsdhglksdhgkld" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rg9-z0-SZO">
-                        <rect key="frame" x="10" y="442" width="355" height="49"/>
+                        <rect key="frame" x="10" y="447" width="355" height="49"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" alpha="0.69999999999999996" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ahd-gy-b1s">
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ahd-gy-b1s">
                         <rect key="frame" x="48" y="398" width="26" height="25"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <state key="normal" image="Comment">
@@ -132,8 +132,8 @@
                             <action selector="commentButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="C4T-eh-MrT"/>
                         </connections>
                     </button>
-                    <button opaque="NO" alpha="0.90000000000000002" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jfb-Sb-Irr">
-                        <rect key="frame" x="85" y="396" width="26" height="25"/>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jfb-Sb-Irr">
+                        <rect key="frame" x="84" y="396" width="26" height="25"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <state key="normal" backgroundImage="favoritesUnfilled">
                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -142,7 +142,7 @@
                             <action selector="favoritesButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="lNf-6n-zHk"/>
                         </connections>
                     </button>
-                    <button opaque="NO" alpha="0.65000000000000002" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jcN-Dd-IeQ">
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jcN-Dd-IeQ">
                         <rect key="frame" x="124" y="398" width="22" height="23"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <state key="normal" backgroundImage="shareIcon-1">
@@ -193,10 +193,10 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="Comment" width="64" height="50"/>
+        <image name="Comment" width="25.600000381469727" height="25.600000381469727"/>
         <image name="Octicons-mute.svg" width="2000" height="2286"/>
-        <image name="favoritesUnfilled" width="204.80000305175781" height="204.80000305175781"/>
-        <image name="like" width="204.80000305175781" height="204.80000305175781"/>
-        <image name="shareIcon-1" width="204.80000305175781" height="204.80000305175781"/>
+        <image name="favoritesUnfilled" width="25.600000381469727" height="25.600000381469727"/>
+        <image name="like" width="25.600000381469727" height="25.600000381469727"/>
+        <image name="shareIcon-1" width="25.600000381469727" height="25.600000381469727"/>
     </resources>
 </document>
