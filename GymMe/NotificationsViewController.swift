@@ -133,9 +133,35 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
         
         let cell : NotificationCell = collectionView.dequeueReusableCell(withReuseIdentifier: "NotificationCell", for: indexPath) as! NotificationCell
         
-        var sendString = (noteCollectData![indexPath.row]["actionText"] as! String) + (noteCollectData![indexPath.row]["timeStamp"] as! String)
-        print("sendString: \(sendString)")
-        cell.noteLabel.text = sendString
+        
+        
+        var partOne = (noteCollectData![indexPath.row]["actionText"] as! String)
+        if let first = partOne.components(separatedBy: " ").first {
+            // Do something with the first component.
+           if let range = partOne.range(of: first) {
+                partOne.removeSubrange(range)
+            
+            let attrs = [NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 15)]
+            let attributedString = NSMutableAttributedString(string:first, attributes:attrs)
+            var normString = NSMutableAttributedString(string:partOne)
+            var space = NSMutableAttributedString(string:" ")
+            
+            var timestamp123 = noteCollectData![indexPath.row]["timeStamp"] as! String
+            
+            var time = NSMutableAttributedString(string: timestamp123)
+            
+            attributedString.append(space)
+            attributedString.append(normString)
+            
+           attributedString.append(space)
+            attributedString.append(time)
+            
+            var sendString = attributedString
+            print("sendString: \(sendString)")
+            cell.noteLabel.attributedText = attributedString
+            }
+        }
+        
         cell.actionByUID = noteCollectData![indexPath.row]["actionByUID"] as! String
             cell.postTextLabel.text = noteCollectData![indexPath.row]["postText"] as? String
         cell.postTextLabel.isHidden = true

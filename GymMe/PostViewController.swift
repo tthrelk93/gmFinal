@@ -249,7 +249,7 @@ UICollectionViewDataSource, UISearchBarDelegate{
                 print(photo.modifiedImage) // Transformed image, can be nil
                 print(photo.exifMeta) // Print exif meta data of original image.
                 self.makePostView.isHidden = false
-                self.cancelPostButton.isHidden = false
+                self.cancelPostButton.isHidden = true
                 self.makePostImageView.image = photo.image
             }
             picker.dismiss(animated: true, completion: nil)
@@ -289,7 +289,10 @@ UICollectionViewDataSource, UISearchBarDelegate{
                                 print(photo.modifiedImage) // Transformed image, can be nil
                                 print(photo.exifMeta) // Print exif meta data of original image.
                                 self.makePostView.isHidden = false
-                                self.cancelPostButton.isHidden = false
+                               
+                                
+                               //hiding cancel here
+                                self.cancelPostButton.isHidden = true
                                 // var //tempImage = photo.image.
                                 self.makePostImageView.image = photo.image
                                 self.postType = "pic"
@@ -301,7 +304,7 @@ UICollectionViewDataSource, UISearchBarDelegate{
                                 print(video.thumbnail)
                                 print(video.url)
                                 self.makePostView.isHidden = false
-                                self.cancelPostButton.isHidden = false
+                                self.cancelPostButton.isHidden = true
                                 self.postPlayer?.url = video.url
                                 let videoURL = video.url as! NSURL
                                 do {
