@@ -240,6 +240,7 @@ UICollectionViewDataSource, UISearchBarDelegate{
         self.postType = "pic"
         present(imagePicker, animated: true, completion: nil)*/
         let picker = YPImagePicker()
+        
         self.postType = "pic"
         picker.didFinishPicking { [unowned picker] items, _ in
             if let photo = items.singlePhoto {
@@ -249,7 +250,7 @@ UICollectionViewDataSource, UISearchBarDelegate{
                 print(photo.modifiedImage) // Transformed image, can be nil
                 print(photo.exifMeta) // Print exif meta data of original image.
                 self.makePostView.isHidden = false
-                self.cancelPostButton.isHidden = true
+                self.cancelPostButton.isHidden = false
                 self.makePostImageView.image = photo.image
             }
             picker.dismiss(animated: true, completion: nil)
@@ -275,9 +276,16 @@ UICollectionViewDataSource, UISearchBarDelegate{
                 config.screens = [.library, .video]
                 config.library.mediaType = .photoAndVideo
         
+        
                 
                 let picker = YPImagePicker(configuration: config)
-                picker.didFinishPicking { [unowned picker] items, _ in
+                picker.didFinishPicking { [unowned picker] items, cancelled in
+                    
+                    if cancelled {
+                        print("Picker was canceled")
+                        picker.dismiss(animated: true, completion: nil)
+                        return
+                    }
                     
                     if let firstItem = items.first {
                         switch firstItem {
@@ -289,10 +297,7 @@ UICollectionViewDataSource, UISearchBarDelegate{
                                 print(photo.modifiedImage) // Transformed image, can be nil
                                 print(photo.exifMeta) // Print exif meta data of original image.
                                 self.makePostView.isHidden = false
-                               
-                                
-                               //hiding cancel here
-                                self.cancelPostButton.isHidden = true
+                                self.cancelPostButton.isHidden = false
                                 // var //tempImage = photo.image.
                                 self.makePostImageView.image = photo.image
                                 self.postType = "pic"
@@ -304,7 +309,7 @@ UICollectionViewDataSource, UISearchBarDelegate{
                                 print(video.thumbnail)
                                 print(video.url)
                                 self.makePostView.isHidden = false
-                                self.cancelPostButton.isHidden = true
+                                self.cancelPostButton.isHidden = false
                                 self.postPlayer?.url = video.url
                                 let videoURL = video.url as! NSURL
                                 do {

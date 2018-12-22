@@ -14,7 +14,6 @@ import CoreLocation
 import SwiftOverlays
 
 
-
 class SearchViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarDelegate, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, CLLocationManagerDelegate {
     @IBOutlet weak var backToCatButton: UIButton!
     
@@ -321,8 +320,8 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         } else if collectionView == categoriesCollect{
         
         let cell : UICollectionViewCell = (collectionView.dequeueReusableCell(withReuseIdentifier: "CatCell", for: indexPath) as! CatCell)
-        cell.layer.borderWidth = 2
-        cell.layer.borderColor = UIColor.lightGray.withAlphaComponent(0.6).cgColor
+        //cell.layer.borderWidth = 2
+        //cell.layer.borderColor = UIColor.lightGray.withAlphaComponent(0.6).cgColor
         (cell as! CatCell).catCellLabel.text = catCollectData[indexPath.row]
         (cell as! CatCell).catCellImageView.image = UIImage(named: catCollectPics[indexPath.row])
         
