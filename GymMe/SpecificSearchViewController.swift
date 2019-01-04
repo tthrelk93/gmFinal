@@ -108,8 +108,12 @@ var myUName = String()
     
         if collectionView == searchCollect {
     
+            if searchSegment.selectedSegmentIndex == 0 {
             performSegueToPosterProfile(uid: (findFriendsData[indexPath.row])["uid"] as! String, name: (findFriendsData[indexPath.row])["uName"] as! String)
-    
+            } else {
+                self.selectedData = findFriendsData[indexPath.row] as! [String:Any]
+                performSegue(withIdentifier: "AdvancedSearchToSinglePost", sender: self)
+            }
             //perform segue to the persons profile
     
             print("hellomate")
@@ -128,6 +132,13 @@ var myUName = String()
         let cell : LikedByCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "LikedByCollectionViewCell", for: indexPath) as! LikedByCollectionViewCell
         
         DispatchQueue.main.async{
+            if self.searchSegment.selectedSegmentIndex != 0 {
+                cell.likedByFollowButton.isHidden = true
+            } else {
+                
+                cell.likedByFollowButton.isHidden = false
+            }
+            
             
             cell.likedByImage.frame = CGRect(x:cell.likedByImage.frame.origin.x, y: cell.likedByImage.frame.origin.y, width: 63.0, height: 63.0)
             cell.contentView.layer.cornerRadius = 2.0
@@ -147,7 +158,7 @@ var myUName = String()
             }
             cell.likedByName.isHidden = false
             cell.likedByUName.isHidden = false
-            cell.likedByFollowButton.isHidden = false
+            
             cell.commentName.isHidden = true
             cell.commentTextView.isHidden = true
             cell.commentTimestamp.isHidden = true
@@ -190,6 +201,8 @@ var myUName = String()
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
+    var selectedData = [String:Any]()
+    var prevScreen = String()
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
@@ -206,6 +219,15 @@ var myUName = String()
                 }
                 vc.curName = self.curName
                 
+            }
+        }
+        if segue.identifier == "AdvancedSearchToSinglePost"{
+            if let vc = segue.destination as? SinglePostViewController{
+                vc.thisPostData = self.selectedData
+                vc.myUName = self.myUName
+                vc.following = self.following
+                vc.myPicString = self.myPicString
+                vc.prevScreen = "advancedSearch"
             }
         }
     }

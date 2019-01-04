@@ -18,6 +18,8 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
     @IBAction func backPressed(_ sender: Any) {
         if senderScreen == "notification"{
             performSegue(withIdentifier: "backToNote", sender: self)
+        } else if prevScreen == "advancedSearch"{
+            performSegue(withIdentifier: "SinglePostToAdvancedSearch", sender: self)
         } else {
             performSegue(withIdentifier: "backToProfile", sender: self)
         }
@@ -308,40 +310,48 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
     var myUName = String()
     var commentsArray = [[String:Any]]()
     var likesArray = [[String:Any]]()
+    var advancedData = [String:Any]()
     override func viewDidLoad() {
         super.viewDidLoad()
-        posterPicButton.frame = CGRect(x: posterPicButton.frame.origin.x, y: posterPicButton.frame.origin.y, width: 40.0, height: 40.0)
-        self.postID = thisPostData["postID"] as! String
-        self.posterUID = thisPostData["posterUID"] as! String
+        Database.database().reference().child("posts").child(self.thisPostData["uid"] as! String).observeSingleEvent(of: .value, with: {(snapshot) in
+            if self.prevScreen == "advancedSearch"{
+            
+                self.thisPostData = snapshot.value as! [String:Any]
+                
+            
+        }
+            self.posterPicButton.frame = CGRect(x: self.posterPicButton.frame.origin.x, y: self.posterPicButton.frame.origin.y, width: 40.0, height: 40.0)
+            self.postID = self.thisPostData["postID"] as! String
+            self.posterUID = self.thisPostData["posterUID"] as! String
         //posterPicButton.layer.cornerRadius = posterPicButton.frame.width/2
         //posterPicButton.layer.masksToBounds = true
         
-        commentsCollect.register(UINib(nibName: "CommentCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "CommentCollectionViewCell")
+            self.commentsCollect.register(UINib(nibName: "CommentCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "CommentCollectionViewCell")
         
-        likesCollect.register(UINib(nibName: "LikedByCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "LikedByCollectionViewCell")
+            self.likesCollect.register(UINib(nibName: "LikedByCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "LikedByCollectionViewCell")
         
 
-        commentTF.delegate = self
+            self.commentTF.delegate = self
         
-        if thisPostData["postVid"] == nil && thisPostData["postPic"] == nil{
+            if self.thisPostData["postVid"] == nil && self.thisPostData["postPic"] == nil{
             //textPost
-            posterNameButton.setTitle((thisPostData["posterName"] as! String), for: .normal)
+                self.posterNameButton.setTitle((self.thisPostData["posterName"] as! String), for: .normal)
             
             if let messageImageUrl = URL(string: (self.thisPostData["posterPicURL"] as! String)) {
                 if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
                     
-                    posterPicButton.setImage(UIImage(data: imageData as Data), for: .normal)
+                    self.posterPicButton.setImage(UIImage(data: imageData as Data), for: .normal)
                     
                 }
             }
            
-            if thisPostData["postText"] == nil{
+                if self.thisPostData["postText"] == nil{
                 
             } else {
-                postText.text = (thisPostData["postText"] as! String)
+                    self.postText.text = (self.thisPostData["postText"] as! String)
             }
-            if thisPostData["city"] != nil{
-                cityButton.setTitle((thisPostData["city"] as! String), for: .normal)
+                if self.thisPostData["city"] != nil{
+                    self.cityButton.setTitle((self.thisPostData["city"] as! String), for: .normal)
             }
             
             var commentsPost: [String:Any]?
@@ -354,8 +364,8 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
             var tempPost: [String:Any]?
             self.likesArray = ((self.thisPostData["likes"] as? [[String: Any]])!)
             
-            likesCollect.delegate = self
-            likesCollect.dataSource = self
+                self.likesCollect.delegate = self
+                self.likesCollect.dataSource = self
             for item in (self.thisPostData["likes"] as? [[String: Any]])!{
                 
                 tempPost = item as! [String: Any]
@@ -376,7 +386,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                 }
                 self.likesCountButton.setTitle(fullString1, for: .normal)
                 
-                if (thisPostData["posterName"] as? String) == self.myUName{
+                if (self.thisPostData["posterName"] as? String) == self.myUName{
                     self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
                     let countStringNum = String((self.thisPostData["likes"] as? [[String: Any]])!.count)
                     var fullString = String()
@@ -391,7 +401,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
             }
             
             var favesPost: [String:Any]?
-            for item in (thisPostData["favorites"] as? [[String: Any]])!{
+                for item in (self.thisPostData["favorites"] as? [[String: Any]])!{
                 
                 favesPost = item as! [String: Any]
                 
@@ -428,31 +438,31 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
             
             
         } else {
-            if thisPostData["postVid"] == nil{
+                if self.thisPostData["postVid"] == nil{
                 //pic post
-                posterNameButton.setTitle((thisPostData["posterName"] as! String), for: .normal)
+                    self.posterNameButton.setTitle((self.thisPostData["posterName"] as! String), for: .normal)
                 
                 if let messageImageUrl = URL(string: (self.thisPostData["posterPicURL"] as! String)) {
                     if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
                        
-                        posterPicButton.setImage(UIImage(data: imageData as Data), for: .normal)
+                        self.posterPicButton.setImage(UIImage(data: imageData as Data), for: .normal)
                         
                     }
                 }
                 if let messageImageUrl = URL(string: (self.thisPostData["postPic"] as! String)) {
                     if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
                         
-                        postPic.image = UIImage(data: imageData as Data)
+                        self.postPic.image = UIImage(data: imageData as Data)
                         
                     }
                 }
-                if thisPostData["postText"] == nil{
+                    if self.thisPostData["postText"] == nil{
                     
                 } else {
-                    postText.text = (thisPostData["postText"] as! String)
+                        self.postText.text = (self.thisPostData["postText"] as! String)
                 }
-                if thisPostData["city"] != nil{
-                    cityButton.setTitle((thisPostData["city"] as! String), for: .normal)
+                    if self.thisPostData["city"] != nil{
+                        self.cityButton.setTitle((self.thisPostData["city"] as! String), for: .normal)
                 }
                 
                 var commentsPost: [String:Any]?
@@ -465,8 +475,8 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                 var tempPost: [String:Any]?
                 self.likesArray = ((self.thisPostData["likes"] as? [[String: Any]])!)
                 
-                likesCollect.delegate = self
-                likesCollect.dataSource = self
+                    self.likesCollect.delegate = self
+                    self.likesCollect.dataSource = self
                 for item in (self.thisPostData["likes"] as? [[String: Any]])!{
                     
                     tempPost = item as! [String: Any]
@@ -487,7 +497,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                     }
                     self.likesCountButton.setTitle(fullString1, for: .normal)
                     
-                    if (thisPostData["posterName"] as? String) == self.myUName{
+                    if (self.thisPostData["posterName"] as? String) == self.myUName{
                         self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
                         let countStringNum = String((self.thisPostData["likes"] as? [[String: Any]])!.count)
                         var fullString = String()
@@ -502,7 +512,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                 }
                 
                 var favesPost: [String:Any]?
-                for item in (thisPostData["favorites"] as? [[String: Any]])!{
+                    for item in (self.thisPostData["favorites"] as? [[String: Any]])!{
                     
                     favesPost = item as! [String: Any]
                     
@@ -547,8 +557,9 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                 self.view.addSubview((self.player?.view)!)
             }
         }
+            print("thisData: \(self.thisPostData)")
+        })
         
-        print("thisData: \(self.thisPostData)")
         // Do any additional setup after loading the view.
     }
     var curCollect = String()

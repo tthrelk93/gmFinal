@@ -612,6 +612,7 @@
                         <outlet property="searchSegment" destination="Rbe-ZJ-BMe" id="XKn-Mf-rr7"/>
                         <segue destination="5I3-vc-uva" kind="showDetail" identifier="specificToGeneralSearch" id="D15-DS-Hif"/>
                         <segue destination="iYc-aa-vyQ" kind="showDetail" identifier="advanceSearchToProfile" id="Miz-DP-T9e"/>
+                        <segue destination="tfZ-fY-cOO" kind="showDetail" identifier="AdvancedSearchToSinglePost" id="1fJ-td-eP7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wIt-a7-yGF" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -629,7 +630,7 @@
                     </connections>
                 </swipeGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-378.39999999999998" y="455.62218890554726"/>
+            <point key="canvasLocation" x="-508" y="1351"/>
         </scene>
         <!--Search View Controller-->
         <scene sceneID="9rD-jK-XF9">
@@ -2809,6 +2810,7 @@
                         <outlet property="posterPicButton" destination="xuv-h4-GMa" id="7sg-LZ-UxS"/>
                         <segue destination="iYc-aa-vyQ" kind="showDetail" identifier="backToProfile" id="e8g-AE-9su"/>
                         <segue destination="ftG-qB-HqV" kind="showDetail" identifier="backToNote" id="gx2-Qu-bRU"/>
+                        <segue destination="GkS-31-GCY" kind="showDetail" identifier="SinglePostToAdvancedSearch" id="kTe-m7-s3G"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cuk-po-iGB" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3147,12 +3149,13 @@
         <image name="vizio-smart-tv-800x800" width="786" height="448"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Prv-0P-FKQ"/>
-        <segue reference="Miz-DP-T9e"/>
+        <segue reference="1fJ-td-eP7"/>
+        <segue reference="e8g-AE-9su"/>
         <segue reference="XTo-Ja-pwD"/>
         <segue reference="D15-DS-Hif"/>
+        <segue reference="kTe-m7-s3G"/>
         <segue reference="1xj-gH-dGu"/>
-        <segue reference="yP5-AV-FPG"/>
+        <segue reference="gx2-Qu-bRU"/>
         <segue reference="7Cy-Gz-xNk"/>
     </inferredMetricsTieBreakers>
 </document>
