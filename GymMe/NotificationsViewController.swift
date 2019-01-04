@@ -14,6 +14,31 @@ import SwiftOverlays
 
 class NotificationsViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarDelegate {
     
+    @IBOutlet var swipeGestureRecognizer: UISwipeGestureRecognizer!
+    var prevScreen = String()
+    
+    @IBAction func swipeHandler(_ gestureRecognizer : UISwipeGestureRecognizer) {
+        if gestureRecognizer.state == .ended {
+            // Perform action.
+            print("swipeRight: \(prevScreen)")
+            if prevScreen == "feed"{
+                performSegue(withIdentifier: "NotificationsToFeed", sender: self)
+            }
+            if prevScreen == "profile"{
+                performSegue(withIdentifier: "NotificationsToProfile", sender: self)
+            }
+            if prevScreen == "post"{
+                performSegue(withIdentifier: "NotificationsToPost", sender: self)
+            }
+            if prevScreen == "search"{
+                performSegue(withIdentifier: "NotificationsToSearch", sender: self)
+            }
+            if prevScreen == "post"{
+                performSegue(withIdentifier: "NotificationsToPost", sender: self)
+            }
+        }
+    }
+    
     @IBOutlet weak var tabBar: UITabBar!
     public func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem){
         if item == tabBar.items![0]{
@@ -221,9 +246,10 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
         
         if segue.identifier == "NoteToSinglePost"{
             if let vc = segue.destination as? SinglePostViewController{
+                
                 print("wuttttttt: \(self.selectedData)")
                 
-                
+                vc.prevScreen = "notification"
                 vc.senderScreen = "notification"
                 vc.thisPostData = self.selectedData
                 vc.myUName = self.myUName
@@ -233,6 +259,27 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
             
             }
     }
+        if segue.identifier == "NotificationsToFeed"{
+            if let vc = segue.destination as? HomeFeedViewController{
+                vc.prevScreen = "notification"
+            }
+            
+        }
+        if segue.identifier == "NotificationsToProfile"{
+            if let vc = segue.destination as? ProfileViewController{
+                vc.prevScreen = "notification"
+            }
+        }
+        if segue.identifier == "NotificationsToSearch"{
+            if let vc = segue.destination as? SearchViewController{
+                vc.prevScreen = "notification"
+            }
+        }
+        if segue.identifier == "NotificationsToPost"{
+            if let vc = segue.destination as? PostViewController{
+                vc.prevScreen = "notification"
+            }
+        }
     }
     
 

@@ -52,7 +52,7 @@ UICollectionViewDataSource, UISearchBarDelegate{
     var placeAddress = String()
     var place: GMSPlace?
     var catLabelsRefined = [String]()
-    
+    var prevScreen = String()
     
     @IBOutlet weak var sportsCollect: UICollectionView!
     @IBOutlet weak var sportsView: UIView!
@@ -1023,15 +1023,56 @@ UICollectionViewDataSource, UISearchBarDelegate{
     }
     
     @IBOutlet weak var makePostTextView: UITextView!
-    /*
+    
+    @IBAction func swipeHandler(_ gestureRecognizer : UISwipeGestureRecognizer) {
+        if gestureRecognizer.state == .ended {
+            // Perform action.
+            print("swipeRight: \(prevScreen)")
+            if prevScreen == "feed"{
+                performSegue(withIdentifier: "PostToFeed", sender: self)
+            }
+            if prevScreen == "profile"{
+                performSegue(withIdentifier: "PostToProfile", sender: self)
+            }
+           
+            if prevScreen == "search"{
+                performSegue(withIdentifier: "PostToSearch", sender: self)
+            }
+            if prevScreen == "notifications"{
+                performSegue(withIdentifier: "PostToNotifications", sender: self)
+            }
+        }
+    }
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "PostToFeed"{
+            if let vc = segue.destination as? HomeFeedViewController{
+                vc.prevScreen = "post"
+            }
+            
+        }
+        if segue.identifier == "PostToProfile"{
+            if let vc = segue.destination as? ProfileViewController{
+                vc.prevScreen = "post"
+            }
+        }
+        if segue.identifier == "PostToSearch"{
+            if let vc = segue.destination as? SearchViewController{
+                vc.prevScreen = "post"
+            }
+        }
+        if segue.identifier == "PostToNotifications"{
+            if let vc = segue.destination as? NotificationsViewController{
+                vc.prevScreen = "post"
+            }
+        }
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
-    */
+    
     //TextViewDelegate
     //@available(iOS 2.0, *)
     

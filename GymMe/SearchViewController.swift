@@ -16,7 +16,7 @@ import SwiftOverlays
 
 class SearchViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarDelegate, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, CLLocationManagerDelegate {
     @IBOutlet weak var backToCatButton: UIButton!
-    
+    var prevScreen = String()
     var sportsCollectData = ["Soccer","Football","Lacrosse", "Track & Field", "Tennis","Baseball","Swimming"]
     
     @IBOutlet weak var sportsView: UIView!
@@ -1631,15 +1631,76 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     }
   var curCellFrame = CGRect()
 
-    /*
+    @IBOutlet var swipeGestureRecognizer: UISwipeGestureRecognizer!
+    @objc func dismiss(fromGesture gesture: UISwipeGestureRecognizer) {
+        if gesture.state == .ended {
+            // Perform action.
+            print("swipeRight: \(prevScreen)")
+            if prevScreen == "feed"{
+                performSegue(withIdentifier: "SearchToFeed", sender: self)
+            }
+            if prevScreen == "profile"{
+                performSegue(withIdentifier: "SearchToProfile", sender: self)
+            }
+            if prevScreen == "post"{
+                performSegue(withIdentifier: "SearchToPost", sender: self)
+            }
+            
+            if prevScreen == "notifications"{
+                performSegue(withIdentifier: "SearchToNotifications", sender: self)
+            }
+        }
+    }
+    
+    @IBAction func swipeHandler(_ gestureRecognizer : UISwipeGestureRecognizer) {
+        if gestureRecognizer.state == .ended {
+            // Perform action.
+            print("swipeRight: \(prevScreen)")
+            if prevScreen == "feed"{
+                performSegue(withIdentifier: "SearchToFeed", sender: self)
+            }
+            if prevScreen == "profile"{
+                performSegue(withIdentifier: "SearchToProfile", sender: self)
+            }
+            if prevScreen == "post"{
+                performSegue(withIdentifier: "SearchToPost", sender: self)
+            }
+           
+            if prevScreen == "notifications"{
+                performSegue(withIdentifier: "SearchToNotifications", sender: self)
+            }
+        }
+    }
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "SearchToFeed"{
+            if let vc = segue.destination as? HomeFeedViewController{
+                vc.prevScreen = "search"
+            }
+            
+        }
+        if segue.identifier == "SearchToProfile"{
+            if let vc = segue.destination as? ProfileViewController{
+                vc.prevScreen = "search"
+            }
+        }
+        if segue.identifier == "SearchToNotifications"{
+            if let vc = segue.destination as? NotificationsViewController{
+                vc.prevScreen = "search"
+            }
+        }
+        if segue.identifier == "SearchToPost"{
+            if let vc = segue.destination as? PostViewController{
+                vc.prevScreen = "search"
+            }
+        }
     }
-    */
+    
     public func textFieldDidBeginEditing(_ textField: UITextField) {
         
     }// became first responder

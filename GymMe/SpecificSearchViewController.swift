@@ -16,6 +16,14 @@ var myUName = String()
     var following = [String]()
     var myPicString = String()
     var myRealName = String()
+    
+    @IBAction func swipeBack(_ sender: Any) {
+        performSegue(withIdentifier: "specificToGeneralSearch", sender: self)
+    }
+    @objc func dismiss(fromGesture gesture: UISwipeGestureRecognizer) {
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 

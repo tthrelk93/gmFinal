@@ -220,10 +220,15 @@
                             </tabBar>
                         </subviews>
                         <color key="backgroundColor" red="0.97227822580000001" green="0.97227822580000001" blue="0.97227822580000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <gestureRecognizers/>
                         <viewLayoutGuide key="safeArea" id="H2h-7b-zgb"/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="BNU-Pp-krG" appends="YES" id="cb5-GI-Wew"/>
+                        </connections>
                     </view>
                     <connections>
                         <outlet property="notifyCollect" destination="DCc-Uv-0gX" id="cPZ-Eq-4fi"/>
+                        <outlet property="swipeGestureRecognizer" destination="BNU-Pp-krG" id="k7I-s3-b6m"/>
                         <outlet property="tabBar" destination="JxG-CB-zQX" id="ee4-To-PNU"/>
                         <segue destination="JWU-v2-2yg" kind="showDetail" identifier="NotificationsToPost" id="rKv-Bj-ALo"/>
                         <segue destination="BYZ-38-t0r" kind="showDetail" identifier="NotificationsToFeed" id="U5Q-zZ-fsC"/>
@@ -234,6 +239,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xjn-SZ-yj4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="right" id="BNU-Pp-krG">
+                    <connections>
+                        <action selector="swipeHandler:" destination="ftG-qB-HqV" id="RCU-qM-CET"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="2584.8000000000002" y="560.86956521739137"/>
         </scene>
@@ -379,7 +389,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <button opaque="NO" alpha="0.45000000000000001" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="pnB-ym-Ou9">
-                                <rect key="frame" x="12" y="37" width="26" height="25"/>
+                                <rect key="frame" x="12" y="37" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="addFriends">
                                     <color key="titleColor" red="0.92941176469999998" green="0.10980392160000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -470,6 +480,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <gestureRecognizers/>
                         <viewLayoutGuide key="safeArea" id="dLa-Ym-Obq"/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="8au-K0-n2s" appends="YES" id="Nrw-JZ-kA9"/>
+                        </connections>
                     </view>
                     <connections>
                         <outlet property="addFriendsButton" destination="pnB-ym-Ou9" id="mBm-Jg-7N8"/>
@@ -491,6 +504,7 @@
                         <outlet property="selfCommentPic" destination="nVs-pm-AZe" id="z28-2P-qGE"/>
                         <outlet property="shareFinalizeButton" destination="Cjq-K9-H7O" id="tUq-Na-0UG"/>
                         <outlet property="shareSearchBar" destination="VAp-E4-7bd" id="CK4-Px-Snr"/>
+                        <outlet property="swipeGestureRecognizer" destination="8au-K0-n2s" id="85a-B7-wbI"/>
                         <outlet property="tabBar" destination="tQR-GW-wZ7" id="oOm-zq-mIc"/>
                         <outlet property="topLabel" destination="wCA-Gw-Hs1" id="yMC-Um-Jua"/>
                         <segue destination="5I3-vc-uva" kind="showDetail" identifier="FeedToSearch" id="usj-ZK-sIq"/>
@@ -521,6 +535,11 @@
                         <outlet property="searchResultsDelegate" destination="BYZ-38-t0r" id="AyW-pu-h3K"/>
                     </connections>
                 </searchDisplayController>
+                <swipeGestureRecognizer direction="right" id="8au-K0-n2s">
+                    <connections>
+                        <action selector="swipeHandler:" destination="BYZ-38-t0r" id="wLl-bN-7Ut"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="400.80000000000001" y="-443.02848575712147"/>
         </scene>
@@ -579,7 +598,11 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <gestureRecognizers/>
                         <viewLayoutGuide key="safeArea" id="z2L-Ha-dNw"/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="bDu-lK-alD" appends="YES" id="g8n-cH-S73"/>
+                        </connections>
                     </view>
                     <connections>
                         <outlet property="backButton" destination="eqM-1j-JmW" id="42v-QX-fOZ"/>
@@ -600,6 +623,11 @@
                         <outlet property="searchResultsDelegate" destination="GkS-31-GCY" id="d5U-Bb-7md"/>
                     </connections>
                 </searchDisplayController>
+                <swipeGestureRecognizer direction="right" id="bDu-lK-alD">
+                    <connections>
+                        <action selector="swipeBack:" destination="GkS-31-GCY" id="wqm-km-6M5"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-378.39999999999998" y="455.62218890554726"/>
         </scene>
@@ -612,7 +640,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Discover" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w3A-Na-wRP">
-                                <rect key="frame" x="110" y="26" width="156" height="35"/>
+                                <rect key="frame" x="109" y="26" width="156" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="DINAlternate-Bold" family="DIN Alternate" pointSize="28"/>
                                 <color key="textColor" red="0.92941176469999998" green="0.10980392160000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -913,7 +941,7 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zda-Jh-TQa">
-                                <rect key="frame" x="0.0" y="62" width="375" height="0.5"/>
+                                <rect key="frame" x="0.0" y="62" width="375" height="1"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
@@ -972,7 +1000,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CNg-eQ-vPs">
-                                        <rect key="frame" x="59" y="52" width="176" height="23"/>
+                                        <rect key="frame" x="57" y="52" width="176" height="23"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="name">
                                             <color key="titleColor" white="0.0" alpha="0.90195862680000005" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -982,7 +1010,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XoQ-SJ-zww">
-                                        <rect key="frame" x="59" y="70" width="186" height="23"/>
+                                        <rect key="frame" x="57" y="70" width="186" height="23"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <state key="normal">
                                             <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1266,7 +1294,11 @@
                             </tabBar>
                         </subviews>
                         <color key="backgroundColor" red="0.97227822580000001" green="0.97227822580000001" blue="0.97227822580000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <gestureRecognizers/>
                         <viewLayoutGuide key="safeArea" id="LSJ-2d-Bre"/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="ILU-wF-xgK" appends="YES" id="hM8-cc-fsf"/>
+                        </connections>
                     </view>
                     <connections>
                         <outlet property="backToCatButton" destination="iZm-aG-ad5" id="VIw-L1-Udm"/>
@@ -1294,6 +1326,7 @@
                         <outlet property="singlePostView" destination="Fx7-Au-Mpq" id="Uuy-Vx-yp8"/>
                         <outlet property="sportsCollect" destination="YqM-jj-Bdq" id="t9o-Vr-cws"/>
                         <outlet property="sportsView" destination="AJb-u2-E7W" id="o1i-iT-60h"/>
+                        <outlet property="swipeGestureRecognizer" destination="ILU-wF-xgK" id="dpl-BM-BfK"/>
                         <outlet property="tabBar" destination="tvu-vm-fWp" id="fft-Qm-z5p"/>
                         <outlet property="topBarCat" destination="Ta3-ee-XoO" id="OIF-w3-ZpE"/>
                         <outlet property="topBarNearby" destination="gAi-1J-QaY" id="C2n-D1-alF"/>
@@ -1308,6 +1341,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cPY-cE-6pP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="right" id="ILU-wF-xgK">
+                    <connections>
+                        <action selector="swipeHandler:" destination="5I3-vc-uva" id="HDF-7Q-3OQ"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="400.80000000000001" y="526.6866566716642"/>
         </scene>
@@ -1442,7 +1480,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rFu-KC-ipM">
-                                        <rect key="frame" x="0.0" y="61" width="375" height="0.5"/>
+                                        <rect key="frame" x="0.0" y="61" width="375" height="0.0"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
@@ -1483,7 +1521,7 @@
                                         <color key="backgroundColor" white="1" alpha="0.48811619718309857" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ml4-On-HG3">
-                                        <rect key="frame" x="53" y="360" width="105" height="33"/>
+                                        <rect key="frame" x="51" y="360" width="105" height="33"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Tag People">
@@ -1526,7 +1564,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h5S-Wi-X9Q">
-                                        <rect key="frame" x="61" y="77" width="88" height="26"/>
+                                        <rect key="frame" x="59" y="77" width="88" height="26"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <state key="normal" title="Add Location">
@@ -1813,7 +1851,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.90195862676056338" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XIB-TY-89U">
-                                <rect key="frame" x="0.0" y="54" width="375" height="0.5"/>
+                                <rect key="frame" x="0.0" y="54" width="375" height="1"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
@@ -1844,7 +1882,11 @@
                             </tabBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <gestureRecognizers/>
                         <viewLayoutGuide key="safeArea" id="6mg-rT-PaB"/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="tKZ-Gq-VHn" appends="YES" id="u4q-Ma-uTz"/>
+                        </connections>
                     </view>
                     <connections>
                         <outlet property="addCat1TextPos" destination="VDQ-1M-PUw" id="dvt-CD-60s"/>
@@ -1903,6 +1945,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sxj-R8-M3s" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="right" id="tKZ-Gq-VHn">
+                    <connections>
+                        <action selector="swipeHandler:" destination="JWU-v2-2yg" id="DBf-sz-iuG"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1488.8" y="560.86956521739137"/>
         </scene>
@@ -1915,7 +1962,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dza-sr-CX9">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="1000"/>
+                                <rect key="frame" x="0.0" y="82" width="375" height="918"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZTU-j3-eSB">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="1000"/>
@@ -2080,7 +2127,7 @@
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Edit Profile" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xgr-w9-O1B">
-                                                        <rect key="frame" x="85" y="25" width="199" height="30"/>
+                                                        <rect key="frame" x="85" y="25" width="198" height="30"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                                         <color key="textColor" red="0.92941176469999998" green="0.10980392160000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -2299,10 +2346,11 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="ZTU-j3-eSB" firstAttribute="leading" secondItem="Dza-sr-CX9" secondAttribute="leading" id="D7h-2d-otv"/>
-                                    <constraint firstAttribute="bottom" secondItem="ZTU-j3-eSB" secondAttribute="bottom" id="XEg-Vy-rDs"/>
+                                    <constraint firstAttribute="bottom" secondItem="ZTU-j3-eSB" secondAttribute="bottom" constant="-82" id="XEg-Vy-rDs"/>
                                     <constraint firstAttribute="trailing" secondItem="ZTU-j3-eSB" secondAttribute="trailing" id="fD7-a0-bYX"/>
                                     <constraint firstItem="ZTU-j3-eSB" firstAttribute="top" secondItem="Dza-sr-CX9" secondAttribute="top" id="ux0-FY-8I6"/>
                                 </constraints>
+                                <inset key="scrollIndicatorInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="82"/>
                             </scrollView>
                             <view hidden="YES" autoresizesSubviews="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iG7-Mv-EdL">
                                 <rect key="frame" x="0.0" y="72" width="375" height="879"/>
@@ -2391,14 +2439,18 @@
                             </tabBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="Dza-sr-CX9" firstAttribute="trailing" secondItem="Hv1-1O-lww" secondAttribute="trailing" id="6x7-tp-h4w"/>
                             <constraint firstItem="ZTU-j3-eSB" firstAttribute="width" secondItem="ov3-mP-5XY" secondAttribute="width" id="Jgk-d2-QKa"/>
                             <constraint firstItem="Dza-sr-CX9" firstAttribute="bottom" secondItem="Hv1-1O-lww" secondAttribute="bottom" id="PfE-3s-mrl"/>
-                            <constraint firstItem="Dza-sr-CX9" firstAttribute="top" secondItem="ov3-mP-5XY" secondAttribute="top" id="dTi-nt-KUk"/>
+                            <constraint firstItem="Dza-sr-CX9" firstAttribute="top" secondItem="ov3-mP-5XY" secondAttribute="top" constant="82" id="dTi-nt-KUk"/>
                             <constraint firstItem="Dza-sr-CX9" firstAttribute="leading" secondItem="Hv1-1O-lww" secondAttribute="leading" id="rfQ-wG-zdO"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Hv1-1O-lww"/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="wNj-FG-hdQ" appends="YES" id="NXf-sm-uD8"/>
+                        </connections>
                     </view>
                     <size key="freeformSize" width="375" height="1000"/>
                     <connections>
@@ -2432,6 +2484,7 @@
                         <outlet property="reauthPassTF" destination="fBk-0O-pHW" id="QaW-Eu-qfA"/>
                         <outlet property="reauthView" destination="zve-PP-PNr" id="NrY-dB-Vjl"/>
                         <outlet property="scrollView" destination="Dza-sr-CX9" id="4kL-tM-oQc"/>
+                        <outlet property="swipeGestureRecognizer" destination="wNj-FG-hdQ" id="pHN-kX-aEU"/>
                         <outlet property="tabBar" destination="31T-FI-IRE" id="FaG-vB-KYK"/>
                         <outlet property="topLeftNav" destination="mdi-mU-J3i" id="i4S-lR-anE"/>
                         <outlet property="userNameTop" destination="T4w-yj-VdH" id="iAb-Hx-jrs"/>
@@ -2445,6 +2498,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bqg-wq-UQt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="right" id="wNj-FG-hdQ">
+                    <connections>
+                        <action selector="swipeHandler:" destination="iYc-aa-vyQ" id="9Xt-4v-8ir"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="4544.8000000000002" y="-593.70314842578716"/>
         </scene>
@@ -2527,7 +2585,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q18-Jg-7Mv">
-                                <rect key="frame" x="58" y="52" width="180" height="23"/>
+                                <rect key="frame" x="56" y="52" width="180" height="23"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="name">
                                     <color key="titleColor" white="0.0" alpha="0.90195862680000005" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -2537,7 +2595,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lV9-Nu-CNU">
-                                <rect key="frame" x="58" y="70" width="136" height="23"/>
+                                <rect key="frame" x="56" y="70" width="136" height="23"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="city">
                                     <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -3090,9 +3148,9 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Prv-0P-FKQ"/>
-        <segue reference="anS-gs-5HP"/>
+        <segue reference="Miz-DP-T9e"/>
         <segue reference="XTo-Ja-pwD"/>
-        <segue reference="cJJ-fi-Mpb"/>
+        <segue reference="D15-DS-Hif"/>
         <segue reference="1xj-gH-dGu"/>
         <segue reference="yP5-AV-FPG"/>
         <segue reference="7Cy-Gz-xNk"/>

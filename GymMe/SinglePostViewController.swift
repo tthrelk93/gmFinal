@@ -12,7 +12,7 @@ import FirebaseStorage
 import FirebaseAuth
 
 class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITextFieldDelegate {
-    
+    var prevScreen = String()
     var senderScreen = String()
     
     @IBAction func backPressed(_ sender: Any) {
