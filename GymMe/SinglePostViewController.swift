@@ -313,7 +313,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
     var advancedData = [String:Any]()
     override func viewDidLoad() {
         super.viewDidLoad()
-        Database.database().reference().child("posts").child(self.thisPostData["uid"] as! String).observeSingleEvent(of: .value, with: {(snapshot) in
+        Database.database().reference().child("posts").child(self.thisPostData["postID"] as! String).observeSingleEvent(of: .value, with: {(snapshot) in
             if self.prevScreen == "advancedSearch"{
             
                 self.thisPostData = snapshot.value as! [String:Any]
@@ -669,15 +669,16 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
     }
     
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+       
     }
-    */
+ 
     func attributedText(withString string: String, boldString: String, font: UIFont) -> NSAttributedString {
         let attributedString = NSMutableAttributedString(string: string,
                                                          attributes: [NSAttributedStringKey.font: font])

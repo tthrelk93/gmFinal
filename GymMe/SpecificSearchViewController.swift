@@ -218,11 +218,13 @@ var myUName = String()
                     vc.viewerIsCurAuth = false
                 }
                 vc.curName = self.curName
+                vc.prevScreen = "search"
                 
             }
         }
         if segue.identifier == "AdvancedSearchToSinglePost"{
             if let vc = segue.destination as? SinglePostViewController{
+                selectedData["postID"] = selectedData["uid"] as! String
                 vc.thisPostData = self.selectedData
                 vc.myUName = self.myUName
                 vc.following = self.following

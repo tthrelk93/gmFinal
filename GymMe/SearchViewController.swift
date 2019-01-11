@@ -22,9 +22,12 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     @IBOutlet weak var sportsView: UIView!
     
     
+    
     @IBOutlet weak var sportsCollect: UICollectionView!
     
     @IBAction func backToAllCatPressed(_ sender: Any) {
+        noPostsLabel.isHidden = true
+        makeFirstPostButton.isHidden = true
         topBarCat.setTitleColor(UIColor.red, for: .normal)
         topBarPop.setTitleColor(UIColor.black, for: .normal)
         topBarNearby.setTitleColor(UIColor.black, for: .normal)
@@ -38,6 +41,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         //DispatchQueue.main.async{
         self.popCollect.reloadData()
         backToCatButton.isHidden = true
+        sports = false
         //}
     }
    // var gmRed = UIColor(red: 180/255, green: 29/255, blue: 2/255, alpha: 1.0)
@@ -51,6 +55,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             self.player = nil
             //self.singlePostView1.isHidden = false
            self.backToCatButton.isHidden = false
+            self.sports = false
           
         })
        
@@ -164,6 +169,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     @IBOutlet weak var popCollect: UICollectionView!
     @IBOutlet weak var border1: UIView!
     
+    @IBOutlet weak var backToCatFromSports: UIButton!
     @IBAction func hideCommentsPressed(_ sender: Any) {
         commentView.isHidden = true
     }
@@ -173,9 +179,10 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         ogCommentPos = commentView.frame
         //posterPicButton.layer.cornerRadius = posterPicButton.frame.width/2
         //posterPicButton.layer.masksToBounds = true
+       makeFirstPostButton.layer.cornerRadius = 10
         locationManager.requestAlwaysAuthorization()
         locationManager.requestWhenInUseAuthorization()
-      
+      backToCatFromSports.layer.cornerRadius = 10
         commentCollect.register(UINib(nibName: "CommentCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "CommentCollectionViewCell")
         
         likesCollect.register(UINib(nibName: "LikedByCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "LikedByCollectionViewCell")
@@ -206,9 +213,9 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 2.5, left: 2.5, bottom: 2.5, right: 2.5)
         //layout.itemSize = CGSize(width: screenWidth/2.035, height: screenWidth/2.7)
-        layout.itemSize = CGSize(width: screenWidth/2.035, height: screenWidth/2.035)
-        layout.minimumInteritemSpacing = 0
-        layout.minimumLineSpacing = 1
+        layout.itemSize = CGSize(width: screenWidth/2.045, height: screenWidth/2.045)
+        layout.minimumInteritemSpacing = 4
+        layout.minimumLineSpacing = 4
         categoriesCollect!.collectionViewLayout = layout
         
         let layout2: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -267,7 +274,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     self.allCatDataDict["other"] = tempArr2
                 }
             }
-            SwiftOverlays.removeAllBlockingOverlays()
+            //SwiftOverlays.removeAllBlockingOverlays()
         })
         })
     }
@@ -295,12 +302,26 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     var popCollectData = [[String:Any]]()
     @IBOutlet weak var feedCollect: UICollectionView!
     
+    @IBOutlet weak var makeFirstPostButton: UIButton!
+    @IBAction func makeFirstPostPressed(_ sender: Any) {
+        performSegue(withIdentifier: "SearchToPost", sender: self)
+    }
+    var sports = false
+    @IBOutlet weak var noPostsLabel: UILabel!
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == sportsCollect {
+            
             return sportsCollectData.count
         } else if collectionView == categoriesCollect{
             return catCollectData.count
         } else if collectionView == popCollect {
+            if self.popCollectData.count == 0 && sports == true {
+                print("popCollectData0: \(self.popCollectData.count) \(sports)")
+                self.noPostsLabel.isHidden = false
+                self.makeFirstPostButton.isHidden = false
+                //self.reloadInputViews()
+               //DispatchQueue self.makeFirstPostButton.isHidden = false
+            }
             return popCollectData.count
         } else if collectionView == commentCollect{
             return commentsCollectData.count
@@ -314,6 +335,8 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         if collectionView == sportsCollect{
             print("sportsCollecttttt")
             let cell : PostCatSearchSportsCell = collectionView.dequeueReusableCell(withReuseIdentifier: "PostCatSearchSportsCell", for: indexPath) as! PostCatSearchSportsCell
+            cell.layer.cornerRadius = 10
+            
             cell.catSportLabel.text = sportsCollectData[indexPath.row]
             
             return cell
@@ -898,6 +921,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     var postID = String()
     var posterUID = String()
     var selfData = [String:Any]()
+    
     @IBAction func posterNameButtonPressed(_ sender: Any) {
     }
     @IBOutlet weak var posterNameButton: UIButton!
@@ -913,7 +937,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         print("cell touched")
         
         if collectionView == sportsCollect {
-            
+            backToCatButton.isHidden = false
             let cellLabel = sportsCollectData[indexPath.row]
             if allCatDataDict[cellLabel] == nil {
                 self.allCatDataDict[cellLabel] = [[String:Any]]()
@@ -937,23 +961,31 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 // count = count + 1
             }
             self.popCollectData = tempData
-            print("popCollectDataAfter: \(popCollectData)")
+            //print("popCollectDataAfter: \(popCollectData.count)")
+           
+            
             DispatchQueue.main.async{
                 //self.popCollect.delegate = self
                 //self.popCollect.dataSource = self
+               
                 self.popCollect.reloadData()
             }
             self.popCollect.isHidden = false
             self.categoriesCollect.isHidden = true
             sportsView.isHidden = true
+           
             
+            backToCatButton.isHidden = false
             
             
         } else if collectionView == categoriesCollect{
             backToCatButton.isHidden = false
         let cellLabel = catCollectData[indexPath.row]
+            
             if cellLabel == "Sports"{
                 sportsView.isHidden = false
+                sports = true
+                backToCatButton.isHidden = true
             } else {
             if allCatDataDict[cellLabel] == nil {
                 self.allCatDataDict[cellLabel] = [[String:Any]]()
@@ -1035,7 +1067,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             
             
             if topBarCat.titleLabel?.textColor == UIColor.red || topBarNearby.titleLabel?.textColor == UIColor.red{
-                backToCatButton.isHidden = true
+                
                 
                 let cellLabel = catCollectData[indexPath.row]
                 if allCatDataDict[cellLabel] == nil {
@@ -1636,6 +1668,23 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         if gesture.state == .ended {
             // Perform action.
             print("swipeRight: \(prevScreen)")
+            if border1.backgroundColor == UIColor.red && popCollect.isHidden == false{
+                //back to main cat
+                print("backToCat2")
+                topBarCat.setTitleColor(UIColor.red, for: .normal)
+                topBarPop.setTitleColor(UIColor.black, for: .normal)
+                topBarNearby.setTitleColor(UIColor.black, for: .normal)
+                categoriesCollect.isHidden = false
+                topBarPressed = false
+                border1.isHidden = false
+                border2.isHidden = true
+                border3.isHidden = true
+                popCollect.isHidden = true
+                popCollectData.removeAll()
+                //DispatchQueue.main.async{
+                self.popCollect.reloadData()
+                backToCatButton.isHidden = true
+            } else {
             if prevScreen == "feed"{
                 performSegue(withIdentifier: "SearchToFeed", sender: self)
             }
@@ -1649,17 +1698,37 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             if prevScreen == "notifications"{
                 performSegue(withIdentifier: "SearchToNotifications", sender: self)
             }
+            }
         }
     }
     
     @IBAction func swipeHandler(_ gestureRecognizer : UISwipeGestureRecognizer) {
         if gestureRecognizer.state == .ended {
             // Perform action.
-            print("swipeRight: \(prevScreen)")
+            print("swipeRightt: \(prevScreen)")
+            if border1.isHidden == false && popCollect.isHidden == false || border2.isHidden == false && popCollect.isHidden == false || border3.isHidden == false && popCollect.isHidden == false{
+                //back to main cat
+                print("backToCat2")
+                topBarCat.setTitleColor(UIColor.red, for: .normal)
+                topBarPop.setTitleColor(UIColor.black, for: .normal)
+                topBarNearby.setTitleColor(UIColor.black, for: .normal)
+                categoriesCollect.isHidden = false
+                topBarPressed = false
+                border1.isHidden = false
+                border2.isHidden = true
+                border3.isHidden = true
+                popCollect.isHidden = true
+                popCollectData.removeAll()
+                //DispatchQueue.main.async{
+                self.popCollect.reloadData()
+                backToCatButton.isHidden = true
+            } else {
             if prevScreen == "feed"{
+                SwiftOverlays.showBlockingWaitOverlayWithText("Loading")
                 performSegue(withIdentifier: "SearchToFeed", sender: self)
             }
             if prevScreen == "profile"{
+                SwiftOverlays.showBlockingWaitOverlayWithText("Loading")
                 performSegue(withIdentifier: "SearchToProfile", sender: self)
             }
             if prevScreen == "post"{
@@ -1668,6 +1737,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
            
             if prevScreen == "notifications"{
                 performSegue(withIdentifier: "SearchToNotifications", sender: self)
+            }
             }
         }
     }
@@ -1783,6 +1853,13 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         locationManager.delegate = nil
     }
     
+    @IBAction func doneWithSports(_ sender: Any) {
+        sportsView.isHidden = true
+        
+        backToCatButton.isHidden = false
+        
+        
+    }
     
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         // if you need to get latest data you can get locations.last to check it if the device has been moved

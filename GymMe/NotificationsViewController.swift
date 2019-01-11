@@ -157,10 +157,10 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell : NotificationCell = collectionView.dequeueReusableCell(withReuseIdentifier: "NotificationCell", for: indexPath) as! NotificationCell
+        DispatchQueue.main.async{
+        cell.actionUserPicButton.frame = CGRect(x: cell.actionUserPicButton.frame.origin.x, y: cell.actionUserPicButton.frame.origin.y, width: 50, height: 45)
         
-        
-        
-        var partOne = (noteCollectData![indexPath.row]["actionText"] as! String)
+            var partOne = (self.noteCollectData![indexPath.row]["actionText"] as! String)
         if let first = partOne.components(separatedBy: " ").first {
             // Do something with the first component.
            if let range = partOne.range(of: first) {
@@ -171,7 +171,7 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
             var normString = NSMutableAttributedString(string:partOne)
             var space = NSMutableAttributedString(string:" ")
             
-            var timestamp123 = noteCollectData![indexPath.row]["timeStamp"] as! String
+            var timestamp123 = self.noteCollectData![indexPath.row]["timeStamp"] as! String
             
             var time = NSMutableAttributedString(string: timestamp123)
             
@@ -187,10 +187,10 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
             }
         }
         
-        cell.actionByUID = noteCollectData![indexPath.row]["actionByUID"] as! String
-            cell.postTextLabel.text = noteCollectData![indexPath.row]["postText"] as? String
+            cell.actionByUID = self.noteCollectData![indexPath.row]["actionByUID"] as! String
+            cell.postTextLabel.text = self.noteCollectData![indexPath.row]["postText"] as? String
         cell.postTextLabel.isHidden = true
-        DispatchQueue.main.async{
+        
             if self.noteCollectData![indexPath.row]["actionByUserPic"] as! String == "profile-placeholder"{
                 cell.actionUserPicButton.setImage(UIImage(named: "profile-placeholder"), for: .normal)
             } else {
@@ -209,9 +209,10 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
                 //cell.postPic.layer.masksToBounds = true
                 cell.postPic.setImage(self.picDict[self.noteCollectData![indexPath.row]["postID"] as! String], for: .normal)
         }
+        
         }
-       
             return cell
+        
         
         }
     var senderScreen = String()
