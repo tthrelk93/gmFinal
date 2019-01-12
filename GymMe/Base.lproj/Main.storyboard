@@ -512,6 +512,7 @@
                         <segue destination="5fH-1d-JTV" kind="showDetail" identifier="FeedToMessages" id="7Cy-Gz-xNk"/>
                         <segue destination="ftG-qB-HqV" kind="showDetail" identifier="FeedToNotifications" id="zNh-1b-ste"/>
                         <segue destination="iYc-aa-vyQ" kind="showDetail" identifier="FeedToProfile" id="XXo-FE-nZY"/>
+                        <segue destination="GkS-31-GCY" kind="showDetail" identifier="FeedToAdvancedSearch" id="dwx-fD-MvG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -621,6 +622,7 @@
                         <segue destination="5I3-vc-uva" kind="showDetail" identifier="specificToGeneralSearch" id="D15-DS-Hif"/>
                         <segue destination="iYc-aa-vyQ" kind="showDetail" identifier="advanceSearchToProfile" id="Miz-DP-T9e"/>
                         <segue destination="tfZ-fY-cOO" kind="showDetail" identifier="AdvancedSearchToSinglePost" id="1fJ-td-eP7"/>
+                        <segue destination="BYZ-38-t0r" kind="showDetail" identifier="AdvancedSearchToFeed" id="YbW-uG-je5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wIt-a7-yGF" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3183,8 +3185,8 @@
         <segue reference="Miz-DP-T9e"/>
         <segue reference="4Kj-ri-BvQ"/>
         <segue reference="D15-DS-Hif"/>
-        <segue reference="QaD-Gv-5YX"/>
-        <segue reference="Y6C-ea-O0s"/>
+        <segue reference="dwx-fD-MvG"/>
+        <segue reference="YbW-uG-je5"/>
         <segue reference="zNh-1b-ste"/>
         <segue reference="7Cy-Gz-xNk"/>
     </inferredMetricsTieBreakers>

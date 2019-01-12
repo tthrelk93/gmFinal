@@ -35,6 +35,7 @@ class CommentCollectionViewCell: UICollectionViewCell {
         // Initialization code
         
         //button.contentVerticalAlignment = .Top
+       
     }
     @IBAction func likeButtonPressed(_ sender: Any) {
         if self.likeButton.imageView!.image == UIImage(named: "like.png"){

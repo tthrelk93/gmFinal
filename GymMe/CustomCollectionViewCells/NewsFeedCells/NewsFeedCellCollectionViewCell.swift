@@ -7,6 +7,8 @@ protocol PerformActionsInFeedDelegate {
     func performSegueToPosterProfile(uid: String, name: String)
     func showLikedByViewTextCell(sentBy: String, cell: NewsFeedCellCollectionViewCell)
      func showLikedByViewPicCell(sentBy: String, cell: NewsFeedPicCollectionViewCell)
+    func locationButtonTextCellPressed(sentBy: String, cell: NewsFeedCellCollectionViewCell)
+    func locationButtonPicCellPressed(sentBy: String, cell: NewsFeedPicCollectionViewCell)
     func reloadDataAfterLike()
     
     
@@ -16,6 +18,12 @@ class NewsFeedCellCollectionViewCell: UICollectionViewCell {
     var myRealName: String?
     var myPicString: String?
    
+    @IBAction func locationButtonPressed(_ sender: Any) {
+        delegate?.locationButtonTextCellPressed(sentBy: "locationTextCell", cell: self)
+        
+        
+    
+    }
     
     @IBOutlet weak var timeStambLabel: UILabel!
     @IBOutlet weak var tapGesture: UITapGestureRecognizer!
@@ -289,8 +297,8 @@ class NewsFeedCellCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        self.profImageView.frame = CGRect(x: self.profImageView.frame.origin.x, y: self.profImageView.frame.origin.y, width: 34, height: 34)
-        goToPosterProfile.frame = profImageView.frame
+        
+        
         self.profImageView.layer.cornerRadius = self.profImageView.frame.width/2
         self.profImageView.layer.masksToBounds = true
         

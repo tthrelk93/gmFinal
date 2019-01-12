@@ -15,6 +15,9 @@ import FirebaseAuth
 class NewsFeedPicCollectionViewCell: UICollectionViewCell {
 
     
+    @IBAction func postLocationPressed(_ sender: Any) {
+        delegate?.locationButtonPicCellPressed(sentBy: "locationPicCell", cell: self)
+    }
     
     
     @IBAction func soundTogglePressed(_ sender: Any) {

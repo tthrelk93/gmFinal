@@ -10,6 +10,7 @@ import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 import FirebaseStorage
+import SwiftOverlays
 
 class SpecificSearchViewController: UIViewController, UICollectionViewDelegate,UICollectionViewDataSource, UISearchBarDelegate {
 var myUName = String()
@@ -18,7 +19,12 @@ var myUName = String()
     var myRealName = String()
     
     @IBAction func swipeBack(_ sender: Any) {
-        performSegue(withIdentifier: "specificToGeneralSearch", sender: self)
+        if prevScreen == "feed"{
+            performSegue(withIdentifier: "AdvancedSearchToFeed", sender: self)
+        } else {
+            performSegue(withIdentifier: "specificToGeneralSearch", sender: self)
+        }
+        
     }
     @objc func dismiss(fromGesture gesture: UISwipeGestureRecognizer) {
         
@@ -27,6 +33,14 @@ var myUName = String()
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        if self.prevScreen == "feed"{
+           self.showWaitOverlay()
+            
+            searchSegment.selectedSegmentIndex = 1
+            searchBar.text = locationFromFeed
+            self.searchBar(searchBar, textDidChange: locationFromFeed)
+            
+        }
         Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
             if let snapshots = snapshot.value as? [String:Any]{
                 for snap in snapshots{
@@ -203,10 +217,16 @@ var myUName = String()
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     var selectedData = [String:Any]()
     var prevScreen = String()
+    var locationFromFeed = String()
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
         
+        if segue.identifier == "AdvancedSearchToFeed"{
+            if let vc = segue.destination as? HomeFeedViewController{
+                vc.prevScreen == "advancedSearch"
+            }
+        }
         
         if segue.identifier == "advanceSearchToProfile"{
             if let vc = segue.destination as? ProfileViewController{
@@ -345,6 +365,12 @@ var myUName = String()
                 DispatchQueue.main.async{
                     print("hey: \(self.findFriendsData)")
                     self.searchCollect.reloadData()
+                   // SwiftOverlays.removeAllBlockingOverlays()
+                    self.searchCollect.performBatchUpdates(nil, completion: {
+                        (result) in
+                        // ready
+                        print("doneLoading2")
+                    })
                 }
                 
             })
@@ -449,6 +475,13 @@ var myUName = String()
                     DispatchQueue.main.async{
                         print("hey: \(self.findFriendsData)")
                         self.searchCollect.reloadData()
+                        //SwiftOverlays.removeAllBlockingOverlays()
+                        self.searchCollect.performBatchUpdates(nil, completion: {
+                            (result) in
+                            // ready
+                            self.removeAllOverlays()
+                            print("doneLoading3")
+                        })
                     }
                     
                     
@@ -557,6 +590,18 @@ var myUName = String()
                 DispatchQueue.main.async{
                     print("hey: \(self.findFriendsData)")
                     self.searchCollect.reloadData()
+                    self.searchCollect.performBatchUpdates(nil, completion: {
+                        (result) in
+                        // ready
+                        print("doneLoading")
+                    })
+                   // SwiftOverlays.removeAllBlockingOverlays()
+                    self.searchCollect.performBatchUpdates(nil, completion: {
+                        (result) in
+                        // ready
+                        print("doneLoading1")
+                    })
+                    
                 }
                 
             })
