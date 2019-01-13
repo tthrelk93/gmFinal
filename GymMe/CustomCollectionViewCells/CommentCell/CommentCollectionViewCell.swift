@@ -51,9 +51,11 @@ class CommentCollectionViewCell: UICollectionViewCell {
     @IBAction func commentorPicButtonPressed(_ sender: Any) {
     }
     override func prepareForReuse(){
+        self.likeButton.setImage(UIImage(named: "like.png"), for: .normal)
         super.prepareForReuse()
         
         self.commentorPic.imageView?.image = nil
+        
         //self.commentTextView.text = nil
        
         

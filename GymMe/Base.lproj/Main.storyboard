@@ -323,7 +323,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" delaysContentTouches="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="V9O-BK-vWG">
-                                        <rect key="frame" x="-4" y="6" width="376" height="573"/>
+                                        <rect key="frame" x="-4" y="6" width="379" height="552"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="yDW-IP-aa4">
@@ -334,7 +334,7 @@
                                         </collectionViewFlowLayout>
                                         <cells>
                                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="LikedByCollectionViewCell" id="E4t-s3-bxP">
-                                                <rect key="frame" x="4" y="0.0" width="368" height="72"/>
+                                                <rect key="frame" x="5.5" y="0.0" width="368" height="72"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                                     <rect key="frame" x="0.0" y="0.0" width="368" height="72"/>
@@ -342,7 +342,7 @@
                                                 </view>
                                             </collectionViewCell>
                                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="CommentCollectionViewCell" id="Zlu-Nl-M5r">
-                                                <rect key="frame" x="4" y="82" width="368" height="72"/>
+                                                <rect key="frame" x="5.5" y="82" width="368" height="72"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                                     <rect key="frame" x="0.0" y="0.0" width="368" height="72"/>
@@ -512,7 +512,7 @@
                         <segue destination="5fH-1d-JTV" kind="showDetail" identifier="FeedToMessages" id="7Cy-Gz-xNk"/>
                         <segue destination="ftG-qB-HqV" kind="showDetail" identifier="FeedToNotifications" id="zNh-1b-ste"/>
                         <segue destination="iYc-aa-vyQ" kind="showDetail" identifier="FeedToProfile" id="XXo-FE-nZY"/>
-                        <segue destination="GkS-31-GCY" kind="showDetail" identifier="FeedToAdvancedSearch" id="dwx-fD-MvG"/>
+                        <segue destination="GkS-31-GCY" kind="showDetail" id="dwx-fD-MvG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -622,7 +622,6 @@
                         <segue destination="5I3-vc-uva" kind="showDetail" identifier="specificToGeneralSearch" id="D15-DS-Hif"/>
                         <segue destination="iYc-aa-vyQ" kind="showDetail" identifier="advanceSearchToProfile" id="Miz-DP-T9e"/>
                         <segue destination="tfZ-fY-cOO" kind="showDetail" identifier="AdvancedSearchToSinglePost" id="1fJ-td-eP7"/>
-                        <segue destination="BYZ-38-t0r" kind="showDetail" identifier="AdvancedSearchToFeed" id="YbW-uG-je5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wIt-a7-yGF" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2304,7 +2303,7 @@
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                         <subviews>
                                                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Email" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ayz-rk-9PR">
-                                                                <rect key="frame" x="7" y="49" width="341" height="30"/>
+                                                                <rect key="frame" x="7" y="49" width="340" height="30"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -2327,7 +2326,7 @@
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vIR-TW-ctQ">
-                                                                <rect key="frame" x="137" y="119" width="80" height="31"/>
+                                                                <rect key="frame" x="137" y="119" width="80" height="30"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                                 <color key="backgroundColor" red="0.92941176469999998" green="0.10980392160000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 <state key="normal" title="Verify">
@@ -2383,7 +2382,6 @@
                                     <constraint firstAttribute="trailing" secondItem="ZTU-j3-eSB" secondAttribute="trailing" id="fD7-a0-bYX"/>
                                     <constraint firstItem="ZTU-j3-eSB" firstAttribute="top" secondItem="Dza-sr-CX9" secondAttribute="top" id="ux0-FY-8I6"/>
                                 </constraints>
-                                <inset key="scrollIndicatorInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="82"/>
                             </scrollView>
                             <view hidden="YES" autoresizesSubviews="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iG7-Mv-EdL">
                                 <rect key="frame" x="0.0" y="72" width="375" height="879"/>
@@ -3181,12 +3179,12 @@
         <image name="vizio-smart-tv-800x800" width="786" height="448"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="1fJ-td-eP7"/>
-        <segue reference="Miz-DP-T9e"/>
+        <segue reference="Prv-0P-FKQ"/>
+        <segue reference="XXo-FE-nZY"/>
         <segue reference="4Kj-ri-BvQ"/>
-        <segue reference="D15-DS-Hif"/>
+        <segue reference="usj-ZK-sIq"/>
         <segue reference="dwx-fD-MvG"/>
-        <segue reference="YbW-uG-je5"/>
+        <segue reference="1xj-gH-dGu"/>
         <segue reference="zNh-1b-ste"/>
         <segue reference="7Cy-Gz-xNk"/>
     </inferredMetricsTieBreakers>
