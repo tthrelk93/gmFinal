@@ -457,8 +457,8 @@ UICollectionViewDataSource, UISearchBarDelegate{
         UIView.animate(withDuration: 0.5, animations: {
             self.tagPeopleButton.isHidden = true
             self.tagPeopleButtonIcon.isHidden = true
-            self.shareButton.isHidden = true
-            self.shareIconButton.isHidden = true
+            //self.shareButton.isHidden = true
+            //self.shareIconButton.isHidden = true
             self.addToCatIconButton.isHidden = true
             self.addToCategoryButton.isHidden = true
             self.curCatsLabel.isHidden = true
@@ -540,8 +540,12 @@ UICollectionViewDataSource, UISearchBarDelegate{
     var ogCat2Pos = CGRect()
     var ogCat3Pos = CGRect()
     var newPost: [String:Any]?
+    
+    @IBOutlet weak var topLineCat: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        topLineCat.frame = CGRect(x: topLineCat.frame.origin.x, y: topLineCat.frame.origin.y, width: topLineCat.frame.width, height: 0.5)
         //self.makePostTextView.layer.cornerRadius = 10
         posterPicIV.frame = CGRect(x: posterPicIV.frame.origin.x, y: posterPicIV.frame.origin.y, width: 28, height: 28)
         self.backToPostButton.layer.cornerRadius = 10
@@ -760,8 +764,8 @@ UICollectionViewDataSource, UISearchBarDelegate{
         makePostTextView.textColor = UIColor.darkGray
         self.tagPeopleButton.isHidden = false
         self.tagPeopleButtonIcon.isHidden = false
-        self.shareButton.isHidden = false
-        self.shareIconButton.isHidden = false
+        //self.shareButton.isHidden = false
+        //self.shareIconButton.isHidden = false
        
         self.cityData = nil
         self.curCityLabel.text = ""
@@ -863,8 +867,8 @@ UICollectionViewDataSource, UISearchBarDelegate{
                         self.curCatsLabel.frame = self.ogCat3Pos
                         self.tagPeopleButton.isHidden = false
                         self.tagPeopleButtonIcon.isHidden = false
-                        self.shareButton.isHidden = false
-                        self.shareIconButton.isHidden = false
+                        //self.shareButton.isHidden = false
+                        //self.shareIconButton.isHidden = false
                         SwiftOverlays.removeAllBlockingOverlays()
                          self.performSegue(withIdentifier: "PostToFeed", sender: self)
                        // }

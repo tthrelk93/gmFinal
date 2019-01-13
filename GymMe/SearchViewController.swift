@@ -174,8 +174,11 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         commentView.isHidden = true
     }
     @IBOutlet weak var hideComments: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+         topLine.frame = CGRect(x: topLine.frame.origin.x, y: topLine.frame.origin.y, width: topLine.frame.width, height: 0.5)
         ogCommentPos = commentView.frame
         //posterPicButton.layer.cornerRadius = posterPicButton.frame.width/2
         //posterPicButton.layer.masksToBounds = true
@@ -1742,6 +1745,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         }
     }
     
+    @IBOutlet weak var topLine: UIView!
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation

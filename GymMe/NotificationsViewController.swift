@@ -14,6 +14,7 @@ import SwiftOverlays
 
 class NotificationsViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarDelegate {
     
+    @IBOutlet weak var topLine: UIView!
     @IBOutlet var swipeGestureRecognizer: UISwipeGestureRecognizer!
     var prevScreen = String()
     
@@ -66,6 +67,7 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        topLine.frame = CGRect(x: topLine.frame.origin.x, y: topLine.frame.origin.y, width: topLine.frame.width, height: 0.5)
         self.notifyCollect.register(UINib(nibName: "NotificationCell", bundle: nil), forCellWithReuseIdentifier: "NotificationCell")
         tabBar.delegate = self
         tabBar.selectedItem = tabBar.items?[3]

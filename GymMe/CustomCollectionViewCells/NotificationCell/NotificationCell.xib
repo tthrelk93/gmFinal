@@ -20,7 +20,7 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CNd-hK-No1">
-                        <rect key="frame" x="7" y="9" width="50" height="50"/>
+                        <rect key="frame" x="6" y="9" width="50" height="50"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <state key="normal" image="profile-placeholder"/>
                         <connections>
@@ -28,7 +28,7 @@
                         </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="dfghdfghdfgh: dfghdfghdfghdfhdfghdfgh" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="P3A-Ri-VPK">
-                        <rect key="frame" x="73" y="5" width="221" height="60"/>
+                        <rect key="frame" x="73" y="5" width="220" height="60"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <nil key="textColor"/>
@@ -60,6 +60,7 @@
             <size key="customSize" width="328" height="50"/>
             <connections>
                 <outlet property="actionUserPicButton" destination="CNd-hK-No1" id="uBI-vN-Gpf"/>
+                <outlet property="lineView" destination="bZV-vX-11s" id="zZh-5u-Rke"/>
                 <outlet property="noteLabel" destination="P3A-Ri-VPK" id="IE9-2U-HGI"/>
                 <outlet property="postPic" destination="zy5-Uj-bZM" id="VcQ-y4-5jV"/>
                 <outlet property="postTextLabel" destination="HJ7-go-QSQ" id="twF-DS-HPZ"/>

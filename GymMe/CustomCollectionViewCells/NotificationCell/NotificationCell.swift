@@ -10,6 +10,7 @@ import UIKit
 
 class NotificationCell: UICollectionViewCell {
 
+    @IBOutlet weak var lineView: UIView!
     @IBOutlet weak var postTextLabel: UILabel!
     @IBAction func postPicPressed(_ sender: Any) {
     }
@@ -24,6 +25,7 @@ class NotificationCell: UICollectionViewCell {
     var actionByUID: String?
     
     override func awakeFromNib() {
+        lineView.frame = CGRect(x: lineView.frame.origin.x, y: lineView.frame.origin.y, width: lineView.frame.width, height: 0.5)
         super.awakeFromNib()
         // Initialization code
         self.player = Player()

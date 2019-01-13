@@ -153,6 +153,7 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
             print("yo")
             print(self.selectedRecip)
             if let vc = segue.destination as? ChatContainer{
+                
                 vc.recipientID = self.selectedRecip
                 vc.curItemKey = self.selectedRecip
             }

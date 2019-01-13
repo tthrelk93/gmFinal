@@ -72,12 +72,13 @@
                 <outlet property="commentorPic" destination="2fu-r1-1uX" id="HTx-WW-j57"/>
                 <outlet property="likeButton" destination="fFS-3B-LZ3" id="F83-ch-shA"/>
                 <outlet property="likesCountLabel" destination="buf-5d-RyY" id="nDT-cu-ngY"/>
+                <outlet property="lineView" destination="6cH-sJ-gzG" id="4zj-Bl-vRK"/>
             </connections>
             <point key="canvasLocation" x="28" y="71.064467766116948"/>
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="like" width="204.80000305175781" height="204.80000305175781"/>
+        <image name="like" width="25.600000381469727" height="25.600000381469727"/>
         <image name="profile-placeholder" width="225" height="225"/>
     </resources>
 </document>

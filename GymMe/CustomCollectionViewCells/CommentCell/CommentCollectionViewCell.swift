@@ -20,6 +20,7 @@ protocol CommentLike {
 
 class CommentCollectionViewCell: UICollectionViewCell {
 
+    @IBOutlet weak var lineView: UIView!
     
     var commentDelegate: CommentLike?
     @IBOutlet weak var likeButton: UIButton!
@@ -31,10 +32,12 @@ class CommentCollectionViewCell: UICollectionViewCell {
     var indexPath = IndexPath()
     
     override func awakeFromNib() {
+        lineView.frame = CGRect(x: lineView.frame.origin.x, y: lineView.frame.origin.y, width: lineView.frame.width, height: 0.5)
         super.awakeFromNib()
         // Initialization code
         
         //button.contentVerticalAlignment = .Top
+        
        
     }
     @IBAction func likeButtonPressed(_ sender: Any) {
