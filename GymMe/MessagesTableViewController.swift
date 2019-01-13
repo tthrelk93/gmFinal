@@ -55,7 +55,9 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
                     //ERRROR shouldnt be messageDict first but rather last
                     var messageDict = snap.value as! [String:Any]
                     print("md: \(messageDict)")
-                    var tempDict = ["receiverUID":snap.key, "messageText":((messageDict.first?.value as! [String:Any])["text"] as? String), "receiverName":((messageDict.first?.value as! [String:Any])["senderName"] as! String), "messageKey": messageDict.first?.key]
+                    var tempDict2 = messageDict.reversed().first!.value as! [String:Any]
+                    
+                    var tempDict = ["receiverUID":snap.key, "messageText":((messageDict.first!.value as! [String:Any])["text"] as? String), "receiverName":((messageDict.first?.value as! [String:Any])["senderName"] as! String), "messageKey": messageDict.first?.key]
                     self.tableViewData.append(tempDict)
                     
                     
