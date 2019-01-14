@@ -2170,7 +2170,7 @@
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
-                                            <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2Hh-cg-f4R">
+                                            <view hidden="YES" autoresizesSubviews="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2Hh-cg-f4R">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="882"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                 <subviews>
@@ -3199,11 +3199,11 @@
         <segue reference="6qI-Op-Vhh"/>
         <segue reference="Prv-0P-FKQ"/>
         <segue reference="pQc-wA-QYL"/>
-        <segue reference="y2H-Z7-9BL"/>
-        <segue reference="tzB-TR-nek"/>
+        <segue reference="XTo-Ja-pwD"/>
+        <segue reference="cJJ-fi-Mpb"/>
         <segue reference="QaD-Gv-5YX"/>
-        <segue reference="dqW-sY-Wz0"/>
-        <segue reference="lN6-gn-bKQ"/>
+        <segue reference="1xj-gH-dGu"/>
+        <segue reference="yP5-AV-FPG"/>
         <segue reference="014-Ge-KhU"/>
     </inferredMetricsTieBreakers>
 </document>
