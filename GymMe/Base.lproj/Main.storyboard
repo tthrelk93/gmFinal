@@ -25,17 +25,6 @@
                                 <color key="textColor" red="0.92941176469999998" green="0.10980392160000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" alpha="0.90000000000000002" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qby-kw-Rut">
-                                <rect key="frame" x="337" y="30" width="27" height="27"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="17"/>
-                                <state key="normal" backgroundImage="icons8-new-message-24">
-                                    <color key="titleColor" red="0.92941176469999998" green="0.10980392160000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="rightBarButtonPressed:" destination="5fH-1d-JTV" eventType="touchUpInside" id="tE0-KE-Otg"/>
-                                </connections>
-                            </button>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Sqc-CF-X24">
                                 <rect key="frame" x="0.0" y="69" width="375" height="1"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
@@ -63,9 +52,9 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <searchBar contentMode="redraw" fixedFrame="YES" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="qCh-nf-bya">
-                                <rect key="frame" x="0.0" y="70" width="375" height="56"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <searchBar contentMode="redraw" fixedFrame="YES" searchBarStyle="minimal" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="qCh-nf-bya">
+                                <rect key="frame" x="0.0" y="71" width="375" height="56"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
@@ -79,6 +68,17 @@
                                 <connections>
                                     <action selector="backFromLikedByViewButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="jfc-Ah-IWQ"/>
                                     <action selector="backPressed:" destination="5fH-1d-JTV" eventType="touchUpInside" id="poj-En-bVV"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" alpha="0.90000000000000002" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qby-kw-Rut">
+                                <rect key="frame" x="339" y="35" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="17"/>
+                                <state key="normal" backgroundImage="icons8-new-message-24">
+                                    <color key="titleColor" red="0.92941176469999998" green="0.10980392160000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="rightBarButtonPressed:" destination="5fH-1d-JTV" eventType="touchUpInside" id="tE0-KE-Otg"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -3180,7 +3180,7 @@
         <image name="icon-messages-app-27x20" width="60" height="60"/>
         <image name="icons8-back-34" width="48" height="48"/>
         <image name="icons8-menu-25" width="48" height="48"/>
-        <image name="icons8-new-message-24" width="36" height="36"/>
+        <image name="icons8-new-message-24" width="24" height="24"/>
         <image name="like" width="25.600000381469727" height="25.600000381469727"/>
         <image name="logoWords" width="251" height="69"/>
         <image name="mail" width="204.80000305175781" height="204.80000305175781"/>
@@ -3202,7 +3202,7 @@
         <segue reference="y2H-Z7-9BL"/>
         <segue reference="tzB-TR-nek"/>
         <segue reference="QaD-Gv-5YX"/>
-        <segue reference="9f8-Nw-DLd"/>
+        <segue reference="dqW-sY-Wz0"/>
         <segue reference="lN6-gn-bKQ"/>
         <segue reference="014-Ge-KhU"/>
     </inferredMetricsTieBreakers>

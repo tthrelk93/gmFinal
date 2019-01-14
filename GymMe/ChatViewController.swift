@@ -333,24 +333,37 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
        // }
             
             // 2
+        var now = Date()
+        print("tDate:\(now)")
+        var dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
+        var stringDate = dateFormatter.string(from: now)
+        print("tString: \(stringDate)")
+        Database.database().reference().child("users").child(self.recipientID).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            var rName = (snapshot.value as! [String:Any])["realName"]
+            
             let messageItem = [
                 "senderId": Auth.auth().currentUser!.uid,
                 "senderName": self.myName,
-                "text": text!
+                "text": text!,
+                "timeStamp": stringDate,
+                "receiverName": rName
                 ]
             
             // 3
         
        
         Database.database().reference().child("users").child(self.recipientID).child("messages").child(Auth.auth().currentUser!.uid).child(itemKey).setValue(messageItem)
-        Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("messages").child(recipientID).child(itemKey).setValue(messageItem)
+            Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("messages").child(self.recipientID).child(itemKey).setValue(messageItem)
             
             // 4
             JSQSystemSoundPlayer.jsq_playMessageSentSound()
             
             // 5
-            finishSendingMessage()
-            isTyping = false
+            self.finishSendingMessage()
+            self.isTyping = false
+        })
     }
     
     func sendPhotoMessage() -> String? {
