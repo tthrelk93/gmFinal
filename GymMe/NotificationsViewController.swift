@@ -12,7 +12,7 @@ import FirebaseStorage
 import FirebaseAuth
 import SwiftOverlays
 
-class NotificationsViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarDelegate {
+class NotificationsViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarDelegate, PerformActionsInNotifications {
     
     @IBOutlet weak var topLine: UIView!
     @IBOutlet var swipeGestureRecognizer: UISwipeGestureRecognizer!
@@ -66,7 +66,7 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
     var myRealName = String()
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        showWaitOverlayWithText("loading notifications")
         topLine.frame = CGRect(x: topLine.frame.origin.x, y: topLine.frame.origin.y, width: topLine.frame.width, height: 0.5)
         self.notifyCollect.register(UINib(nibName: "NotificationCell", bundle: nil), forCellWithReuseIdentifier: "NotificationCell")
         tabBar.delegate = self
@@ -140,9 +140,18 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
                        
                 }
                 }
+                DispatchQueue.main.async{
+                    self.notifyCollect.reloadData()
+                    self.notifyCollect.performBatchUpdates(nil, completion: {
+                        (result) in
+                        // ready
+                        self.removeAllOverlays()
+                        print("doneLoading3")
+                    })
+                }
                 //cell.delegate = self
             })
-            SwiftOverlays.removeAllBlockingOverlays()
+            //SwiftOverlays.removeAllBlockingOverlays()
         })
 
         // Do any additional setup after loading the view.
@@ -155,11 +164,26 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return noteCollectData!.count
     }
+    var curName = String()
+    var selectedCellUID = String()
     var noteCollectData: [[String:Any]]?
+    func performSegueToProfile(uid: String, name: String){
+        self.curName = name
+        self.selectedCellUID = uid
+        if uid == Auth.auth().currentUser!.uid {
+            selectedCurAuthProfile = true
+        } else {
+            selectedCurAuthProfile = false
+        }
+        performSegue(withIdentifier: "NoteToProfile", sender: self)
+        
+    }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell : NotificationCell = collectionView.dequeueReusableCell(withReuseIdentifier: "NotificationCell", for: indexPath) as! NotificationCell
         DispatchQueue.main.async{
+            cell.delegate = self
+            cell.name = (self.noteCollectData![indexPath.row] as! [String:Any])["actionByUsername"] as! String
         cell.actionUserPicButton.frame = CGRect(x: cell.actionUserPicButton.frame.origin.x, y: cell.actionUserPicButton.frame.origin.y, width: 50, height: 45)
         
             var partOne = (self.noteCollectData![indexPath.row]["actionText"] as! String)
@@ -175,7 +199,17 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
             
             var timestamp123 = self.noteCollectData![indexPath.row]["timeStamp"] as! String
             
-            var time = NSMutableAttributedString(string: timestamp123)
+            let dateFormatterGet = DateFormatter()
+            dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            
+            let dateFormatterPrint = DateFormatter()
+            dateFormatterPrint.dateFormat = "MMM dd, yyyy h:mm"
+            
+            var date = dateFormatterGet.date(from: timestamp123)
+            var dateString = dateFormatterPrint.string(from: date!)
+           
+            
+            var time = NSMutableAttributedString(string: dateString)
             
             attributedString.append(space)
             attributedString.append(normString)
@@ -242,11 +276,25 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
+    var selectedCurAuthProfile = true
     var selectedData = [String:Any]()
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-        
+        if segue.identifier == "NoteToProfile"{
+            if let vc = segue.destination as? ProfileViewController{
+                vc.curUID = self.selectedCellUID
+                vc.prevScreen = "feed"
+                if selectedCurAuthProfile == true{
+                    vc.viewerIsCurAuth = true
+                    
+                } else {
+                    vc.viewerIsCurAuth = false
+                }
+                vc.curName = self.curName
+                
+            }
+        }
         if segue.identifier == "NoteToSinglePost"{
             if let vc = segue.destination as? SinglePostViewController{
                 

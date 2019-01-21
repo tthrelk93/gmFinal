@@ -8,15 +8,28 @@
 
 import UIKit
 
+protocol PerformActionsInNotifications {
+    
+    func performSegueToProfile(uid: String, name: String)
+    
+    
+    
+}
+
+
 class NotificationCell: UICollectionViewCell {
 
+    
+    var delegate: PerformActionsInNotifications?
     @IBOutlet weak var lineView: UIView!
     @IBOutlet weak var postTextLabel: UILabel!
     @IBAction func postPicPressed(_ sender: Any) {
     }
     @IBOutlet weak var postPic: UIButton!
     @IBOutlet weak var noteLabel: UILabel!
+    var name = String()
     @IBAction func actionUserPressed(_ sender: Any) {
+        delegate?.performSegueToProfile(uid: actionByUID!, name: self.name)
     }
     @IBOutlet weak var actionUserPicButton: UIButton!
     var player: Player?
@@ -29,7 +42,7 @@ class NotificationCell: UICollectionViewCell {
         super.awakeFromNib()
         // Initialization code
         self.player = Player()
-        
+       // actionUserPicButton.frame = CGRect(x: actionUserPicButton.frame.origin.x, y: actionUserPicButton.frame.origin.y, width: 50, height: 50)
         self.actionUserPicButton.layer.cornerRadius = actionUserPicButton.frame.width/2
         self.actionUserPicButton.layer.masksToBounds = true
         
@@ -54,11 +67,12 @@ class NotificationCell: UICollectionViewCell {
         }
     }
     override func prepareForReuse(){
+        self.postPic.imageView?.image = nil
+        self.postTextLabel.text = ""
+        self.player?.view.isHidden = true
         super.prepareForReuse()
        
-        self.postPic.imageView?.image = nil
-        self.postTextLabel.text = nil
-        self.player?.view.isHidden = true
+        
         
         
         // exampleView.backgroundColor = nil

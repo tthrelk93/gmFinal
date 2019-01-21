@@ -303,7 +303,9 @@ class NewsFeedPicCollectionViewCell: UICollectionViewCell {
     }
     @IBOutlet weak var likeButton: UIButton!
     
-    @IBOutlet weak var postText: UILabel!
+    @IBOutlet weak var sizeView: UIView!
+    @IBOutlet weak var postText: UITextView!
+    //@IBOutlet weak var postText: UILabel!
     @IBOutlet weak var postLocationButton: UIButton!
     @IBOutlet weak var posterNameButton: UIButton!
     @IBAction func goToPosterPressed(_ sender: Any) {
@@ -323,6 +325,13 @@ class NewsFeedPicCollectionViewCell: UICollectionViewCell {
         playTap.numberOfTapsRequired = 1
         playTap.addTarget(self, action: #selector(NewsFeedPicCollectionViewCell.playOrPause))
         self.addSubview((self.player?.view)!)
+        //self.translatesAutoresizingMaskIntoConstraints = false
+        /*postPic.translatesAutoresizingMaskIntoConstraints = false
+        postPic.topAnchor.constraint(equalTo: posterPic.bottomAnchor, constant: -10)
+        postPic.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0)
+        postPic.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0)*/
+        
+        //cell.commentsCountButton.topAnchor.constraint(equalTo: cell.postText.bottomAnchor).isActive = true
         
         // Initialization code
     }

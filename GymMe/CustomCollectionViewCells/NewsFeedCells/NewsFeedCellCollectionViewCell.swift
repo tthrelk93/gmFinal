@@ -18,6 +18,8 @@ class NewsFeedCellCollectionViewCell: UICollectionViewCell {
     var myRealName: String?
     var myPicString: String?
    
+    @IBOutlet weak var bottomSizeView: UIView!
+    @IBOutlet weak var topSizeView: UIView!
     @IBAction func locationButtonPressed(_ sender: Any) {
         delegate?.locationButtonTextCellPressed(sentBy: "locationTextCell", cell: self)
         
