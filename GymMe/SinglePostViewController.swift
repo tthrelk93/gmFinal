@@ -303,6 +303,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
     }
     @IBOutlet weak var posterNameButton: UIButton!
     
+    @IBOutlet weak var postTextView: UITextView!
     @IBOutlet weak var posterPicButton: UIButton!
     var postID = String()
     var posterUID = String()
@@ -311,8 +312,16 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
     var commentsArray = [[String:Any]]()
     var likesArray = [[String:Any]]()
     var advancedData = [String:Any]()
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        posterPicButton.frame.size = CGSize(width: 40, height: 40)
+       posterPicButton.layer.cornerRadius = posterPicButton.frame.width/2
+        posterPicButton.layer.masksToBounds = true
+       
+        
         Database.database().reference().child("posts").child(self.thisPostData["postID"] as! String).observeSingleEvent(of: .value, with: {(snapshot) in
             if self.prevScreen == "advancedSearch"{
             
@@ -348,7 +357,9 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                 if self.thisPostData["postText"] == nil{
                 
             } else {
-                    self.postText.text = (self.thisPostData["postText"] as! String)
+                    self.commentsCountButton.frame = CGRect(x: self.commentsCountButton.frame.origin.x, y: self.postText.frame.origin.y + 8, width: self.commentsCountButton.frame.width, height: self.commentsCountButton.frame.height)
+                    self.postTextView.isHidden = false
+                    self.postTextView.text = (self.thisPostData["postText"] as! String)
             }
                 if self.thisPostData["city"] != nil{
                     self.cityButton.setTitle((self.thisPostData["city"] as! String), for: .normal)

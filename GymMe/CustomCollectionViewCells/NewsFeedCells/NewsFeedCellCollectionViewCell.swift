@@ -303,7 +303,8 @@ class NewsFeedCellCollectionViewCell: UICollectionViewCell {
         
         self.profImageView.layer.cornerRadius = self.profImageView.frame.width/2
         self.profImageView.layer.masksToBounds = true
-        
+        //self.contentView.autoresizingMask.insert(.flexibleHeight)
+        //self.contentView.autoresizingMask.insert(.flexibleWidth)
         print(self.gestureRecognizers)
         // Initialization code
     }

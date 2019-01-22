@@ -34,6 +34,7 @@ class CommentCollectionViewCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         lineView.frame = CGRect(x: lineView.frame.origin.x, y: lineView.frame.origin.y, width: lineView.frame.width, height: 0.5)
+        commentorPic.frame.size = CGSize(width: 35, height: 35)
         super.awakeFromNib()
         // Initialization code
         
