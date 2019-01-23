@@ -295,6 +295,24 @@ class NewsFeedCellCollectionViewCell: UICollectionViewCell {
         delegate?.performSegueToPosterProfile(uid: self.posterUID!, name: (self.posterNameButton.titleLabel?.text)!)
         
     }
+    
+    override func prepareForReuse(){
+        super.prepareForReuse()
+        //self.setNeedsDisplay()
+        //self.videoUrl = nil
+        //self.postText.text = nil
+        //self.postPic.image = nil
+        self.postText.text = nil
+        //self.player = nil
+        //self.postPic.image = nil
+        self.profImageView.image = nil
+        self.cellIndexPath = nil
+        //self.commentsCountButton.titleLabel?.text = nil
+        
+        // exampleView.backgroundColor = nil
+        //exampleView.layer.cornerRadius = 0
+    }
+    
     @IBOutlet weak var goToPosterProfile: UIButton!
     override func awakeFromNib() {
         super.awakeFromNib()
