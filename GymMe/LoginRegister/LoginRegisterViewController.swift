@@ -613,7 +613,7 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
         if Auth.auth().currentUser != nil {
             // User is signed in.
             // ...
-            SwiftOverlays.showBlockingWaitOverlayWithText("Loading Feed")
+            //SwiftOverlays.showBlockingWaitOverlayWithText("Loading Feed")
             self.performSegue(withIdentifier: "LoginToFeed", sender: self)
             //print(Auth.auth().currentUser!.uid)
             //try! Auth.auth().signOut()

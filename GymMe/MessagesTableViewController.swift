@@ -78,8 +78,14 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
                         
                         
 
+                    var tempDict = [String:Any]()
                     var tempDict2 = messageDict.reversed()
-                    var tempDict = ["receiverUID":snap.key, "messageText":(sortedResults.last as! [String:Any])["text"] as! String, "receiverName":(sortedResults.last as! [String:Any])["receiverName"] as! String, "messageKey": messageDict.first?.key]
+                    if ((sortedResults.last as! [String:Any])["text"] as? String == nil){
+                        tempDict = ["receiverUID":snap.key, "messageText":"", "receiverName":(sortedResults.last as! [String:Any])["receiverName"] as! String,"senderName":(sortedResults.last as! [String:Any])["senderName"] as! String, "messageKey": messageDict.first?.key, "photoURL":(sortedResults.last as! [String:Any])["photoURL"] as! String]
+                        
+                    } else {
+                    tempDict = ["receiverUID":snap.key, "messageText":(sortedResults.last as! [String:Any])["text"] as! String, "receiverName":(sortedResults.last as! [String:Any])["receiverName"] as! String,"senderName":(sortedResults.last as! [String:Any])["senderName"] as! String, "messageKey": messageDict.first?.key]
+                    }
                     
                     self.tableViewData.append(tempDict)
                     
@@ -117,7 +123,8 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
             return self.tableViewData.count
         }
     }
-    
+    var myRealName = String()
+    var prevScreen = String()
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if(searchActive) {
             let cell = tableView.dequeueReusableCell(withIdentifier: "MessagesTableViewCell") as! MessagesTableViewCell
@@ -138,7 +145,11 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
         cell.messageKey = ((tableViewData[indexPath.row] )["messageKey"] as! String)
         cell.receiverUID = ((tableViewData[indexPath.row] )["receiverUID"] as! String)
         cell.messageText.text = ((tableViewData[indexPath.row] )["messageText"]! as! String)
-        cell.receiverName.text = ((tableViewData[indexPath.row] )["receiverName"] as! String)
+            if ((tableViewData[indexPath.row] )["senderName"] as! String) != self.myRealName {
+        cell.receiverName.text = ((tableViewData[indexPath.row] )["senderName"] as! String)
+            } else {
+                cell.receiverName.text = ((tableViewData[indexPath.row] )["receiverName"] as! String)
+            }
         
         return cell
         }

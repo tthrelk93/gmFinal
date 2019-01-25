@@ -28,7 +28,11 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
     var curUserRef = DatabaseReference()
     //  @IBOutlet weak var navBar: UINavigationBar!
     var messageRef = DatabaseReference()
-    fileprivate lazy var storageRef = Storage.storage().reference(forURL: "gs://chatchat-rw-cf107.appspot.com")
+    
+    let imageName = NSUUID().uuidString
+    
+    fileprivate lazy var storageRef = Storage.storage().reference().child("message_images").child(Auth.auth().currentUser!.uid).child("\(imageName).jpg")
+    
     var userIsTypingRef = DatabaseReference()
     var usersTypingQuery = DatabaseQuery()
     
@@ -167,6 +171,20 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
         return messages.count
     }
     
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, didTapCellAt indexPath: IndexPath!, touchLocation: CGPoint) {
+        //print(messages[indexPath.row])
+    }
+    
+    override func collectionView(_ collectionView: JSQMessagesCollectionView!, didTapMessageBubbleAt indexPath: IndexPath!) {
+        print("btap: ")
+        print(messages[indexPath.row])
+        if ((messages[indexPath.row]).isMediaMessage == true){
+            
+            print("picCell: \(messages[indexPath.row].postID)")
+        }
+    }
+    
+    
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAt indexPath: IndexPath!) -> JSQMessageBubbleImageDataSource! {
         let message = messages[indexPath.item] // 1
         if message.senderId == senderId { // 2
@@ -231,14 +249,15 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
             if(snapshot.childrenCount > 1){
                 let messageData = snapshot.value as! Dictionary<String, String>
                 
-                if let id = messageData["senderId"] as String!, let name = messageData["senderName"] as String!, let text = messageData["text"] as String!, text.characters.count > 0 {
-                    self.addMessage(withId: id, name: name, text: text)
+                if let id = messageData["senderId"] as String!, let postID = messageData["postID"], let name = messageData["senderName"] as String!, let text = messageData["text"] as String!, text.characters.count > 0 {
+                    self.addMessage(withId: id, name: name, text: text, postID: postID)
                     self.finishReceivingMessage()
-                } else if let id = messageData["senderId"] as String!, let photoURL = messageData["photoURL"] as String! {
+                } else if let id = messageData["senderId"] as String!, let photoURL = messageData["photoURL"] as String!, let postID = messageData["postID"] {
+                    print("tryingToLoadImage")
                     if let mediaItem = JSQPhotoMediaItem(maskAsOutgoing: id == self.senderId) {
-                        self.addPhotoMessage(withId: id, key: snapshot.key, mediaItem: mediaItem)
+                        self.addPhotoMessage(withId: id, key: snapshot.key, mediaItem: mediaItem, postID: postID)
                         
-                        if photoURL.hasPrefix("gs://") {
+                        if (photoURL.hasPrefix("gs://") || photoURL.hasPrefix("https://")) {
                             self.fetchImageDataAtURL(photoURL, forMediaItem: mediaItem, clearsPhotoMessageMapOnSuccessForKey: nil)
                         }
                     }
@@ -266,6 +285,7 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
             }
         })
     }
+    var selectedImage = UIImage()
     
     private func fetchImageDataAtURL(_ photoURL: String, forMediaItem mediaItem: JSQPhotoMediaItem, clearsPhotoMessageMapOnSuccessForKey key: String?) {
         let storageRef = Storage.storage().reference(forURL: photoURL)
@@ -318,7 +338,7 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
     var newMessage = false
     
     
-    override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
+    override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!, postID: String!) {
         // 1
         Database.database().reference().child("users").child(self.recipientID).updateChildValues(["unreadMessages": true])
         Database.database().reference().child("users").child(self.recipientID).child("unreadMessages").removeValue()
@@ -348,7 +368,8 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
                 "senderName": self.myName,
                 "text": text!,
                 "timeStamp": stringDate,
-                "receiverName": rName
+                "receiverName": rName,
+                "postID": "nil"
                 ]
             
             // 3
@@ -367,25 +388,73 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
     }
     
     func sendPhotoMessage() -> String? {
-        let itemRef = messageRef.childByAutoId()
         
+            
+        var itemKey = String()
+        var itemRef = DatabaseReference()
+        //if newMessage == true {
+        itemRef = messageRef.childByAutoId()
+        itemKey = itemRef.key
+       
+        Database.database().reference().child("users").child(self.recipientID).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+        var now = Date()
+        print("tDate:\(now)")
+        var dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
+        var stringDate = dateFormatter.string(from: now)
+        print("tString: \(stringDate)")
+            let uploadData = UIImageJPEGRepresentation(self.selectedImage, 0.1)
+            self.storageRef.putData(uploadData!, metadata: nil, completion: { (metadata, error) in
+                
+                if error != nil {
+                    print(error as Any)
+                    return
+                }
+                
+                if let selectedImgURL = metadata?.downloadURL()?.absoluteString {
+                    print("selectedImageFromPickerrrr: \(selectedImgURL)")
+                    
+                    
+            
+            var rName = (snapshot.value as! [String:Any])["realName"]
         let messageItem = [
-            "photoURL": imageURLNotSetKey,
+            "photoURL": selectedImgURL,
             "senderId": Auth.auth().currentUser!.uid,
-            "senderName": self.myName
+            "senderName": self.myName,
+            "timeStamp": stringDate,
+            "receiverName": rName,
+            "postID": "nil"
         ]
+                    
+                    
+    Database.database().reference().child("users").child(self.recipientID).child("messages").child(Auth.auth().currentUser!.uid).child(itemKey).setValue(messageItem)
         
         itemRef.setValue(messageItem)
         
         JSQSystemSoundPlayer.jsq_playMessageSentSound()
         
-        finishSendingMessage()
+        self.finishSendingMessage()
+                    
+                }
+            })
+        })
         return itemRef.key
     }
     var userID = String()
     func setImageURL(_ url: String, forPhotoMessageWithKey key: String) {
         let itemRef = messageRef.child(key)
-        itemRef.updateChildValues(["photoURL": url])
+        if let index = url.range(of: ".jpg")?.upperBound {
+            let substring = url[..<index]                 // "ora"
+            // or  let substring = word.prefix(upTo: index) // "ora"
+            // (see picture below) Using the prefix(upTo:) method is equivalent to using a partial half-open range as the collection’s subscript.
+            // The subscript notation is preferred over prefix(upTo:).
+            
+            let string = String(substring)
+            // "ora"
+        print("disURL: \(string)")
+        itemRef.updateChildValues(["photoURL": string])
+        }
     }
     
     // MARK: UI and User Interaction
@@ -412,16 +481,22 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
         present(picker, animated: true, completion:nil)
     }
     
-    private func addMessage(withId id: String, name: String, text: String) {
-        if let message = JSQMessage(senderId: id, displayName: name, text: text) {
+    private func addMessage(withId id: String, name: String, text: String, postID: String) {
+        if let message = JSQMessage(senderId: id, displayName: name, text: text, postID: postID) {
+           //message.
+            if postID != "nil"{
+                //message.postID = postID
+            }
             messages.append(message)
         }
     }
     
-    private func addPhotoMessage(withId id: String, key: String, mediaItem: JSQPhotoMediaItem) {
-        if let message = JSQMessage(senderId: id, displayName: "", media: mediaItem) {
+    private func addPhotoMessage(withId id: String, key: String, mediaItem: JSQPhotoMediaItem, postID: String) {
+        if let message = JSQMessage(senderId: id, displayName: "", media: mediaItem, postID: postID) {
             messages.append(message)
-            
+            if postID != "nil"{
+                //message.postID = postID
+            }
             if (mediaItem.image == nil) {
                 photoMessageMap[key] = mediaItem
             }
@@ -444,9 +519,14 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
 extension ChatViewController: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [String : Any]) {
-        
+         var selectedImageFromPicker: UIImage?
         picker.dismiss(animated: true, completion:nil)
-        
+        if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
+            
+            selectedImageFromPicker = originalImage
+            print("selectedImageFromPicker: \(selectedImageFromPicker!)")
+            self.selectedImage = selectedImageFromPicker!
+        }
         // 1
         if let photoReferenceUrl = info[UIImagePickerControllerReferenceURL] as? URL {
             // Handle picking a Photo from the Photo Library
