@@ -56,16 +56,22 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
         }
     }
     //var bandID = String()
+    var selectedPostID = String()
     override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
-        /* if segue.identifier == "ChatBackToBand"{
-         if let vc = segue.destination as? SessionMakerViewController{
-         vc.sessionID = self.thisSessionID
-         }
-         } else {
-         if let vc = segue.destination as? OneNightBandViewController{
-         vc.onbID = self.thisSessionID
-         }
-         }*/
+        if segue.identifier == "MessagesToSinglePost"{
+            if let vc = segue.destination as? SinglePostViewController{
+                
+                    
+                vc.thisPostData = self.thisPostData
+                vc.myUName = self.myUName
+                vc.following = self.following
+                vc.myPicString = self.myPicString
+                    vc.prevScreen = "messages"
+                    vc.senderScreen = "messages"
+            
+            }
+        }
+        
     }
     
     // @IBOutlet weak var backButton: UIButton!
@@ -93,6 +99,9 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
     var thisUserIsTypingRef = DatabaseReference()
     var thisUsersTypingQuery = DatabaseReference()
     var myName = String()
+    var myUName = String()
+    var myPicString = String()
+    var following = [String]()
     override func viewDidLoad() {
         super.viewDidLoad()
         Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -102,6 +111,12 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
                 for snap in snapshots{
                     if snap.key == "realName"{
                         self.myName = snap.value as! String
+                    } else if snap.key == "username"{
+                        self.myUName = snap.value as! String
+                    } else if snap.key == "profPic"{
+                        self.myPicString = snap.value as! String
+                    } else if snap.key == "following"{
+                        self.following = snap.value as! [String]
                     }
                 }
             }
@@ -172,15 +187,35 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
     }
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, didTapCellAt indexPath: IndexPath!, touchLocation: CGPoint) {
-        //print(messages[indexPath.row])
+        print(messages[indexPath.row])
     }
+    var thisPostData = [String:Any]()
+    
+    
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, didTapMessageBubbleAt indexPath: IndexPath!) {
         print("btap: ")
-        print(messages[indexPath.row])
-        if ((messages[indexPath.row]).isMediaMessage == true){
+       self.selectedPostID = messages[indexPath.row].postID
+        if selectedPostID == "nil"{
+            print("postIDNil")
+        } else {
+        Database.database().reference().child("posts").child(selectedPostID).observeSingleEvent(of: .value, with: { snapshot in
+            let valDict = snapshot.value as! [String:Any]
             
-            print("picCell: \(messages[indexPath.row].postID)")
+            self.thisPostData = valDict
+            
+        
+        
+        print(self.messages[indexPath.row])
+        if ((self.messages[indexPath.row]).isMediaMessage == true){
+            print("picCell: \(self.messages[indexPath.row].postID)")
+            self.performSegue(withIdentifier: "MessagesToSinglePost", sender: self)
+            
+        } else {
+            print("textCell: \(self.messages[indexPath.row].postID)")
+            self.performSegue(withIdentifier: "MessagesToSinglePost", sender: self)
+        }
+        })
         }
     }
     
@@ -196,7 +231,8 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
     var gmRed = UIColor(red: 237/255, green: 28/255, blue: 39/255, alpha: 1.0)
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = super.collectionView(collectionView, cellForItemAt: indexPath) as! JSQMessagesCollectionViewCell
-        
+        cell.isMultipleTouchEnabled = true
+        cell.textView.isSelectable = false
         let message = messages[indexPath.item]
         //cell.textView?.backgroundColor = gmRed
         if message.senderId == senderId { // 1

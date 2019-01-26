@@ -12,6 +12,7 @@ import FirebaseAuth
 
 class LikedByCollectionViewCell: UICollectionViewCell {
 
+    @IBOutlet weak var shareCheck: UIButton!
     @IBOutlet weak var commentTextView: UITextView!
     @IBOutlet weak var commentTimestamp: UILabel!
     @IBOutlet weak var commentName: UILabel!
@@ -19,6 +20,7 @@ class LikedByCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var likedByName: UILabel!
     @IBOutlet weak var likedByImage: UIImageView!
     @IBOutlet weak var likedByFollowButton: UIButton!
+    
     var likedByUID: String?
     @IBAction func likedByFollowButtonPressed(_ sender: Any) {
         //add selected User to curUsers Following field
@@ -107,6 +109,9 @@ class LikedByCollectionViewCell: UICollectionViewCell {
         likedByFollowButton.layer.cornerRadius = 10
         self.likedByImage.layer.cornerRadius = likedByImage.frame.height/2
         self.likedByImage.layer.masksToBounds = true
+        self.shareCheck.layer.borderColor = UIColor.red.cgColor
+        self.shareCheck.layer.borderWidth = 2
+        self.shareCheck.layer.cornerRadius = self.shareCheck.frame.width/2
         // Initialization code
     }
 

@@ -26,6 +26,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     @IBOutlet weak var sportsCollect: UICollectionView!
     
     @IBAction func backToAllCatPressed(_ sender: Any) {
+        print("thisBackB")
         noPostsLabel.isHidden = true
         makeFirstPostButton.isHidden = true
         topBarCat.setTitleColor(UIColor.red, for: .normal)
@@ -56,6 +57,20 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             //self.singlePostView1.isHidden = false
            self.backToCatButton.isHidden = false
             self.sports = false
+            if self.topBarCat.titleLabel?.textColor == UIColor.red{
+                self.border1.isHidden = false
+                 self.border2.isHidden = true
+                 self.border3.isHidden = true
+            } else if self.topBarPop.titleLabel?.textColor == UIColor.red{
+                 self.border1.isHidden = true
+            self.border2.isHidden = false
+                 self.border3.isHidden = true
+            } else {
+                self.border1.isHidden = true
+                self.border2.isHidden = true
+            self.border3.isHidden = false
+            }
+           // self.backToCatButton
           
         })
        
@@ -144,6 +159,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
        // singlePostView3.isHidden = false
     }
     @IBAction func topBarNearbyPressed(_ sender: Any) {
+        self.showTextOverlay("Acquiring Location")
         topBarCat.setTitleColor(UIColor.black, for: .normal)
         topBarPop.setTitleColor(UIColor.black, for: .normal)
         topBarNearby.setTitleColor(UIColor.red, for: .normal)
@@ -177,7 +193,9 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        posterPicButton.frame.size = CGSize(width: 40, height: 40)
         
+        posterPicButton.layer.cornerRadius = posterPicButton.frame.width/2
          topLine.frame = CGRect(x: topLine.frame.origin.x, y: topLine.frame.origin.y, width: topLine.frame.width, height: 0.5)
         ogCommentPos = commentView.frame
         //posterPicButton.layer.cornerRadius = posterPicButton.frame.width/2
@@ -540,7 +558,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 cell.commentTextView.attributedText = boldNameAndComment
                 var tStampDateString = String()
                 if self.topBarCat.titleLabel!.textColor == UIColor.red || self.topBarNearby.titleLabel!.textColor == UIColor.red {
-                tStampDateString = ((self.curCommentCell! as! [String:Any]).first!.value as! [String:Any])["datePosted"]! as! String
+                tStampDateString = self.curCommentCell!["datePosted"]! as! String
                 } else {
                     tStampDateString = (self.curCommentCell! as! [String:Any])["datePosted"]! as! String
                 }
@@ -1080,40 +1098,48 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 //show single post view
                 singlePostView.frame = (popCollect.visibleCells[indexPath.row] as! PopCell).frame
                 self.curCellFrame = (popCollect.visibleCells[indexPath.row] as! PopCell).frame
-                self.selfData = ((self.popCollectData[indexPath.row]).first!.value as! [String:Any])
+                var cData = [String:Any]()
+                if border3.isHidden == false {
+                    cData = (self.popCollectData[indexPath.row] as! [String:Any])
+                    selfData = (self.popCollectData[indexPath.row] as! [String:Any])
+                } else {
+                    self.selfData = ((self.popCollectData[indexPath.row]).first!.value as! [String:Any])
+                    cData = ((self.popCollectData[indexPath.row]).first!.value as! [String:Any])
+                }
+                
                 
                 self.posterUID = (selfData["posterUID"] as! String)
                 
-                self.cityLabel.titleLabel!.text = ((self.popCollectData[indexPath.row]) as! [String:Any])["city"] as? String
+                self.cityLabel.titleLabel!.text = selfData["city"] as? String
                 
                 self.postID =  (selfData["postID"] as! String)
                 
                 //did select picture cell
                 if selfData["postPic"] as? String != nil {
-                    if let messageImageUrl = URL(string: ((self.popCollectData[indexPath.row]).first!.value as! [String:Any])["postPic"] as! String) {
+                    if let messageImageUrl = URL(string: selfData["postPic"] as! String) {
                         
                         if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
                             singlePostImageView.image = UIImage(data: imageData as Data)
                         }
                     }
-                    if let messageImageUrl = URL(string: ((self.popCollectData[indexPath.row]).first!.value as! [String:Any])["posterPicURL"] as! String) {
+                    if let messageImageUrl = URL(string: selfData["posterPicURL"] as! String) {
                         
                         if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
                             posterPicButton.setImage(UIImage(data: imageData as Data), for: .normal)
                         }
                     }
-                   self.likedCollectData = (((self.popCollectData[indexPath.row]).first!.value as! [String:Any])["likes"] as! [[String:Any]])
-                    self.posterNameButton.setTitle(((self.popCollectData[indexPath.row]).first!.value as! [String:Any])["posterName"] as? String, for: .normal)
-                    self.curCommentCell = self.popCollectData[indexPath.row]
+                   self.likedCollectData = (selfData["likes"] as! [[String:Any]])
+                    self.posterNameButton.setTitle(selfData["posterName"] as? String, for: .normal)
+                    self.curCommentCell = selfData
                     var likesPost: [String:Any]?
                     var favesPost: [String:Any]?
                     var commentsPost: [String:Any]?
-                    for item in (((self.popCollectData[indexPath.row]).first!.value as! [String:Any])["comments"] as! [[String:Any]]){
+                    for item in (selfData["comments"] as! [[String:Any]]){
                         
                         commentsPost = item as! [String: Any]
                         
                     }
-                    for item in (((self.popCollectData[indexPath.row]).first!.value as! [String:Any])["likes"] as! [[String:Any]]){
+                    for item in (selfData["likes"] as! [[String:Any]]){
                         
                         likesPost = item as! [String: Any]
                         
@@ -1121,12 +1147,12 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     if likesPost!["x"] != nil {
                         
                     } else {
-                        if (((self.popCollectData[indexPath.row]).first!.value as! [String:Any])["likes"] as! [[String:Any]]).count == 1{
-                       var tempString = "\((((self.popCollectData[indexPath.row]).first!.value as! [String:Any])["likes"] as! [[String:Any]]).count) like"
+                        if (selfData["likes"] as! [[String:Any]]).count == 1{
+                       var tempString = "\((selfData["likes"] as! [[String:Any]]).count) like"
                         likeButtonCount.setTitle(tempString, for: .normal)
                             
                         } else {
-                            var tempString = "\((((self.popCollectData[indexPath.row]).first!.value as! [String:Any])["likes"] as! [[String:Any]]).count) likes"
+                            var tempString = "\((selfData["likes"] as! [[String:Any]]).count) likes"
                             likeButtonCount.setTitle(tempString, for: .normal)
                             
                         }
@@ -1143,7 +1169,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         commentsCollectData.removeAll()
                         print("showComments")
                         
-                        if ((((self.popCollectData[indexPath.row]).first!.value as! [String:Any])["comments"] as! [[String:Any]]).first as! [String:Any])["x"] != nil{
+                        if ((selfData["comments"] as! [[String:Any]]).first as! [String:Any])["x"] != nil{
                             
                             
                             
@@ -1151,7 +1177,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                             
                             
                             
-                            commentsCollectData = (((self.popCollectData[indexPath.row]).first!.value as! [String:Any])["comments"] as! [[String:Any]])
+                            commentsCollectData = (selfData["comments"] as! [[String:Any]])
                             
                             //DispatchQueue.main.async {
                             
@@ -1166,7 +1192,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         
                     }
                     
-                    for item in (((self.popCollectData[indexPath.row]).first!.value as! [String:Any])["favorites"] as! [[String:Any]]){
+                    for item in (selfData["favorites"] as! [[String:Any]]){
                         
                         favesPost = item as! [String: Any]
                         
@@ -1184,12 +1210,12 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     
                    // textPostTV.isHidden = true
                    // singlePostView2.isHidden = false
-                } else if (((self.popCollectData[indexPath.row]).first!.value as! [String:Any])["postVid"] as? String != nil) {
+                } else if (selfData["postVid"] as? String != nil) {
                     //vid post//////////
                     //self.singlePostView3.frame = ogCommentPos
                     self.player = Player()
                    // textPostTV.isHidden = true
-                    player?.url = URL(string:((self.popCollectData[indexPath.row]).first!.value as! [String:Any])["postVid"] as! String)
+                    player?.url = URL(string: selfData["postVid"] as! String)
                     let playTap = UITapGestureRecognizer()
                     playTap.numberOfTapsRequired = 1
                     playTap.addTarget(self, action: #selector(SearchViewController.playOrPause))
@@ -1201,16 +1227,16 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     self.player?.didMove(toParentViewController: self)
                     singlePostView.sendSubview(toBack: (player?.view)!)
                     
-                    self.curCommentCell = (self.popCollectData[indexPath.row]).first!.value as! [String:Any]
+                    self.curCommentCell = selfData
                     var likesPost: [String:Any]?
                     var favesPost: [String:Any]?
                     var commentsPost: [String:Any]?
-                    for item in (((self.popCollectData[indexPath.row]).first!.value as! [String:Any])["comments"] as! [[String:Any]]){
+                    for item in (selfData["comments"] as! [[String:Any]]){
                         
                         commentsPost = item as! [String: Any]
                         
                     }
-                    for item in (((self.popCollectData[indexPath.row]).first!.value as! [String:Any])["likes"] as! [[String:Any]]){
+                    for item in (selfData["likes"] as! [[String:Any]]){
                         
                         likesPost = item as! [String: Any]
                         
@@ -1219,7 +1245,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         
                     } else {
                         
-                        likeButtonCount.setTitle(String((((self.popCollectData[indexPath.row]).first!.value as! [String:Any])["likes"] as! [[String:Any]]).count), for: .normal)
+                        likeButtonCount.setTitle(String((selfData["likes"] as! [[String:Any]]).count), for: .normal)
                         
                         if (likesPost!["uName"] as! String) == self.myName{
                             self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
@@ -1232,7 +1258,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     } else {
                         commentsCollectData.removeAll()
                         print("showComments")
-                        if ((((self.popCollectData[indexPath.row]).first!.value as! [String:Any])["comments"] as! [[String:Any]]).first as! [String:Any])["x"] != nil{
+                        if ((selfData["comments"] as! [[String:Any]]).first as! [String:Any])["x"] != nil{
                             
                             
                             
@@ -1240,7 +1266,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                             
                             
                             
-                            commentsCollectData = (((self.popCollectData[indexPath.row]).first!.value as! [String:Any])["comments"] as! [[String:Any]])
+                            commentsCollectData = (selfData["comments"] as! [[String:Any]])
                             
                             //DispatchQueue.main.async {
                             
@@ -1254,7 +1280,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         
                     }
                     
-                    for item in (((self.popCollectData[indexPath.row]).first!.value as! [String:Any])["favorites"] as! [[String:Any]]){
+                    for item in (selfData["favorites"] as! [[String:Any]]){
                         
                         favesPost = item as! [String: Any]
                         
@@ -1274,16 +1300,16 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     //singlePostView2.isHidden = false
                 } else {
                     //text post
-                    self.curCommentCell = ((self.popCollectData[indexPath.row]).first!.value as! [String:Any])
+                    self.curCommentCell = selfData
                     var likesPost: [String:Any]?
                     var favesPost: [String:Any]?
                     var commentsPost: [String:Any]?
-                    for item in (((self.popCollectData[indexPath.row]).first!.value as! [String:Any])["comments"] as! [[String:Any]]){
+                    for item in (selfData["comments"] as! [[String:Any]]){
                         
                         commentsPost = item as! [String: Any]
                         
                     }
-                    for item in (((self.popCollectData[indexPath.row]).first!.value as! [String:Any])["likes"] as! [[String:Any]]){
+                    for item in (selfData["likes"] as! [[String:Any]]){
                         
                         likesPost = item as! [String: Any]
                         
@@ -1292,7 +1318,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         
                     } else {
                         
-                        likeButtonCount.setTitle(String(((((self.popCollectData[indexPath.row]) as! [String:Any]).first!.value as! [String:Any])["likes"] as! [[String:Any]]).count), for: .normal)
+                        likeButtonCount.setTitle(String((selfData["likes"] as! [[String:Any]]).count), for: .normal)
                         
                         if (likesPost!["uName"] as! String) == self.myName{
                             self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
@@ -1310,7 +1336,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         //self.commentTF.isHidden = false
                         
                         //self.topLabel.text = "Comments"
-                        if ((((self.popCollectData[indexPath.row]).first!.value as! [String:Any])["comments"] as! [[String:Any]]).first as! [String:Any])["x"] != nil{
+                        if ((selfData["comments"] as! [[String:Any]]).first as! [String:Any])["x"] != nil{
                             
                             
                             
@@ -1318,7 +1344,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                             
                             
                             
-                            commentsCollectData = (((self.popCollectData[indexPath.row]).first!.value as! [String:Any])["comments"] as! [[String:Any]])
+                            commentsCollectData = (selfData["comments"] as! [[String:Any]])
                             
                             //DispatchQueue.main.async {
                             
@@ -1331,7 +1357,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         }
                     }
                     
-                    for item in (((self.popCollectData[indexPath.row]).first!.value as! [String:Any])["favorites"] as! [[String:Any]]){
+                    for item in (selfData["favorites"] as! [[String:Any]]){
                         
                         favesPost = item as! [String: Any]
                         
@@ -1350,10 +1376,27 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         //self.singlePostView3.frame = self.textPostOnlyCommentsPost.frame
                     })
                 }
-                postText.text = (((self.popCollectData[indexPath.row]).first!.value as! [String:Any])["postText"] as! String)
+                postText.text = (selfData["postText"] as! String)
                 //singlePostTextView.text = (((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["postText"] as! String)
                 UIView.animate(withDuration: 0.5, animations: {
                     self.singlePostView.isHidden = false
+                    self.backToCatButton.isHidden = true
+                    self.border1.isHidden = true
+                    self.border2.isHidden = true
+                    self.border3.isHidden = true
+                    /*if self.topBarCat.titleLabel?.textColor == UIColor.red{
+                        self.border1.isHidden = false
+                        self.border2.isHidden = true
+                        self.border3.isHidden = true
+                    } else if self.topBarPop.titleLabel?.textColor == UIColor.red{
+                        self.border1.isHidden = true
+                        self.border2.isHidden = false
+                        self.border3.isHidden = true
+                    } else {
+                        self.border1.isHidden = true
+                        self.border2.isHidden = true
+                        self.border3.isHidden = false
+                    }*/
                     self.singlePostView.frame = self.ogSinglePostViewFrame
                     
                 })
@@ -1637,6 +1680,20 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 UIView.animate(withDuration: 0.5, animations: {
                     self.singlePostView.isHidden = false
                     self.singlePostView.frame = self.ogSinglePostViewFrame
+                    if self.topBarCat.titleLabel?.textColor == UIColor.red{
+                        self.border1.isHidden = false
+                        self.border2.isHidden = true
+                        self.border3.isHidden = true
+                    } else if self.topBarPop.titleLabel?.textColor == UIColor.red{
+                        self.border1.isHidden = true
+                        self.border2.isHidden = false
+                        self.border3.isHidden = true
+                    } else {
+                        self.border1.isHidden = true
+                        self.border2.isHidden = true
+                        self.border3.isHidden = false
+                    }
+                    self.backToCatButton.isHidden = true
                     
                 })
             }
@@ -1917,9 +1974,18 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                             
                             
                         })
-                       // DispatchQueue.main.async{
+                        self.stopLocationManager()
+                       DispatchQueue.main.async{
+                        
                             self.popCollect.reloadData()
-                        //}
+                        self.popCollect.performBatchUpdates(nil, completion: {
+                            (result) in
+                            // ready
+                            //SwiftOverlays.removeAllBlockingOverlays()
+                            self.removeAllOverlays()
+                            print("doneLoading3")
+                        })
+                        }
                         
                     }
                 }

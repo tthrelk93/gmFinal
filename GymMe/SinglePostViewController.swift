@@ -20,6 +20,8 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
             performSegue(withIdentifier: "backToNote", sender: self)
         } else if prevScreen == "advancedSearch"{
             performSegue(withIdentifier: "SinglePostToAdvancedSearch", sender: self)
+        } else if prevScreen == "messages"{
+            performSegue(withIdentifier: "SinglePostToMessages", sender: self)
         } else {
             performSegue(withIdentifier: "backToProfile", sender: self)
         }
