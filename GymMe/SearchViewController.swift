@@ -110,6 +110,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     
     var popData = [[String:Any]]()
     @IBAction func topBarPopPressed(_ sender: Any) {
+        self.showWaitOverlayWithText("Loading Popular Posts")
         topBarCat.setTitleColor(UIColor.black, for: .normal)
         topBarPop.setTitleColor(UIColor.red, for: .normal)
         topBarNearby.setTitleColor(UIColor.black, for: .normal)
@@ -141,7 +142,16 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 }
             }
                 self.popCollectData = tempData2
+            DispatchQueue.main.async{
             self.popCollect.reloadData()
+            self.popCollect.performBatchUpdates(nil, completion: {
+                (result) in
+                // ready
+                //SwiftOverlays.removeAllBlockingOverlays()
+                self.removeAllOverlays()
+                print("doneLoading3")
+            })
+            }
             print("blue53: \(self.popCollectData)")
             print("x")
             self.popCollect.isHidden = false
@@ -159,7 +169,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
        // singlePostView3.isHidden = false
     }
     @IBAction func topBarNearbyPressed(_ sender: Any) {
-        self.showTextOverlay("Acquiring Location")
+        self.showWaitOverlayWithText("Acquiring Location")
         topBarCat.setTitleColor(UIColor.black, for: .normal)
         topBarPop.setTitleColor(UIColor.black, for: .normal)
         topBarNearby.setTitleColor(UIColor.red, for: .normal)
@@ -1973,7 +1983,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                                 self.popCollectData = tempData
                             
                             
-                        })
+                        
                         self.stopLocationManager()
                        DispatchQueue.main.async{
                         
@@ -1986,7 +1996,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                             print("doneLoading3")
                         })
                         }
-                        
+                        })
                     }
                 }
                 // a new function where you start to parse placemarks to get the information you need
