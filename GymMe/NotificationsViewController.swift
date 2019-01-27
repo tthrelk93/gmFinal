@@ -181,6 +181,7 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell : NotificationCell = collectionView.dequeueReusableCell(withReuseIdentifier: "NotificationCell", for: indexPath) as! NotificationCell
+        cell.lineView.frame.size = CGSize(width: cell.frame.width, height: 0.5)
         DispatchQueue.main.async{
             cell.delegate = self
             cell.name = (self.noteCollectData![indexPath.row] as! [String:Any])["actionByUsername"] as! String
@@ -202,14 +203,44 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
             let dateFormatterGet = DateFormatter()
             dateFormatterGet.dateFormat = "yyyy-MM-dd HH:mm:ss"
             
-            let dateFormatterPrint = DateFormatter()
-            dateFormatterPrint.dateFormat = "MMM dd, yyyy h:mm"
+           // let dateFormatterPrint = DateFormatter()
+            //dateFormatterPrint.dateFormat = "MMM dd, yyyy h:mm"
             
             var date = dateFormatterGet.date(from: timestamp123)
-            var dateString = dateFormatterPrint.string(from: date!)
+            //var dateString = dateFormatterPrint.string(from: date!)
+            let now = Date()
+            //print("tStampDateString: \(tStampDateString), date: \(date!), now: \(now)")
+            var hoursBetween = Int(now.days(from: date!))
+            var time = NSAttributedString()
+            print("hrs Between: \(hoursBetween)")
+            if hoursBetween < 1{
+                hoursBetween = Int(now.hours(from: date!))!
+                if hoursBetween < 1 {
+                    hoursBetween = Int(now.minutes(from: date!))
+                    if hoursBetween == 1{
+                        
+                        time = NSAttributedString(string:"\(hoursBetween) minute ago")
+                    } else {
+                        time = NSAttributedString(string:"\(hoursBetween) minutes ago")
+                    }
+                } else {
+                    if hoursBetween == 1 {
+                        time = NSAttributedString(string:"\(hoursBetween) hour ago")
+                    } else {
+                        time = NSAttributedString(string:"\(hoursBetween) hours ago")
+                    }
+                }
+            } else {
+                if hoursBetween == 1 {
+                    time = NSAttributedString(string:"\(hoursBetween) day ago")
+                } else {
+                    time = NSAttributedString(string:"\(hoursBetween) days ago")
+                }
+            }
+            
            
             
-            var time = NSMutableAttributedString(string: dateString)
+            //var time = NSMutableAttributedString(string: dateString)
             
             attributedString.append(space)
             attributedString.append(normString)
@@ -240,11 +271,12 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
                     //}
                 }
             }
+            
             if self.picDict[self.noteCollectData![indexPath.row]["postID"] as! String] != nil{
                 //cell.postPic.layer.cornerRadius = cell.postPic.frame.width/2
                 //cell.postPic.layer.masksToBounds = true
                 cell.postPic.setImage(self.picDict[self.noteCollectData![indexPath.row]["postID"] as! String], for: .normal)
-        }
+            }
         
         }
             return cell

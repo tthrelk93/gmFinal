@@ -50,7 +50,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         UIView.animate(withDuration: 0.5, animations: {
             //self.singlePostView3.frame = self.ogCommentPos
             self.singlePostView.isHidden = true
-            self.singlePostView.frame = self.curCellFrame
+            //self.singlePostView.frame = self.curCellFrame
             self.singlePostImageView.image = nil
            // self.singlePostTextView.text = nil
             self.player = nil
@@ -220,6 +220,8 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         //shareCollect.register(UINib(nibName: "LikedByCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "LikedByCollectionViewCell")
        ogSinglePostViewFrame = singlePostView.frame
         
+        commentCollect.delegate = self
+        commentCollect.dataSource = self
         
         self.popCollect.register(UINib(nibName: "PopCell", bundle: nil), forCellWithReuseIdentifier: "PopCell")
        
@@ -557,6 +559,9 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             DispatchQueue.main.async{
                 cell.commentorPic.layer.cornerRadius = cell.commentorPic.frame.width/2
                 cell.commentorPic.layer.masksToBounds = true
+                if ((self.commentsCollectData.first as! [String:Any])["x"] != nil){
+                    
+                } else {
                 let nameAndComment = (self.commentsCollectData[indexPath.row]["commentorName"] as! String) + " " +  (self.commentsCollectData[indexPath.row]["commentText"] as! String)
                 
                 print("name&Comment: \(nameAndComment)")
@@ -595,6 +600,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         }
                     }
                 }
+            }
             }
             return cell
         } else {
@@ -1100,14 +1106,14 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             if topBarCat.titleLabel?.textColor == UIColor.red || topBarNearby.titleLabel?.textColor == UIColor.red{
                 
                 
-                let cellLabel = catCollectData[indexPath.row]
+                /*let cellLabel = catCollectData[indexPath.row]
                 if allCatDataDict[cellLabel] == nil {
                     self.allCatDataDict[cellLabel] = [[String:Any]]()
-                }
+                }*/
                 //print("selectedData for \(cellLabel): \(self.popCollectData[indexPath.row])")
                 //show single post view
-                singlePostView.frame = (popCollect.visibleCells[indexPath.row] as! PopCell).frame
-                self.curCellFrame = (popCollect.visibleCells[indexPath.row] as! PopCell).frame
+                //singlePostView.frame = (popCollect.visibleCells[indexPath.row] as! PopCell).frame
+                //self.curCellFrame = (popCollect.visibleCells[indexPath.row] as! PopCell).frame
                 var cData = [String:Any]()
                 if border3.isHidden == false {
                     cData = (self.popCollectData[indexPath.row] as! [String:Any])
@@ -1173,31 +1179,28 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         }
                     }
                     //set comments count
-                    if commentsPost!["x"] != nil {
-                        
-                    } else {
+                    
                         commentsCollectData.removeAll()
                         print("showComments")
-                        
+                        commentsCollectData = (selfData["comments"] as! [[String:Any]])
+                    
+                    DispatchQueue.main.async{
+                        self.commentCollect.reloadData()
+                    }
+                    
                         if ((selfData["comments"] as! [[String:Any]]).first as! [String:Any])["x"] != nil{
-                            
-                            
-                            
+                            commentedByButton.setTitle("View 0 comments", for: .normal)
                         } else {
-                            
-                            
+             
                             
                             commentsCollectData = (selfData["comments"] as! [[String:Any]])
-                            
-                            //DispatchQueue.main.async {
-                            
-                            
-                            self.commentCollect.delegate = self
-                            self.commentCollect.dataSource = self
-                            DispatchQueue.main.async{
-                                self.commentCollect.reloadData()
+                            if commentsCollectData.count == 1{
+                                commentedByButton.setTitle("View 1 comment", for: .normal)
+                            } else {
+                                commentedByButton.setTitle("View \(commentsCollectData.count) comments", for: .normal)
                             }
-                        }
+                            
+                            
                         
                         
                     }
@@ -1225,15 +1228,17 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     //self.singlePostView3.frame = ogCommentPos
                     self.player = Player()
                    // textPostTV.isHidden = true
+                    self.player!.view.frame = self.singlePostImageView.frame
                     player?.url = URL(string: selfData["postVid"] as! String)
                     let playTap = UITapGestureRecognizer()
                     playTap.numberOfTapsRequired = 1
                     playTap.addTarget(self, action: #selector(SearchViewController.playOrPause))
                     player?.view.addGestureRecognizer(playTap)
                     
+                   
+                    self.singlePostView.addSubview((self.player?.view)!)
                     let vidFrame = singlePostImageView.frame
                     self.player?.view.frame = vidFrame
-                    self.singlePostView.addSubview((self.player?.view)!)
                     self.player?.didMove(toParentViewController: self)
                     singlePostView.sendSubview(toBack: (player?.view)!)
                     
@@ -1263,30 +1268,26 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         }
                     }
                     //set comments count
-                    if commentsPost!["x"] != nil {
-                        
+                    commentsCollectData.removeAll()
+                    print("showComments")
+                    commentsCollectData = (selfData["comments"] as! [[String:Any]])
+                    
+                    DispatchQueue.main.async{
+                        self.commentCollect.reloadData()
+                    }
+                   
+                    if ((selfData["comments"] as! [[String:Any]]).first as! [String:Any])["x"] != nil {
+                        commentedByButton.setTitle("View 0 comments", for: .normal)
                     } else {
-                        commentsCollectData.removeAll()
-                        print("showComments")
-                        if ((selfData["comments"] as! [[String:Any]]).first as! [String:Any])["x"] != nil{
-                            
-                            
-                            
+                        
+                        
+                        if commentsCollectData.count == 1{
+                            commentedByButton.setTitle("View 1 comment", for: .normal)
                         } else {
-                            
-                            
-                            
-                            commentsCollectData = (selfData["comments"] as! [[String:Any]])
-                            
-                            //DispatchQueue.main.async {
-                            
-                            
-                            self.commentCollect.delegate = self
-                            self.commentCollect.dataSource = self
-                            DispatchQueue.main.async{
-                                self.commentCollect.reloadData()
-                            }
+                            commentedByButton.setTitle("View \(commentsCollectData.count) comments", for: .normal)
                         }
+                       
+                       
                         
                     }
                     
@@ -1335,36 +1336,24 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                             //cell.likesCountButton.setTitle((feedDataArray[indexPath.row]["likes"] as! [[String:Any]]).count.description, for: .normal)
                         }
                     }
-                    //set comments count
-                    if commentsPost!["x"] != nil {
-                        
+                    commentsCollectData.removeAll()
+                    print("showComments")
+                    commentsCollectData = (selfData["comments"] as! [[String:Any]])
+                    
+                    DispatchQueue.main.async{
+                        self.commentCollect.reloadData()
+                    }
+                    if ((selfData["comments"] as! [[String:Any]]).first as! [String:Any])["x"] != nil {
+                        commentedByButton.setTitle("View 0 comments", for: .normal)
                     } else {
-                        commentsCollectData.removeAll()
-                        print("showComments")
-                        //self.backFromLikedByViewButton.isHidden = false
                         
-                        //self.commentTF.isHidden = false
-                        
-                        //self.topLabel.text = "Comments"
-                        if ((selfData["comments"] as! [[String:Any]]).first as! [String:Any])["x"] != nil{
-                            
-                            
-                            
+                        commentsCollectData = (selfData["comments"] as! [[String:Any]])
+                        if commentsCollectData.count == 1{
+                            commentedByButton.setTitle("View 1 comment", for: .normal)
                         } else {
-                            
-                            
-                            
-                            commentsCollectData = (selfData["comments"] as! [[String:Any]])
-                            
-                            //DispatchQueue.main.async {
-                            
-                            
-                            self.commentCollect.delegate = self
-                            self.commentCollect.dataSource = self
-                            DispatchQueue.main.async{
-                                self.commentCollect.reloadData()
-                            }
+                            commentedByButton.setTitle("View \(commentsCollectData.count) comments", for: .normal)
                         }
+                        
                     }
                     
                     for item in (selfData["favorites"] as! [[String:Any]]){
@@ -1394,19 +1383,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     self.border1.isHidden = true
                     self.border2.isHidden = true
                     self.border3.isHidden = true
-                    /*if self.topBarCat.titleLabel?.textColor == UIColor.red{
-                        self.border1.isHidden = false
-                        self.border2.isHidden = true
-                        self.border3.isHidden = true
-                    } else if self.topBarPop.titleLabel?.textColor == UIColor.red{
-                        self.border1.isHidden = true
-                        self.border2.isHidden = false
-                        self.border3.isHidden = true
-                    } else {
-                        self.border1.isHidden = true
-                        self.border2.isHidden = true
-                        self.border3.isHidden = false
-                    }*/
+                    
                     self.singlePostView.frame = self.ogSinglePostViewFrame
                     
                 })
@@ -1414,17 +1391,29 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             } else if topBarPop.titleLabel!.textColor == UIColor.red {
                 print("wut wut")
                 backToCatButton.isHidden = true
-                
-                let cellLabel = catCollectData[indexPath.row]
+                 selfData = (self.popCollectData[indexPath.row] as! [String:Any])
+                /*what does this do.
+                 let cellLabel = catCollectData[indexPath.row]
                 if allCatDataDict[cellLabel] == nil {
                     self.allCatDataDict[cellLabel] = [[String:Any]]()
-                }
+                }*/
                 //print("selectedData for \(cellLabel): \(self.popCollectData[indexPath.row])")
                 //show single post view
-                singlePostView.frame = (popCollect.visibleCells[indexPath.row] as! PopCell).frame
-                self.curCellFrame = (popCollect.visibleCells[indexPath.row] as! PopCell).frame
+                //singlePostView.frame = (popCollect.visibleCells[indexPath.row] as! PopCell).frame
+                //self.curCellFrame = (popCollect.visibleCells[indexPath.row] as! PopCell).frame
                 //g
                 self.cityLabel.titleLabel!.text = ((self.popCollectData[indexPath.row]) as! [String:Any])["city"] as? String
+                self.posterNameButton.setTitle(((self.popCollectData[indexPath.row]) as! [String:Any])["posterName"] as? String, for: .normal)
+                
+                if let messageImageUrl = URL(string: ((self.popCollectData[indexPath.row]) as! [String:Any])["posterPicURL"] as! String) {
+                    
+                    if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                        posterPicButton.setImage(UIImage(data: imageData as Data), for: .normal)
+                    }
+                }
+                if((((self.popCollectData[indexPath.row]) as! [String:Any])["postText"] as? String) != nil){
+                    postText.text = (((self.popCollectData[indexPath.row]) as! [String:Any])["postText"] as! String)
+                }
                 
                 //did select picture cell
                 if ((self.popCollectData[indexPath.row]) as! [String:Any])["postPic"] as? String != nil {
@@ -1447,52 +1436,58 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     for item in (((self.popCollectData[indexPath.row]) as! [String:Any])["likes"] as! [[String:Any]]){
                         
                         likesPost = item as! [String: Any]
-                        
-                    }
-                    if likesPost!["x"] != nil {
-                        
-                    } else {
-                        
-                        likeButtonCount.setTitle(String((((self.popCollectData[indexPath.row]) as! [String:Any])["likes"] as! [[String:Any]]).count), for: .normal)
-                        
+                        if likesPost!["x"] != nil{
+                            
+                        } else {
                         if (likesPost!["uName"] as! String) == self.myName{
                             self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
                             //cell.likesCountButton.setTitle((feedDataArray[indexPath.row]["likes"] as! [[String:Any]]).count.description, for: .normal)
+                            }
                         }
+                        
+                    }
+                   
+                        var likesC = ((((self.popCollectData[indexPath.row]) )["likes"] as! [[String:Any]]).count)
+                        var likeString = ""
+                        if likesC == 1 {
+                            if (((((self.popCollectData[indexPath.row]) as! [String:Any])["likes"] as! [[String:Any]]).first as! [String:Any])["x"] != nil){
+                                likeString = "0 likes"
+                            } else {
+                            likeString = "1 like"
+                            }
+                        } else {
+                            likeString = "\(likesC) likes"
+                        }
+                        likeButtonCount.setTitle(likeString, for: .normal)
+                        
+                    
+                    commentsCollectData.removeAll()
+                    print("showComments")
+                    commentsCollectData = (selfData["comments"] as! [[String:Any]])
+                    
+                    DispatchQueue.main.async{
+                        self.commentCollect.reloadData()
                     }
                     //set comments count
-                    if commentsPost!["x"] != nil {
-                        
+                    if ((((self.popCollectData[indexPath.row]) as! [String:Any])["comments"] as! [[String:Any]]).first as! [String:Any])["x"] != nil {
+                        var commentString = "View 0 comments"
+                        commentedByButton.setTitle(commentString, for: .normal)
                     } else {
-                        commentsCollectData.removeAll()
+                        
                         print("showComments")
                         //self.backFromLikedByViewButton.isHidden = false
                         
                         //self.commentTF.isHidden = false
                         
                         //self.topLabel.text = "Comments"
-                        if ((((self.popCollectData[indexPath.row]) as! [String:Any])["comments"] as! [[String:Any]]).first as! [String:Any])["x"] != nil{
-                            
-                            var commentString = "View 0 comments"
-                            commentedByButton.setTitle(commentString, for: .normal)
-                            
-                        } else {
+                       
                             
                             
                             
-                            commentsCollectData = (((self.popCollectData[indexPath.row]) as! [String:Any])["comments"] as! [[String:Any]])
+                            //commentsCollectData = (((self.popCollectData[indexPath.row]) as! [String:Any])["comments"] as! [[String:Any]])
                             var commentString = "View \(commentsCollectData.count) comments"
                             commentedByButton.setTitle(commentString, for: .normal)
                             
-                            //DispatchQueue.main.async {
-                            
-                            
-                            self.commentCollect.delegate = self
-                            self.commentCollect.dataSource = self
-                            DispatchQueue.main.async{
-                                self.commentCollect.reloadData()
-                            }
-                        }
                         
                         
                     }
@@ -1512,6 +1507,8 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                             //favoritesCount.setTitle(((self.popCollectData[indexPath.row])["favorites"] as! [[String:Any]]).count.description, for: .normal)
                         }
                     }
+                    
+                    
                     
                     //textPostTV.isHidden = true
                    // singlePostView2.isHidden = false
@@ -1541,52 +1538,71 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         commentsPost = item as! [String: Any]
                         
                     }
+                    self.posterNameButton.setTitle(((self.popCollectData[indexPath.row]) as! [String:Any])["posterName"] as? String, for: .normal)
+                    
+                    if let messageImageUrl = URL(string: ((self.popCollectData[indexPath.row]) as! [String:Any])["posterPicURL"] as! String) {
+                        
+                        if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                            posterPicButton.setImage(UIImage(data: imageData as Data), for: .normal)
+                        }
+                    }
                     for item in (((self.popCollectData[indexPath.row]) as! [String:Any])["likes"] as! [[String:Any]]){
                         
                         likesPost = item as! [String: Any]
+                        if likesPost!["x"] != nil{
+                            
+                        } else {
+                            if (likesPost!["uName"] as! String) == self.myName{
+                                self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
+                                //cell.likesCountButton.setTitle((feedDataArray[indexPath.row]["likes"] as! [[String:Any]]).count.description, for: .normal)
+                            }
+                        }
                         
                     }
-                    if likesPost!["x"] != nil {
-                        
-                    } else {
-                        
-                        likeButtonCount.setTitle(String((((self.popCollectData[indexPath.row]) as! [String:Any])["likes"] as! [[String:Any]]).count), for: .normal)
-                        
-                        if (likesPost!["uName"] as! String) == self.myName{
-                            self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
-                            //cell.likesCountButton.setTitle((feedDataArray[indexPath.row]["likes"] as! [[String:Any]]).count.description, for: .normal)
+                    
+                    var likesC = ((((self.popCollectData[indexPath.row]) )["likes"] as! [[String:Any]]).count)
+                    var likeString = ""
+                    if likesC == 1 {
+                        if (((((self.popCollectData[indexPath.row]) as! [String:Any])["likes"] as! [[String:Any]]).first as! [String:Any])["x"] != nil){
+                            likeString = "0 likes"
+                        } else {
+                            likeString = "1 like"
                         }
+                    } else {
+                        likeString = "\(likesC) likes"
+                    }
+                    likeButtonCount.setTitle(likeString, for: .normal)
+                    commentsCollectData.removeAll()
+                    print("showComments")
+                    commentsCollectData = (selfData["comments"] as! [[String:Any]])
+                    
+                    DispatchQueue.main.async{
+                        self.commentCollect.reloadData()
                     }
                     //set comments count
-                    if commentsPost!["x"] != nil {
-                        
+                    if ((((self.popCollectData[indexPath.row]) as! [String:Any])["comments"] as! [[String:Any]]).first as! [String:Any])["x"] != nil {
+                        var commentString = "View 0 comments"
+                        commentedByButton.setTitle(commentString, for: .normal)
                     } else {
-                        commentsCollectData.removeAll()
+                        
                         print("showComments")
                         //self.backFromLikedByViewButton.isHidden = false
                         
                         //self.commentTF.isHidden = false
                         
                         //self.topLabel.text = "Comments"
-                        if ((((self.popCollectData[indexPath.row]) as! [String:Any])["comments"] as! [[String:Any]]).first as! [String:Any])["x"] != nil{
-                            
-                            
-                            
-                        } else {
-                            
-                            
-                            
-                            commentsCollectData = (((self.popCollectData[indexPath.row]) as! [String:Any])["comments"] as! [[String:Any]])
-                            
-                            //DispatchQueue.main.async {
-                            
-                            
-                            self.commentCollect.delegate = self
-                            self.commentCollect.dataSource = self
-                            DispatchQueue.main.async{
-                                self.commentCollect.reloadData()
-                            }
-                        }
+                        
+                        
+                        
+                        
+                        commentsCollectData = (((self.popCollectData[indexPath.row]) as! [String:Any])["comments"] as! [[String:Any]])
+                        var commentString = "View \(commentsCollectData.count) comments"
+                        commentedByButton.setTitle(commentString, for: .normal)
+                        
+                        //DispatchQueue.main.async {
+                        
+                        
+                       
                         
                     }
                     
@@ -1621,52 +1637,73 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         
                     }
                     }
+                    self.posterNameButton.setTitle(((self.popCollectData[indexPath.row]) as! [String:Any])["posterName"] as? String, for: .normal)
+                    
+                    if let messageImageUrl = URL(string: ((self.popCollectData[indexPath.row]) as! [String:Any])["posterPicURL"] as! String) {
+                        
+                        if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                            posterPicButton.setImage(UIImage(data: imageData as Data), for: .normal)
+                        }
+                    }
                     for item in (((self.popCollectData[indexPath.row]) as! [String:Any])["likes"] as! [[String:Any]]){
                         
                         likesPost = item as! [String: Any]
+                        if likesPost!["x"] != nil{
+                            
+                        } else {
+                            if (likesPost!["uName"] as! String) == self.myName{
+                                self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
+                                //cell.likesCountButton.setTitle((feedDataArray[indexPath.row]["likes"] as! [[String:Any]]).count.description, for: .normal)
+                            }
+                        }
                         
                     }
-                    if likesPost!["x"] != nil {
-                        
-                    } else {
-                        
-                        likeButtonCount.setTitle(String((((self.popCollectData[indexPath.row]) as! [String:Any])["likes"] as! [[String:Any]]).count), for: .normal)
-                        
-                        if (likesPost!["uName"] as! String) == self.myName{
-                            self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
-                            //cell.likesCountButton.setTitle((feedDataArray[indexPath.row]["likes"] as! [[String:Any]]).count.description, for: .normal)
+                    
+                    var likesC = ((((self.popCollectData[indexPath.row]) )["likes"] as! [[String:Any]]).count)
+                    var likeString = ""
+                    if likesC == 1 {
+                        if (((((self.popCollectData[indexPath.row]) as! [String:Any])["likes"] as! [[String:Any]]).first as! [String:Any])["x"] != nil){
+                            likeString = "0 likes"
+                        } else {
+                            likeString = "1 like"
                         }
+                    } else {
+                        likeString = "\(likesC) likes"
+                    }
+                    likeButtonCount.setTitle(likeString, for: .normal)
+                    commentsCollectData.removeAll()
+                    print("showComments")
+                    commentsCollectData = (selfData["comments"] as! [[String:Any]])
+                    
+                    DispatchQueue.main.async{
+                        self.commentCollect.reloadData()
                     }
                     //set comments count
-                    if commentsPost!["x"] != nil {
-                        
+                    if ((((self.popCollectData[indexPath.row]) as! [String:Any])["comments"] as! [[String:Any]]).first as! [String:Any])["x"] != nil {
+                        var commentString = "View 0 comments"
+                        commentedByButton.setTitle(commentString, for: .normal)
                     } else {
-                        commentsCollectData.removeAll()
+                        
                         print("showComments")
                         //self.backFromLikedByViewButton.isHidden = false
                         
                         //self.commentTF.isHidden = false
                         
                         //self.topLabel.text = "Comments"
-                        if ((((self.popCollectData[indexPath.row]) as! [String:Any])["comments"] as! [[String:Any]]).first as! [String:Any])["x"] != nil{
-                            
-                            
-                            
-                        } else {
-                            
-                            
-                            
-                            commentsCollectData = (((self.popCollectData[indexPath.row]) as! [String:Any])["comments"] as! [[String:Any]])
-                            
-                            //DispatchQueue.main.async {
-                            
-                            
-                            self.commentCollect.delegate = self
-                            self.commentCollect.dataSource = self
-                            DispatchQueue.main.async{
-                                self.commentCollect.reloadData()
-                            }
-                        }
+                        
+                        
+                        
+                        
+                        commentsCollectData = (((self.popCollectData[indexPath.row]) as! [String:Any])["comments"] as! [[String:Any]])
+                        var commentString = "View \(commentsCollectData.count) comments"
+                        commentedByButton.setTitle(commentString, for: .normal)
+                        
+                        //DispatchQueue.main.async {
+                        
+                        
+                        
+                      
+                        
                     }
                     
                     for item in (((self.popCollectData[indexPath.row]) as! [String:Any])["favorites"] as! [[String:Any]]){
@@ -1685,7 +1722,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                    // textPostTV.isHidden = false
                     //singlePostView2.isHidden = true
                 }
-                postText.text = (((self.popCollectData[indexPath.row]) as! [String:Any])["postText"] as! String)
+               
                 //singlePostTextView.text = ((self.popCollectData[indexPath.row])["postText"] as! String)
                 UIView.animate(withDuration: 0.5, animations: {
                     self.singlePostView.isHidden = false
