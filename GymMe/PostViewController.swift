@@ -36,7 +36,24 @@ class PostCatSearchCell: UICollectionViewCell {
 }
 
 class PostViewController: UIViewController, UITabBarDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UITextViewDelegate, CLLocationManagerDelegate, UICollectionViewDelegate,
-UICollectionViewDataSource, UISearchBarDelegate{
+UICollectionViewDataSource, UISearchBarDelegate, RemoveCatDelegate{
+    func removeCat(catLabel: String) {
+        print("inremoveDel2")
+        var i = 0
+        for str in curCatsData{
+            if str == catLabel{
+                curCatsData.remove(at: i)
+            }
+            i = i + 1
+        }
+        curCatsAdded = curCatsData
+        DispatchQueue.main.async{
+            self.curCatsCollect.reloadData()
+            self.addCatCollect.reloadData()
+            
+        }
+    }
+    
     
     @IBOutlet weak var tagSearchBar: UISearchBar!
     @IBOutlet weak var addCat3TextPos: UIView!
@@ -62,6 +79,8 @@ UICollectionViewDataSource, UISearchBarDelegate{
             return catSportsData.count
          } else if collectionView == addCatCollect {
         return catLabelsRefined.count
+         } else if collectionView == curCatsCollect{
+            return curCatsData.count
          } else {
             return findFriendsData.count
         }
@@ -98,8 +117,19 @@ UICollectionViewDataSource, UISearchBarDelegate{
             cell.catSportLabel.text = catSportsData[indexPath.row]
             
             return cell
+        } else if collectionView == curCatsCollect{
+            let cell : CurCatsCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CurCatsCollectionViewCell", for: indexPath) as! CurCatsCollectionViewCell
+            cell.delegate = self
+            cell.curCatLabel.text = curCatsData[indexPath.row]
+            return cell
         } else {
         let cell : PostCatSearchCell = collectionView.dequeueReusableCell(withReuseIdentifier: "PostCatSearchCell", for: indexPath) as! PostCatSearchCell
+            if curCatsData.contains(catLabelsRefined[indexPath.row]){
+                cell.catLabel.textColor = UIColor.red
+                
+            } else {
+                cell.catLabel.textColor = UIColor.black
+            }
         cell.catLabel.text = catLabelsRefined[indexPath.row]
         let border = CALayer()
         let width = CGFloat(1.0)
@@ -183,6 +213,8 @@ UICollectionViewDataSource, UISearchBarDelegate{
             }
             
             
+            
+        } else if collectionView == curCatsCollect{
             
         } else if collectionView == sportsCollect{
             var sportCellSelected = collectionView.cellForItem(at: indexPath) as! PostCatSearchSportsCell
@@ -383,7 +415,15 @@ UICollectionViewDataSource, UISearchBarDelegate{
             
             
             if cell.catLabel.textColor == UIColor.red && cell.catLabel.text != "Sports" {
-                self.curCatsAdded.append(cell.catLabel.text!)
+               
+                if curCatsAdded.contains(cell.catLabel.text!) == false{ self.curCatsAdded.append(cell.catLabel.text!)
+                }
+            
+                if curCatsData.contains(cell.catLabel.text!) == false {
+                self.curCatsData.append(cell.catLabel.text!)
+            }
+                
+                
                 
             }
             
@@ -405,7 +445,7 @@ UICollectionViewDataSource, UISearchBarDelegate{
         
         catLabelsRefined = catLabelsSorted
         addCatCollect.reloadData()
-        
+        curCatsCollect.reloadData()
         postButton.isHidden = false
         cancelPostButton.isHidden = false
         makePostTextView.resignFirstResponder()
@@ -424,8 +464,7 @@ UICollectionViewDataSource, UISearchBarDelegate{
     @IBAction func addToCategoryButtonPressed(_ sender: Any) {
         addCatView.isHidden = false
         postButton.isHidden = true
-        addCatCollect.delegate = self
-        addCatCollect.dataSource = self
+        
         //cancelPostButton.setTitle("Back", for: .normal)
         cancelPostButton.isHidden = true
         curCatsLabel.text = ""
@@ -436,6 +475,9 @@ UICollectionViewDataSource, UISearchBarDelegate{
         
         
     }
+    
+    
+    
     @IBOutlet weak var shareIconButton: UIButton!
     @IBOutlet weak var shareButton: UIButton!
     @IBAction func shareButtonPressed(_ sender: Any) {
@@ -534,7 +576,8 @@ UICollectionViewDataSource, UISearchBarDelegate{
         }
         present(picker, animated: true, completion: nil)
     }
-    
+    var curCatsData = [String]()
+    @IBOutlet weak var curCatsCollect: UICollectionView!
     
     var ogCat1Pos = CGRect()
     var ogCat2Pos = CGRect()
@@ -580,12 +623,17 @@ UICollectionViewDataSource, UISearchBarDelegate{
         
        // self.sportsCollect.register(UINib(nibName: "PostCatSearchSportsCell", bundle: nil), forCellWithReuseIdentifier: "PostCatSearchSportsCell")
         tagCollect.register(UINib(nibName: "LikedByCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "LikedByCollectionViewCell")
+        curCatsCollect.register(UINib(nibName: "CurCatsCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "CurCatsCollectionViewCell")
+        
         tagCollect.delegate = self
         tagCollect.dataSource = self
         sportsCollect.delegate = self
         sportsCollect.dataSource = self
         catLabelsRefined = catLabels
-        
+        addCatCollect.delegate = self
+        addCatCollect.dataSource = self
+        curCatsCollect.delegate = self
+        curCatsCollect.dataSource = self
         //locationManager delegate assignment etcc...
         locationManager.requestAlwaysAuthorization()
         locationManager.requestWhenInUseAuthorization()
@@ -735,10 +783,12 @@ UICollectionViewDataSource, UISearchBarDelegate{
     
     @IBOutlet weak var curCityLabel: UILabel!
     @IBAction func cancelPostButtonPressed(_ sender: Any) {
-        
+        if tagView.isHidden == false{
+            tagView.isHidden = true
+        } else {
         makePostImageView.image = nil
         postPlayer?.url = nil
-        
+        taggedFriends.removeAll()
         postText.isHidden = false
         postPic.isHidden = false
         self.addPicButton.frame = self.ogPicPosit
@@ -770,11 +820,13 @@ UICollectionViewDataSource, UISearchBarDelegate{
         self.cityData = nil
         self.curCityLabel.text = ""
         
+        
             
         
         
         self.extended = false
         makePostView.isHidden = true
+        }
         
     }
     @IBOutlet weak var succesfulPostView: UIView!

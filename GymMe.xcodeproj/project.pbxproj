@@ -11,6 +11,8 @@
 		1C123C738D0E7FCF11992316 /* Pods_GymMe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D148231E7CFA898EFB8DAF46 /* Pods_GymMe.framework */; };
 		310481EC21AC63FC0014FD15 /* FolloweringViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310481EB21AC63FC0014FD15 /* FolloweringViewController.swift */; };
 		310481EE21AC85BF0014FD15 /* SpecificSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310481ED21AC85BF0014FD15 /* SpecificSearchViewController.swift */; };
+		311DCE2B21FF7B9F0089330E /* CurCatsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311DCE2921FF7B9F0089330E /* CurCatsCollectionViewCell.swift */; };
+		311DCE2C21FF7B9F0089330E /* CurCatsCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 311DCE2A21FF7B9F0089330E /* CurCatsCollectionViewCell.xib */; };
 		31359EC920DC183D00F5ED11 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31359EC820DC183D00F5ED11 /* SearchViewController.swift */; };
 		31359ECB20DC26C400F5ED11 /* CatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31359ECA20DC26C400F5ED11 /* CatCell.swift */; };
 		31359ECD20DC465000F5ED11 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31359ECC20DC465000F5ED11 /* ProfileViewController.swift */; };
@@ -73,6 +75,8 @@
 		21833CD67A14964C20C5D9B7 /* Pods_GymMeUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GymMeUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		310481EB21AC63FC0014FD15 /* FolloweringViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolloweringViewController.swift; sourceTree = "<group>"; };
 		310481ED21AC85BF0014FD15 /* SpecificSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecificSearchViewController.swift; sourceTree = "<group>"; };
+		311DCE2921FF7B9F0089330E /* CurCatsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurCatsCollectionViewCell.swift; sourceTree = "<group>"; };
+		311DCE2A21FF7B9F0089330E /* CurCatsCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CurCatsCollectionViewCell.xib; sourceTree = "<group>"; };
 		31359EC820DC183D00F5ED11 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		31359ECA20DC26C400F5ED11 /* CatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatCell.swift; sourceTree = "<group>"; };
 		31359ECC20DC465000F5ED11 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -194,6 +198,8 @@
 				318043A220E7EBA900E1616F /* CategoryCell */,
 				31359EC620DC16E700F5ED11 /* NewsFeedCells */,
 				31E6412120E7EB6C00BEB421 /* PopularPostsCell */,
+				311DCE2921FF7B9F0089330E /* CurCatsCollectionViewCell.swift */,
+				311DCE2A21FF7B9F0089330E /* CurCatsCollectionViewCell.xib */,
 			);
 			path = CustomCollectionViewCells;
 			sourceTree = "<group>";
@@ -488,6 +494,7 @@
 				314FACDD20D975F9005A5E7C /* LaunchScreen.storyboard in Resources */,
 				3184C1F520E5468100A5EA19 /* PopCell.xib in Resources */,
 				318ACAB2213DB5A400DE86E7 /* GoogleService-Info.plist in Resources */,
+				311DCE2C21FF7B9F0089330E /* CurCatsCollectionViewCell.xib in Resources */,
 				3184C1F720E5631D00A5EA19 /* Assets.xcassets in Resources */,
 				314FACD820D975F9005A5E7C /* Main.storyboard in Resources */,
 				31C48F1420D97EF600D8316E /* NewsFeedCellCollectionViewCell.xib in Resources */,
@@ -637,6 +644,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				311DCE2B21FF7B9F0089330E /* CurCatsCollectionViewCell.swift in Sources */,
 				31EEAE6F20DEC7A60015B8B2 /* PostViewController.swift in Sources */,
 				310481EC21AC63FC0014FD15 /* FolloweringViewController.swift in Sources */,
 				31BF011D2100ED530012F933 /* MessagesTableViewController.swift in Sources */,
