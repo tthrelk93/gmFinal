@@ -232,7 +232,7 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = super.collectionView(collectionView, cellForItemAt: indexPath) as! JSQMessagesCollectionViewCell
         cell.isMultipleTouchEnabled = true
-        cell.textView.isSelectable = false
+        cell.textView?.isSelectable = false
         let message = messages[indexPath.item]
         //cell.textView?.backgroundColor = gmRed
         if message.senderId == senderId { // 1

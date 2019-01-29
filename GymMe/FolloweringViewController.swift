@@ -9,9 +9,19 @@
 import UIKit
 import SwiftOverlays
 
-class FolloweringViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource{
-
+class FolloweringViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, ToProfileDelegate{
     
+    func segueToProf(cellUID: String, name: String) {
+        print("hereghghgh")
+        self.cellUID = cellUID
+        self.cellName = name
+        performSegue(withIdentifier: "followToProf", sender: self)
+    }
+    
+
+    var cellName = String()
+    
+    @IBOutlet weak var topLine: UIView!
     
     @IBOutlet weak var ffCollect: UICollectionView!
     
@@ -23,6 +33,7 @@ class FolloweringViewController: UIViewController, UICollectionViewDelegate, UIC
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        topLine.frame.size = CGSize(width: topLine.frame.width, height: 0.5)
         
         self.ffCollect.delegate = self
         self.ffCollect.dataSource = self
@@ -53,11 +64,13 @@ class FolloweringViewController: UIViewController, UICollectionViewDelegate, UIC
         print("hey")
         
             let cell : LikedByCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "LikedByCollectionViewCell", for: indexPath) as! LikedByCollectionViewCell
+        
+        cell.toProfileButton.isHidden = false
             if followType == "following"{
                 DispatchQueue.main.async{
                     
                     cell.likedByFollowButton.setTitle("Unfollow", for: .normal)
-                    
+                    cell.delegate1 = self
                     cell.likedByName.isHidden = false
                     cell.likedByUName.isHidden = false
                     cell.likedByFollowButton.isHidden = false
@@ -90,7 +103,7 @@ class FolloweringViewController: UIViewController, UICollectionViewDelegate, UIC
             } else {
                 //follower
                 DispatchQueue.main.async{
-                    
+                    cell.delegate1 = self
                     if (self.followersArr.contains(self.flwrDataArr[indexPath.row]["uid"] as! String)){
                         cell.likedByFollowButton.setTitle("Unfollow", for: .normal)
                         cell.likedByFollowButton.backgroundColor = UIColor.red
@@ -136,14 +149,28 @@ class FolloweringViewController: UIViewController, UICollectionViewDelegate, UIC
     
     
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
+    var cellUID = String()
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "followToProf"{
+            if let vc = segue.destination as? ProfileViewController{
+                
+                vc.curUID = self.cellUID
+                
+                vc.prevScreen = "follow"
+               
+                    vc.viewerIsCurAuth = false
+                
+                vc.curName = self.cellName
+                
+            }
+        }
     }
-    */
+    
 
 }

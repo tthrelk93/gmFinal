@@ -19,9 +19,7 @@ class MessagesTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        receiverPic.frame = CGRect(x: receiverPic.frame.origin.x, y: receiverPic.frame.origin.y, width: 50, height: 50)
-        receiverPic.layer.cornerRadius = receiverPic.frame.width/2
-        receiverPic.layer.masksToBounds = true
+        
         
     }
 

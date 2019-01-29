@@ -127,30 +127,57 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
     var prevScreen = String()
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if(searchActive) {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "MessagesTableViewCell") as! MessagesTableViewCell
+           let cell = tableView.dequeueReusableCell(withIdentifier: "MessagesTableViewCell") as! MessagesTableViewCell
+            Database.database().reference().child("users").child(((suggestedTableViewData[indexPath.row])["receiverUID"] as! String)).observeSingleEvent(of: .value, with: { (snapshot) in
+                var userPic = (snapshot.value as! [String:Any])["profPic"] as! String
+            
             let recPic = UIImage()
+                cell.receiverPic.frame = CGRect(x: cell.receiverPic.frame.origin.x, y: cell.receiverPic.frame.origin.y, width: 40, height: 40)
+                cell.receiverPic.layer.cornerRadius = cell.receiverPic.frame.width/2
+                cell.receiverPic.layer.masksToBounds = true
+                
+            if let messageImageUrl = URL(string: userPic) {
+                
+                if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                    cell.receiverPic.image = UIImage(data: imageData as Data)
+                    
+                }}
             //make image from ((tableViewData[indexPath.row] as! [String:Any])["receiverPic"] as! String)
             //cell.receiverPic.image = recPic
-            cell.receiverUID = ((suggestedTableViewData[indexPath.row] )["receiverUID"] as! String)
-            cell.messageKey = ((suggestedTableViewData[indexPath.row] )["messageKey"] as! String)
-            cell.messageText.text = ((suggestedTableViewData[indexPath.row])["messageText"] as! String)
-            cell.receiverName.text = ((suggestedTableViewData[indexPath.row] )["receiverName"] as! String)
+            cell.receiverUID = ((self.suggestedTableViewData[indexPath.row] )["receiverUID"] as! String)
+            cell.messageKey = ((self.suggestedTableViewData[indexPath.row] )["messageKey"] as! String)
+            cell.messageText.text = ((self.suggestedTableViewData[indexPath.row])["messageText"] as! String)
+            cell.receiverName.text = ((self.suggestedTableViewData[indexPath.row] )["receiverName"] as! String)
             
+            
+                })
             return cell
         } else {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MessagesTableViewCell") as! MessagesTableViewCell
-            let recPic = UIImage()
-        //make image from ((tableViewData[indexPath.row] as! [String:Any])["receiverPic"] as! String)
-        //cell.receiverPic.image = recPic
-        cell.messageKey = ((tableViewData[indexPath.row] )["messageKey"] as! String)
-        cell.receiverUID = ((tableViewData[indexPath.row] )["receiverUID"] as! String)
-        cell.messageText.text = ((tableViewData[indexPath.row] )["messageText"]! as! String)
-            if ((tableViewData[indexPath.row] )["senderName"] as! String) != self.myRealName {
-        cell.receiverName.text = ((tableViewData[indexPath.row] )["senderName"] as! String)
+            Database.database().reference().child("users").child(((tableViewData[indexPath.row])["receiverUID"] as! String)).observeSingleEvent(of: .value, with: { (snapshot) in
+                var userPic = (snapshot.value as! [String:Any])["profPic"] as! String
+                
+                let recPic = UIImage()
+                cell.receiverPic.frame = CGRect(x: cell.receiverPic.frame.origin.x, y: cell.receiverPic.frame.origin.y, width: 40, height: 40)
+                cell.receiverPic.layer.cornerRadius = cell.receiverPic.frame.width/2
+                cell.receiverPic.layer.masksToBounds = true
+                
+                
+                if let messageImageUrl = URL(string: userPic) {
+                    
+                    if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                        cell.receiverPic.image = UIImage(data: imageData as Data)
+                        
+                    }}
+                cell.messageKey = ((self.tableViewData[indexPath.row] )["messageKey"] as! String)
+                cell.receiverUID = ((self.tableViewData[indexPath.row] )["receiverUID"] as! String)
+                cell.messageText.text = ((self.tableViewData[indexPath.row] )["messageText"]! as! String)
+                if ((self.tableViewData[indexPath.row] )["senderName"] as! String) != self.myRealName {
+                    cell.receiverName.text = ((self.tableViewData[indexPath.row] )["senderName"] as! String)
             } else {
-                cell.receiverName.text = ((tableViewData[indexPath.row] )["receiverName"] as! String)
+                    cell.receiverName.text = ((self.tableViewData[indexPath.row] )["receiverName"] as! String)
             }
-        
+            })
         return cell
         }
             

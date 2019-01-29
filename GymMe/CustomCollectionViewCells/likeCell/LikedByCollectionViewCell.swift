@@ -10,8 +10,16 @@ import UIKit
 import FirebaseDatabase
 import FirebaseAuth
 
+protocol ToProfileDelegate {
+    
+    func segueToProf(cellUID: String, name: String)
+    
+    
+}
+
 class LikedByCollectionViewCell: UICollectionViewCell {
 
+    var delegate1: ToProfileDelegate?
     @IBOutlet weak var shareCheck: UIButton!
     @IBOutlet weak var commentTextView: UITextView!
     @IBOutlet weak var commentTimestamp: UILabel!
@@ -97,6 +105,10 @@ class LikedByCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    @IBOutlet weak var toProfileButton: UIButton!
+    @IBAction func toProfileButtonPressed(_ sender: Any) {
+        delegate1?.segueToProf(cellUID: self.likedByUID!, name: self.likedByName.text!)
+    }
     
     @IBAction func selectButton(_ sender: Any) {
     }
