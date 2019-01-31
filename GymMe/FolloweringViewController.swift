@@ -8,6 +8,8 @@
 
 import UIKit
 import SwiftOverlays
+import FirebaseDatabase
+import FirebaseAuth
 
 class FolloweringViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, ToProfileDelegate{
     
@@ -28,6 +30,8 @@ class FolloweringViewController: UIViewController, UICollectionViewDelegate, UIC
     @IBOutlet weak var followerOrFollowingView: UIView!
     
     @IBAction func backFromFF(_ sender: Any) {
+        self.cellUID = Auth.auth().currentUser!.uid
+        self.cellName = ""
          performSegue(withIdentifier: "followToProf", sender: self)
     }
     override func viewDidLoad() {
