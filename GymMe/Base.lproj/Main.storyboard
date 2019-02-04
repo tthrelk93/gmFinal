@@ -2320,7 +2320,7 @@
                                                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                                 </collectionViewFlowLayout>
                                                                 <cells>
-                                                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="NewsFeedCollectionViewCell" id="hUE-cC-PeS">
+                                                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="NewsFeedCellCollectionViewCell" id="hUE-cC-PeS">
                                                                         <rect key="frame" x="0.0" y="0.0" width="120" height="120"/>
                                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
@@ -3394,11 +3394,11 @@
     <inferredMetricsTieBreakers>
         <segue reference="Prv-0P-FKQ"/>
         <segue reference="8J8-PS-8fh"/>
-        <segue reference="y2H-Z7-9BL"/>
-        <segue reference="usj-ZK-sIq"/>
+        <segue reference="XTo-Ja-pwD"/>
+        <segue reference="cJJ-fi-Mpb"/>
         <segue reference="QaD-Gv-5YX"/>
-        <segue reference="Y6C-ea-O0s"/>
-        <segue reference="i1H-Qm-pPb"/>
+        <segue reference="1xj-gH-dGu"/>
+        <segue reference="yP5-AV-FPG"/>
         <segue reference="7Cy-Gz-xNk"/>
     </inferredMetricsTieBreakers>
 </document>
