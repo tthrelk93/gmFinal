@@ -107,6 +107,9 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
             self.notifyCollect.delegate = self
             self.notifyCollect.dataSource = self
             }
+            if self.noteCollectData == nil{
+                self.removeAllOverlays()
+            } else {
             for dict in self.noteCollectData!{
                // var temp = dict as! [String:Any]
                 self.idArray.append(dict["postID"] as! String)
@@ -151,6 +154,7 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
                 }
                 //cell.delegate = self
             })
+            }
             //SwiftOverlays.removeAllBlockingOverlays()
         })
 

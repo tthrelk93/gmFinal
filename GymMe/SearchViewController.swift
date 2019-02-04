@@ -27,6 +27,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     
     @IBAction func backToAllCatPressed(_ sender: Any) {
         print("thisBackB")
+        
         noPostsLabel.isHidden = true
         makeFirstPostButton.isHidden = true
         topBarCat.setTitleColor(UIColor.red, for: .normal)
@@ -37,6 +38,10 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         border1.isHidden = false
         border2.isHidden = true
         border3.isHidden = true
+        topBarCat.isHidden = false
+        topBarPop.isHidden = false
+        topBarNearby.isHidden = false
+        
         popCollect.isHidden = true
         popCollectData.removeAll()
         //DispatchQueue.main.async{
@@ -57,7 +62,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             //self.singlePostView1.isHidden = false
            self.backToCatButton.isHidden = false
             self.sports = false
-            if self.topBarCat.titleLabel?.textColor == UIColor.red{
+           /* if self.topBarCat.titleLabel?.textColor == UIColor.red{
                 self.border1.isHidden = false
                  self.border2.isHidden = true
                  self.border3.isHidden = true
@@ -69,7 +74,8 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 self.border1.isHidden = true
                 self.border2.isHidden = true
             self.border3.isHidden = false
-            }
+            }*/
+            self.tabBar.isHidden = false
            // self.backToCatButton
           
         })
@@ -160,12 +166,16 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         
     }
     
+    @IBOutlet weak var singlePostTopLine: UIView!
     @IBOutlet weak var commentView: UIView!
     @IBOutlet weak var topBarNearby: UIButton!
     @IBOutlet weak var commentedByButton: UIButton!
     
     @IBAction func commentedByButtonPressed(_ sender: Any) {
+        
         commentView.isHidden = false
+        commentTF.resignFirstResponder()
+        tabBar.isHidden = true
        // singlePostView3.isHidden = false
     }
     @IBAction func topBarNearbyPressed(_ sender: Any) {
@@ -198,6 +208,8 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     @IBOutlet weak var backToCatFromSports: UIButton!
     @IBAction func hideCommentsPressed(_ sender: Any) {
         commentView.isHidden = true
+        tabBar.isHidden = false
+        commentTF.resignFirstResponder()
     }
     @IBOutlet weak var hideComments: UIButton!
     
@@ -208,6 +220,13 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         posterPicButton.layer.cornerRadius = posterPicButton.frame.width/2
          topLine.frame = CGRect(x: topLine.frame.origin.x, y: topLine.frame.origin.y, width: topLine.frame.width, height: 0.5)
         ogCommentPos = commentView.frame
+        
+        singlePostTopLine.frame = CGRect(x: singlePostTopLine.frame.origin.x, y: singlePostTopLine.frame.origin.y, width: singlePostTopLine.frame.width, height: 0.5)
+        
+        
+        commentPic.frame = CGRect(x: commentPic.frame.origin.x, y: commentPic.frame.origin.y, width: 30.0, height: 30.0)
+        commentPic.layer.cornerRadius = commentPic.frame.width/2
+        commentPic.layer.masksToBounds = true
         //posterPicButton.layer.cornerRadius = posterPicButton.frame.width/2
         //posterPicButton.layer.masksToBounds = true
        makeFirstPostButton.layer.cornerRadius = 10
@@ -239,7 +258,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         sportsCollect.dataSource = self
         popCollect.delegate = self
         popCollect.dataSource = self
-        typeCommentTF.delegate = self
+        commentTF.delegate = self
         let screenSize = UIScreen.main.bounds
         let screenWidth = screenSize.width
         let screenHeight = screenSize.height
@@ -280,6 +299,15 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             self.myName = snapDict["realName"] as! String
             self.myUName = snapDict["username"] as! String
             self.myPicString = snapDict["profPic"] as! String
+            if let messageImageUrl = URL(string: self.myPicString) {
+                
+                if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                    //self.myPic = UIImage(data: imageData as Data)
+                    self.commentPic.image = UIImage(data: imageData as Data)
+                    
+                }
+
+            }
         Database.database().reference().child("posts").observeSingleEvent(of: .value, with: {(snapshot) in
            // print(snapshot.value)
             //if let snapshots = snapshot.value as? [DataSnapshot]{
@@ -556,6 +584,10 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         
         } else if collectionView == commentCollect {
             let cell : CommentCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CommentCollectionViewCell", for: indexPath) as! CommentCollectionViewCell
+            cell.postID = self.postID
+            cell.indexPath = indexPath
+            cell.posterUID = self.posterUID
+            cell.myRealName = self.myName
             DispatchQueue.main.async{
                 cell.commentorPic.layer.cornerRadius = cell.commentorPic.frame.width/2
                 cell.commentorPic.layer.masksToBounds = true
@@ -952,6 +984,9 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
        // print("commentsArray: \(commentsArray)")
         commentCollect.delegate = self
         commentCollect.dataSource = self
+        
+        commentTF.becomeFirstResponder()
+        tabBar.isHidden = true
         //commentTF.isHidden = false
     }
     
@@ -959,6 +994,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     var posterUID = String()
     var selfData = [String:Any]()
     
+    @IBOutlet weak var discoverLabel: UILabel!
     @IBAction func posterNameButtonPressed(_ sender: Any) {
     }
     @IBOutlet weak var posterNameButton: UIButton!
@@ -1018,7 +1054,13 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         } else if collectionView == categoriesCollect{
             backToCatButton.isHidden = false
         let cellLabel = catCollectData[indexPath.row]
-            
+            self.discoverLabel.text = cellLabel
+            topBarCat.isHidden = true
+            topBarPop.isHidden = true
+            topBarNearby.isHidden = true
+            border1.isHidden = true
+            border2.isHidden = true
+            border3.isHidden = true
             if cellLabel == "Sports"{
                 sportsView.isHidden = false
                 sports = true
@@ -1101,34 +1143,28 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             
             
         } else if collectionView == popCollect{
-            
+            self.selfData = ((self.popCollectData[indexPath.row]).first!.value as! [String:Any])
+             self.posterUID = (selfData["posterUID"] as! String)
+            self.postID =  (selfData["postID"] as! String)
             
             if topBarCat.titleLabel?.textColor == UIColor.red || topBarNearby.titleLabel?.textColor == UIColor.red{
                 
-                
-                /*let cellLabel = catCollectData[indexPath.row]
-                if allCatDataDict[cellLabel] == nil {
-                    self.allCatDataDict[cellLabel] = [[String:Any]]()
-                }*/
-                //print("selectedData for \(cellLabel): \(self.popCollectData[indexPath.row])")
-                //show single post view
-                //singlePostView.frame = (popCollect.visibleCells[indexPath.row] as! PopCell).frame
-                //self.curCellFrame = (popCollect.visibleCells[indexPath.row] as! PopCell).frame
+              
                 var cData = [String:Any]()
                 if border3.isHidden == false {
                     cData = (self.popCollectData[indexPath.row] as! [String:Any])
                     selfData = (self.popCollectData[indexPath.row] as! [String:Any])
                 } else {
-                    self.selfData = ((self.popCollectData[indexPath.row]).first!.value as! [String:Any])
+                    
                     cData = ((self.popCollectData[indexPath.row]).first!.value as! [String:Any])
                 }
                 
                 
-                self.posterUID = (selfData["posterUID"] as! String)
+               
                 
                 self.cityLabel.titleLabel!.text = selfData["city"] as? String
                 
-                self.postID =  (selfData["postID"] as! String)
+                
                 
                 //did select picture cell
                 if selfData["postPic"] as? String != nil {
@@ -1392,16 +1428,8 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 print("wut wut")
                 backToCatButton.isHidden = true
                  selfData = (self.popCollectData[indexPath.row] as! [String:Any])
-                /*what does this do.
-                 let cellLabel = catCollectData[indexPath.row]
-                if allCatDataDict[cellLabel] == nil {
-                    self.allCatDataDict[cellLabel] = [[String:Any]]()
-                }*/
-                //print("selectedData for \(cellLabel): \(self.popCollectData[indexPath.row])")
-                //show single post view
-                //singlePostView.frame = (popCollect.visibleCells[indexPath.row] as! PopCell).frame
-                //self.curCellFrame = (popCollect.visibleCells[indexPath.row] as! PopCell).frame
-                //g
+                
+        
                 self.cityLabel.titleLabel!.text = ((self.popCollectData[indexPath.row]) as! [String:Any])["city"] as? String
                 self.posterNameButton.setTitle(((self.popCollectData[indexPath.row]) as! [String:Any])["posterName"] as? String, for: .normal)
                 
@@ -1756,7 +1784,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     
     //@IBOutlet weak var textPostOnlyCommentsPost: UIView!
     //@IBOutlet weak var textPostOnlyView: UIView!
-    @IBOutlet weak var typeCommentTF: UITextField!
+    @IBOutlet weak var commentTF: UITextField!
     @objc func playOrPause(){
         if self.player?.playbackState == PlaybackState.paused || self.player?.playbackState == PlaybackState.stopped{
             if self.player?.playbackState == PlaybackState.paused{
@@ -1849,6 +1877,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         }
     }
     
+    @IBOutlet weak var commentViewLine: UIView!
     @IBOutlet weak var topLine: UIView!
     // MARK: - Navigation
 
@@ -1879,12 +1908,249 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         }
     }
     
+   /* public func textFieldDidBeginEditing(_ textField: UITextField) {
+        
+    }// became first responder*/
+    
+    @IBOutlet weak var commentTFView: UIView!
+    var curCommentCell: [String:Any]?
+    
+    @IBAction func commentFieldEntered(_ sender: Any) {
+        //commentBlockTopBar.isHidden = false
+    }
+    
+    @IBOutlet weak var commentBlockTopBar: UIView!
+    
+    @IBOutlet weak var dumbCommentsLabel: UILabel!
+    @IBAction func editingDidEnd(_ sender: Any) {
+        print("tfe")
+        commentBlockTopBar.isHidden = true
+        dumbCommentsLabel.isHidden = true
+        
+    }
+    @IBOutlet weak var commentPic: UIImageView!
+    @IBOutlet weak var postCommentButton: UIButton!
+    @IBAction func editingDidBegin(_ sender: Any) {
+        print("tfb")
+        
+        commentBlockTopBar.isHidden = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            
+            
+            self.dumbCommentsLabel.isHidden = false
+        }
+    }
+    @IBOutlet weak var backFromCommentsButton: UIButton!
     public func textFieldDidBeginEditing(_ textField: UITextField) {
         
+        commentTFView.layer.zPosition = .greatestFiniteMagnitude
+        print("heyg: \(height)")
+       // inboxButton.frame = CGRect(x: inboxButton.frame.origin.x, y: inboxButton.frame.origin.y + height, width: inboxButton.frame.width, height: inboxButton.frame.height)
+        
+        //logoWords.frame = CGRect(x: logoWords.frame.origin.x, y: logoWords.frame.origin.y + height, width: logoWords.frame.width, height: logoWords.frame.height)
+        backFromCommentsButton.frame = CGRect(x: backFromCommentsButton.frame.origin.x, y: backFromCommentsButton.frame.origin.y + height, width: backFromCommentsButton.frame.width, height: backFromCommentsButton.frame.height)
+        
+        commentCollect.frame = CGRect(x: commentCollect.frame.origin.x, y: commentCollect.frame.origin.y + height, width: commentCollect.frame.width, height: commentCollect.frame.height)
+        print("balls")
+        
+        
     }// became first responder
-    
-    var curCommentCell: [String:Any]?
+    var height = UIScreen.main.bounds.height/2.15
+    @IBOutlet weak var bottomLineView: UIView!
     public func textFieldDidEndEditing(_ textField: UITextField){
+        //add comment to post
+        print("hereyyy")
+        
+        //inboxButton.frame = CGRect(x: inboxButton.frame.origin.x, y: inboxButton.frame.origin.y - height, width: inboxButton.frame.width, height: inboxButton.frame.height)
+        
+       // logoWords.frame = CGRect(x: logoWords.frame.origin.x, y: logoWords.frame.origin.y - height, width: logoWords.frame.width, height: logoWords.frame.height)
+         backFromCommentsButton.frame = CGRect(x:  backFromCommentsButton.frame.origin.x, y:  backFromCommentsButton.frame.origin.y - height, width:  backFromCommentsButton.frame.width, height:  backFromCommentsButton.frame.height)
+        
+        commentCollect.frame = CGRect(x: commentCollect.frame.origin.x, y: commentCollect.frame.origin.y - height, width: commentCollect.frame.width, height: commentCollect.frame.height)
+        
+    } // may be called if forced even if shouldEndEditing returns NO (e.g. view removed from window) or endEditing:YES called
+    
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        print("return text")
+        return false
+    }
+    
+    @IBAction func postCommentPressed(_ sender: Any) {
+        var textField = commentTF
+        
+        if textField!.text == "" || textField?.hasText == false {
+            
+        } else {
+            var cellTypeTemp = String()
+            var posterID = String()
+            //if self.cellType == "pic"{
+                cellTypeTemp = selfData["postID"] as! String
+                posterID = selfData["posterUID"] as! String
+            
+            Database.database().reference().child("posts").child(cellTypeTemp).observeSingleEvent(of: .value, with: { snapshot in
+                let valDict = snapshot.value as! [String:Any]
+                
+                var commentsArray = valDict["comments"] as! [[String:Any]]
+                if commentsArray.count == 1 {
+                    if (commentsArray.first! as! [String:Any])["x"] != nil{
+                        commentsArray.remove(at: 0)
+                    }
+                }
+                var commentsVal = commentsArray.count
+                commentsVal = commentsVal + 1
+                if self.myPicString == nil{
+                    self.myPicString = "profile-placeholder"
+                }
+                //add current users id and uName to comment object and upload to database
+                var now = Date()
+                //var dateFormatter = DateFormatter()
+                //var dateString = dateFormatter.string(from: now)
+                commentsArray.append(["commentorName": self.myUName, "commentorID": Auth.auth().currentUser!.uid, "commentorPic": self.myPicString, "commentText": self.commentTF.text, "commentDate": now.description])
+                Database.database().reference().child("posts").child(cellTypeTemp).child("comments").setValue(commentsArray)
+                Database.database().reference().child("users").child(posterID).child("posts").child(cellTypeTemp).child("comments").setValue(commentsArray)
+                
+                Database.database().reference().child("users").child(posterID).observeSingleEvent(of: .value, with: { (snapshot) in
+                    let valDict = snapshot.value as! [String:Any]
+                    if valDict["notifications"] as? [[String:Any]] == nil {
+                        var tempString = "\(self.myUName) commented on your post."
+                        
+                        var date = Date()
+                        var dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                        var dateString = dateFormatter.string(from: date)
+                        
+                        var tempDict = (["actionByUID": Auth.auth().currentUser!.uid,"postID": self.postID, "actionByUserPic": self.myPicString,"actionByUsername": self.myUName,"actionText": tempString,"postText": "postText", "timeStamp": dateString] as! [String : Any])
+                        
+                        print("commentNote: \(tempDict)")
+                        Database.database().reference().child("users").child(posterID).updateChildValues((["notifications": [tempDict]] as! [String:Any]))
+                        
+                    } else {
+                        
+                        var tempString = "\(self.myUName) commented on your post" as! String
+                        
+                        var date = Date()
+                        var dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                        var dateString = dateFormatter.string(from: date)
+                        
+                        var tempDict = (["actionByUID": Auth.auth().currentUser!.uid, "postID": self.postID, "actionByUserPic": self.myPicString,"actionByUsername": self.myUName,"actionText": tempString,"postText": "postText", "timeStamp": dateString] as! [String : Any])
+                        
+                        //Database.database().reference().child("users").child(uid).updateChildValues((["notifications": [tempDict]] as! [String:Any]))
+                        
+                        var tempNotifs = valDict["notifications"] as! [[String:Any]]
+                        tempNotifs.append(tempDict)
+                        print("acommentNote \(posterID)")
+                        Database.database().reference().child("users").child(posterID).updateChildValues((["notifications": tempNotifs] as! [String:Any]))
+                        
+                        
+                    }
+               
+                    self.commentTF.text = nil
+                    
+                   
+                        
+                        
+                        let commStringNum = String(commentsArray.count)
+                        var commString = String()
+                        if commStringNum == "1"{
+                            commString = "View \(commStringNum) comment"
+                        } else {
+                            commString = "View \(commStringNum) comments"
+                        }
+                        self.commentedByButton.setTitle(commString, for: .normal)
+                    
+                    
+                    //reload collect in delegate
+                    self.commentsCollectData = commentsArray
+                    if commentsArray.count == 1{
+                        DispatchQueue.main.async{
+                            self.commentCollect.delegate = self
+                            self.commentCollect.dataSource = self
+                            self.commentCollect.reloadData()
+                            
+                        }
+                        
+                    } else {
+                        
+                        print("reloading here")
+                        var count = 0
+                       
+                                Database.database().reference().child("posts").child(cellTypeTemp).observeSingleEvent(of: .value, with: { snapshot in
+                                    var tempDict = snapshot.value as! [String:Any]
+                                    if tempDict["postPic"] == nil && tempDict["postVid"] == nil{
+                                        //text
+                                        if (tempDict["posterPicURL"] as! String) == "profile-placeholder"{
+                                            
+                                            var tempImage = UIImage(named: "profile-placeholder")
+                                            tempDict["posterPicURL"] = tempImage
+                                            
+                                        } else {
+                                            if let messageImageUrl = URL(string: (tempDict["posterPicURL"] as! String)) {
+                                                if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                                                    
+                                                    var tempImage = UIImage(data: imageData as Data)
+                                                    tempDict["posterPicURL"] = tempImage
+                                                    
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        if (tempDict["posterPicURL"] as! String) == "profile-placeholder"{
+                                            
+                                            var tempImage = UIImage(named: "profile-placeholder")
+                                            tempDict["posterPicURL"] = tempImage
+                                            
+                                        } else {
+                                            if let messageImageUrl = URL(string: (tempDict["posterPicURL"] as! String)) {
+                                                if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                                                    
+                                                    var tempImage = UIImage(data: imageData as Data)
+                                                    tempDict["posterPicURL"] = tempImage
+                                                    
+                                                }
+                                            }
+                                        }
+                                        if tempDict["postPic"] != nil{
+                                            var picString = tempDict["postPic"] as! String
+                                            
+                                            if let messageImageUrl = URL(string: picString) {
+                                                
+                                                if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                                                    var pic = UIImage(data: imageData as Data)
+                                                    tempDict["postPic"] = pic as! UIImage
+                                                    //self.feedImageArray.append(pic as! UIImage)
+                                                    //self.feedVidArray.append(URL(string: "x")!)
+                                                    
+                                                    
+                                                }
+                                            }
+                                        } else {
+                                            //vid
+                                            
+                                            tempDict["postVid"] = URL(string: tempDict["postVid"] as! String)!
+                                            
+                                        }
+                                    }
+                                    self.selfData = tempDict
+                                    DispatchQueue.main.async{
+                                        
+                                        self.commentCollect.reloadData()
+                                    }
+                                    
+                                })
+                        
+                    }
+                    
+                })
+            })
+        }
+        self.view.endEditing(true)
+    }
+    
+    
+    
+    /*public func textFieldDidEndEditing(_ textField: UITextField){
         //add comment to post
         Database.database().reference().child("posts").child((self.curCommentCell!.first?.value as! [String:Any])["postID"]! as! String).observeSingleEvent(of: .value, with: { snapshot in
             let valDict = snapshot.value as! [String:Any]
@@ -1919,7 +2185,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             }
             
         })
-    } // may be called if
+    } // may be called if*/
     
     @IBOutlet weak var cityLabel: UIButton!
     

@@ -1064,7 +1064,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RVh-YN-aIr">
-                                        <rect key="frame" x="12" y="66" width="40" height="40"/>
+                                        <rect key="frame" x="12" y="68" width="40" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <state key="normal" image="profile-placeholder"/>
                                         <connections>
@@ -1072,7 +1072,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CNg-eQ-vPs">
-                                        <rect key="frame" x="58" y="66" width="176" height="23"/>
+                                        <rect key="frame" x="57" y="68" width="176" height="23"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="name">
                                             <color key="titleColor" white="0.0" alpha="0.90195862680000005" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1082,7 +1082,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XoQ-SJ-zww">
-                                        <rect key="frame" x="58" y="84" width="186" height="23"/>
+                                        <rect key="frame" x="57" y="86" width="186" height="23"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <state key="normal">
                                             <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1172,15 +1172,27 @@
                                             <action selector="backButtonPressed:" destination="5I3-vc-uva" eventType="touchUpInside" id="zGB-PU-NMC"/>
                                         </connections>
                                     </button>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="69Y-TW-bxf">
+                                        <rect key="frame" x="0.0" y="62" width="375" height="1"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
                                     <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9FK-rs-9k5">
                                         <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Comments" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="imu-EZ-n2N">
+                                                <rect key="frame" x="109" y="11" width="156" height="25"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                <color key="textColor" red="1" green="0.034500510880000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s4M-u3-J0V">
-                                                <rect key="frame" x="12" y="-1" width="33" height="64"/>
+                                                <rect key="frame" x="12" y="11" width="20" height="25"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                <state key="normal" title="X">
+                                                <state key="normal" backgroundImage="icons8-back-34">
                                                     <color key="titleColor" red="0.92941176469999998" green="0.10980392160000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </state>
                                                 <connections>
@@ -1225,7 +1237,7 @@
                                                 </cells>
                                             </collectionView>
                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="4ON-xC-Vyk">
-                                                <rect key="frame" x="0.0" y="55" width="375" height="261"/>
+                                                <rect key="frame" x="0.0" y="55" width="375" height="523"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="OcB-2T-PeN">
@@ -1261,17 +1273,84 @@
                                                     </collectionViewCell>
                                                 </cells>
                                             </collectionView>
-                                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Type Comment" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="OSz-r3-A4E">
-                                                <rect key="frame" x="6" y="594" width="358" height="45"/>
+                                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dvq-EL-Imz">
+                                                <rect key="frame" x="0.0" y="586" width="376" height="61"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                                <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="0.89392605629999999" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <nil key="textColor"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits" keyboardType="twitter" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
-                                            </textField>
+                                                <subviews>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Type Comment" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Xod-Pl-81Y">
+                                                        <rect key="frame" x="48" y="11" width="312" height="28"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <nil key="textColor"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits" keyboardType="twitter" returnKeyType="go"/>
+                                                        <connections>
+                                                            <action selector="commentFieldEntered:" destination="5I3-vc-uva" eventType="editingDidEnd" id="On0-Xy-Uxi"/>
+                                                            <action selector="editingDidBegin:" destination="5I3-vc-uva" eventType="editingDidBegin" id="IQv-ep-BHA"/>
+                                                            <action selector="editingDidEnd:" destination="5I3-vc-uva" eventType="editingDidEnd" id="Bkj-Q2-d9t"/>
+                                                        </connections>
+                                                    </textField>
+                                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vi2-3l-4lM">
+                                                        <rect key="frame" x="294" y="-11" width="64" height="44"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                                        <state key="normal" title="Post">
+                                                            <color key="titleColor" red="1" green="0.034500510880000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="postCommentPressed:" destination="5I3-vc-uva" eventType="touchUpInside" id="LRZ-yb-6lH"/>
+                                                        </connections>
+                                                    </button>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="profile-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="QJu-ww-Yjp">
+                                                        <rect key="frame" x="11" y="11" width="31" height="29"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                                    </imageView>
+                                                    <view alpha="0.69999998807907104" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FJC-kj-NPt">
+                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </view>
+                                                </subviews>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </view>
+                                            <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NtJ-iq-cEK">
+                                                <rect key="frame" x="0.0" y="240" width="375" height="123"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                                <subviews>
+                                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Comments" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Ds-ip-efJ">
+                                                        <rect key="frame" x="0.0" y="76" width="375" height="47"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                                        <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="21"/>
+                                                        <color key="textColor" red="0.92941176469999998" green="0.10980392160000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="whP-xx-BM9">
+                                                        <rect key="frame" x="0.0" y="122" width="375" height="1"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </view>
+                                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="1pp-Il-Sai">
+                                                        <rect key="frame" x="7" y="84" width="26" height="30"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                                        <state key="normal" backgroundImage="icons8-back-34">
+                                                            <color key="titleColor" red="0.92941176469999998" green="0.10980392160000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="hideCommentsPressed:" destination="5I3-vc-uva" eventType="touchUpInside" id="6DV-dv-RQK"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Post" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DGQ-Zb-nzs">
+                                        <rect key="frame" x="109" y="28" width="156" height="34"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="DINAlternate-Bold" family="DIN Alternate" pointSize="24"/>
+                                        <color key="textColor" red="1" green="0.034500510880000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
@@ -1392,17 +1471,26 @@
                         </connections>
                     </view>
                     <connections>
+                        <outlet property="backFromCommentsButton" destination="vOQ-Za-xTp" id="ech-oB-3MM"/>
                         <outlet property="backToCatButton" destination="iZm-aG-ad5" id="VIw-L1-Udm"/>
                         <outlet property="backToCatFromSports" destination="CFP-p6-xkV" id="B4y-V9-zU4"/>
                         <outlet property="border1" destination="z03-cm-Csi" id="DWY-dq-9GG"/>
                         <outlet property="border2" destination="Cll-cj-5Yz" id="vGx-9x-omG"/>
                         <outlet property="border3" destination="DdQ-dL-4BW" id="Jct-K8-J0v"/>
+                        <outlet property="bottomLineView" destination="FJC-kj-NPt" id="zVK-Hu-l3h"/>
                         <outlet property="categoriesCollect" destination="yI8-kx-Qyg" id="VKC-qr-Eeo"/>
                         <outlet property="cityLabel" destination="XoQ-SJ-zww" id="42X-WE-E49"/>
+                        <outlet property="commentBlockTopBar" destination="NtJ-iq-cEK" id="viN-LJ-2cH"/>
                         <outlet property="commentButton" destination="DCw-EB-xgS" id="4jV-Ed-7n2"/>
                         <outlet property="commentCollect" destination="4ON-xC-Vyk" id="O7e-f8-9NE"/>
+                        <outlet property="commentPic" destination="QJu-ww-Yjp" id="yN7-hI-ZCt"/>
+                        <outlet property="commentTF" destination="Xod-Pl-81Y" id="LGz-Zq-rva"/>
+                        <outlet property="commentTFView" destination="dvq-EL-Imz" id="QR5-JM-xA0"/>
                         <outlet property="commentView" destination="9FK-rs-9k5" id="Ujg-Mo-ggY"/>
+                        <outlet property="commentViewLine" destination="whP-xx-BM9" id="AP9-ev-74a"/>
                         <outlet property="commentedByButton" destination="kDu-fa-JPY" id="5cp-6H-gyI"/>
+                        <outlet property="discoverLabel" destination="w3A-Na-wRP" id="mSx-kB-P8q"/>
+                        <outlet property="dumbCommentsLabel" destination="3Ds-ip-efJ" id="a5I-lt-jQA"/>
                         <outlet property="favoritesButton" destination="KYB-Y9-Hq2" id="G7g-Ax-6nC"/>
                         <outlet property="favoritesCount" destination="ihh-8T-Urc" id="4te-bg-96R"/>
                         <outlet property="hideComments" destination="s4M-u3-J0V" id="Wzc-a8-dmQ"/>
@@ -1412,11 +1500,13 @@
                         <outlet property="makeFirstPostButton" destination="J2y-gm-zfI" id="9Y5-94-vpl"/>
                         <outlet property="noPostsLabel" destination="RNM-tl-t6x" id="qjY-DT-c4w"/>
                         <outlet property="popCollect" destination="HJt-Am-Doj" id="9up-7i-Ubx"/>
+                        <outlet property="postCommentButton" destination="vi2-3l-4lM" id="f2a-Yh-SUX"/>
                         <outlet property="postText" destination="cTV-v8-A9T" id="lAT-fw-Ppa"/>
                         <outlet property="posterNameButton" destination="CNg-eQ-vPs" id="pBx-Fh-gQn"/>
                         <outlet property="posterPicButton" destination="RVh-YN-aIr" id="ML4-7J-qDk"/>
                         <outlet property="shareButton" destination="BEn-hv-JWa" id="IT1-1E-o1q"/>
                         <outlet property="singlePostImageView" destination="hHt-lk-BZ9" id="fdm-dj-wAV"/>
+                        <outlet property="singlePostTopLine" destination="69Y-TW-bxf" id="EeN-g6-A2E"/>
                         <outlet property="singlePostView" destination="Fx7-Au-Mpq" id="Uuy-Vx-yp8"/>
                         <outlet property="sportsCollect" destination="YqM-jj-Bdq" id="t9o-Vr-cws"/>
                         <outlet property="sportsView" destination="AJb-u2-E7W" id="o1i-iT-60h"/>
@@ -1427,7 +1517,6 @@
                         <outlet property="topBarPop" destination="gtz-YC-H6B" id="Zcq-y6-tCV"/>
                         <outlet property="topBarSearchButton" destination="82Q-Db-ngy" id="gmg-sZ-geJ"/>
                         <outlet property="topLine" destination="Zda-Jh-TQa" id="2kZ-9x-GGi"/>
-                        <outlet property="typeCommentTF" destination="OSz-r3-A4E" id="e83-iM-IMW"/>
                         <segue destination="BYZ-38-t0r" kind="showDetail" identifier="SearchToFeed" id="Y6C-ea-O0s"/>
                         <segue destination="JWU-v2-2yg" kind="showDetail" identifier="SearchToPost" id="y2H-Z7-9BL"/>
                         <segue destination="ftG-qB-HqV" kind="showDetail" identifier="SearchToNotifications" id="i1H-Qm-pPb"/>
@@ -2500,7 +2589,7 @@
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Current Password" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fBk-0O-pHW">
-                                                <rect key="frame" x="7" y="85" width="341" height="30"/>
+                                                <rect key="frame" x="7" y="85" width="341" height="29"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -2515,7 +2604,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vIR-TW-ctQ">
-                                                <rect key="frame" x="135" y="123" width="82" height="28"/>
+                                                <rect key="frame" x="135" y="123" width="82" height="27"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" red="0.92941176469999998" green="0.10980392160000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <state key="normal" title="Verify">
@@ -3304,12 +3393,12 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Prv-0P-FKQ"/>
-        <segue reference="XXo-FE-nZY"/>
-        <segue reference="4Kj-ri-BvQ"/>
+        <segue reference="8J8-PS-8fh"/>
+        <segue reference="y2H-Z7-9BL"/>
         <segue reference="usj-ZK-sIq"/>
-        <segue reference="dwx-fD-MvG"/>
-        <segue reference="dqW-sY-Wz0"/>
-        <segue reference="zNh-1b-ste"/>
+        <segue reference="QaD-Gv-5YX"/>
+        <segue reference="Y6C-ea-O0s"/>
+        <segue reference="i1H-Qm-pPb"/>
         <segue reference="7Cy-Gz-xNk"/>
     </inferredMetricsTieBreakers>
 </document>

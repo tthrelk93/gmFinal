@@ -49,6 +49,7 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
         Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("messages").observeSingleEvent(of: .value, with: { (snapshot) in
             
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                Database.database().reference().child("users").observeSingleEvent(of: .value, with: { (snapshott) in
                  //print("messageDictSnapshot: \(snapshot)")
                 var snapshotss = snapshots.reversed()
                 for snap in snapshots{
@@ -76,15 +77,18 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
                     print("cartKey:\(snap.key)")
                     
                         
+                    
                         
+                    var userDict = ((snapshott.value as! [String:Any])[snap.key] as! [String:Any])
+                        var name = userDict["realName"] as! String
 
                     var tempDict = [String:Any]()
                     var tempDict2 = messageDict.reversed()
                     if ((sortedResults.last as! [String:Any])["text"] as? String == nil){
-                        tempDict = ["receiverUID":snap.key, "messageText":"", "receiverName":(sortedResults.last as! [String:Any])["receiverName"] as! String,"senderName":(sortedResults.last as! [String:Any])["senderName"] as! String, "messageKey": messageDict.first?.key, "photoURL":(sortedResults.last as! [String:Any])["photoURL"] as! String]
+                        tempDict = ["receiverUID":snap.key, "messageText":"", "receiverName":name,"senderName":(sortedResults.last as! [String:Any])["senderName"] as! String, "messageKey": messageDict.first?.key, "photoURL":(sortedResults.last as! [String:Any])["photoURL"] as! String]
                         
                     } else {
-                    tempDict = ["receiverUID":snap.key, "messageText":(sortedResults.last as! [String:Any])["text"] as! String, "receiverName":(sortedResults.last as! [String:Any])["receiverName"] as! String,"senderName":(sortedResults.last as! [String:Any])["senderName"] as! String, "messageKey": messageDict.first?.key]
+                    tempDict = ["receiverUID":snap.key, "messageText":(sortedResults.last as! [String:Any])["text"] as! String, "receiverName":name,"senderName":(sortedResults.last as! [String:Any])["senderName"] as! String, "messageKey": messageDict.first?.key]
                     }
                     
                     self.tableViewData.append(tempDict)
@@ -98,6 +102,7 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
                     DispatchQueue.main.async {
                         self.allMessagesTableView.reloadData()
                     }
+                })
                 
                 }
                // }
