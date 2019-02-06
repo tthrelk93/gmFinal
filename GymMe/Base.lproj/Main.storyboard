@@ -66,7 +66,6 @@
                                     <color key="titleColor" red="0.92941176469999998" green="0.10980392160000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="backFromLikedByViewButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="jfc-Ah-IWQ"/>
                                     <action selector="backPressed:" destination="5fH-1d-JTV" eventType="touchUpInside" id="poj-En-bVV"/>
                                 </connections>
                             </button>
@@ -93,6 +92,7 @@
                         <outlet property="topLabel" destination="hHt-WV-NqX" id="MC1-qT-pG1"/>
                         <segue destination="BYZ-38-t0r" kind="showDetail" identifier="MessagesToFeed" id="dqW-sY-Wz0"/>
                         <segue destination="PCt-91-fHs" kind="show" identifier="MessagesToChat" id="6qI-Op-Vhh"/>
+                        <segue destination="iYc-aa-vyQ" kind="showDetail" identifier="MessageToProfile" id="uLM-wp-8LU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tio-mB-H7j" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -130,7 +130,7 @@
                                     <color key="titleColor" red="0.92941176469999998" green="0.10980392160000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <segue destination="5fH-1d-JTV" kind="showDetail" id="014-Ge-KhU"/>
+                                    <action selector="BackToMessagesPressed:" destination="PCt-91-fHs" eventType="touchUpInside" id="TZS-iJ-FRm"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="test" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VTc-bU-j8y">
@@ -147,11 +147,12 @@
                     <connections>
                         <outlet property="chatViewContainer" destination="lOU-Zp-Pxt" id="PAx-zK-139"/>
                         <outlet property="receiverTopLabel" destination="VTc-bU-j8y" id="sre-dq-QqG"/>
+                        <segue destination="5fH-1d-JTV" kind="showDetail" identifier="BackToMessages" id="B5W-qg-I4o"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qq3-NV-l1J" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1488.8" y="-1221.1394302848576"/>
+            <point key="canvasLocation" x="1700" y="-1369"/>
         </scene>
         <!--Chat View Controller-->
         <scene sceneID="in6-lz-Xax">
@@ -298,7 +299,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="2A0-fO-ewm">
-                                        <rect key="frame" x="5" y="102" width="365" height="390"/>
+                                        <rect key="frame" x="5" y="59" width="365" height="433"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Nwz-yk-Jbj">
@@ -379,7 +380,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <subviews>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Type Comment" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kBF-04-ISz">
-                                                <rect key="frame" x="48" y="11" width="312" height="28"/>
+                                                <rect key="frame" x="48" y="11" width="238" height="28"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="textColor"/>
@@ -1734,7 +1735,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Write a caption..." translatesAutoresizingMaskIntoConstraints="NO" id="mTO-FY-DYh">
-                                        <rect key="frame" x="18" y="462" width="317" height="103"/>
+                                        <rect key="frame" x="18" y="462" width="317" height="114"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1982,7 +1983,7 @@
                                 <rect key="frame" x="0.0" y="63" width="375" height="552"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <searchBar contentMode="redraw" fixedFrame="YES" barStyle="black" searchBarStyle="minimal" placeholder="Search for Friends" translatesAutoresizingMaskIntoConstraints="NO" id="3Eu-Xm-cx0">
+                                    <searchBar contentMode="redraw" fixedFrame="YES" searchBarStyle="minimal" placeholder="Search for Friends" translatesAutoresizingMaskIntoConstraints="NO" id="3Eu-Xm-cx0">
                                         <rect key="frame" x="8" y="0.0" width="359" height="56"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                         <textInputTraits key="textInputTraits"/>
@@ -2365,7 +2366,7 @@
                                 </constraints>
                             </scrollView>
                             <view hidden="YES" autoresizesSubviews="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iG7-Mv-EdL">
-                                <rect key="frame" x="0.0" y="72" width="375" height="879"/>
+                                <rect key="frame" x="0.0" y="52" width="375" height="899"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="09j-U6-N6w">
@@ -2390,10 +2391,15 @@
                                         </cells>
                                     </collectionView>
                                     <searchBar contentMode="scaleToFill" fixedFrame="YES" searchBarStyle="minimal" placeholder="Search Friends" translatesAutoresizingMaskIntoConstraints="NO" id="1QK-7T-op3">
-                                        <rect key="frame" x="5" y="0.0" width="365" height="59"/>
+                                        <rect key="frame" x="5" y="40" width="365" height="59"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                     </searchBar>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OzJ-CU-Nmd">
+                                        <rect key="frame" x="0.0" y="40" width="375" height="1"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
@@ -2429,6 +2435,24 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Add Friends" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3eb-Ai-7tX">
+                                        <rect key="frame" x="84" y="27" width="207" height="27"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="1" green="0.034500510880000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" alpha="0.44999998807907104" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vkO-DV-gpk">
+                                        <rect key="frame" x="336" y="46" width="25" height="27"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="17"/>
+                                        <state key="normal" backgroundImage="mail">
+                                            <color key="titleColor" red="0.92941176469999998" green="0.10980392160000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="messageButtonPressed:" destination="iYc-aa-vyQ" eventType="touchUpInside" id="ueG-zz-rCs"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.99989169836044312" green="1" blue="0.99988096952438354" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
@@ -2463,11 +2487,22 @@
                                         <rect key="frame" x="96" y="68" width="175" height="181"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="23"/>
-                                        <state key="normal" title="Select Picture">
+                                        <state key="normal">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
                                             <action selector="editProfPicButtonPressed:" destination="iYc-aa-vyQ" eventType="touchUpInside" id="Ihg-xH-1fL"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EfF-q9-YXG">
+                                        <rect key="frame" x="100" y="142" width="175" height="33"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="23"/>
+                                        <state key="normal" title="Select Picture">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="editProfPicButtonPressed:" destination="iYc-aa-vyQ" eventType="touchUpInside" id="bhb-K8-vH2"/>
                                         </connections>
                                     </button>
                                     <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2hS-Kc-DQ1">
@@ -2513,12 +2548,12 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Bio" translatesAutoresizingMaskIntoConstraints="NO" id="NI7-9J-jVs">
-                                        <rect key="frame" x="94" y="462" width="267" height="44"/>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Bio" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NI7-9J-jVs">
+                                        <rect key="frame" x="83" y="462" width="278" height="122"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="17"/>
+                                        <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="16"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                     <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7hc-Uo-z54">
@@ -2527,57 +2562,57 @@
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Bio" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jVg-4L-Yvg">
-                                        <rect key="frame" x="3" y="453" width="51" height="57"/>
+                                        <rect key="frame" x="3" y="453" width="51" height="139"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kYc-4i-sPj">
-                                        <rect key="frame" x="96" y="521" width="211" height="34"/>
+                                        <rect key="frame" x="96" y="603" width="211" height="34"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="17"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Email" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wPY-SO-2J4">
-                                        <rect key="frame" x="3" y="510" width="51" height="56"/>
+                                        <rect key="frame" x="3" y="592" width="51" height="56"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZTg-lg-P3R">
-                                        <rect key="frame" x="-7" y="510" width="378" height="0.0"/>
+                                        <rect key="frame" x="-7" y="592" width="378" height="0.0"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mwb-A2-uWL">
-                                        <rect key="frame" x="-7" y="566" width="378" height="0.0"/>
+                                        <rect key="frame" x="-7" y="648" width="378" height="0.0"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
                                     <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="New Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="U1l-4B-zpf">
-                                        <rect key="frame" x="96" y="578" width="211" height="34"/>
+                                        <rect key="frame" x="96" y="660" width="211" height="34"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" name="ArialMT" family="Arial" pointSize="17"/>
                                         <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Password" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="O8r-4L-TWb">
-                                        <rect key="frame" x="3" y="566" width="76" height="58"/>
+                                        <rect key="frame" x="3" y="648" width="76" height="58"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UYR-Ha-sHf">
-                                        <rect key="frame" x="-2" y="620" width="375" height="1"/>
+                                        <rect key="frame" x="-2" y="702" width="375" height="1"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
                                     <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zve-PP-PNr">
-                                        <rect key="frame" x="3" y="404" width="358" height="162"/>
+                                        <rect key="frame" x="3" y="486" width="358" height="162"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <subviews>
                                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Email" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ayz-rk-9PR">
@@ -2618,7 +2653,7 @@
                                         <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mdi-mU-J3i">
-                                        <rect key="frame" x="119" y="651" width="135" height="30"/>
+                                        <rect key="frame" x="119" y="733" width="135" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Logout">
                                             <color key="titleColor" red="0.92941176469999998" green="0.10980392160000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -2682,6 +2717,7 @@
                     <size key="freeformSize" width="375" height="1000"/>
                     <connections>
                         <outlet property="FollowUnfollowButton" destination="1g7-0T-n4c" id="mfp-mD-uYn"/>
+                        <outlet property="addFriendsTopLabel" destination="3eb-Ai-7tX" id="VUx-fp-Dbo"/>
                         <outlet property="backFromFriends" destination="Ptm-Sw-gVT" id="62f-dG-Lm5"/>
                         <outlet property="bioTextView" destination="0Kh-Ht-4HJ" id="fxa-L2-CYK"/>
                         <outlet property="collectView" destination="spd-Kc-A7B" id="PAg-wb-P6h"/>
@@ -2696,15 +2732,18 @@
                         <outlet property="editProfNameTextField" destination="kFv-fZ-4Uf" id="mu7-gM-oEB"/>
                         <outlet property="editProfPicButton" destination="j1q-n8-MU0" id="wXe-gd-iIv"/>
                         <outlet property="editProfSaveButton" destination="YPD-bt-rAR" id="WQZ-Gi-o4w"/>
+                        <outlet property="editProfTopLine" destination="b64-zs-i4e" id="PXB-3e-fL5"/>
                         <outlet property="editProfView" destination="2Hh-cg-f4R" id="YhE-vi-feI"/>
                         <outlet property="favoritesCollect" destination="AeK-tr-IWa" id="BFs-NF-lbX"/>
                         <outlet property="findFriends" destination="3VD-Ah-JsV" id="r4D-EG-fSt"/>
                         <outlet property="findFriendsCollect" destination="09j-U6-N6w" id="SSc-zg-9gY"/>
                         <outlet property="findFriendsSearchBar" destination="1QK-7T-op3" id="zqp-xc-bja"/>
+                        <outlet property="findFriendsTopLine" destination="OzJ-CU-Nmd" id="GeP-Cx-ITE"/>
                         <outlet property="findFriendsView" destination="iG7-Mv-EdL" id="hal-I3-pNi"/>
                         <outlet property="followersCount" destination="YNp-aW-W9M" id="KXS-ux-QHP"/>
                         <outlet property="followingCount" destination="5wx-Wp-E16" id="ieM-ZI-39u"/>
                         <outlet property="innerScreenTabBar" destination="2UZ-R1-l4m" id="4y5-aI-90A"/>
+                        <outlet property="messageButton" destination="vkO-DV-gpk" id="ocf-f7-avg"/>
                         <outlet property="navBarView" destination="9wG-rA-FX3" id="eXe-lZ-1H1"/>
                         <outlet property="profName" destination="e44-Tq-W2A" id="7iq-m8-ruh"/>
                         <outlet property="profPic" destination="iOC-h8-OeB" id="86i-Gk-Lgp"/>
@@ -2724,6 +2763,7 @@
                         <segue destination="hO5-jD-tre" kind="showDetail" identifier="LogoutSegue" id="IoT-1r-21u"/>
                         <segue destination="tfZ-fY-cOO" kind="showDetail" identifier="profToSinglePost" id="Prv-0P-FKQ"/>
                         <segue destination="TYg-rc-0CW" kind="showDetail" identifier="profToFollow" id="3cg-3W-ZVv"/>
+                        <segue destination="5fH-1d-JTV" kind="showDetail" identifier="ProfileToMessages" id="xPB-Kx-SjZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bqg-wq-UQt" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3393,12 +3433,12 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Prv-0P-FKQ"/>
-        <segue reference="8J8-PS-8fh"/>
+        <segue reference="uLM-wp-8LU"/>
         <segue reference="XTo-Ja-pwD"/>
         <segue reference="cJJ-fi-Mpb"/>
-        <segue reference="QaD-Gv-5YX"/>
+        <segue reference="dwx-fD-MvG"/>
         <segue reference="1xj-gH-dGu"/>
         <segue reference="yP5-AV-FPG"/>
-        <segue reference="7Cy-Gz-xNk"/>
+        <segue reference="xPB-Kx-SjZ"/>
     </inferredMetricsTieBreakers>
 </document>

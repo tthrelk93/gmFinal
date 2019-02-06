@@ -18,7 +18,7 @@ protocol CommentLike {
 
 }
 
-class CommentCollectionViewCell: UICollectionViewCell {
+class CommentCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
 
     @IBOutlet weak var lineView: UIView!
     
@@ -36,6 +36,7 @@ class CommentCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         lineView.frame = CGRect(x: lineView.frame.origin.x, y: lineView.frame.origin.y, width: lineView.frame.width, height: 0.5)
         commentorPic.frame.size = CGSize(width: 35, height: 35)
+        self.commentTextView.delegate = self
         super.awakeFromNib()
         // Initialization code
         
@@ -146,5 +147,28 @@ class CommentCollectionViewCell: UICollectionViewCell {
         // exampleView.backgroundColor = nil
         //exampleView.layer.cornerRadius = 0
     }
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+        switch URL.scheme {
+        case "hash" :
+            showHashTagAlert(tagType: "hash", payload: (URL as NSURL).resourceSpecifier!.removingPercentEncoding!)
+        case "mention" :
+            showHashTagAlert(tagType: "mention", payload: (URL as NSURL).resourceSpecifier!.removingPercentEncoding!)
+        default:
+            print("just a regular url")
+        }
+        
+        return true
+    }
+    
+    func showHashTagAlert(tagType:String, payload:String){
+        let alertView = UIAlertView()
+        alertView.title = "\(tagType) tag detected"
+        // get a handle on the payload
+        alertView.message = "\(payload)"
+        alertView.addButton(withTitle: "Ok")
+        alertView.show()
+    }
+    
+   
 }
 

@@ -102,9 +102,14 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
     var myUName = String()
     var myPicString = String()
     var following = [String]()
+    var backFromMessage = false
     override func viewDidLoad() {
         super.viewDidLoad()
-        Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+       
+        if backFromMessage == true {
+            
+        } else {
+            Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
             
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
                 
@@ -121,27 +126,7 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
                 }
             }
         })
-        /*Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("messages").observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                
-                for snap in snapshots{
-                    if snap.key == self.recipientID{
-                        let curMessages = snap.value as! [String:Any]
-                        for (_, val) in curMessages {
-                            var tempDict = val as! [String:Any]
-                           /* if tempDict["senderId"] as! String == Auth.auth().currentUser!.uid {
-                                
-                            } else {*/
-                            let message = JSQMessage(senderId: tempDict["senderId"] as! String, displayName: tempDict["senderName"] as! String, text: tempDict["text"] as! String)
-                            self.messages.append(message!)
-                            //}
-                            
-                        }
-                    }
-                }
-            }
-        })*/
+        
         
         self.senderId = Auth.auth().currentUser?.uid
        
@@ -160,6 +145,7 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
         // No avatars
         collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSize.zero
         collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSize.zero
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -191,7 +177,7 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
     }
     var thisPostData = [String:Any]()
     
-    
+    var prevScreen = String()
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, didTapMessageBubbleAt indexPath: IndexPath!) {
         print("btap: ")

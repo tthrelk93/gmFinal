@@ -13,6 +13,7 @@ import FirebaseDatabase
 class MessagesTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     
 
+    var backFromMessage = false
     var selectedMessageKey: String?
     var newMessage = false
     @IBOutlet weak var suggestedLabel: UILabel!
@@ -28,12 +29,18 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
         
         
     }
+    
+    var curUID = String()
     @IBAction func backPressed(_ sender: Any) {
+        
         if newMessage == true{
             newMessage = false
             topLabel.text = "Messages"
             suggestedLabel.isHidden = true
             allMessagesTableView.reloadData()
+        } else if self.prevScreen == "profile"{
+            print("prevScreenProfile")
+            performSegue(withIdentifier: "MessageToProfile", sender: self)
         } else {
             performSegue(withIdentifier: "MessagesToFeed", sender: self)
         }
@@ -44,6 +51,7 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
         super.viewDidLoad()
         messagesSearchBar.delegate = self
         
+       
         //tableViewData = [[String:Any]]()//[["receiverUID":"dlIJLLijOBR6mOBXGNoO3oCPo7M2", "messageText": "blah bal  sdfkjlhhl lsdjkkj sjkdfkl hsdlf","receiverName": "Thomas","receiverPic":"picccccc"],["receiverUID":"reasdfaacieverUIDDddd", "messageText": "blaaaaasdfdaaaah bal  sdfkjlhhl lsdjkkj sjkdfkl hsdlf","receiverName": "Thomaaaaaas","receiverPic":"piaaaacccccc"]]
        //suggestedTableViewData = [["receiverUID":"dlIJLLijOBR6mOBXGNoO3oCPo7M2", "messageText": "blah ssssssssbal  sdfkjlhhl lsdjkkj sjkdfkl hsdlf","receiverName": "Thssssomas","receiverPic":"picccssssssccc"]]
         Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("messages").observeSingleEvent(of: .value, with: { (snapshot) in
@@ -102,6 +110,14 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
                     DispatchQueue.main.async {
                         self.allMessagesTableView.reloadData()
                     }
+                    if self.prevScreen == "profile"{
+                        if self.backFromMessage == true{
+                            self.performSegue(withIdentifier: "MessageToProfile", sender: self)
+                        } else {
+                        print("prevScreen = profile curUID: \(self.curUID)")
+                        self.performSegue(withIdentifier: "MessagesToChat", sender: self)
+                        }
+                    }
                 })
                 
                 }
@@ -130,6 +146,9 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
     }
     var myRealName = String()
     var prevScreen = String()
+    var recipientID = String()
+    var curItemKey = String()
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if(searchActive) {
            let cell = tableView.dequeueReusableCell(withIdentifier: "MessagesTableViewCell") as! MessagesTableViewCell
@@ -219,12 +238,18 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         if segue.identifier == "MessagesToChat"{
-            print("yo")
+            print("yo:")
             print(self.selectedRecip)
             if let vc = segue.destination as? ChatContainer{
                 
                 vc.recipientID = self.selectedRecip
                 vc.curItemKey = self.selectedRecip
+                vc.prevScreen = self.prevScreen
+            }
+        }
+        if segue.identifier == "MessageToProfile"{
+            if let vc = segue.destination as? ProfileViewController{
+                vc.curUID = self.curUID
             }
         }
     }

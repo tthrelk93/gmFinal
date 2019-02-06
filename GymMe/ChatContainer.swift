@@ -18,7 +18,10 @@ class ChatContainer: UIViewController {
     var newMessage = false
     var curItemKey: String?
    
- 
+    @IBAction func BackToMessagesPressed(_ sender: Any) {
+        performSegue(withIdentifier: "BackToMessages", sender: self)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print("sender: \(sender)")
@@ -47,17 +50,33 @@ class ChatContainer: UIViewController {
     
     // MARK: - Navigation
     var sender = String()
+    var prevScreen = String()
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "BackToMessages"{
+            if let vc = segue.destination as? MessagesTableViewController{
+                vc.prevScreen = self.prevScreen
+                vc.recipientID = self.recipientID
+                vc.curUID = self.recipientID
+                if vc.prevScreen == "profile"{
+                    vc.backFromMessage = true
+                } else {
+                    vc.backFromMessage = false
+                }
+            }
+        }
         if segue.identifier == "EmbeddedSegue"{
             if let vc = segue.destination as? ChatViewController{
                 
+                
                 vc.recipientID = self.recipientID
+                vc.prevScreen = self.prevScreen
                 if self.sender == nil {
                     vc.senderDisplayName = "name nil"
                 } else {
                     vc.senderDisplayName = self.sender as! String
+                    
                 }
             }
         }
