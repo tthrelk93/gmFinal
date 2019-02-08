@@ -10,11 +10,14 @@ protocol PerformActionsInFeedDelegate {
     func locationButtonTextCellPressed(sentBy: String, cell: NewsFeedCellCollectionViewCell)
     func locationButtonPicCellPressed(sentBy: String, cell: NewsFeedPicCollectionViewCell)
     func reloadDataAfterLike()
+    func showHashTag(tagType: String, payload:String, postID: String, name: String)
+    
+    
     
     
 }
 
-class NewsFeedCellCollectionViewCell: UICollectionViewCell {
+class NewsFeedCellCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
     var myRealName: String?
     var myPicString: String?
    
@@ -298,10 +301,7 @@ class NewsFeedCellCollectionViewCell: UICollectionViewCell {
     
     override func prepareForReuse(){
         super.prepareForReuse()
-        //self.setNeedsDisplay()
-        //self.videoUrl = nil
-        //self.postText.text = nil
-        //self.postPic.image = nil
+        
         self.postText.text = nil
         //self.player = nil
         //self.postPic.image = nil
@@ -318,13 +318,31 @@ class NewsFeedCellCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
         
         
-        
+        self.postText.delegate = self
         self.profImageView.layer.cornerRadius = self.profImageView.frame.width/2
         self.profImageView.layer.masksToBounds = true
         //self.contentView.autoresizingMask.insert(.flexibleHeight)
         //self.contentView.autoresizingMask.insert(.flexibleWidth)
         print(self.gestureRecognizers)
         // Initialization code
+    }
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+        switch URL.scheme {
+        case "hash" :
+            showHashTagAlert(tagType: "hash", payload: (URL as NSURL).resourceSpecifier!.removingPercentEncoding!)
+        case "mention" :
+            showHashTagAlert(tagType: "mention", payload: (URL as NSURL).resourceSpecifier!.removingPercentEncoding!)
+        default:
+            print("just a regular url")
+        }
+        
+        return true
+    }
+    
+    func showHashTagAlert(tagType:String, payload:String){
+        print("show hash")
+        delegate?.showHashTag(tagType: tagType, payload: payload, postID: self.postID!, name: (self.posterNameButton.titleLabel?.text)!)
+       
     }
     
 }

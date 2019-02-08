@@ -603,6 +603,7 @@ UICollectionViewDataSource, UISearchBarDelegate, RemoveCatDelegate{
         postText.layer.borderColor = UIColor.lightGray.cgColor
         postPic.layer.borderWidth = 2
         makePostTextView.delegate = self
+        
         self.picPostTextViewPos = makePostTextView.frame
         self.ogCat1Pos = self.addToCatIconButton.frame
         self.ogCat2Pos = self.addToCategoryButton.frame
@@ -900,7 +901,9 @@ UICollectionViewDataSource, UISearchBarDelegate, RemoveCatDelegate{
                             print(error?.localizedDescription)
                             return
                         }
-                        self.makePostTextView.text = "Write a caption..."
+                        self.checkForTags(postID: key)
+                        
+                        
                         self.makePostTextView.textColor = UIColor.darkGray
                         print("This never prints in the console")
                         self.postPlayer?.url = nil
@@ -980,7 +983,8 @@ UICollectionViewDataSource, UISearchBarDelegate, RemoveCatDelegate{
                             print(error?.localizedDescription)
                             return
                         }
-                        self.makePostTextView.text = "Write a caption..."
+                        self.checkForTags(postID: key)
+                        
                         self.makePostTextView.textColor = UIColor.darkGray
                         print("This never prints in the console")
                         self.postPlayer?.url = nil
@@ -1031,8 +1035,8 @@ UICollectionViewDataSource, UISearchBarDelegate, RemoveCatDelegate{
                     print(error?.localizedDescription)
                     return
                 }
+                self.checkForTags(postID: key)
                 
-                self.makePostTextView.text = "Write a caption..."
                 self.makePostTextView.textColor = UIColor.darkGray
                 print("This never prints in the console")
                 self.postPlayer?.url = nil
@@ -1156,7 +1160,72 @@ UICollectionViewDataSource, UISearchBarDelegate, RemoveCatDelegate{
             }
         }
         textView.textColor = UIColor.darkGray
+        textView.resolveHashTags()
         
+    }
+    
+    public func checkForTags(possibleUserDisplayNames:[String]? = nil, postID: String) {
+        print("in check for tags")
+        let schemeMap = [
+            "#":"hash",
+            "@":"mention"
+        ]
+        
+        // Separate the string into individual words.
+        // Whitespace is used as the word boundary.
+        // You might see word boundaries at special characters, like before a period.
+        // But we need to be careful to retain the # or @ characters.
+        let words = makePostTextView.text.components(separatedBy: NSCharacterSet.whitespacesAndNewlines)
+        let attributedString = makePostTextView.attributedText.mutableCopy() as! NSMutableAttributedString
+        
+        // keep track of where we are as we interate through the string.
+        // otherwise, a string like "#test #test" will only highlight the first one.
+        var bookmark = makePostTextView.text.startIndex
+        
+        // Iterate over each word.
+        // So far each word will look like:
+        // - I
+        // - visited
+        // - #123abc.go!
+        // The last word is a hashtag of #123abc
+        // Use the following hashtag rules:
+        // - Include the hashtag # in the URL
+        // - Only include alphanumeric characters.  Special chars and anything after are chopped off.
+        // - Hashtags can start with numbers.  But the whole thing can't be a number (#123abc is ok, #123 is not)
+        for word in words {
+            
+            var scheme:String? = nil
+            
+            if word.hasPrefix("#") {
+                print("thisWordHashtag: \(word)")
+                //myDelegate?.performHashtagDatabaseAction(hashtag: word, postID: self.myPostID!)
+                
+                scheme = schemeMap["#"]
+               var wordWithTagRemoved = String(word.characters.dropFirst())
+                
+                Database.database().reference().child("hashtags").observeSingleEvent(of: .value, with: { (snapshot) in
+                    let snapshots = snapshot.value as! [String:Any]
+                    var keyFound = false
+                    for snap in snapshots{
+                        if snap.key == wordWithTagRemoved{
+                            keyFound = true
+                            var tempData = snap.value as! [String]
+                            tempData.append(postID)
+                            Database.database().reference().child("hashtags").updateChildValues([wordWithTagRemoved:tempData])
+                            break
+                        }
+                    }
+                    if keyFound == false{
+                        Database.database().reference().child("hashtags").updateChildValues([wordWithTagRemoved:[postID]])
+                    }
+                
+                })
+            } else if word.hasPrefix("@") {
+                scheme = schemeMap["@"]
+            }
+            
+        }
+        self.makePostTextView.text = "Write a caption..."
     }
     
     

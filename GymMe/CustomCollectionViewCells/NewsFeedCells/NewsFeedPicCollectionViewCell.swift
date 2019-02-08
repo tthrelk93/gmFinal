@@ -12,7 +12,7 @@ import FirebaseDatabase
 import FirebaseAuth
 
 
-class NewsFeedPicCollectionViewCell: UICollectionViewCell {
+class NewsFeedPicCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
 
     
     @IBAction func postLocationPressed(_ sender: Any) {
@@ -317,6 +317,7 @@ class NewsFeedPicCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         print("picCellInit")
+         self.postText.delegate = self
         posterPic.layer.cornerRadius = posterPic.frame.width/2
         posterPic.layer.masksToBounds = true
         self.player = Player()
@@ -361,5 +362,25 @@ class NewsFeedPicCollectionViewCell: UICollectionViewCell {
        // exampleView.backgroundColor = nil
         //exampleView.layer.cornerRadius = 0
     }
+    
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+        switch URL.scheme {
+        case "hash" :
+            showHashTagAlert(tagType: "hash", payload: (URL as NSURL).resourceSpecifier!.removingPercentEncoding!)
+        case "mention" :
+            showHashTagAlert(tagType: "mention", payload: (URL as NSURL).resourceSpecifier!.removingPercentEncoding!)
+        default:
+            print("just a regular url")
+        }
+        
+        return true
+    }
+    
+    func showHashTagAlert(tagType:String, payload:String){
+        print("show hash")
+        delegate?.showHashTag(tagType: tagType, payload: payload, postID: self.postID!, name: (self.posterNameButton.titleLabel?.text)!)
+        
+    }
+    
 
 }
