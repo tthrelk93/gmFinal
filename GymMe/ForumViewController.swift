@@ -72,15 +72,16 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
             if let messageImageUrl = URL(string: cellData["posterPic"] as! String) {
                 
                 if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
-                    cell.posterPicButton.setImage(UIImage(data: imageData as Data),for: .normal)
+                    cell.posterPicImageView.image = UIImage(data: imageData as Data)
                     
                 }
             }
-            cell.posterPicButton.layer.cornerRadius = cell.posterPicButton.frame.width/2
-            cell.posterPicButton.layer.masksToBounds = true
+            cell.posterPicImageView.frame = CGRect(x: cell.posterPicImageView.frame.origin.x, y: cell.posterPicImageView.frame.origin.y, width: 60, height: 60)
+            cell.posterPicImageView.layer.cornerRadius = cell.posterPicImageView.frame.width/2
+            cell.posterPicImageView.layer.masksToBounds = true
+            
             cell.topicLabel.text = cellData["topicTitle"] as! String
             cell.posterNameLabel.text = cellData["posterRealName"] as! String
-            cell.posterPicButton.setImage(cellData["posterPic"] as! UIImage, for: .normal)
             
             var countString = String()
             var replies = cellData["replies"] as? [[String:Any]]

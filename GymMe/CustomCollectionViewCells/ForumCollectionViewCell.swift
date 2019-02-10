@@ -10,6 +10,7 @@ import UIKit
 
 class ForumCollectionViewCell: UICollectionViewCell {
 
+    @IBOutlet weak var posterPicImageView: UIImageView!
     @IBOutlet weak var timeStampLabel: UILabel!
     @IBAction func likeTopicPressed(_ sender: Any) {
     }
@@ -28,6 +29,7 @@ class ForumCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        posterPicImageView.frame = CGRect(x: posterPicImageView.frame.origin.x, y: posterPicImageView.frame.origin.y, width: 60, height: 60)
     }
 
 }
