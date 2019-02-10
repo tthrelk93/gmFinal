@@ -26,6 +26,10 @@
 		314FAD0120D97738005A5E7C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 314FAD0020D97738005A5E7C /* GoogleService-Info.plist */; };
 		316A734321556F7900D7B1D5 /* CommentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316A734121556F7900D7B1D5 /* CommentCollectionViewCell.swift */; };
 		316A734421556F7900D7B1D5 /* CommentCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 316A734221556F7900D7B1D5 /* CommentCollectionViewCell.xib */; };
+		317420892210A13C00B07C9E /* ForumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317420882210A13C00B07C9E /* ForumViewController.swift */; };
+		3174208C2210A46F00B07C9E /* ForumCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3174208A2210A46F00B07C9E /* ForumCollectionViewCell.swift */; };
+		3174208D2210A46F00B07C9E /* ForumCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3174208B2210A46F00B07C9E /* ForumCollectionViewCell.xib */; };
+		3174208F2210AF0000B07C9E /* PostNewTopicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3174208E2210AF0000B07C9E /* PostNewTopicViewController.swift */; };
 		3184C1F420E5468100A5EA19 /* PopCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3184C1F220E5468100A5EA19 /* PopCell.swift */; };
 		3184C1F520E5468100A5EA19 /* PopCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3184C1F320E5468100A5EA19 /* PopCell.xib */; };
 		3184C1F720E5631D00A5EA19 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3184C1F620E5631200A5EA19 /* Assets.xcassets */; };
@@ -47,6 +51,7 @@
 		31C48F1820D9845900D8316E /* NewsFeedPicCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 31C48F1620D9845900D8316E /* NewsFeedPicCollectionViewCell.xib */; };
 		31C48F1A20D989BB00D8316E /* FeedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C48F1920D989BB00D8316E /* FeedData.swift */; };
 		31C9CAE2218CDEC1005FB93E /* SinglePostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C9CAE1218CDEC1005FB93E /* SinglePostViewController.swift */; };
+		31E3DD36220F8BBE0009A5CC /* HashTagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31E3DD35220F8BBE0009A5CC /* HashTagViewController.swift */; };
 		31EEAE6D20DEB8600015B8B2 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EEAE6C20DEB8600015B8B2 /* EditProfileView.swift */; };
 		31EEAE6F20DEC7A60015B8B2 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EEAE6E20DEC7A60015B8B2 /* PostViewController.swift */; };
 		31F0F13B20E4041700291263 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F0F13A20E4041700291263 /* Player.swift */; };
@@ -98,6 +103,10 @@
 		315C660C20E00F2E00188328 /* GymMe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GymMe.entitlements; sourceTree = "<group>"; };
 		316A734121556F7900D7B1D5 /* CommentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCollectionViewCell.swift; sourceTree = "<group>"; };
 		316A734221556F7900D7B1D5 /* CommentCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentCollectionViewCell.xib; sourceTree = "<group>"; };
+		317420882210A13C00B07C9E /* ForumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumViewController.swift; sourceTree = "<group>"; };
+		3174208A2210A46F00B07C9E /* ForumCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumCollectionViewCell.swift; sourceTree = "<group>"; };
+		3174208B2210A46F00B07C9E /* ForumCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ForumCollectionViewCell.xib; sourceTree = "<group>"; };
+		3174208E2210AF0000B07C9E /* PostNewTopicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostNewTopicViewController.swift; sourceTree = "<group>"; };
 		3184C1F220E5468100A5EA19 /* PopCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopCell.swift; sourceTree = "<group>"; };
 		3184C1F320E5468100A5EA19 /* PopCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PopCell.xib; sourceTree = "<group>"; };
 		3184C1F620E5631200A5EA19 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = GymMe/Assets.xcassets; sourceTree = SOURCE_ROOT; };
@@ -119,6 +128,7 @@
 		31C48F1620D9845900D8316E /* NewsFeedPicCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewsFeedPicCollectionViewCell.xib; sourceTree = "<group>"; };
 		31C48F1920D989BB00D8316E /* FeedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedData.swift; sourceTree = "<group>"; };
 		31C9CAE1218CDEC1005FB93E /* SinglePostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SinglePostViewController.swift; sourceTree = "<group>"; };
+		31E3DD35220F8BBE0009A5CC /* HashTagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashTagViewController.swift; sourceTree = "<group>"; };
 		31EEAE6C20DEB8600015B8B2 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		31EEAE6E20DEC7A60015B8B2 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		31F0F13A20E4041700291263 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
@@ -202,6 +212,8 @@
 				31E6412120E7EB6C00BEB421 /* PopularPostsCell */,
 				311DCE2921FF7B9F0089330E /* CurCatsCollectionViewCell.swift */,
 				311DCE2A21FF7B9F0089330E /* CurCatsCollectionViewCell.xib */,
+				3174208A2210A46F00B07C9E /* ForumCollectionViewCell.swift */,
+				3174208B2210A46F00B07C9E /* ForumCollectionViewCell.xib */,
 			);
 			path = CustomCollectionViewCells;
 			sourceTree = "<group>";
@@ -265,6 +277,9 @@
 				310481EB21AC63FC0014FD15 /* FolloweringViewController.swift */,
 				310481ED21AC85BF0014FD15 /* SpecificSearchViewController.swift */,
 				31875D2A220B703A0086E207 /* UITextField+Extension.swift */,
+				31E3DD35220F8BBE0009A5CC /* HashTagViewController.swift */,
+				317420882210A13C00B07C9E /* ForumViewController.swift */,
+				3174208E2210AF0000B07C9E /* PostNewTopicViewController.swift */,
 			);
 			path = GymMe;
 			sourceTree = "<group>";
@@ -500,6 +515,7 @@
 				311DCE2C21FF7B9F0089330E /* CurCatsCollectionViewCell.xib in Resources */,
 				3184C1F720E5631D00A5EA19 /* Assets.xcassets in Resources */,
 				314FACD820D975F9005A5E7C /* Main.storyboard in Resources */,
+				3174208D2210A46F00B07C9E /* ForumCollectionViewCell.xib in Resources */,
 				31C48F1420D97EF600D8316E /* NewsFeedCellCollectionViewCell.xib in Resources */,
 				313EFA7220FFC63600D3CFD0 /* LikedByCollectionViewCell.xib in Resources */,
 				31BF011B2100EA300012F933 /* MessagesTableViewCell.xib in Resources */,
@@ -647,8 +663,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				317420892210A13C00B07C9E /* ForumViewController.swift in Sources */,
 				31875D2B220B703A0086E207 /* UITextField+Extension.swift in Sources */,
 				311DCE2B21FF7B9F0089330E /* CurCatsCollectionViewCell.swift in Sources */,
+				3174208F2210AF0000B07C9E /* PostNewTopicViewController.swift in Sources */,
 				31EEAE6F20DEC7A60015B8B2 /* PostViewController.swift in Sources */,
 				310481EC21AC63FC0014FD15 /* FolloweringViewController.swift in Sources */,
 				31BF011D2100ED530012F933 /* MessagesTableViewController.swift in Sources */,
@@ -660,6 +678,7 @@
 				31359EC920DC183D00F5ED11 /* SearchViewController.swift in Sources */,
 				313EFA7120FFC63600D3CFD0 /* LikedByCollectionViewCell.swift in Sources */,
 				314FACD320D975F9005A5E7C /* AppDelegate.swift in Sources */,
+				3174208C2210A46F00B07C9E /* ForumCollectionViewCell.swift in Sources */,
 				31BF0121210129B00012F933 /* ChatViewController.swift in Sources */,
 				310481EE21AC85BF0014FD15 /* SpecificSearchViewController.swift in Sources */,
 				3184C1F420E5468100A5EA19 /* PopCell.swift in Sources */,
@@ -672,6 +691,7 @@
 				31AA6E8C214306D000CF0EFE /* NotificationsViewController.swift in Sources */,
 				31F6C23C20DAF4EE00026C0B /* User.swift in Sources */,
 				3193061520E94B5A00942DCF /* HomeFeedViewController.swift in Sources */,
+				31E3DD36220F8BBE0009A5CC /* HashTagViewController.swift in Sources */,
 				31BF011F2101295E0012F933 /* ChatContainer.swift in Sources */,
 				3193061920E94C5900942DCF /* NewsFeedCellCollectionViewCell.swift in Sources */,
 			);

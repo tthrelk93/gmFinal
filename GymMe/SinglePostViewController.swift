@@ -14,7 +14,7 @@ import FirebaseAuth
 class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITextFieldDelegate {
     var prevScreen = String()
     var senderScreen = String()
-    
+    var hashtag = String()
     @IBAction func backPressed(_ sender: Any) {
         if senderScreen == "notification"{
             performSegue(withIdentifier: "backToNote", sender: self)
@@ -22,7 +22,9 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
             performSegue(withIdentifier: "SinglePostToAdvancedSearch", sender: self)
         } else if prevScreen == "messages"{
             performSegue(withIdentifier: "SinglePostToMessages", sender: self)
-        } else {
+        } else if prevScreen == "hash"{
+            performSegue(withIdentifier: "SinglePostToHash", sender: self)
+        }else {
             performSegue(withIdentifier: "backToProfile", sender: self)
         }
     }
@@ -220,7 +222,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
                         var dateString = dateFormatter.string(from: date)
                         
-                        let tempDict = ["actionByUsername": self.myUName ,"postID": self.postID,"actionText": sendString, "timeStamp": "","actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": myPic, "postText": "notification"] as! [String:Any]
+                        let tempDict = ["actionByUsername": self.myUName ,"postID": self.postID,"actionText": sendString, "timeStamp": dateString,"actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": myPic, "postText": "notification"] as! [String:Any]
                         noteArray.append(tempDict)
                         Database.database().reference().child("users").child(self.posterUID).updateChildValues(["notifications": noteArray])
                     } else {
@@ -462,6 +464,9 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                         
                     }
                 }
+                    if self.prevScreen == "hash"{
+                        self.postPic.image = self.thisPostData["postPic"] as! UIImage
+                    } else {
                 if let messageImageUrl = URL(string: (self.thisPostData["postPic"] as! String)) {
                     if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
                         
@@ -469,6 +474,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                         
                     }
                 }
+                    }
                     if self.thisPostData["postText"] == nil{
                     
                 } else {
@@ -687,6 +693,12 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "SinglePostToHash"{
+            if let vc = segue.destination as? HashTagViewController{
+                vc.hashtag = self.hashtag
+            }
+            
+        }
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
        
