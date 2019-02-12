@@ -815,7 +815,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="6tH-MW-ZHJ">
+                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="6tH-MW-ZHJ">
                                         <rect key="frame" x="6" y="84" width="25" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <state key="normal" backgroundImage="icons8-back-34">
@@ -982,6 +982,7 @@
                         <segue destination="5I3-vc-uva" kind="showDetail" identifier="specificToGeneralSearch" id="D15-DS-Hif"/>
                         <segue destination="iYc-aa-vyQ" kind="showDetail" identifier="advanceSearchToProfile" id="Miz-DP-T9e"/>
                         <segue destination="tfZ-fY-cOO" kind="showDetail" identifier="AdvancedSearchToSinglePost" id="1fJ-td-eP7"/>
+                        <segue destination="BYZ-38-t0r" kind="showDetail" identifier="SpecificSearchToFeed" id="1H7-VB-uQp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wIt-a7-yGF" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3695,7 +3696,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Comment" width="40" height="40"/>
+        <image name="Comment" width="50" height="50"/>
         <image name="GymMe-Final-White" width="346" height="308"/>
         <image name="GymMe-Red-120-filled copy 2" width="40" height="40"/>
         <image name="GymMeSoloLogo" width="72.360000610351562" height="69.120002746582031"/>
@@ -3717,7 +3718,7 @@
         <image name="icons8-back-34" width="48" height="48"/>
         <image name="icons8-menu-25" width="40" height="40"/>
         <image name="icons8-new-message-24" width="40" height="40"/>
-        <image name="like" width="40" height="40"/>
+        <image name="like" width="50" height="50"/>
         <image name="logoWords" width="251" height="69"/>
         <image name="mail" width="40" height="40"/>
         <image name="paragraph" width="625" height="213"/>
@@ -3732,15 +3733,15 @@
         <image name="vizio-smart-tv-800x800" width="786" height="448"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="xeI-dT-kCv"/>
-        <segue reference="XXo-FE-nZY"/>
-        <segue reference="4Kj-ri-BvQ"/>
-        <segue reference="usj-ZK-sIq"/>
+        <segue reference="Prv-0P-FKQ"/>
+        <segue reference="Miz-DP-T9e"/>
+        <segue reference="XTo-Ja-pwD"/>
+        <segue reference="cJJ-fi-Mpb"/>
         <segue reference="dwx-fD-MvG"/>
-        <segue reference="ftC-P5-qsh"/>
-        <segue reference="zNh-1b-ste"/>
+        <segue reference="1xj-gH-dGu"/>
+        <segue reference="yP5-AV-FPG"/>
         <segue reference="D2N-5B-Drw"/>
-        <segue reference="73a-Dx-04f"/>
-        <segue reference="7Cy-Gz-xNk"/>
+        <segue reference="wYD-EF-M8d"/>
+        <segue reference="xPB-Kx-SjZ"/>
     </inferredMetricsTieBreakers>
 </document>

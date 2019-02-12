@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "GymMe-Grey-120-filled copy 2.png",
+      "filename" : "GymMe-Grey-120 copy 2.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "GymMe-Grey-120-filled copy.png",
+      "filename" : "GymMe-Grey-120 copy.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "GymMe-Grey-120-filled.png",
+      "filename" : "GymMe-Grey-120.png",
       "scale" : "3x"
     }
   ],

@@ -119,6 +119,6 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="like" width="40" height="40"/>
+        <image name="like" width="50" height="50"/>
     </resources>
 </document>

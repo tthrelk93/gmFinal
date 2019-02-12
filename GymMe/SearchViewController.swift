@@ -34,6 +34,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         topBarPop.setTitleColor(UIColor.black, for: .normal)
         topBarNearby.setTitleColor(UIColor.black, for: .normal)
         categoriesCollect.isHidden = false
+        topBarSearchButton.isHidden = false
         topBarPressed = false
         border1.isHidden = false
         border2.isHidden = true
@@ -95,8 +96,9 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     @IBOutlet weak var topBarSearchButton: UIButton!
     
     @IBOutlet weak var topBarCat: UIButton!
-    
+    var curTopBar = "cat"
     @IBAction func topBarCatPressed(_ sender: Any) {
+        curTopBar = "cat"
         topBarCat.setTitleColor(UIColor.red, for: .normal)
         topBarPop.setTitleColor(UIColor.black, for: .normal)
         topBarNearby.setTitleColor(UIColor.black, for: .normal)
@@ -116,6 +118,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     
     var popData = [[String:Any]]()
     @IBAction func topBarPopPressed(_ sender: Any) {
+        curTopBar = "pop"
         self.showWaitOverlayWithText("Loading Popular Posts")
         topBarCat.setTitleColor(UIColor.black, for: .normal)
         topBarPop.setTitleColor(UIColor.red, for: .normal)
@@ -180,6 +183,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     }
     @IBAction func topBarNearbyPressed(_ sender: Any) {
         self.showWaitOverlayWithText("Acquiring Location")
+        curTopBar = "nearby"
         topBarCat.setTitleColor(UIColor.black, for: .normal)
         topBarPop.setTitleColor(UIColor.black, for: .normal)
         topBarNearby.setTitleColor(UIColor.red, for: .normal)
@@ -1061,6 +1065,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             border1.isHidden = true
             border2.isHidden = true
             border3.isHidden = true
+            topBarSearchButton.isHidden = true
             if cellLabel == "Sports"{
                 sportsView.isHidden = false
                 sports = true
@@ -1143,7 +1148,11 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             
             
         } else if collectionView == popCollect{
+            if curTopBar == "cat"{
             self.selfData = ((self.popCollectData[indexPath.row]).first!.value as! [String:Any])
+            } else {
+                self.selfData = (self.popCollectData[indexPath.row] as! [String:Any])
+            }
              self.posterUID = (selfData["posterUID"] as! String)
             self.postID =  (selfData["postID"] as! String)
             
@@ -2287,7 +2296,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                             
                             
                         
-                        self.stopLocationManager()
+                        
                        DispatchQueue.main.async{
                         
                             self.popCollect.reloadData()
@@ -2296,6 +2305,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                             // ready
                             //SwiftOverlays.removeAllBlockingOverlays()
                             self.removeAllOverlays()
+                            //self.stopLocationManager()
                             print("doneLoading3")
                         })
                         }

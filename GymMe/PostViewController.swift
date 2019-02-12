@@ -786,7 +786,9 @@ UICollectionViewDataSource, UISearchBarDelegate, RemoveCatDelegate{
     @IBAction func cancelPostButtonPressed(_ sender: Any) {
         if tagView.isHidden == false{
             tagView.isHidden = true
+            tagSearchBar.resignFirstResponder()
         } else {
+            //makePostTextView.resignFirstResponder()
         makePostImageView.image = nil
         postPlayer?.url = nil
         taggedFriends.removeAll()

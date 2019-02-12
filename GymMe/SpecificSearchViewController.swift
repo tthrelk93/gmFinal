@@ -96,9 +96,13 @@ var myUName = String()
         
         
     }
-    
+    var locationSegString = String()
      @IBAction func backButtonPressed(_ sender: Any) {
+        if locationSegString == "locationPicCell" || locationSegString == "locationTextCell"{
+            performSegue(withIdentifier: "SpecificSearchToFeed", sender: self)
+        } else {
         performSegue(withIdentifier: "specificToGeneralSearch", sender: self)
+        }
         
     }
     
@@ -222,9 +226,15 @@ var myUName = String()
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
         
+        if segue.identifier == "SpecificSearchToFeed"{
+            if let vc = segue.destination as? HomeFeedViewController{
+                vc.prevScreen = "advancedSearch"
+                vc.fromNotifPostID = self.locationPostID
+            }
+        }
         if segue.identifier == "AdvancedSearchToFeed"{
             if let vc = segue.destination as? HomeFeedViewController{
-                vc.prevScreen == "advancedSearch"
+                vc.prevScreen = "advancedSearch"
             }
         }
         
@@ -267,7 +277,7 @@ var myUName = String()
         searchActive = false;
         
     }
-    
+    var locationPostID = String()
     public func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchActive = false;
         self.searchBar.endEditing(true)

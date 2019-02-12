@@ -19,8 +19,13 @@ class HashTagViewController: UIViewController, UICollectionViewDelegate,UICollec
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell : PopCell = (collectionView.dequeueReusableCell(withReuseIdentifier: "PopCell", for: indexPath) as! PopCell)
-        var curCellData = hashTagData[indexPath.row] 
-        cell.popPic.image = (curCellData["postPic"] as! UIImage)
+        var curCellData = hashTagData[indexPath.row]
+        if curCellData["postPic"] == nil && curCellData["postVid"] == nil{
+            cell.popText.isHidden = false
+            cell.popText.text = curCellData["postText"] as! String
+        } else {
+            cell.popPic.image = (curCellData["postPic"] as! UIImage)
+        }
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -109,7 +114,7 @@ class HashTagViewController: UIViewController, UICollectionViewDelegate,UICollec
                     if self.hashArray.contains(key){
                         var tempData = val as! [String:Any]
                         if tempData["postPic"] == nil && tempData["postVid"] == nil{
-                            print("skipping Text Post")
+                            self.hashTagData.append(tempData)
                         } else {
                        
                             
@@ -145,8 +150,11 @@ class HashTagViewController: UIViewController, UICollectionViewDelegate,UICollec
                 
                 attributedString.append(normalString)
                
-                
+                if self.hashTagData.count == 0 || ((self.hashTagData.first!)["postPic"]as? UIImage) == nil{
+                    
+                } else {
                 self.hashTagImage.image = ((self.hashTagData.first!)["postPic"] as! UIImage)
+                }
                 self.hashTagCount.attributedText = attributedString
                 DispatchQueue.main.async{
                 self.hashTagCollect.delegate = self

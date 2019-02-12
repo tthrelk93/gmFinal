@@ -22,13 +22,16 @@ class NewsFeedPicCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
     
     @IBAction func soundTogglePressed(_ sender: Any) {
         if soundToggle.imageView?.image! == UIImage(named: "Octicons-mute.svg"){
-            self.player?.muted = true
+            self.player?.muted = false
         soundToggle.setImage(UIImage(named: "unmute-512"), for: .normal)
+            //soundToggle.frame = CGRect(x: 10, y: 10, width: soundToggle.frame.width, height: soundToggle.frame.height)
         } else {
             
             
             self.player?.muted = true
             soundToggle.setImage(UIImage(named: "Octicons-mute.svg"), for: .normal)
+            
+            //soundToggle.frame = CGRect(x: 10, y: 10, width: soundToggle.frame.width, height: soundToggle.frame.height)
         }
     }
     @IBOutlet weak var soundToggle: UIButton!

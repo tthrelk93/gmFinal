@@ -207,7 +207,7 @@
                         <rect key="frame" x="4" y="59" width="358" height="103"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <gestureRecognizers/>
-                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         <dataDetectorType key="dataDetectorTypes" link="YES"/>
                     </textView>
@@ -248,9 +248,9 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="Comment" width="25.600000381469727" height="25.600000381469727"/>
-        <image name="favoritesUnfilled" width="25.600000381469727" height="25.600000381469727"/>
-        <image name="like" width="25.600000381469727" height="25.600000381469727"/>
-        <image name="shareIcon-1" width="25.600000381469727" height="25.600000381469727"/>
+        <image name="Comment" width="40" height="40"/>
+        <image name="favoritesUnfilled" width="40" height="40"/>
+        <image name="like" width="40" height="40"/>
+        <image name="shareIcon-1" width="40" height="40"/>
     </resources>
 </document>
