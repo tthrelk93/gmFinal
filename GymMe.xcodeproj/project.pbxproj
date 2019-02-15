@@ -11,6 +11,7 @@
 		1C123C738D0E7FCF11992316 /* Pods_GymMe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D148231E7CFA898EFB8DAF46 /* Pods_GymMe.framework */; };
 		310481EC21AC63FC0014FD15 /* FolloweringViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310481EB21AC63FC0014FD15 /* FolloweringViewController.swift */; };
 		310481EE21AC85BF0014FD15 /* SpecificSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310481ED21AC85BF0014FD15 /* SpecificSearchViewController.swift */; };
+		3108E1F822175FD70058E009 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3108E1F722175FD70058E009 /* FavoritesViewController.swift */; };
 		311DCE2B21FF7B9F0089330E /* CurCatsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311DCE2921FF7B9F0089330E /* CurCatsCollectionViewCell.swift */; };
 		311DCE2C21FF7B9F0089330E /* CurCatsCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 311DCE2A21FF7B9F0089330E /* CurCatsCollectionViewCell.xib */; };
 		31359EC920DC183D00F5ED11 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31359EC820DC183D00F5ED11 /* SearchViewController.swift */; };
@@ -81,6 +82,7 @@
 		21833CD67A14964C20C5D9B7 /* Pods_GymMeUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GymMeUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		310481EB21AC63FC0014FD15 /* FolloweringViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolloweringViewController.swift; sourceTree = "<group>"; };
 		310481ED21AC85BF0014FD15 /* SpecificSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecificSearchViewController.swift; sourceTree = "<group>"; };
+		3108E1F722175FD70058E009 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		311DCE2921FF7B9F0089330E /* CurCatsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurCatsCollectionViewCell.swift; sourceTree = "<group>"; };
 		311DCE2A21FF7B9F0089330E /* CurCatsCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CurCatsCollectionViewCell.xib; sourceTree = "<group>"; };
 		31359EC820DC183D00F5ED11 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -352,6 +354,7 @@
 			children = (
 				31359ECC20DC465000F5ED11 /* ProfileViewController.swift */,
 				31EEAE6C20DEB8600015B8B2 /* EditProfileView.swift */,
+				3108E1F722175FD70058E009 /* FavoritesViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -673,6 +676,7 @@
 				31BF011A2100EA300012F933 /* MessagesTableViewCell.swift in Sources */,
 				31C48F1A20D989BB00D8316E /* FeedData.swift in Sources */,
 				31359ECD20DC465000F5ED11 /* ProfileViewController.swift in Sources */,
+				3108E1F822175FD70058E009 /* FavoritesViewController.swift in Sources */,
 				31EEAE6D20DEB8600015B8B2 /* EditProfileView.swift in Sources */,
 				31F0F13B20E4041700291263 /* Player.swift in Sources */,
 				31359EC920DC183D00F5ED11 /* SearchViewController.swift in Sources */,

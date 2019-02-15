@@ -22,6 +22,8 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
             performSegue(withIdentifier: "SinglePostToAdvancedSearch", sender: self)
         } else if prevScreen == "messages"{
             performSegue(withIdentifier: "SinglePostToMessages", sender: self)
+        } else if prevScreen == "Favorites"{
+            performSegue(withIdentifier: "SinglePostToFav", sender: self)
         } else if prevScreen == "hash"{
             performSegue(withIdentifier: "SinglePostToHash", sender: self)
         }else {
@@ -688,11 +690,16 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
     }
     
 
-    
+    var favData = [[String:Any]]()
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "SinglePostToFav"{
+            if let vc = segue.destination as? SinglePostViewController{
+                vc.favData = self.favData
+            }
+        }
         if segue.identifier == "SinglePostToHash"{
             if let vc = segue.destination as? HashTagViewController{
                 vc.hashtag = self.hashtag

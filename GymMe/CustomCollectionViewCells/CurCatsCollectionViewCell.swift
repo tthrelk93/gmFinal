@@ -25,7 +25,10 @@ class CurCatsCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        //self.curCatLabel.sizeToFit()
         self.layer.cornerRadius = 8
+        self.layer.borderWidth = 1
+        self.layer.borderColor = UIColor.red.cgColor
     }
 
 }

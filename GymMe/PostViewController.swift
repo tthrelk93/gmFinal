@@ -36,7 +36,7 @@ class PostCatSearchCell: UICollectionViewCell {
 }
 
 class PostViewController: UIViewController, UITabBarDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UITextViewDelegate, CLLocationManagerDelegate, UICollectionViewDelegate,
-UICollectionViewDataSource, UISearchBarDelegate, RemoveCatDelegate{
+UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDelegate, RemoveCatDelegate{
     func removeCat(catLabel: String) {
         print("inremoveDel2")
         var i = 0
@@ -152,6 +152,14 @@ UICollectionViewDataSource, UISearchBarDelegate, RemoveCatDelegate{
             print("indexPatht:\(indexPath)")
             
             if ((sportsCollect.cellForItem(at: indexPath) as! PostCatSearchSportsCell).catSportLabel.textColor == UIColor.red) {
+               //var cell = PostCatSearchCell()
+                //var label = UILabel()
+                //label.text = (sportsCollect.cellForItem(at: indexPath as IndexPath) as! PostCatSearchSportsCell).catSportLabel.text!
+                //cell.catLabel = label
+                print("sportText: \((sportsCollect.cellForItem(at: indexPath as IndexPath) as! PostCatSearchSportsCell).catSportLabel.text!)")
+            
+                
+                //selectedCellsArr.append(cell)
                 
                 curCatsAdded.append((sportsCollect.cellForItem(at: indexPath as IndexPath) as! PostCatSearchSportsCell).catSportLabel.text!)
                 
@@ -170,7 +178,7 @@ UICollectionViewDataSource, UISearchBarDelegate, RemoveCatDelegate{
     
     
     @IBOutlet weak var tagView: UIView!
-    
+    var curCatCount = 0
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == tagCollect{
             var cell = collectionView.cellForItem(at: indexPath) as! LikedByCollectionViewCell
@@ -184,8 +192,7 @@ UICollectionViewDataSource, UISearchBarDelegate, RemoveCatDelegate{
                 count = count + 1
             }
             if containsUid == false{
-                //cell.backgroundColor = UIColor.lightGray
-                taggedFriends.append(findFriendsData[indexPath.row] as! [String:Any])
+                 taggedFriends.append(findFriendsData[indexPath.row] as! [String:Any])
             } else {
                // cell.backgroundColor = UIColor.white
                 
@@ -219,30 +226,80 @@ UICollectionViewDataSource, UISearchBarDelegate, RemoveCatDelegate{
         } else if collectionView == sportsCollect{
             var sportCellSelected = collectionView.cellForItem(at: indexPath) as! PostCatSearchSportsCell
             if sportCellSelected.catSportLabel.textColor == UIColor.red {
+                curCatCount = curCatCount - 1
                 sportCellSelected.catSportLabel.textColor = UIColor.black
             } else {
+                
+                if curCatCount == 6{
+                    let alert = UIAlertController(title: "Maximum Categories", message: "You cannot add more than 6 categories to a post.", preferredStyle: UIAlertControllerStyle.alert)
+                    alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                    
+                    return
+                } else {
+                    curCatCount = curCatCount + 1
                 sportCellSelected.catSportLabel.textColor = UIColor.red
+                }
             }
          } else {
         var cellSelected = collectionView.cellForItem(at: indexPath) as! PostCatSearchCell
             print("wtf: \(cellSelected.catLabel.text!)")
         if (cellSelected.catLabel.text as! String) == "Sports"{
-            sportsView.isHidden = false
+            if curCatCount == 6{
+                let alert = UIAlertController(title: "Maximum Categories", message: "You cannot add more than 6 categories to a post.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                
+                return
+            } else {
+                sportsView.isHidden = false
+                return
+            }
         }
         if cellSelected.catLabel.textColor == UIColor.red {
             cellSelected.catLabel.textColor = UIColor.black
             
             selectedCellsArr.remove(at: selectedCellsArr.firstIndex(of: cellSelected)!)
+            curCatCount = curCatCount - 1
             
             
         } else {
+            if curCatCount == 6{
+                //alert
+                let alert = UIAlertController(title: "Maximum Categories", message: "You cannot add more than 6 categories to a post.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+               
+                return
+            } else {
+                curCatCount = curCatCount + 1
             cellSelected.catLabel.textColor = UIColor.red
             selectedCellsArr.append(cellSelected)
+            }
         }
             
         }
         
     }
+    
+   // @IBOutlet weak var likedByCell: LikedByCollectionViewCell!
+    @IBOutlet weak var layout: UICollectionViewFlowLayout!
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if collectionView == curCatsCollect{
+            var labelWidth = (curCatsData[indexPath.row] as! String).width(withConstrainedHeight: 24.0, font: .systemFont(ofSize: 13))
+            var size = labelWidth + 30
+            var retSize = CGSize(width: size, height: 24)
+            return retSize
+        } else if collectionView == tagCollect {
+            return CGSize(width: collectionView.frame.width - 20, height: 70)
+        } else {
+            return CGSize(width: collectionView.frame.width - 20, height: 41)
+        }
+        
+    }
+    
+    
+    
     var selectedCellsArr = [PostCatSearchCell]()
     
     @IBOutlet weak var picViewLine1: UIView!
@@ -358,28 +415,7 @@ UICollectionViewDataSource, UISearchBarDelegate, RemoveCatDelegate{
                     }
                 }
                 present(picker, animated: true, completion: nil)
-        /*UIView.animate(withDuration: 0.5, animations: {
-            if self.extended == false {
-            self.addPicButton.frame = self.picButtonPositionOut.frame
-            self.addVidButton.frame = self.vidButtonPositionOut.frame
-            self.picVidButton.frame = self.picVidSmallFrame.frame
-                self.addVidButton.alpha = 0.7
-                self.addPicButton.alpha = 0.75
-                self.picVidButton.alpha = 0.8
-                self.extended = true
-                
-            } else {
-                self.addPicButton.frame = self.ogPicPosit
-                self.addVidButton.frame = self.ogVidPosit
-                self.picVidButton.frame = self.ogPicVidPosit
-                self.addVidButton.alpha = 0.0
-                self.addPicButton.alpha = 0.0
-                self.picVidButton.alpha = 1.0
-                self.extended = false
-            }
-            
-            
-        })*/
+        
     }
     var ogVidPosit = CGRect()
     var ogPicPosit = CGRect()
@@ -406,6 +442,10 @@ UICollectionViewDataSource, UISearchBarDelegate, RemoveCatDelegate{
     var curString = ""
     @IBAction func backToPostPressed(_ sender: Any) {
        // DispatchQueue.main.async{
+        print("curCatsMyMan: \(self.curCatsAdded)")
+        for str in curCatsAdded{
+            curCatsData.append(str)
+        }
         for cell in selectedCellsArr {
            
  
@@ -1556,4 +1596,20 @@ extension PostViewController: GMSAutocompleteViewControllerDelegate {
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
 }
+extension String {
+    func height(withConstrainedWidth width: CGFloat, font: UIFont) -> CGFloat {
+        let constraintRect = CGSize(width: width, height: .greatestFiniteMagnitude)
+        let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font: font], context: nil)
+        
+        return ceil(boundingBox.height)
+    }
+    
+    func width(withConstrainedHeight height: CGFloat, font: UIFont) -> CGFloat {
+        let constraintRect = CGSize(width: .greatestFiniteMagnitude, height: height)
+        let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font: font], context: nil)
+        
+        return ceil(boundingBox.width)
+    }
+}
+
 

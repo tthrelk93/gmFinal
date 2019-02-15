@@ -28,6 +28,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     @IBAction func backToAllCatPressed(_ sender: Any) {
         print("thisBackB")
         
+        popCollect.frame = ogPopFrame
         noPostsLabel.isHidden = true
         makeFirstPostButton.isHidden = true
         topBarCat.setTitleColor(UIColor.red, for: .normal)
@@ -175,7 +176,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     @IBOutlet weak var commentedByButton: UIButton!
     
     @IBAction func commentedByButtonPressed(_ sender: Any) {
-        
+        singlePostTopLabel.isHidden = true
         commentView.isHidden = false
         commentTF.resignFirstResponder()
         tabBar.isHidden = true
@@ -204,6 +205,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
      //let border3 = CALayer()
     @IBOutlet weak var border3: UIView!
     
+    @IBOutlet weak var commentTopLine: UIView!
     @IBOutlet weak var border2: UIView!
     
     @IBOutlet weak var popCollect: UICollectionView!
@@ -211,18 +213,21 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     
     @IBOutlet weak var backToCatFromSports: UIButton!
     @IBAction func hideCommentsPressed(_ sender: Any) {
+        singlePostTopLabel.isHidden = false
         commentView.isHidden = true
         tabBar.isHidden = false
         commentTF.resignFirstResponder()
     }
     @IBOutlet weak var hideComments: UIButton!
-    
+    var ogPopFrame = CGRect()
     override func viewDidLoad() {
         super.viewDidLoad()
         posterPicButton.frame.size = CGSize(width: 40, height: 40)
-        
+        ogPopFrame = popCollect.frame
         posterPicButton.layer.cornerRadius = posterPicButton.frame.width/2
          topLine.frame = CGRect(x: topLine.frame.origin.x, y: topLine.frame.origin.y, width: topLine.frame.width, height: 0.5)
+        commentTopLine.frame = CGRect(x: commentTopLine.frame.origin.x, y: commentTopLine.frame.origin.y, width: commentTopLine.frame.width, height: 0.5)
+        commentViewLine.frame = CGRect(x: commentViewLine.frame.origin.x, y: commentViewLine.frame.origin.y, width: commentViewLine.frame.width, height: 0.5)
         ogCommentPos = commentView.frame
         
         singlePostTopLine.frame = CGRect(x: singlePostTopLine.frame.origin.x, y: singlePostTopLine.frame.origin.y, width: singlePostTopLine.frame.width, height: 0.5)
@@ -978,9 +983,11 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     }
     
     
+    @IBOutlet weak var singlePostTopLabel: UILabel!
     
     @IBOutlet weak var postText: UILabel!
     @IBAction func commentPressed(_ sender: Any) {
+        singlePostTopLabel.isHidden = true
         commentView.isHidden = false
         commentView.isHidden = false
         commentCollect.isHidden = false
@@ -1062,10 +1069,14 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             topBarCat.isHidden = true
             topBarPop.isHidden = true
             topBarNearby.isHidden = true
+        
             border1.isHidden = true
             border2.isHidden = true
             border3.isHidden = true
+            
             topBarSearchButton.isHidden = true
+            
+            popCollect.frame = noPostsLabel.frame
             if cellLabel == "Sports"{
                 sportsView.isHidden = false
                 sports = true
@@ -2251,11 +2262,12 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         
         // here check if no need to continue just return still in the same place
         if latestLocation.horizontalAccuracy < 0 {
+            print("firstif: \(latestLocation)")
             return
         }
         // if it location is nil or it has been moved
         if location == nil || location!.horizontalAccuracy > latestLocation.horizontalAccuracy {
-            
+            print("secondif: \(location)")
             location = latestLocation
             // stop location manager
             //stopLocationManager()
@@ -2294,27 +2306,85 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                             print("here")
                                 self.popCollectData = tempData
                             
-                            
-                        
-                        
                        DispatchQueue.main.async{
                         
                             self.popCollect.reloadData()
                         self.popCollect.performBatchUpdates(nil, completion: {
                             (result) in
                             // ready
-                            //SwiftOverlays.removeAllBlockingOverlays()
+                            SwiftOverlays.removeAllOverlaysFromView(self.view)
+                            SwiftOverlays.removeAllBlockingOverlays()
                             self.removeAllOverlays()
-                            //self.stopLocationManager()
+                            
+                            self.stopLocationManager()
                             print("doneLoading3")
                         })
                         }
                         })
                     }
+                } else {
+                    print("inLastElsePlaceMark:\(self.placemark), error: \(error?.localizedDescription)")
                 }
-                // a new function where you start to parse placemarks to get the information you need
-                //self.parsePlacemarks()
-                
+            })
+        } else {
+            print("inSecondElse")
+            location = latestLocation
+            // stop location manager
+            //stopLocationManager()
+            
+            // Here is the place you want to start reverseGeocoding
+            geocoder.reverseGeocodeLocation(latestLocation, completionHandler: { (placemarks, error) in
+                // always good to check if no error
+                // also we have to unwrap the placemark because it's optional
+                // I have done all in a single if but you check them separately
+                if error == nil, let placemark = placemarks, !placemark.isEmpty {
+                    var curPlacemark = placemark.last
+                    if let city = curPlacemark?.locality, !city.isEmpty {
+                        // here you have the city name
+                        // assign city name to our iVar
+                        self.city = city
+                        print("self.city: \(city)")
+                        Database.database().reference().child("posts").observeSingleEvent(of: .value, with: {(snapshot) in
+                            var tempArr = [[String:Any]]()
+                            for (key, val) in (snapshot.value as! [String:Any]) {
+                                let tempDict = val as! [String:Any]
+                                if tempDict["city"] as! String == self.city{
+                                    tempArr.append(tempDict)
+                                }
+                            }
+                            self.popCollectData = tempArr
+                            var tempData = [[String:Any]]()
+                            //(dict.first?.value as! [String:Any])["postVid"]
+                            for dict in self.popCollectData{
+                                if (dict["postPic"] == nil && dict["postVid"] == nil){
+                                    print("textBeingRemoved3")
+                                    // popCollectData.remove(at: popCollectData.index(of: dict))
+                                } else {
+                                    tempData.append(dict)
+                                }
+                            }
+                            print("here")
+                            self.popCollectData = tempData
+                            
+                            DispatchQueue.main.async{
+                                
+                                self.popCollect.reloadData()
+                                self.popCollect.performBatchUpdates(nil, completion: {
+                                    (result) in
+                                    // ready
+                                    SwiftOverlays.removeAllOverlaysFromView(self.view)
+                                    SwiftOverlays.removeAllBlockingOverlays()
+                                    self.removeAllOverlays()
+                                    
+                                    self.stopLocationManager()
+                                    print("doneLoading3")
+                                })
+                            }
+                        })
+                    }
+                } else {
+                    print("inLastElsePlaceMark:\(self.placemark), error: \(error?.localizedDescription)")
+                }
             })
         }
     }
