@@ -351,7 +351,9 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
             if self.thisPostData["postVid"] == nil && self.thisPostData["postPic"] == nil{
             //textPost
                 self.posterNameButton.setTitle((self.thisPostData["posterName"] as! String), for: .normal)
-            
+                if self.prevScreen == "Favorites"{
+                    self.posterPicButton.setImage(self.thisPostData["posterPicURL"] as! UIImage, for: .normal)
+                } else {
             if let messageImageUrl = URL(string: (self.thisPostData["posterPicURL"] as! String)) {
                 if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
                     
@@ -359,6 +361,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                     
                 }
             }
+                }
            
                 if self.thisPostData["postText"] == nil{
                 
@@ -696,7 +699,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "SinglePostToFav"{
-            if let vc = segue.destination as? SinglePostViewController{
+            if let vc = segue.destination as? FavoritesViewController{
                 vc.favData = self.favData
             }
         }
