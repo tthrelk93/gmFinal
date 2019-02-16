@@ -47,8 +47,8 @@
                         <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l7t-B0-4jy">
-                        <rect key="frame" x="242" y="81" width="103" height="19"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l7t-B0-4jy">
+                        <rect key="frame" x="257" y="81" width="88" height="19"/>
                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
                         <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
@@ -76,6 +76,17 @@
                             <action selector="posterPicButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="vrO-R3-kVw"/>
                         </connections>
                     </button>
+                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dUU-DY-mrA">
+                        <rect key="frame" x="169" y="81" width="80" height="16"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                        <state key="normal">
+                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                        </state>
+                        <connections>
+                            <action selector="likesCountButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="Th0-ko-KzV"/>
+                            <action selector="replyCountButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="c0j-OL-QKx"/>
+                        </connections>
+                    </button>
                 </subviews>
             </view>
             <constraints>
@@ -84,23 +95,26 @@
                 <constraint firstItem="hDr-T0-CXg" firstAttribute="bottom" secondItem="Bns-3N-zM8" secondAttribute="bottom" id="1i9-Sa-7je"/>
                 <constraint firstAttribute="bottom" secondItem="EJZ-nV-v3J" secondAttribute="bottom" constant="3" id="4JY-BT-8AP"/>
                 <constraint firstItem="nAY-nQ-6te" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="8" id="5YY-Vz-Dg5"/>
+                <constraint firstItem="dUU-DY-mrA" firstAttribute="top" secondItem="EJZ-nV-v3J" secondAttribute="top" id="Afe-7v-XNm"/>
                 <constraint firstAttribute="bottom" secondItem="l7t-B0-4jy" secondAttribute="bottom" id="C4j-Mr-a7F"/>
                 <constraint firstItem="m7j-la-VtT" firstAttribute="top" secondItem="Df0-4F-mBZ" secondAttribute="bottom" constant="8" symbolic="YES" id="C6P-V8-H7I"/>
                 <constraint firstItem="Bns-3N-zM8" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="Iqi-oT-Zmp"/>
+                <constraint firstItem="dUU-DY-mrA" firstAttribute="baseline" secondItem="EJZ-nV-v3J" secondAttribute="baseline" id="NnR-Ta-5ZW"/>
                 <constraint firstItem="Df0-4F-mBZ" firstAttribute="leading" secondItem="nAY-nQ-6te" secondAttribute="trailing" constant="2" id="Q00-ew-v4g"/>
-                <constraint firstItem="l7t-B0-4jy" firstAttribute="leading" secondItem="EJZ-nV-v3J" secondAttribute="trailing" constant="81" id="VTJ-86-inR"/>
                 <constraint firstItem="Df0-4F-mBZ" firstAttribute="trailing" secondItem="l7t-B0-4jy" secondAttribute="trailing" id="Zod-Gm-wdK"/>
                 <constraint firstItem="EJZ-nV-v3J" firstAttribute="top" secondItem="l7t-B0-4jy" secondAttribute="top" id="a9Q-Nt-lmC"/>
                 <constraint firstItem="nAY-nQ-6te" firstAttribute="leading" secondItem="m7j-la-VtT" secondAttribute="leading" id="g3f-wf-Nf6"/>
                 <constraint firstItem="EJZ-nV-v3J" firstAttribute="top" secondItem="m7j-la-VtT" secondAttribute="bottom" constant="1" id="gmA-mp-VjL"/>
-                <constraint firstItem="EJZ-nV-v3J" firstAttribute="firstBaseline" secondItem="l7t-B0-4jy" secondAttribute="firstBaseline" id="gnx-0A-Ecz"/>
                 <constraint firstItem="m7j-la-VtT" firstAttribute="top" secondItem="nAY-nQ-6te" secondAttribute="bottom" constant="2" id="h2i-Sf-M61"/>
+                <constraint firstItem="l7t-B0-4jy" firstAttribute="leading" secondItem="dUU-DY-mrA" secondAttribute="trailing" constant="8" symbolic="YES" id="hrj-a5-47u"/>
+                <constraint firstItem="dUU-DY-mrA" firstAttribute="bottom" secondItem="EJZ-nV-v3J" secondAttribute="bottom" id="ioA-YE-Ula"/>
                 <constraint firstAttribute="trailing" secondItem="m7j-la-VtT" secondAttribute="trailing" constant="20" id="kuJ-tl-cJ7"/>
                 <constraint firstItem="hDr-T0-CXg" firstAttribute="leading" secondItem="Bns-3N-zM8" secondAttribute="leading" id="pDe-nM-hK4"/>
                 <constraint firstItem="hDr-T0-CXg" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="6" id="rCZ-Os-tkr"/>
                 <constraint firstItem="nAY-nQ-6te" firstAttribute="leading" secondItem="Bns-3N-zM8" secondAttribute="trailing" constant="9" id="sLd-BE-4Qu"/>
                 <constraint firstItem="Bns-3N-zM8" firstAttribute="trailing" secondItem="hDr-T0-CXg" secondAttribute="trailing" id="tWp-rJ-xc2"/>
                 <constraint firstItem="nAY-nQ-6te" firstAttribute="centerY" secondItem="Df0-4F-mBZ" secondAttribute="centerY" id="uq4-Jd-Bh6"/>
+                <constraint firstItem="dUU-DY-mrA" firstAttribute="leading" secondItem="EJZ-nV-v3J" secondAttribute="trailing" constant="8" symbolic="YES" id="xq2-Hy-iRw"/>
                 <constraint firstAttribute="trailing" secondItem="Df0-4F-mBZ" secondAttribute="trailing" constant="7" id="xvo-ja-iuN"/>
                 <constraint firstItem="Bns-3N-zM8" firstAttribute="top" secondItem="hDr-T0-CXg" secondAttribute="top" id="yfI-TF-wAG"/>
             </constraints>
@@ -108,6 +122,7 @@
             <size key="customSize" width="247" height="91"/>
             <connections>
                 <outlet property="likeTopicButton" destination="Df0-4F-mBZ" id="obd-U7-hhR"/>
+                <outlet property="likesCountButton" destination="dUU-DY-mrA" id="okb-re-9SF"/>
                 <outlet property="posterNameLabel" destination="m7j-la-VtT" id="Hqf-8r-Tch"/>
                 <outlet property="posterPicButton" destination="hDr-T0-CXg" id="HA1-Tn-7jA"/>
                 <outlet property="posterPicImageView" destination="Bns-3N-zM8" id="DRY-Iy-hvN"/>

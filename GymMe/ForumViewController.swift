@@ -17,11 +17,19 @@ class ForumPickerCell: UICollectionViewCell{
     
 }
 
-class ForumViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class ForumViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, ForumDelegate {
+    func reloadDataAfterLike(){
+        DispatchQueue.main.async{
+            // self.likedByCollect.reloadData()
+            // self.refresh()
+        }
+        // self.refresh()
+    }
+    
     var topicData = [[String:Any]]()
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == pickerCollect{
-            return 4
+            return 3
         } else {
             return topicData.count
         }
@@ -31,21 +39,21 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
         if collectionView == pickerCollect{
             let cell : ForumPickerCell = collectionView.dequeueReusableCell(withReuseIdentifier: "ForumPickerCell", for: indexPath) as! ForumPickerCell
             switch indexPath.row{
-            case 0:
+           /* case 0:
                 cell.pickerLabel.text = "Featured Topics"
+                if selectedCell == false{
+                cell.backgroundColor = UIColor.red
+                cell.pickerLabel.textColor = UIColor.white
+                cell.layer.borderColor = UIColor.red.cgColor
+                }*/
+            case 0:
+                cell.pickerLabel.text = "Most Recent"
                 if selectedCell == false{
                 cell.backgroundColor = UIColor.red
                 cell.pickerLabel.textColor = UIColor.white
                 cell.layer.borderColor = UIColor.red.cgColor
                 }
             case 1:
-                cell.pickerLabel.text = "Most Recent"
-                if selectedCell == false{
-                cell.backgroundColor = UIColor.white
-                cell.pickerLabel.textColor = UIColor.lightGray
-                cell.layer.borderColor = UIColor.lightGray.cgColor
-                }
-            case 2:
                 cell.pickerLabel.text = "Popular"
                 if selectedCell == false{
                 cell.backgroundColor = UIColor.white
@@ -76,6 +84,9 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
                     
                 }
             }
+            cell.forumData = cellData
+            cell.forumID = cellData["postID"] as! String
+            
             cell.posterPicImageView.frame = CGRect(x: cell.posterPicImageView.frame.origin.x, y: cell.posterPicImageView.frame.origin.y, width: 60, height: 60)
             cell.posterPicImageView.layer.cornerRadius = cell.posterPicImageView.frame.width/2
             cell.posterPicImageView.layer.masksToBounds = true
@@ -139,10 +150,10 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
             if let cell = getCell(IndexPath(item: 2, section: 0)) {
                 cell3 = cell
             }
-            pickerCollect.scrollToItem(at: IndexPath(item: 3, section: 0), at: UICollectionViewScrollPosition(), animated: false)
+            /*pickerCollect.scrollToItem(at: IndexPath(item: 3, section: 0), at: UICollectionViewScrollPosition(), animated: false)
             if let cell = getCell(IndexPath(item: 3, section: 0)) {
                 cell4 = cell
-            }
+            }*/
             
             
             switch indexPath.row {
@@ -150,55 +161,55 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
                 cell1.layer.borderColor = UIColor.red.cgColor
                 cell2.layer.borderColor = UIColor.lightGray.cgColor
                 cell3.layer.borderColor = UIColor.lightGray.cgColor
-                cell4.layer.borderColor = UIColor.lightGray.cgColor
+                //cell4.layer.borderColor = UIColor.lightGray.cgColor
                 cell1.backgroundColor = UIColor.red
                 cell1.pickerLabel.textColor = UIColor.white
                 cell2.backgroundColor = UIColor.white
                 cell2.pickerLabel.textColor = UIColor.lightGray
                 cell3.backgroundColor = UIColor.white
                 cell3.pickerLabel.textColor = UIColor.lightGray
-                cell4.backgroundColor = UIColor.white
-                cell4.pickerLabel.textColor = UIColor.lightGray
+               // cell4.backgroundColor = UIColor.white
+                //cell4.pickerLabel.textColor = UIColor.lightGray
             case 1:
                 cell1.layer.borderColor = UIColor.lightGray.cgColor
                 cell2.layer.borderColor = UIColor.red.cgColor
                 cell3.layer.borderColor = UIColor.lightGray.cgColor
-                cell4.layer.borderColor = UIColor.lightGray.cgColor
+                //cell4.layer.borderColor = UIColor.lightGray.cgColor
                 cell1.backgroundColor = UIColor.white
                 cell1.pickerLabel.textColor = UIColor.lightGray
                 cell2.backgroundColor = UIColor.red
                 cell2.pickerLabel.textColor = UIColor.white
                 cell3.backgroundColor = UIColor.white
                 cell3.pickerLabel.textColor = UIColor.lightGray
-                cell4.backgroundColor = UIColor.white
-                cell4.pickerLabel.textColor = UIColor.lightGray
+               // cell4.backgroundColor = UIColor.white
+                //cell4.pickerLabel.textColor = UIColor.lightGray
             case 2:
                 cell1.layer.borderColor = UIColor.lightGray.cgColor
                 cell2.layer.borderColor = UIColor.lightGray.cgColor
                 cell3.layer.borderColor = UIColor.red.cgColor
-                cell4.layer.borderColor = UIColor.lightGray.cgColor
+                //cell4.layer.borderColor = UIColor.lightGray.cgColor
                 cell1.backgroundColor = UIColor.white
                 cell1.pickerLabel.textColor = UIColor.lightGray
                 cell2.backgroundColor = UIColor.white
                 cell2.pickerLabel.textColor = UIColor.lightGray
                 cell3.backgroundColor = UIColor.red
                 cell3.pickerLabel.textColor = UIColor.white
-                cell4.backgroundColor = UIColor.white
-                cell4.pickerLabel.textColor = UIColor.lightGray
+               // cell4.backgroundColor = UIColor.white
+                //cell4.pickerLabel.textColor = UIColor.lightGray
                 
             default:
                 cell1.layer.borderColor = UIColor.lightGray.cgColor
                 cell2.layer.borderColor = UIColor.lightGray.cgColor
                 cell3.layer.borderColor = UIColor.lightGray.cgColor
-                cell4.layer.borderColor = UIColor.red.cgColor
+                //cell4.layer.borderColor = UIColor.red.cgColor
                 cell1.backgroundColor = UIColor.white
                 cell1.pickerLabel.textColor = UIColor.lightGray
                 cell2.backgroundColor = UIColor.white
                 cell2.pickerLabel.textColor = UIColor.lightGray
                 cell3.backgroundColor = UIColor.white
                 cell3.pickerLabel.textColor = UIColor.lightGray
-                cell4.backgroundColor = UIColor.red
-                cell4.pickerLabel.textColor = UIColor.white
+               // cell4.backgroundColor = UIColor.red
+               // cell4.pickerLabel.textColor = UIColor.white
             
             }
         }

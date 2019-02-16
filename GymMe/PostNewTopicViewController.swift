@@ -76,14 +76,15 @@ class PostNewTopicViewController: UIViewController, UITextViewDelegate {
             alertView.show()
             return
         } else {
-        let key = Database.database().reference().child("posts").childByAutoId().key
+        let key = Database.database().reference().child("forum").childByAutoId().key
         self.postData["postID"] = key
         postData["topicTitle"] = topicTitleTextView.text
         postData["topicDescription"] = topicDescriptionTextView.text
-            
+            postData["posterID"] = Auth.auth().currentUser!.uid 
             postData["posterPic"] = posterPicString
             postData["posterUsername"] = self.username
             postData["posterRealName"] = self.realName
+            postData["likes"] = [["x": "x"]]
             var date = Date()
             var dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
