@@ -25,6 +25,7 @@
 		314FACE820D975F9005A5E7C /* GymMeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314FACE720D975F9005A5E7C /* GymMeTests.swift */; };
 		314FACF320D975F9005A5E7C /* GymMeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314FACF220D975F9005A5E7C /* GymMeUITests.swift */; };
 		314FAD0120D97738005A5E7C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 314FAD0020D97738005A5E7C /* GoogleService-Info.plist */; };
+		315C4381221A0A4C00C9FAD1 /* SingleTopicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315C4380221A0A4C00C9FAD1 /* SingleTopicViewController.swift */; };
 		316A734321556F7900D7B1D5 /* CommentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316A734121556F7900D7B1D5 /* CommentCollectionViewCell.swift */; };
 		316A734421556F7900D7B1D5 /* CommentCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 316A734221556F7900D7B1D5 /* CommentCollectionViewCell.xib */; };
 		317420892210A13C00B07C9E /* ForumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317420882210A13C00B07C9E /* ForumViewController.swift */; };
@@ -102,6 +103,7 @@
 		314FACF220D975F9005A5E7C /* GymMeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GymMeUITests.swift; sourceTree = "<group>"; };
 		314FACF420D975F9005A5E7C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		314FAD0020D97738005A5E7C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		315C4380221A0A4C00C9FAD1 /* SingleTopicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleTopicViewController.swift; sourceTree = "<group>"; };
 		315C660C20E00F2E00188328 /* GymMe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GymMe.entitlements; sourceTree = "<group>"; };
 		316A734121556F7900D7B1D5 /* CommentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCollectionViewCell.swift; sourceTree = "<group>"; };
 		316A734221556F7900D7B1D5 /* CommentCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -282,6 +284,7 @@
 				31E3DD35220F8BBE0009A5CC /* HashTagViewController.swift */,
 				317420882210A13C00B07C9E /* ForumViewController.swift */,
 				3174208E2210AF0000B07C9E /* PostNewTopicViewController.swift */,
+				315C4380221A0A4C00C9FAD1 /* SingleTopicViewController.swift */,
 			);
 			path = GymMe;
 			sourceTree = "<group>";
@@ -696,6 +699,7 @@
 				31F6C23C20DAF4EE00026C0B /* User.swift in Sources */,
 				3193061520E94B5A00942DCF /* HomeFeedViewController.swift in Sources */,
 				31E3DD36220F8BBE0009A5CC /* HashTagViewController.swift in Sources */,
+				315C4381221A0A4C00C9FAD1 /* SingleTopicViewController.swift in Sources */,
 				31BF011F2101295E0012F933 /* ChatContainer.swift in Sources */,
 				3193061920E94C5900942DCF /* NewsFeedCellCollectionViewCell.swift in Sources */,
 			);

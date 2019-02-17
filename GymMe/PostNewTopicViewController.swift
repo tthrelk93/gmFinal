@@ -90,7 +90,7 @@ class PostNewTopicViewController: UIViewController, UITextViewDelegate {
             dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
             var dateString = dateFormatter.string(from: date)
             postData["timestamp"] = dateString
-            
+            postData["replies"] = [["x":"x"]]
             
         let childUpdates = ["/forum/\(key)": self.postData,
                             "/users/\(Auth.auth().currentUser!.uid)/forumPosts/\(key)/": self.postData]

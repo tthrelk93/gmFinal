@@ -38,13 +38,15 @@ class ForumCollectionViewCell: UICollectionViewCell {
     var myPic = String()
     var myUName = String()
     var myRealName = String()
+    var favoritedTopics: [String]?
     @IBAction func likeTopicPressed(_ sender: Any) {
         Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { snapshot in
             let valDict = snapshot.value as! [String:Any]
             self.myPic = valDict["profPic"] as! String
             self.myUName = valDict["username"] as! String
             self.myRealName = valDict["realName"] as! String
-        })
+            self.favoritedTopics = valDict["favoritedTopics"] as? [String]
+         })
         if self.likeTopicButton.imageView?.image == UIImage(named: "like.png"){
             self.likeTopicButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
             // let curLikes = Int((self.likesCountButton.titleLabel?.text)!)
@@ -63,7 +65,12 @@ class ForumCollectionViewCell: UICollectionViewCell {
                 //}
                 likesArray.append(["uName": self.myUName, "realName": self.myRealName, "uid": Auth.auth().currentUser!.uid, "pic": self.myPic])
                 
-                
+                if self.favoritedTopics == nil {
+                    self.favoritedTopics = [self.forumID]
+                } else {
+                    self.favoritedTopics!.append(self.forumID)
+                }
+               Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("favoritedTopics").setValue(self.favoritedTopics!)
                 Database.database().reference().child("forum").child(self.forumID).child("likes").setValue(likesArray)
                 Database.database().reference().child("users").child((self.forumData["posterID"] as! String)).child("forumPosts").child(self.forumID).child("likes").setValue(likesArray)
                 Database.database().reference().child("users").child((self.forumData["posterID"] as! String)).observeSingleEvent(of: .value, with: { snapshot in
@@ -145,6 +152,9 @@ class ForumCollectionViewCell: UICollectionViewCell {
                 }
                 self.likesCountButton.setTitle(likesString, for: .normal)
                 
+                self.favoritedTopics!.remove(at: self.favoritedTopics!.firstIndex(of: self.forumID)!)
+                
+                Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("favoritedTopics").setValue(self.favoritedTopics!)
                 
                 Database.database().reference().child("forum").child(self.forumID).child("likes").setValue(likesArray)
                 

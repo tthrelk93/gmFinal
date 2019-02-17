@@ -106,14 +106,27 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
             }
             cell.replyCountButton.setTitle(countString, for: .normal)
             cell.timeStampLabel.text = cellData["timestamp"] as! String
-            var replyLikes = cellData["replies"] as? [[String:Any]]
+            var replyLikes = cellData["likes"] as? [[String:Any]]
+            if replyLikes!.count == 1{
+                if (replyLikes!.first!)["x"] != nil {
+                    cell.likesCountButton.setTitle("0 likes", for: .normal)
+                } else {
+                cell.likesCountButton.setTitle("1 like", for: .normal)
+                }
+            } else {
+                cell.likesCountButton.setTitle("\(replyLikes!.count) likes", for: .normal)
+            }
             if replyLikes != nil{
                 for dict in replyLikes!{
+                    if (dict["x"] as? String) != nil{
+                        
+                    } else {
                 var tempDict = dict as! [String:Any]
-                if tempDict["likedByUID"] as! String == Auth.auth().currentUser!.uid{
+                if tempDict["uid"] as! String == Auth.auth().currentUser!.uid{
                     cell.likeTopicButton.setImage(UIImage(named: "likeSelected"), for: .normal)
                     break
-                }
+                        }
+                    }
             }
             }
             
@@ -168,6 +181,10 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
                 cell2.pickerLabel.textColor = UIColor.lightGray
                 cell3.backgroundColor = UIColor.white
                 cell3.pickerLabel.textColor = UIColor.lightGray
+                self.topicData = self.ogTopicData
+                DispatchQueue.main.async{
+                    self.topicCollect.reloadData()
+                }
                // cell4.backgroundColor = UIColor.white
                 //cell4.pickerLabel.textColor = UIColor.lightGray
             case 1:
@@ -183,6 +200,10 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
                 cell3.pickerLabel.textColor = UIColor.lightGray
                // cell4.backgroundColor = UIColor.white
                 //cell4.pickerLabel.textColor = UIColor.lightGray
+               self.topicData = topicData.sorted(by: { ($0["likes"] as! [[String:Any]]).count > ($1["likes"] as! [[String:Any]]).count })
+                DispatchQueue.main.async{
+                    self.topicCollect.reloadData()
+                }
             case 2:
                 cell1.layer.borderColor = UIColor.lightGray.cgColor
                 cell2.layer.borderColor = UIColor.lightGray.cgColor
@@ -194,6 +215,10 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
                 cell2.pickerLabel.textColor = UIColor.lightGray
                 cell3.backgroundColor = UIColor.red
                 cell3.pickerLabel.textColor = UIColor.white
+                self.topicData = self.favoritedTopicsData
+                DispatchQueue.main.async{
+                    self.topicCollect.reloadData()
+                }
                // cell4.backgroundColor = UIColor.white
                 //cell4.pickerLabel.textColor = UIColor.lightGray
                 
@@ -212,12 +237,18 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
                // cell4.pickerLabel.textColor = UIColor.white
             
             }
+        } else {
+            self.selectedTopicData = topicData[indexPath.row] as! [String:Any]
+            performSegue(withIdentifier: "ForumToTopic", sender: self)
         }
     }
-    
+    var selectedTopicData = [String:Any]()
 
     @IBOutlet weak var topicCollect: UICollectionView!
     @IBOutlet weak var pickerCollect: UICollectionView!
+    var favoritedTopics: [String]?
+    var favoritedTopicsData = [[String:Any]]()
+    var ogTopicData = [[String:Any]]()
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -226,7 +257,11 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
         
         self.pickerCollect.delegate = self
         self.pickerCollect.dataSource = self
-        Database.database().reference().child("forum").observeSingleEvent(of: .value, with: { (snapshot) in
+        Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            var userDict = snapshot.value as! [String:Any]
+            self.favoritedTopics = userDict["favoritedTopics"] as? [String]
+            Database.database().reference().child("forum").observeSingleEvent(of: .value, with: { (snapshot) in
             
             var forumDict = snapshot.value as! [String:Any]
             for (key, val) in forumDict{
@@ -234,6 +269,9 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
                     
                 } else {
                 var tempDict = val as! [String:Any]
+                    if (self.favoritedTopics?.contains(tempDict["postID"] as! String))!{
+                        self.favoritedTopicsData.append(tempDict)
+                    }
                     
                 self.topicData.append(tempDict)
                         
@@ -242,10 +280,14 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
                 }
                 
             }
+            
+                self.ogTopicData = self.topicData
             DispatchQueue.main.async{
         self.topicCollect.delegate = self
         self.topicCollect.dataSource = self
             }
+                
+            })
         
             
         })
@@ -276,14 +318,19 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
     }
     
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "ForumToTopic"{
+            if let vc = segue.destination as? SingleTopicViewController{
+                vc.topicData = self.selectedTopicData
+            }
+        }
     }
-    */
+    
 
 }
