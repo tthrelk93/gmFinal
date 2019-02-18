@@ -46,11 +46,12 @@ class CommentCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
     }
     var myRealName = String()
     var posterUID = String()
+    var forum = false
     @IBAction func likeButtonPressed(_ sender: Any) {
-       
+        if forum == false{
         if self.likeButton.imageView?.image == UIImage(named: "like.png"){
             self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
-            Database.database().reference().child("posts").child(self.postID).child("comments").observeSingleEvent(of: .value, with: { snapshot in
+            Database.database().reference().child("posts").child(self.postID).child("replies").observeSingleEvent(of: .value, with: { snapshot in
             let valDict = snapshot.value as! [[String:Any]]
              var likesVal = Int()
             var likesArray = (valDict[self.indexPath.row] as! [String:Any])["likes"] as? [[String:Any]]
@@ -71,8 +72,8 @@ class CommentCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
             likesArray!.append(["name": self.myRealName, "uid": Auth.auth().currentUser!.uid])
             
             
-            Database.database().reference().child("posts").child(self.postID).child("comments").child(String(self.indexPath.row)).child("likes").setValue(likesArray)
-                Database.database().reference().child("users").child(self.posterUID).child("posts").child(self.postID).child("comments").child(String(self.indexPath.row)).child("likes").setValue(likesArray)
+            Database.database().reference().child("posts").child(self.postID).child("replies").child(String(self.indexPath.row)).child("likes").setValue(likesArray)
+                Database.database().reference().child("users").child(self.posterUID).child("posts").child(self.postID).child("replies").child(String(self.indexPath.row)).child("likes").setValue(likesArray)
             
             
             var likesString = String()
@@ -92,7 +93,7 @@ class CommentCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
             //unlike
             self.likeButton.setImage(UIImage(named:"like.png"), for: .normal)
             
-            Database.database().reference().child("posts").child(self.postID).child("comments").observeSingleEvent(of: .value, with: { snapshot in
+            Database.database().reference().child("posts").child(self.postID).child("replies").observeSingleEvent(of: .value, with: { snapshot in
                 let valDict = snapshot.value as! [[String:Any]]
                 
                 var likesArray = (valDict[self.indexPath.row] as! [String:Any])["likes"] as! [[String:Any]]
@@ -119,15 +120,98 @@ class CommentCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
                self.likesCountLabel.text = likesString
                 
 
-                Database.database().reference().child("posts").child(self.postID).child("comments").child(String(self.indexPath.row)).child("likes").setValue(likesArray)
+                Database.database().reference().child("posts").child(self.postID).child("replies").child(String(self.indexPath.row)).child("likes").setValue(likesArray)
                 
                 
-                Database.database().reference().child("users").child(self.posterUID).child("posts").child(self.postID).child("comments").child(String(self.indexPath.row)).child("likes").setValue(likesArray)
+                Database.database().reference().child("users").child(self.posterUID).child("posts").child(self.postID).child("replies").child(String(self.indexPath.row)).child("likes").setValue(likesArray)
                 
                 self.commentDelegate?.likeComment()
                 //self.delegate?.reloadDataAfterLike()
             })
             
+        }
+        } else {
+            if self.likeButton.imageView?.image == UIImage(named: "like.png"){
+                self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
+                Database.database().reference().child("forum").child(self.postID).child("replies").observeSingleEvent(of: .value, with: { snapshot in
+                    let valDict = snapshot.value as! [[String:Any]]
+                    var likesVal = Int()
+                    var likesArray = (valDict[self.indexPath.row] as! [String:Any])["likes"] as? [[String:Any]]
+                    if likesArray == nil {
+                        likesVal = 1
+                        likesArray = [[String:Any]]()
+                    } else {
+                        likesVal = likesArray!.count
+                        likesVal = likesVal + 1
+                    }
+                    /*if likesArray.count == 1 && (likesArray.first! as! [String:String]) == ["x": "x"]{
+                     likesArray.remove(at: 0)
+                     }*/
+                    
+                    // if self.myPicString == nil{
+                    // self.myPicString = "profile-placeholder"
+                    //}
+                    likesArray!.append(["name": self.myRealName, "uid": Auth.auth().currentUser!.uid])
+                    
+                    
+                    Database.database().reference().child("forum").child(self.postID).child("replies").child(String(self.indexPath.row)).child("likes").setValue(likesArray)
+                    Database.database().reference().child("users").child(self.posterUID).child("forumPosts").child(self.postID).child("replies").child(String(self.indexPath.row)).child("likes").setValue(likesArray)
+                    
+                    
+                    var likesString = String()
+                    if likesArray!.count == 1 {
+                        if(likesArray!.first! as! [String:String]) == ["x": "x"]{
+                            likesString = "0 likes"
+                        } else {
+                            likesString = "\(likesArray!.count) like"
+                        }
+                    } else {
+                        likesString = "\(likesArray!.count) likes"
+                    }
+                    self.likesCountLabel.text = likesString
+                    self.commentDelegate?.likeComment()
+                })
+            } else {
+                //unlike
+                self.likeButton.setImage(UIImage(named:"like.png"), for: .normal)
+                
+                Database.database().reference().child("forum").child(self.postID).child("replies").observeSingleEvent(of: .value, with: { snapshot in
+                    let valDict = snapshot.value as! [[String:Any]]
+                    
+                    var likesArray = (valDict[self.indexPath.row] as! [String:Any])["likes"] as! [[String:Any]]
+                    var likesVal = Int()
+                    
+                    var likesString = String()
+                    if likesArray.count == 1 {
+                        likesArray.remove(at: 0)
+                        likesVal = 0
+                        
+                    } else {
+                        likesArray.remove(at: 0)
+                        likesVal = likesArray.count
+                        //likesString = "\(likesArray.count) likes"
+                        
+                    }
+                    if likesArray.count == 1 {
+                        
+                        likesString = "\(likesArray.count) like"
+                    } else {
+                        likesString = "\(likesArray.count) likes"
+                    }
+                    
+                    self.likesCountLabel.text = likesString
+                    
+                    
+                    Database.database().reference().child("forum").child(self.postID).child("replies").child(String(self.indexPath.row)).child("likes").setValue(likesArray)
+                    
+                    
+                    Database.database().reference().child("users").child(self.posterUID).child("forumPosts").child(self.postID).child("replies").child(String(self.indexPath.row)).child("likes").setValue(likesArray)
+                    
+                    self.commentDelegate?.likeComment()
+                    //self.delegate?.reloadDataAfterLike()
+                })
+                
+            }
         }
     }
     

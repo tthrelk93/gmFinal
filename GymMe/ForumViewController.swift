@@ -105,7 +105,45 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
                 countString = "\(replyCount) replies"
             }
             cell.replyCountButton.setTitle(countString, for: .normal)
-            cell.timeStampLabel.text = cellData["timestamp"] as! String
+            
+            let tStampDateString = cellData["timestamp"] as! String
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+            
+            let date = dateFormatter.date(from: tStampDateString)
+            
+            let now = Date()
+            //print("tStampDateString: \(tStampDateString), date: \(date!), now: \(now)")
+            var hoursBetween = Int(now.days(from: date!))
+            print("hrs Between: \(hoursBetween)")
+            if hoursBetween < 1{
+                hoursBetween = Int(now.hours(from: date!))!
+                if hoursBetween < 1 {
+                    hoursBetween = Int(now.minutes(from: date!))
+                    if hoursBetween == 1{
+                        cell.timeStampLabel.text = "\(hoursBetween) minute ago"
+                    } else {
+                        cell.timeStampLabel.text = "\(hoursBetween) minutes ago"
+                    }
+                } else {
+                    if hoursBetween == 1 {
+                        cell.timeStampLabel.text = "\(hoursBetween) hour ago"
+                    } else {
+                        cell.timeStampLabel.text = "\(hoursBetween) hours ago"
+                    }
+                }
+            } else {
+                if hoursBetween == 1 {
+                    cell.timeStampLabel.text = "\(hoursBetween) day ago"
+                } else {
+                    cell.timeStampLabel.text = "\(hoursBetween) days ago"
+                }
+            }
+            
+            
+            
             var replyLikes = cellData["likes"] as? [[String:Any]]
             if replyLikes!.count == 1{
                 if (replyLikes!.first!)["x"] != nil {
@@ -269,8 +307,12 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
                     
                 } else {
                 var tempDict = val as! [String:Any]
+                    if self.favoritedTopics == nil{
+                        
+                    } else {
                     if (self.favoritedTopics?.contains(tempDict["postID"] as! String))!{
                         self.favoritedTopicsData.append(tempDict)
+                    }
                     }
                     
                 self.topicData.append(tempDict)
