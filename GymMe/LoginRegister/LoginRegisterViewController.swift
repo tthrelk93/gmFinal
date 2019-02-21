@@ -101,57 +101,14 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
                     
                     
                     Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).updateChildValues(self.uploadData, withCompletionBlock: {(error, ref) in
-                        SwiftOverlays.showBlockingWaitOverlayWithText("Loading Feed")
+                        //SwiftOverlays.showBlockingWaitOverlayWithText("Loading Feed")
                         self.performSegue(withIdentifier: "LoginToFeed", sender: self)
                         return
                     })
                     })
                     
                     
-                    /*if !self.emailVerificationSent {
-                        Auth.auth().createUser(withEmail: self.user.email!, password: self.passwordTextField.text!, completion: { (authResult, error) in
-                            if error != nil {
-                                let alert = UIAlertController(title: "Login/Register Failed", message: "Check that you entered the correct information.", preferredStyle: UIAlertControllerStyle.alert)
-                                alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
-                                self.present(alert, animated: true, completion: nil)
-                                return
-                            }
-                            self.crypt = self.passwordTextField.text!
-                            if !(Auth.auth().currentUser?.isEmailVerified)! {
-                                print("emailVer == false")
-                                let alertVC = UIAlertController(title: "Verify Email Address", message: "Select Send to get a verification email sent to \(String(describing: self.user.email!)). Your account will be created  and ready for use upon return to the app.", preferredStyle: .alert)
-                                let alertActionOkay = UIAlertAction(title: "Send", style: .default) {
-                                    (_) in
-                                    authResult!.sendEmailVerification(completion: nil)
-                                    self.signInButton.setTitle("Resend Verification Email", for: .normal) 
-                                    self.verificationTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.checkIfTheEmailIsVerified) , userInfo: nil, repeats: true)
-                                }
-                                let alertActionCancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)
-                                alertVC.addAction(alertActionCancel)
-                                alertVC.addAction(alertActionOkay)
-                                self.present(alertVC, animated: true, completion: nil)
-                                self.emailVerificationSent = true
-                            } else {
-                                print("emailVer == true")
-                                //self.performSegue(withIdentifier: "CreatePosterStep1ToStep2", sender: self)
-                            }
-                        })
-                        
-                    } else {
-                        let alertVC = UIAlertController(title: "Verify Email Address", message: "Select Send to get a verification email sent to \(String(describing: self.user.email!)). Your account will be created  and ready for use upon return to the app.", preferredStyle: .alert)
-                        let alertActionOkay = UIAlertAction(title: "Send", style: .default) {
-                            (_) in
-                            Auth.auth().currentUser?.sendEmailVerification(completion: nil)
-                            self.signInButton.setTitle("Resend Email Verification", for: .normal)
-                        }
-                        let alertActionCancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)
-                        
-                        alertVC.addAction(alertActionCancel)
-                        
-                        alertVC.addAction(alertActionOkay)
-                        self.present(alertVC, animated: true, completion: nil)
-                        self.emailVerificationSent = true
-                    }*/
+                    
                 } else {
                     
                     let alert = UIAlertController(title: "Login/Register Failed", message: "Check that you entered the correct information.", preferredStyle: UIAlertControllerStyle.alert)
@@ -188,7 +145,7 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
                         // self.user = (user?.uid)!
                         print("Successful Login")
                         var userBool = false
-                         SwiftOverlays.showBlockingWaitOverlayWithText("Loading Feed")
+                         //SwiftOverlays.showBlockingWaitOverlayWithText("Loading Feed")
                         self.performSegue(withIdentifier: "LoginToFeed", sender: self)
                         
                     }
@@ -250,7 +207,7 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
                     
                     
                             Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).updateChildValues(self.uploadData, withCompletionBlock: {(error, ref) in
-                                 SwiftOverlays.showBlockingWaitOverlayWithText("Loading Feed")
+                                 //SwiftOverlays.showBlockingWaitOverlayWithText("Loading Feed")
                                 self.performSegue(withIdentifier: "LoginToFeed", sender: self)
                                 return
                             })

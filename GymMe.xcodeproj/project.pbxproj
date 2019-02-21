@@ -57,7 +57,6 @@
 		31EEAE6D20DEB8600015B8B2 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EEAE6C20DEB8600015B8B2 /* EditProfileView.swift */; };
 		31EEAE6F20DEC7A60015B8B2 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EEAE6E20DEC7A60015B8B2 /* PostViewController.swift */; };
 		31F0F13B20E4041700291263 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F0F13A20E4041700291263 /* Player.swift */; };
-		31F4E0CB20E6993300624E5B /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 31F4E0CA20E6993200624E5B /* HockeySDKResources.bundle */; };
 		31F6C23C20DAF4EE00026C0B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F6C23B20DAF4EE00026C0B /* User.swift */; };
 		507844056478C566FD404081 /* Pods_GymMeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4C7E780D7539B5ABE39B5AF /* Pods_GymMeTests.framework */; };
 /* End PBXBuildFile section */
@@ -136,7 +135,6 @@
 		31EEAE6C20DEB8600015B8B2 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		31EEAE6E20DEC7A60015B8B2 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		31F0F13A20E4041700291263 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
-		31F4E0CA20E6993200624E5B /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = HockeySDKResources.bundle; path = "Vendor/HockeySDK-iOS/HockeySDK.embeddedframework/HockeySDKResources.bundle"; sourceTree = "<group>"; };
 		31F6C23B20DAF4EE00026C0B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		428FF0F06EAF5773F2B8BABD /* Pods-GymMe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GymMe.release.xcconfig"; path = "Pods/Target Support Files/Pods-GymMe/Pods-GymMe.release.xcconfig"; sourceTree = "<group>"; };
 		4A82CCED512D4F715ED45767 /* Pods-GymMeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GymMeTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-GymMeTests/Pods-GymMeTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -234,7 +232,6 @@
 		314FACC620D975F9005A5E7C = {
 			isa = PBXGroup;
 			children = (
-				31F4E0CA20E6993200624E5B /* HockeySDKResources.bundle */,
 				314FACD120D975F9005A5E7C /* GymMe */,
 				314FACE620D975F9005A5E7C /* GymMeTests */,
 				314FACF120D975F9005A5E7C /* GymMeUITests */,
@@ -514,7 +511,6 @@
 				316A734421556F7900D7B1D5 /* CommentCollectionViewCell.xib in Resources */,
 				31AA6E902143072800CF0EFE /* NotificationCell.xib in Resources */,
 				31C48F1820D9845900D8316E /* NewsFeedPicCollectionViewCell.xib in Resources */,
-				31F4E0CB20E6993300624E5B /* HockeySDKResources.bundle in Resources */,
 				314FACDD20D975F9005A5E7C /* LaunchScreen.storyboard in Resources */,
 				3184C1F520E5468100A5EA19 /* PopCell.xib in Resources */,
 				318ACAB2213DB5A400DE86E7 /* GoogleService-Info.plist in Resources */,

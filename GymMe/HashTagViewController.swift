@@ -24,7 +24,12 @@ class HashTagViewController: UIViewController, UICollectionViewDelegate,UICollec
             cell.popText.isHidden = false
             cell.popText.text = curCellData["postText"] as! String
         } else {
+            if curCellData["postPic"] != nil{
             cell.popPic.image = (curCellData["postPic"] as! UIImage)
+            } else {
+                cell.popText.isHidden = false
+                cell.popText.text = "video post: \(curCellData["postText"] as! String)"
+            }
         }
         return cell
     }

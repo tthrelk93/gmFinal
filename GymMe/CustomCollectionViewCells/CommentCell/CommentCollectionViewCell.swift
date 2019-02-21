@@ -51,7 +51,7 @@ class CommentCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
         if forum == false{
         if self.likeButton.imageView?.image == UIImage(named: "like.png"){
             self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
-            Database.database().reference().child("posts").child(self.postID).child("replies").observeSingleEvent(of: .value, with: { snapshot in
+            Database.database().reference().child("posts").child(self.postID).child("comments").observeSingleEvent(of: .value, with: { snapshot in
             let valDict = snapshot.value as! [[String:Any]]
              var likesVal = Int()
             var likesArray = (valDict[self.indexPath.row] as! [String:Any])["likes"] as? [[String:Any]]
@@ -72,8 +72,8 @@ class CommentCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
             likesArray!.append(["name": self.myRealName, "uid": Auth.auth().currentUser!.uid])
             
             
-            Database.database().reference().child("posts").child(self.postID).child("replies").child(String(self.indexPath.row)).child("likes").setValue(likesArray)
-                Database.database().reference().child("users").child(self.posterUID).child("posts").child(self.postID).child("replies").child(String(self.indexPath.row)).child("likes").setValue(likesArray)
+            Database.database().reference().child("posts").child(self.postID).child("comments").child(String(self.indexPath.row)).child("likes").setValue(likesArray)
+                Database.database().reference().child("users").child(self.posterUID).child("posts").child(self.postID).child("comments").child(String(self.indexPath.row)).child("likes").setValue(likesArray)
             
             
             var likesString = String()
@@ -93,7 +93,7 @@ class CommentCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
             //unlike
             self.likeButton.setImage(UIImage(named:"like.png"), for: .normal)
             
-            Database.database().reference().child("posts").child(self.postID).child("replies").observeSingleEvent(of: .value, with: { snapshot in
+            Database.database().reference().child("posts").child(self.postID).child("comments").observeSingleEvent(of: .value, with: { snapshot in
                 let valDict = snapshot.value as! [[String:Any]]
                 
                 var likesArray = (valDict[self.indexPath.row] as! [String:Any])["likes"] as! [[String:Any]]
@@ -120,10 +120,10 @@ class CommentCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
                self.likesCountLabel.text = likesString
                 
 
-                Database.database().reference().child("posts").child(self.postID).child("replies").child(String(self.indexPath.row)).child("likes").setValue(likesArray)
+                Database.database().reference().child("posts").child(self.postID).child("comments").child(String(self.indexPath.row)).child("likes").setValue(likesArray)
                 
                 
-                Database.database().reference().child("users").child(self.posterUID).child("posts").child(self.postID).child("replies").child(String(self.indexPath.row)).child("likes").setValue(likesArray)
+                Database.database().reference().child("users").child(self.posterUID).child("posts").child(self.postID).child("comments").child(String(self.indexPath.row)).child("likes").setValue(likesArray)
                 
                 self.commentDelegate?.likeComment()
                 //self.delegate?.reloadDataAfterLike()
