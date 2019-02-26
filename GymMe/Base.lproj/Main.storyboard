@@ -632,6 +632,7 @@
                         <outlet property="topLine2" destination="XU0-vg-mZS" id="C32-Ia-vgz"/>
                         <segue destination="BYZ-38-t0r" kind="showDetail" identifier="HashToFeed" id="Mi8-hE-uVl"/>
                         <segue destination="tfZ-fY-cOO" kind="showDetail" identifier="HashToSinglePost" id="xeI-dT-kCv"/>
+                        <segue destination="5I3-vc-uva" kind="showDetail" identifier="HashToSearch" id="hD5-e1-AYq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WkD-R3-idu" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1560,7 +1561,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CNg-eQ-vPs">
-                                        <rect key="frame" x="51" y="68" width="175" height="23"/>
+                                        <rect key="frame" x="65" y="68" width="161" height="23"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="name">
                                             <color key="titleColor" white="0.0" alpha="0.90195862680000005" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1570,7 +1571,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XoQ-SJ-zww">
-                                        <rect key="frame" x="51" y="86" width="185" height="23"/>
+                                        <rect key="frame" x="65" y="86" width="171" height="23"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                         <state key="normal">
                                             <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1612,13 +1613,14 @@
                                             <action selector="commentedByButtonPressed:" destination="5I3-vc-uva" eventType="touchUpInside" id="JAd-DJ-dl3"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="sdfg sdfg sf gsdfg sdfjg sdljgf sdfhgljsdh glshdf ljhsldfj hlsjdh lkjsdfhglkjsdhf lgksflkghslglksjdfhg kjsdhglksdhgkld" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cTV-v8-A9T">
-                                        <rect key="frame" x="12" y="435" width="354" height="49"/>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="jVJ-ue-1aj">
+                                        <rect key="frame" x="8" y="449" width="358" height="69"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        <dataDetectorType key="dataDetectorTypes" link="YES"/>
+                                    </textView>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DCw-EB-xgS">
                                         <rect key="frame" x="51" y="400" width="24" height="20"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
@@ -1995,7 +1997,7 @@
                         <outlet property="noPostsLabel" destination="RNM-tl-t6x" id="qjY-DT-c4w"/>
                         <outlet property="popCollect" destination="HJt-Am-Doj" id="9up-7i-Ubx"/>
                         <outlet property="postCommentButton" destination="vi2-3l-4lM" id="f2a-Yh-SUX"/>
-                        <outlet property="postText" destination="cTV-v8-A9T" id="lAT-fw-Ppa"/>
+                        <outlet property="postText" destination="jVJ-ue-1aj" id="n8x-Lw-xmN"/>
                         <outlet property="posterNameButton" destination="CNg-eQ-vPs" id="pBx-Fh-gQn"/>
                         <outlet property="posterPicButton" destination="RVh-YN-aIr" id="ML4-7J-qDk"/>
                         <outlet property="shareButton" destination="BEn-hv-JWa" id="IT1-1E-o1q"/>
@@ -2017,6 +2019,7 @@
                         <segue destination="ftG-qB-HqV" kind="showDetail" identifier="SearchToNotifications" id="i1H-Qm-pPb"/>
                         <segue destination="iYc-aa-vyQ" kind="showDetail" identifier="SearchToProfile" id="8J8-PS-8fh"/>
                         <segue destination="GkS-31-GCY" kind="showDetail" identifier="generalToSpecificSearch" id="QaD-Gv-5YX"/>
+                        <segue destination="XcB-lJ-acM" kind="showDetail" identifier="SearchToHash" id="ica-Ks-w3u"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cPY-cE-6pP" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4022,15 +4025,15 @@
         <image name="vizio-smart-tv-800x800" width="786" height="448"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="1fJ-td-eP7"/>
-        <segue reference="vkK-Pk-xeZ"/>
+        <segue reference="xeI-dT-kCv"/>
+        <segue reference="8J8-PS-8fh"/>
         <segue reference="llD-vO-fcP"/>
-        <segue reference="XTo-Ja-pwD"/>
-        <segue reference="D15-DS-Hif"/>
-        <segue reference="dwx-fD-MvG"/>
-        <segue reference="1H7-VB-uQp"/>
-        <segue reference="yP5-AV-FPG"/>
-        <segue reference="D2N-5B-Drw"/>
+        <segue reference="y2H-Z7-9BL"/>
+        <segue reference="hD5-e1-AYq"/>
+        <segue reference="QaD-Gv-5YX"/>
+        <segue reference="Mi8-hE-uVl"/>
+        <segue reference="i1H-Qm-pPb"/>
+        <segue reference="ica-Ks-w3u"/>
         <segue reference="FUk-21-8cE"/>
         <segue reference="xPB-Kx-SjZ"/>
     </inferredMetricsTieBreakers>

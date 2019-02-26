@@ -43,8 +43,13 @@ class HashTagViewController: UIViewController, UICollectionViewDelegate,UICollec
     @IBOutlet weak var hashTagCollect: UICollectionView!
     @IBOutlet weak var hashTagImage: UIImageView!
     @IBOutlet weak var topLine: UIView!
+    var prevScreen = String()
     @IBAction func backButtonPressed(_ sender: Any) {
+        if prevScreen == "search"{
+            performSegue(withIdentifier: "HashToSearch", sender: self)
+        } else {
         performSegue(withIdentifier: "HashToFeed", sender: self)
+        }
     }
     
     @IBOutlet weak var titleLabel: UILabel!

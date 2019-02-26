@@ -14,7 +14,7 @@ import CoreLocation
 import SwiftOverlays
 
 
-class SearchViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarDelegate, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, CLLocationManagerDelegate {
+class SearchViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarDelegate, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UITextViewDelegate, CLLocationManagerDelegate {
     @IBOutlet weak var backToCatButton: UIButton!
     var prevScreen = String()
     var sportsCollectData = ["Soccer","Football","Lacrosse", "Track & Field", "Tennis","Baseball","Swimming"]
@@ -43,7 +43,9 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         topBarCat.isHidden = false
         topBarPop.isHidden = false
         topBarNearby.isHidden = false
-        
+        discoverLabel.text = "Discover"
+        discoverLabel.isHidden = false
+        singlePostTopLabel.text = ""
         popCollect.isHidden = true
         popCollectData.removeAll()
         //DispatchQueue.main.async{
@@ -223,6 +225,8 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     override func viewDidLoad() {
         super.viewDidLoad()
         posterPicButton.frame.size = CGSize(width: 40, height: 40)
+        postText.delegate = self
+        
         ogPopFrame = popCollect.frame
         posterPicButton.layer.cornerRadius = posterPicButton.frame.width/2
          topLine.frame = CGRect(x: topLine.frame.origin.x, y: topLine.frame.origin.y, width: topLine.frame.width, height: 0.5)
@@ -981,11 +985,47 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
            // self.delegate?.reloadDataAfterLike()
         }
     }
+    var mentionID = String()
+    var curName = String()
+    var selectedCurAuthProfile = true
+    func showHashTag(tagType: String, payload: String, postID: String, name: String) {
+        if tagType == "mention"{
+            print("mention: going to \(payload)'s profile")
+            self.curName = name
+           toMention = true
+            Database.database().reference().child("usernames").observeSingleEvent(of: .value, with: { snapshot in
+                let snapshots = snapshot.value as! [String:Any]
+                for snap in snapshots{
+                    if snap.key == payload{
+                        self.mentionID = snap.value as! String
+                        if self.mentionID == Auth.auth().currentUser!.uid{
+                            self.selectedCurAuthProfile = true
+                        } else {
+                            self.selectedCurAuthProfile = false
+                        }
+                        self.performSegue(withIdentifier: "SearchToProfile", sender: self)
+                    }
+                }
+            })
+        } else {
+            print("hashtaggg: \(payload) database action")
+            self.selectedHash = payload
+            performSegue(withIdentifier: "SearchToHash", sender: self)
+        }
+        /*let alertView = UIAlertView()
+         alertView.title = "\(tagType) tag detected"
+         // get a handle on the payload
+         alertView.message = "\(payload)"
+         alertView.addButton(withTitle: "Ok")
+         alertView.show()*/
+    }
+    var selectedHash = String()
     
+    @IBOutlet weak var postText: UITextView!
     
     @IBOutlet weak var singlePostTopLabel: UILabel!
     
-    @IBOutlet weak var postText: UILabel!
+    //@IBOutlet weak var postText: UILabel!
     @IBAction func commentPressed(_ sender: Any) {
         singlePostTopLabel.isHidden = true
         commentView.isHidden = false
@@ -1201,6 +1241,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         }
                     }
                    self.likedCollectData = (selfData["likes"] as! [[String:Any]])
+                   self.cityLabel.setTitle(selfData["city"] as? String, for: .normal)
                     self.posterNameButton.setTitle(selfData["posterName"] as? String, for: .normal)
                     self.curCommentCell = selfData
                     var likesPost: [String:Any]?
@@ -1432,6 +1473,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     })
                 }
                 postText.text = (selfData["postText"] as! String)
+                postText.resolveHashTags()
                 //singlePostTextView.text = (((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["postText"] as! String)
                 UIView.animate(withDuration: 0.5, animations: {
                     self.singlePostView.isHidden = false
@@ -1462,6 +1504,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 if((((self.popCollectData[indexPath.row]) as! [String:Any])["postText"] as? String) != nil){
                     postText.text = (((self.popCollectData[indexPath.row]) as! [String:Any])["postText"] as! String)
                 }
+                postText.resolveHashTags()
                 
                 //did select picture cell
                 if ((self.popCollectData[indexPath.row]) as! [String:Any])["postPic"] as? String != nil {
@@ -1902,18 +1945,40 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
+    var toMention = false
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "SearchToHash"{
+            if let vc = segue.destination as? HashTagViewController{
+                vc.prevScreen = "search"
+                vc.hashtag = self.selectedHash
+            }
+        }
         if segue.identifier == "SearchToFeed"{
             if let vc = segue.destination as? HomeFeedViewController{
                 vc.prevScreen = "search"
             }
             
         }
+        
         if segue.identifier == "SearchToProfile"{
             if let vc = segue.destination as? ProfileViewController{
                 vc.prevScreen = "search"
+                if toMention == true{
+                    vc.curUID = self.mentionID
+                } else {
+                    vc.curUID = self.posterUID
+                }
+                vc.prevScreen = "search"
+                
+                if selectedCurAuthProfile == true{
+                    vc.viewerIsCurAuth = true
+                    
+                } else {
+                    vc.viewerIsCurAuth = false
+                }
+                vc.curName = self.curName
             }
         }
         if segue.identifier == "SearchToNotifications"{
@@ -1931,6 +1996,22 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
    /* public func textFieldDidBeginEditing(_ textField: UITextField) {
         
     }// became first responder*/
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+        switch URL.scheme {
+        case "hash" :
+            showHashTagAlert(tagType: "hash", payload: (URL as NSURL).resourceSpecifier!.removingPercentEncoding!)
+        case "mention" :
+            showHashTagAlert(tagType: "mention", payload: (URL as NSURL).resourceSpecifier!.removingPercentEncoding!)
+        default:
+            print("just a regular url")
+        }
+        
+        return true
+    }
+    
+    func showHashTagAlert(tagType:String, payload:String){
+        showHashTag(tagType: tagType, payload: payload, postID: self.postID, name: (self.posterNameButton.titleLabel?.text)!)
+    }
     
     @IBOutlet weak var commentTFView: UIView!
     var curCommentCell: [String:Any]?
