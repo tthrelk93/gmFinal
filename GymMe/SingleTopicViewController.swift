@@ -121,7 +121,9 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
                     
                 }
             }
-            
+            if commentData.count == 1 && (commentData[indexPath.row] as! [String:Any])["x"] != nil {
+                
+            } else {
             let nameAndComment = (self.commentData[indexPath.row]["commentorName"] as! String) + " " +  (self.commentData[indexPath.row]["commentText"] as! String)
             print("name&Comment: \(nameAndComment)")
             let boldNameAndComment = self.attributedText(withString: nameAndComment, boldString: (self.commentData[indexPath.row]["commentorName"] as! String), font: cell.commentTextView.font!)
@@ -173,6 +175,7 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
                         cell.commentorPic.setImage(UIImage(data: imageData as Data), for: .normal)
                     }
                 }
+            }
             }
             
             return cell
