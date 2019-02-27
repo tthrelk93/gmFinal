@@ -2769,7 +2769,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="1000"/>
                                         <subviews>
                                             <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="redAbstract" translatesAutoresizingMaskIntoConstraints="NO" id="gLf-DG-mPV">
-                                                <rect key="frame" x="0.0" y="-99" width="375" height="286"/>
+                                                <rect key="frame" x="0.0" y="-99" width="375" height="234"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                             </imageView>
                                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="29y-ya-pzv">
@@ -2777,7 +2777,7 @@
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
-                                            <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="redAbstract" translatesAutoresizingMaskIntoConstraints="NO" id="edY-0s-dHY">
+                                            <imageView opaque="NO" userInteractionEnabled="NO" alpha="0.40000000000000002" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="redAbstract" translatesAutoresizingMaskIntoConstraints="NO" id="edY-0s-dHY">
                                                 <rect key="frame" x="0.0" y="135" width="375" height="289"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                             </imageView>
@@ -4015,7 +4015,7 @@
         <image name="paragraph" width="625" height="213"/>
         <image name="pinIcon" width="30" height="30"/>
         <image name="profile-placeholder" width="225" height="225"/>
-        <image name="redAbstract" width="320" height="180"/>
+        <image name="redAbstract" width="620" height="280"/>
         <image name="searchIcon-1" width="48" height="48"/>
         <image name="shareIcon-1" width="40" height="40"/>
         <image name="share_PNG53" width="819.20001220703125" height="819.20001220703125"/>
@@ -4025,14 +4025,14 @@
         <image name="vizio-smart-tv-800x800" width="786" height="448"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="xeI-dT-kCv"/>
+        <segue reference="Prv-0P-FKQ"/>
         <segue reference="8J8-PS-8fh"/>
         <segue reference="llD-vO-fcP"/>
-        <segue reference="y2H-Z7-9BL"/>
-        <segue reference="hD5-e1-AYq"/>
+        <segue reference="XTo-Ja-pwD"/>
+        <segue reference="cJJ-fi-Mpb"/>
         <segue reference="QaD-Gv-5YX"/>
-        <segue reference="Mi8-hE-uVl"/>
-        <segue reference="i1H-Qm-pPb"/>
+        <segue reference="1xj-gH-dGu"/>
+        <segue reference="yP5-AV-FPG"/>
         <segue reference="ica-Ks-w3u"/>
         <segue reference="FUk-21-8cE"/>
         <segue reference="xPB-Kx-SjZ"/>
