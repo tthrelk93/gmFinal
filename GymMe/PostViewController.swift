@@ -24,6 +24,30 @@ import CoreLocation
 import YPImagePicker
 
 
+class CustomViewFlowLayout: UICollectionViewFlowLayout {
+    
+    let cellSpacing:CGFloat = 4
+    
+    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        self.minimumLineSpacing = 10.0
+        self.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        let attributes = super.layoutAttributesForElements(in: rect)
+        
+        var leftMargin = sectionInset.left
+        var maxY: CGFloat = -1.0
+        attributes?.forEach { layoutAttribute in
+            if layoutAttribute.frame.origin.y >= maxY {
+                leftMargin = sectionInset.left
+            }
+            layoutAttribute.frame.origin.x = leftMargin
+            leftMargin += layoutAttribute.frame.width + cellSpacing
+            maxY = max(layoutAttribute.frame.maxY , maxY)
+        }
+        return attributes
+    }
+}
+
+
 class PostCatSearchSportsCell: UICollectionViewCell {
     @IBOutlet weak var catSportLabel: UILabel!
     
@@ -46,6 +70,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
             }
             i = i + 1
         }
+        curCatCount = curCatCount - 1
         curCatsAdded = curCatsData
         DispatchQueue.main.async{
             self.curCatsCollect.reloadData()
@@ -161,11 +186,16 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
                 
                 //selectedCellsArr.append(cell)
                 
-                curCatsAdded.append((sportsCollect.cellForItem(at: indexPath as IndexPath) as! PostCatSearchSportsCell).catSportLabel.text!)
+                curCatsData.append((sportsCollect.cellForItem(at: indexPath as IndexPath) as! PostCatSearchSportsCell).catSportLabel.text!)
+                
+               // var indexP = IndexPath(row: selectedCellsArr.count, section: 0)
+                //let cell : PostCatSearchCell = addCatCollect.dequeueReusableCell(withReuseIdentifier: "PostCatSearchCell", for: indexP) as! PostCatSearchCell
+                //cell.catLabel.text = (sportsCollect.cellForItem(at: indexPath as IndexPath) as! PostCatSearchSportsCell).catSportLabel.text!
+                //selectedCellsArr.append(cell)
                 
             }
         }
-        print("curCatsAdded: \(curCatsAdded)")
+        //print("curCatsAdded: \(curCatsAdded)")
         sportsView.isHidden = true
     }
     
@@ -258,8 +288,17 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
         }
         if cellSelected.catLabel.textColor == UIColor.red {
             cellSelected.catLabel.textColor = UIColor.black
-            
-            selectedCellsArr.remove(at: selectedCellsArr.firstIndex(of: cellSelected)!)
+            var indexPa = IndexPath()
+            var count = 0
+            print("trying to remove \(cellSelected.catLabel.text)")
+            for str in curCatsData{
+                print("trying to removeee \(cellSelected.catLabel.text), \(str)")
+                if str == cellSelected.catLabel.text!{
+                    indexPa = IndexPath(row: count, section: 0)
+                }
+                count = count + 1
+            }
+            curCatsData.remove(at: indexPa.row/*selectedCellsArr.firstIndex(of: cellSelected)!*/)
             curCatCount = curCatCount - 1
             
             
@@ -274,7 +313,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
             } else {
                 curCatCount = curCatCount + 1
             cellSelected.catLabel.textColor = UIColor.red
-            selectedCellsArr.append(cellSelected)
+            curCatsData.append(cellSelected.catLabel.text!)
             }
         }
             
@@ -283,13 +322,43 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
     }
     
    // @IBOutlet weak var likedByCell: LikedByCollectionViewCell!
+   /* fileprivate var sectionInsets: UIEdgeInsets {
+        return UIEdgeInsetsMake(5, 5, 5, 5)
+    }
+    
+    fileprivate var itemsPerRow: CGFloat {
+        return 3
+    }
+    
+    fileprivate var interitemSpace: CGFloat {
+        return 5.0
+    }
+    public func collectionView(_ collectionView: UICollectionView,
+                               layout collectionViewLayout: UICollectionViewLayout,
+                               insetForSectionAt section: Int) -> UIEdgeInsets {
+        
+        return sectionInsets
+    }*/
     @IBOutlet weak var layout: UICollectionViewFlowLayout!
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == curCatsCollect{
-            var labelWidth = (curCatsData[indexPath.row] as! String).width(withConstrainedHeight: 24.0, font: .systemFont(ofSize: 13))
+           /* var labelWidth = (curCatsData[indexPath.row] as! String).width(withConstrainedHeight: 24.0, font: .systemFont(ofSize: 13))
             var size = labelWidth + 30
             var retSize = CGSize(width: size, height: 24)
-            return retSize
+            return retSize*/
+            let string = curCatsData[indexPath.row] as! String
+            
+            // your label font.
+            let font = UIFont.systemFont(ofSize: 12)
+            let fontAttribute = [NSAttributedStringKey.font: font]
+            
+            // to get the exact width for label according to ur label font and Text.
+            let size = string.size(withAttributes: fontAttribute)
+            
+            // some extraSpace give if like so.
+            let extraSpace : CGFloat = 30.0
+            let width = size.width + extraSpace
+            return CGSize(width:width, height: 24)
         } else if collectionView == tagCollect {
             return CGSize(width: collectionView.frame.width - 20, height: 70)
         } else {
@@ -442,17 +511,13 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
     var curString = ""
     @IBAction func backToPostPressed(_ sender: Any) {
        // DispatchQueue.main.async{
-        print("curCatsMyMan: \(self.curCatsAdded)")
-        for str in curCatsAdded{
-            curCatsData.append(str)
-        }
-        for cell in selectedCellsArr {
+        print("curCatsAdded: \(self.curCatsAdded), curCatsData: \(self.curCatsData), selectedCellsArr: \(self.selectedCellsArr)")
+       // for str in curCatsAdded{
+         //   curCatsData.append(str)
+       // }
+        /*for cell in selectedCellsArr {
            
  
-            
-            
-            
-            
             
             if cell.catLabel.textColor == UIColor.red && cell.catLabel.text != "Sports" {
                
@@ -469,17 +534,18 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
             
            
             
-            }
+            }*/
       //  }
         
-        for str in curCatsAdded {
-            curString = curString + " " + str + ","
-        }
+       // for str in curCatsAdded {
+         //   curString = curString + " " + str + ","
+        //}
        
        
         
-        curString.removeLast()
-        curCatsLabel.text = curString
+        //curString.removeLast()
+        //curCatsLabel.text = curString
+        curCatsData = Array(Set(curCatsData))
         addCatView.isHidden = true
         var catLabelsSorted = catLabels.sorted { $0.localizedCaseInsensitiveCompare($1) == ComparisonResult.orderedAscending }
         
@@ -499,6 +565,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
         tagView.isHidden = false
         
     }
+    //@IBOutlet weak var addToCatBigButton: UIButton!
     @IBOutlet weak var addToCatIconButton: UIButton!
     @IBOutlet weak var addToCategoryButton: UIButton!
     @IBAction func addToCategoryButtonPressed(_ sender: Any) {
@@ -509,6 +576,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
         cancelPostButton.isHidden = true
         curCatsLabel.text = ""
         curCatsAdded.removeAll()
+        
         
         
         
@@ -616,6 +684,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
         }
         present(picker, animated: true, completion: nil)
     }
+   // var vc2 = PostViewController()
     var curCatsData = [String]()
     @IBOutlet weak var curCatsCollect: UICollectionView!
     
@@ -675,6 +744,15 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
         addCatCollect.dataSource = self
         curCatsCollect.delegate = self
         curCatsCollect.dataSource = self
+        curCatsCollect.collectionViewLayout = columnLayout
+        if #available(iOS 11.0, *) {
+            curCatsCollect.contentInsetAdjustmentBehavior = .always
+        } else {
+            // Fallback on earlier versions
+        }
+        var tap = UITapGestureRecognizer(target: self, action : #selector(handleTap(sender:)))
+        tap.numberOfTapsRequired = 1
+        curCatsCollect.addGestureRecognizer(tap)
         //locationManager delegate assignment etcc...
         locationManager.requestAlwaysAuthorization()
         locationManager.requestWhenInUseAuthorization()
@@ -733,10 +811,23 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
 
         // Do any additional setup after loading the view.
     }
-
+    let columnLayout = CustomViewFlowLayout()
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    @objc func handleTap(sender: AnyObject) {
+        addCatView.isHidden = false
+        postButton.isHidden = true
+        
+        //cancelPostButton.setTitle("Back", for: .normal)
+        cancelPostButton.isHidden = true
+        curCatsLabel.text = ""
+        curCatsAdded.removeAll()
+        
+        
+        
+        
     }
     
     public func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem){
