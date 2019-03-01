@@ -23,9 +23,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="365" height="51"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PlP-qY-5mu">
-                                <rect key="frame" x="51" y="3" width="75" height="31"/>
+                                <rect key="frame" x="51" y="3" width="30" height="31"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
-                                <state key="normal" title="John Doe">
+                                <state key="normal">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                 </state>
                                 <connections>
@@ -35,7 +35,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jVw-bG-7VE">
                                 <rect key="frame" x="51" y="25" width="174" height="25"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
-                                <state key="normal" title="Atlanta, Ga">
+                                <state key="normal">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                 </state>
                                 <connections>
@@ -248,9 +248,9 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="Comment" width="40" height="40"/>
+        <image name="Comment" width="50" height="50"/>
         <image name="favoritesUnfilled" width="40" height="40"/>
-        <image name="like" width="40" height="40"/>
+        <image name="like" width="50" height="50"/>
         <image name="shareIcon-1" width="40" height="40"/>
     </resources>
 </document>

@@ -2839,7 +2839,7 @@
                                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S9z-ld-XKt">
                                                         <rect key="frame" x="109" y="163" width="154" height="30"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                                        <color key="backgroundColor" red="0.71725225449999996" green="0.2475895286" blue="0.19010689850000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="backgroundColor" red="0.92405259610000001" green="0.1195046082" blue="0.16451233630000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <state key="normal" title="Edit Profile">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
@@ -2883,8 +2883,8 @@
                                                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="AeK-tr-IWa">
                                                                 <rect key="frame" x="0.0" y="51" width="375" height="453"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="1" minimumInteritemSpacing="1" id="3Mx-8O-Ygp">
+                                                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="1" id="3Mx-8O-Ygp">
                                                                     <size key="itemSize" width="120" height="120"/>
                                                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -4038,15 +4038,15 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Prv-0P-FKQ"/>
-        <segue reference="e8g-AE-9su"/>
+        <segue reference="XXo-FE-nZY"/>
         <segue reference="llD-vO-fcP"/>
         <segue reference="XTo-Ja-pwD"/>
         <segue reference="cJJ-fi-Mpb"/>
-        <segue reference="kTe-m7-s3G"/>
+        <segue reference="dwx-fD-MvG"/>
         <segue reference="1xj-gH-dGu"/>
         <segue reference="yP5-AV-FPG"/>
-        <segue reference="du7-B9-g1X"/>
-        <segue reference="FUk-21-8cE"/>
+        <segue reference="D2N-5B-Drw"/>
+        <segue reference="wYD-EF-M8d"/>
         <segue reference="xPB-Kx-SjZ"/>
     </inferredMetricsTieBreakers>
 </document>
