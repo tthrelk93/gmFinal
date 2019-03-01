@@ -54,13 +54,25 @@ class CommentCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
             Database.database().reference().child("posts").child(self.postID).child("comments").observeSingleEvent(of: .value, with: { snapshot in
             let valDict = snapshot.value as! [[String:Any]]
              var likesVal = Int()
-            var likesArray = (valDict[self.indexPath.row] as! [String:Any])["likes"] as? [[String:Any]]
-                if likesArray == nil {
+                var likesArray: [[String:Any]]?
+                
+                if ((valDict[self.indexPath.row] )["likes"] == nil){
                     likesVal = 1
                     likesArray = [[String:Any]]()
+                    likesArray!.append(["name": self.myRealName, "uid": Auth.auth().currentUser!.uid])
+                    var uploadDict = ["likes":likesArray]
+                    
+                    Database.database().reference().child("posts").child(self.postID).child("comments").child(String(self.indexPath.row)).updateChildValues(uploadDict)
+                    Database.database().reference().child("users").child(self.posterUID).child("posts").child(self.postID).child("comments").child(String(self.indexPath.row)).updateChildValues(uploadDict)
                 } else {
+                    likesArray = (valDict[self.indexPath.row] as! [String:Any])["likes"] as? [[String:Any]]
                     likesVal = likesArray!.count
                     likesVal = likesVal + 1
+                    likesArray!.append(["name": self.myRealName, "uid": Auth.auth().currentUser!.uid])
+                    
+                    
+                    Database.database().reference().child("posts").child(self.postID).child("comments").child(String(self.indexPath.row)).child("likes").setValue(likesArray)
+                    Database.database().reference().child("users").child(self.posterUID).child("posts").child(self.postID).child("comments").child(String(self.indexPath.row)).child("likes").setValue(likesArray)
                 }
             /*if likesArray.count == 1 && (likesArray.first! as! [String:String]) == ["x": "x"]{
                 likesArray.remove(at: 0)
@@ -69,11 +81,7 @@ class CommentCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
             // if self.myPicString == nil{
             // self.myPicString = "profile-placeholder"
             //}
-            likesArray!.append(["name": self.myRealName, "uid": Auth.auth().currentUser!.uid])
-            
-            
-            Database.database().reference().child("posts").child(self.postID).child("comments").child(String(self.indexPath.row)).child("likes").setValue(likesArray)
-                Database.database().reference().child("users").child(self.posterUID).child("posts").child(self.postID).child("comments").child(String(self.indexPath.row)).child("likes").setValue(likesArray)
+           
             
             
             var likesString = String()

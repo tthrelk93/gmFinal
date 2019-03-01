@@ -57,6 +57,10 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
     }
     
 
+    let refreshControl = UIRefreshControl()
+    
+    
+    var gmRed = UIColor(red: 237/255, green: 28/255, blue: 39/255, alpha: 1.0)
     var idArray = [String]()
     var picDict = [String:UIImage]()
     @IBOutlet weak var notifyCollect: UICollectionView!
@@ -71,6 +75,11 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
         self.notifyCollect.register(UINib(nibName: "NotificationCell", bundle: nil), forCellWithReuseIdentifier: "NotificationCell")
         tabBar.delegate = self
         tabBar.selectedItem = tabBar.items?[3]
+       
+        refreshControl.tintColor = gmRed
+        refreshControl.addTarget(self, action: Selector("refresh"), for: .valueChanged)
+        notifyCollect.addSubview(refreshControl)
+        notifyCollect.alwaysBounceVertical = true
         Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
             
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
@@ -160,6 +169,104 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
 
         // Do any additional setup after loading the view.
     }
+    @objc func refresh() {
+        
+        // print("refresh")
+        if (noteCollectData == nil){
+            
+        } else {
+        noteCollectData!.removeAll()
+        }
+        Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                
+                for snap in snapshots{
+                    if snap.key == "notifications"{
+                        self.noteCollectData = (snap.value as! [[String:Any]])
+                    } else if snap.key == "username"{
+                        self.myUName = snap.value as! String
+                    } else if snap.key == "following"{
+                        self.following = snap.value as! [String]
+                    } else if snap.key == "profPic"{
+                        self.myPicString = snap.value as! String
+                        if let messageImageUrl = URL(string: snap.value as! String) {
+                            
+                            // self.myPicString = messageImageUrl
+                            
+                            if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                                //self.myPic = UIImage(data: imageData as Data)
+                                //self.selfCommentPic.image = UIImage(data: imageData as Data)
+                                
+                            }
+                            
+                            // }
+                        }
+                    } else if snap.key == "realName"{
+                        self.myRealName = snap.value as! String
+                    }
+                    
+                }
+            }
+            if self.noteCollectData?.count != 0 && self.noteCollectData != nil {
+                self.noteCollectData?.reverse()
+                self.notifyCollect.delegate = self
+                self.notifyCollect.dataSource = self
+            }
+            if self.noteCollectData == nil{
+                //self.removeAllOverlays()
+            } else {
+                for dict in self.noteCollectData!{
+                    // var temp = dict as! [String:Any]
+                    self.idArray.append(dict["postID"] as! String)
+                }
+                Database.database().reference().child("posts").observeSingleEvent(of: .value, with: { (snapshot) in
+                    
+                    if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                        
+                        for snap in snapshots{
+                            var temp = snap.value as! [String:Any]
+                            if(self.idArray.contains(snap.key)){
+                                if temp["postPic"] != nil{
+                                    if let messageImageUrl = URL(string: temp["postPic"] as! String) {
+                                        
+                                        if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                                            self.picDict[snap.key] = UIImage(data: imageData as Data)
+                                            
+                                        }
+                                        
+                                        //}
+                                    }
+                                    
+                                    
+                                } else if temp["postVid"] != nil {
+                                    //vid
+                                } else {
+                                    //text
+                                }
+                            }
+                            
+                            
+                        }
+                    }
+                    DispatchQueue.main.async{
+                        self.notifyCollect.reloadData()
+                        self.notifyCollect.performBatchUpdates(nil, completion: {
+                            (result) in
+                            // ready
+                           // self.removeAllOverlays()
+                            self.refreshControl.endRefreshing()
+                            print("doneLoading3")
+                        })
+                    }
+                    //cell.delegate = self
+                })
+            }
+            //SwiftOverlays.removeAllBlockingOverlays()
+        })
+
+        
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -190,6 +297,7 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
             cell.delegate = self
             cell.name = (self.noteCollectData![indexPath.row] as! [String:Any])["actionByUsername"] as! String
         cell.actionUserPicButton.frame = CGRect(x: cell.actionUserPicButton.frame.origin.x, y: cell.actionUserPicButton.frame.origin.y, width: 50, height: 45)
+            cell.postPic.frame = CGRect(x: cell.postPic.frame.origin.x, y: cell.postPic.frame.origin.y, width: 60, height: 60)
         
             var partOne = (self.noteCollectData![indexPath.row]["actionText"] as! String)
         if let first = partOne.components(separatedBy: " ").first {
@@ -214,8 +322,9 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
             //var dateString = dateFormatterPrint.string(from: date!)
             let now = Date()
             //print("tStampDateString: \(tStampDateString), date: \(date!), now: \(now)")
+            
             var hoursBetween = Int(now.days(from: date!))
-            var time = NSAttributedString()
+            var time = String()
             print("hrs Between: \(hoursBetween)")
             if hoursBetween < 1{
                 hoursBetween = Int(now.hours(from: date!))!
@@ -223,36 +332,44 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
                     hoursBetween = Int(now.minutes(from: date!))
                     if hoursBetween == 1{
                         
-                        time = NSAttributedString(string:"\(hoursBetween) minute ago")
+                        time = "\(hoursBetween) minute ago"
                     } else {
-                        time = NSAttributedString(string:"\(hoursBetween) minutes ago")
+                        time = "\(hoursBetween) minutes ago"
                     }
                 } else {
                     if hoursBetween == 1 {
-                        time = NSAttributedString(string:"\(hoursBetween) hour ago")
+                        time = "\(hoursBetween) hour ago"
                     } else {
-                        time = NSAttributedString(string:"\(hoursBetween) hours ago")
+                        time = "\(hoursBetween) hours ago"
                     }
                 }
             } else {
                 if hoursBetween == 1 {
-                    time = NSAttributedString(string:"\(hoursBetween) day ago")
+                    time = "\(hoursBetween) day ago"
                 } else {
-                    time = NSAttributedString(string:"\(hoursBetween) days ago")
+                    time = "\(hoursBetween) days ago"
                 }
             }
             
            
             
             //var time = NSMutableAttributedString(string: dateString)
+            let string_to_color = time
+            
+            let range = (string_to_color as NSString).range(of: string_to_color)
+            
+            let attribute1 = NSMutableAttributedString.init(string: string_to_color)
+            attribute1.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.gray , range: range)
             
             attributedString.append(space)
             attributedString.append(normString)
             
            attributedString.append(space)
-            attributedString.append(time)
+            attributedString.append(attribute1)
             
             var sendString = attributedString
+            
+           
             print("sendString: \(sendString)")
             cell.noteLabel.attributedText = attributedString
             }

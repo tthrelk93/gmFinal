@@ -19,6 +19,10 @@ protocol PerformActionsInNotifications {
 
 class NotificationCell: UICollectionViewCell {
 
+    @IBAction func posterNameButtonPressed(_ sender: Any) {
+        print("posterNamePressed")
+        delegate?.performSegueToProfile(uid: actionByUID!, name: self.name)
+    }
     
     var delegate: PerformActionsInNotifications?
     @IBOutlet weak var lineView: UIView!
@@ -42,7 +46,7 @@ class NotificationCell: UICollectionViewCell {
         super.awakeFromNib()
         // Initialization code
         self.player = Player()
-       // actionUserPicButton.frame = CGRect(x: actionUserPicButton.frame.origin.x, y: actionUserPicButton.frame.origin.y, width: 50, height: 50)
+        postPic.frame = CGRect(x: postPic.frame.origin.x, y: postPic.frame.origin.y, width: 60, height: 60)
         self.actionUserPicButton.layer.cornerRadius = actionUserPicButton.frame.width/2
         self.actionUserPicButton.layer.masksToBounds = true
         

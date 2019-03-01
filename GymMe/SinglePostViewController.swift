@@ -15,6 +15,9 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
     var prevScreen = String()
     var senderScreen = String()
     var hashtag = String()
+    
+    @IBOutlet weak var topLine: UIView!
+    
     @IBAction func backPressed(_ sender: Any) {
         if senderScreen == "notification"{
             performSegue(withIdentifier: "backToNote", sender: self)
@@ -323,6 +326,8 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        topLine.frame.size = CGSize(width: UIScreen.main.bounds.width, height: 0.5)
+        
         posterPicButton.frame.size = CGSize(width: 40, height: 40)
        posterPicButton.layer.cornerRadius = posterPicButton.frame.width/2
         posterPicButton.layer.masksToBounds = true
@@ -647,9 +652,13 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
     } else {
     //commentTF.becomeFirstResponder()
     let cell : CommentCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CommentCollectionViewCell", for: indexPath) as! CommentCollectionViewCell
+            cell.postID = self.postID
     DispatchQueue.main.async{
     cell.commentorPic.layer.cornerRadius = cell.commentorPic.frame.width/2
     cell.commentorPic.layer.masksToBounds = true
+        cell.indexPath = indexPath
+        cell.myRealName = self.myUName
+        cell.posterUID = self.posterUID
     let nameAndComment = (self.commentsArray[indexPath.row]["commentorName"] as! String) + " " +  (self.commentsArray[indexPath.row]["commentText"] as! String)
         
     print("name&Comment: \(nameAndComment)")
