@@ -18,6 +18,17 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
     
     @IBOutlet weak var topLine: UIView!
     
+    @objc func playOrPause(){
+        if self.player?.playbackState == PlaybackState.paused || self.player?.playbackState == PlaybackState.stopped{
+            if self.player?.playbackState == PlaybackState.paused{
+                player?.playFromCurrentTime()
+            } else {
+                player?.playFromBeginning()
+            }
+        } else {
+            player?.stop()
+        }
+    }
     @IBAction func backPressed(_ sender: Any) {
         if senderScreen == "notification"{
             performSegue(withIdentifier: "backToNote", sender: self)
@@ -578,12 +589,128 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                 
             } else {
                 //vidPost
-                self.player = Player()
-                self.player!.muted = true
-                let playTap = UITapGestureRecognizer()
-                playTap.numberOfTapsRequired = 1
-                playTap.addTarget(self, action: #selector(NewsFeedPicCollectionViewCell.playOrPause))
-                self.view.addSubview((self.player?.view)!)
+                    self.posterNameButton.setTitle((self.thisPostData["posterName"] as! String), for: .normal)
+                    
+                    if let messageImageUrl = URL(string: (self.thisPostData["posterPicURL"] as! String)) {
+                        if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                            
+                            self.posterPicButton.setImage(UIImage(data: imageData as Data), for: .normal)
+                            
+                        }
+                    }
+                    /*if self.prevScreen == "hash"{
+                        self.postPic.image = self.thisPostData["postPic"] as! UIImage
+                    } else {
+                        if let messageImageUrl = URL(string: (self.thisPostData["postPic"] as! String)) {
+                            if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                                
+                                self.postPic.image = UIImage(data: imageData as Data)
+                                
+                            }
+                        }
+                    }*/
+                    if self.thisPostData["postText"] == nil{
+                        
+                    } else {
+                        self.postText.text = (self.thisPostData["postText"] as! String)
+                    }
+                    if self.thisPostData["city"] != nil{
+                        self.cityButton.setTitle((self.thisPostData["city"] as! String), for: .normal)
+                    }
+                    
+                    var commentsPost: [String:Any]?
+                    for item in (self.thisPostData["comments"] as? [[String: Any]])!{
+                        
+                        commentsPost = item as! [String: Any]
+                        
+                    }
+                    
+                    var tempPost: [String:Any]?
+                    self.likesArray = ((self.thisPostData["likes"] as? [[String: Any]])!)
+                    
+                    self.likesCollect.delegate = self
+                    self.likesCollect.dataSource = self
+                    for item in (self.thisPostData["likes"] as? [[String: Any]])!{
+                        
+                        tempPost = item as! [String: Any]
+                        
+                    }
+                    if tempPost!["x"] != nil {
+                        
+                    } else {
+                        
+                        
+                        let countStringNum = String((self.thisPostData["likes"] as? [[String: Any]])!.count)
+                        
+                        var fullString1 = String()
+                        if countStringNum == "1"{
+                            fullString1 = "\(countStringNum) like"
+                        } else {
+                            fullString1 = "\(countStringNum) likes"
+                        }
+                        self.likesCountButton.setTitle(fullString1, for: .normal)
+                        
+                        if (self.thisPostData["posterName"] as? String) == self.myUName{
+                            self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
+                            let countStringNum = String((self.thisPostData["likes"] as? [[String: Any]])!.count)
+                            var fullString = String()
+                            if countStringNum == "1"{
+                                fullString = "\(countStringNum) like"
+                            } else {
+                                fullString = "\(countStringNum) likes"
+                            }
+                            self.likesCountButton.setTitle(fullString, for: .normal)
+                            
+                        }
+                    }
+                    
+                    var favesPost: [String:Any]?
+                    for item in (self.thisPostData["favorites"] as? [[String: Any]])!{
+                        
+                        favesPost = item as! [String: Any]
+                        
+                    }
+                    if favesPost!["x"] != nil {
+                        
+                    } else {
+                        
+                        
+                        if (favesPost!["uName"] as! String) == self.myUName{
+                            self.favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
+                            //cell.favoritesCountButton.setTitle((self.feedDataArray[indexPath.row]["favorites"] as! [[String:Any]]).count.description, for: .normal)
+                        }
+                    }
+                    
+                    //set comments count
+                    self.commentsArray = ((self.thisPostData["comments"] as? [[String: Any]])!)
+                    
+                    
+                    if commentsPost!["x"] != nil {
+                        
+                    } else {
+                        let commStringNum = String((self.thisPostData["comments"] as? [[String: Any]])!.count)
+                        var commString = String()
+                        if commStringNum == "1"{
+                            commString = "View \(commStringNum) comment"
+                        } else {
+                            commString = "View \(commStringNum) comments"
+                        }
+                        self.commentsCountButton.setTitle(commString, for: .normal)
+                        
+                    }
+                    self.player = Player()
+                    //textPostTV.isHidden = true
+                    self.player?.url = URL(string:self.thisPostData["postVid"] as! String)
+                    let playTap = UITapGestureRecognizer()
+                    playTap.numberOfTapsRequired = 1
+                    playTap.addTarget(self, action: #selector(SinglePostViewController.playOrPause))
+                    self.player?.view.addGestureRecognizer(playTap)
+                    
+                    let vidFrame = self.postPic.frame
+                    self.player?.view.frame = vidFrame
+                    self.view.addSubview((self.player?.view)!)
+                    self.player?.didMove(toParentViewController: self)
+                    self.view.sendSubview(toBack: (self.player?.view)!)
             }
         }
             print("thisData: \(self.thisPostData)")
@@ -852,4 +979,36 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
         return false
     }
 
+}
+extension SinglePostViewController:PlayerDelegate {
+    
+    func playerReady(_ player: Player) {
+    }
+    
+    func playerPlaybackStateDidChange(_ player: Player) {
+        //if player.playbackState = .
+    }
+    
+    func playerBufferingStateDidChange(_ player: Player) {
+    }
+    func playerBufferTimeDidChange(_ bufferTime: Double) {
+        
+    }
+    
+}
+extension SinglePostViewController:PlayerPlaybackDelegate {
+    
+    func playerCurrentTimeDidChange(_ player: Player) {
+    }
+    
+    func playerPlaybackWillStartFromBeginning(_ player: Player) {
+    }
+    
+    func playerPlaybackDidEnd(_ player: Player) {
+    }
+    
+    func playerPlaybackWillLoop(_ player: Player) {
+        player.playbackLoops = false
+    }
+    
 }

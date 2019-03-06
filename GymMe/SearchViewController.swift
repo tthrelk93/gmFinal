@@ -452,7 +452,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                             cell.player?.playbackPausesWhenBackgrounded = true
                             cell.player?.playbackPausesWhenResigningActive = true
                             }
-                            let vidFrame = CGRect(x: cell.popPic.frame.origin.x, y: cell.popPic.frame.origin.y, width: popCollect.frame.width - 28, height: cell.popPic.frame.height)
+                            let vidFrame = CGRect(x: cell.popPic.frame.origin.x, y: cell.popPic.frame.origin.y, width: popCollect.frame.width - 28, height: cell.popPic.frame.height + 30)
                             cell.player?.view.frame = vidFrame
                             cell.player?.view.isHidden = false
                             cell.player?.didMove(toParentViewController: self)
@@ -489,7 +489,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                             cell.player?.playbackPausesWhenBackgrounded = true
                             cell.player?.playbackPausesWhenResigningActive = true
                             }
-                            let vidFrame = CGRect(x: cell.popPic.frame.origin.x, y: cell.popPic.frame.origin.y, width: popCollect.frame.width - 28, height: cell.popPic.frame.height)
+                            let vidFrame = CGRect(x: cell.popPic.frame.origin.x, y: cell.popPic.frame.origin.y, width: popCollect.frame.width - 28, height: cell.popPic.frame.height + 30)
                             cell.player?.view.frame = vidFrame
                             cell.player?.view.isHidden = false
                             cell.player?.didMove(toParentViewController: self)
@@ -534,7 +534,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         cell.player?.playbackPausesWhenBackgrounded = true
                         cell.player?.playbackPausesWhenResigningActive = true
                         }
-                        let vidFrame = CGRect(x: cell.popPic.frame.origin.x, y: cell.popPic.frame.origin.y, width: popCollect.frame.width - 28, height: cell.popPic.frame.height)
+                        let vidFrame = CGRect(x: cell.popPic.frame.origin.x, y: cell.popPic.frame.origin.y, width: popCollect.frame.width - 28, height: cell.popPic.frame.height + 30)
                         cell.player?.view.frame = vidFrame
                         cell.player?.view.isHidden = false
                         cell.player?.didMove(toParentViewController: self)
@@ -573,7 +573,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     cell.player?.playbackPausesWhenBackgrounded = true
                     cell.player?.playbackPausesWhenResigningActive = true
                     }
-                    let vidFrame = CGRect(x: cell.popPic.frame.origin.x, y: cell.popPic.frame.origin.y, width: popCollect.frame.width - 28, height: cell.popPic.frame.height)
+                    let vidFrame = CGRect(x: cell.popPic.frame.origin.x, y: cell.popPic.frame.origin.y, width: popCollect.frame.width - 28, height: cell.popPic.frame.height + 30)
                     cell.player?.view.frame = vidFrame
                     cell.player?.view.isHidden = false
                     cell.player?.didMove(toParentViewController: self)

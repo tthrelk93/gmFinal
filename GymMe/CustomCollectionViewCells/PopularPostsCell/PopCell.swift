@@ -23,11 +23,14 @@ class PopCell: UICollectionViewCell {
         playTap.numberOfTapsRequired = 1
         playTap.addTarget(self, action: #selector(NewsFeedPicCollectionViewCell.playOrPause))
         
-        let vidFrame = CGRect(x: self.frame.origin.x, y: self.frame.origin.y, width: self.frame.width, height: self.frame.height)
+        let vidFrame = CGRect(x: self.frame.origin.x, y: self.frame.origin.y + 30, width: 95, height: 120)
         
         self.player?.view.frame = vidFrame
+        self.player?.view.clipsToBounds = true
         player?.fillMode = PlayerFillMode.resizeAspectFill.avFoundationType
         self.addSubview((self.player?.view)!)
+         self.player?.view.frame = vidFrame
+        self.player?.view.bounds = vidFrame
         
         // Initialization code
     }
