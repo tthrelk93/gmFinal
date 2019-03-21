@@ -278,6 +278,16 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
     var curName = String()
     var selectedCellUID = String()
     var noteCollectData: [[String:Any]]?
+    
+    func performSegueToPost(postID: String){
+        Database.database().reference().child("posts").child(postID).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            self.selectedData = snapshot.value as! [String:Any]
+            
+            self.performSegue(withIdentifier: "NoteToSinglePost", sender: self)
+        })
+    }
+    
     func performSegueToProfile(uid: String, name: String){
         self.curName = name
         self.selectedCellUID = uid
@@ -292,6 +302,8 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell : NotificationCell = collectionView.dequeueReusableCell(withReuseIdentifier: "NotificationCell", for: indexPath) as! NotificationCell
+        cell.postID = (self.noteCollectData![indexPath.row] )["postID"] as! String
+        
         cell.lineView.frame.size = CGSize(width: cell.frame.width, height: 0.5)
         DispatchQueue.main.async{
             cell.delegate = self
@@ -409,12 +421,22 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
         func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath){
             var notifCell = collectionView.cellForItem(at: indexPath) as! NotificationCell
             self.selectedPostID = (noteCollectData![indexPath.row] as! [String:Any])["postID"] as! String
-            Database.database().reference().child("posts").child(self.selectedPostID).observeSingleEvent(of: .value, with: { (snapshot) in
+            if ((noteCollectData![indexPath.row] )["isForumPost"] as? Bool) != nil{
+                Database.database().reference().child("forum").child(self.selectedPostID).observeSingleEvent(of: .value, with: { (snapshot) in
+                    print("postData = \(snapshot.value as! [String:Any])")
+                    self.selectedData = snapshot.value as! [String:Any]
+                    
+                    self.performSegue(withIdentifier: "NoteToForumPost", sender: self)
+                })
+            } else {
+                
+             Database.database().reference().child("posts").child(self.selectedPostID).observeSingleEvent(of: .value, with: { (snapshot) in
                 print("postData = \(snapshot.value as! [String:Any])")
                 self.selectedData = snapshot.value as! [String:Any]
             
             self.performSegue(withIdentifier: "NoteToSinglePost", sender: self)
             })
+            }
         }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -481,6 +503,12 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
         }
         if segue.identifier == "NotificationsToPost"{
             if let vc = segue.destination as? PostViewController{
+                vc.prevScreen = "notification"
+            }
+        }
+        if segue.identifier == "NoteToForumPost"{
+            if let vc = segue.destination as? SingleTopicViewController{
+                vc.topicData = self.selectedData
                 vc.prevScreen = "notification"
             }
         }

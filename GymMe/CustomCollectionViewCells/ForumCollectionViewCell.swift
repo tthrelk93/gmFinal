@@ -87,7 +87,7 @@ class ForumCollectionViewCell: UICollectionViewCell {
                         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
                         var dateString = dateFormatter.string(from: date)
                         
-                        let tempDict = ["actionByUsername": self.myUName, "postID": self.forumID, "actionText": sendString, "timeStamp": dateString,"actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": self.myPic, "postText": self.topicLabel.text as! String] as! [String:Any]
+                        let tempDict = ["actionByUsername": self.myUName, "postID": self.forumID, "actionText": sendString, "timeStamp": dateString,"actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": self.myPic, "postText": self.topicLabel.text as! String, "isForumPost":true] as! [String:Any]
                         noteArray.append(tempDict)
                         Database.database().reference().child("users").child((self.forumData["posterID"] as! String)).updateChildValues(["notifications": noteArray])
                     } else {
@@ -98,7 +98,7 @@ class ForumCollectionViewCell: UICollectionViewCell {
                         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
                         var dateString = dateFormatter.string(from: date)
                         
-                        let tempDict = ["actionByUsername": self.myUName , "postID": self.forumID, "actionText": sendString, "timeStamp": dateString,"actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": self.myPic, "postText": self.topicLabel.text] as [String : Any]
+                        let tempDict = ["actionByUsername": self.myUName , "postID": self.forumID, "actionText": sendString, "timeStamp": dateString,"actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": self.myPic, "postText": self.topicLabel.text, "isForumPost":true] as [String : Any]
                         Database.database().reference().child("users").child((self.forumData["posterID"] as! String)).updateChildValues(["notifications":[tempDict]])
                     }
                     

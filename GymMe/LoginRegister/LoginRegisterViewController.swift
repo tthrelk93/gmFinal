@@ -97,7 +97,7 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
                     //self.uploadData["notifications"] =
                     self.uploadData["realName"] = self.firstNameTextField.text! + " " + self.lastNameTextField.text!
                     
-                    Database.database().reference().child("usernames").updateChildValues([self.uNameTextField.text!: Auth.auth().currentUser!.uid])
+                    Database.database().reference().child("usernames").updateChildValues([self.uNameTextField.text!: [Auth.auth().currentUser!.uid, self.uploadData["realName"] as! String]])
                     
                     
                     Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).updateChildValues(self.uploadData, withCompletionBlock: {(error, ref) in

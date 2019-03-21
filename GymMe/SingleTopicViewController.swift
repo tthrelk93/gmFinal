@@ -195,7 +195,11 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
     @IBOutlet weak var backButton: UIButton!
     
     @IBAction func backButtonPressed(_ sender: Any) {
+        if prevScreen == "notification"{
+            performSegue(withIdentifier: "ForumTopicToNotification", sender: self)
+        } else {
         performSegue(withIdentifier: "TopicToForum", sender: self)
+        }
     }
     @IBOutlet weak var topicTopLine1: UIView!
     
@@ -267,7 +271,7 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
                         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
                         var dateString = dateFormatter.string(from: date)
                         
-                        let tempDict = ["actionByUsername": self.myUName, "postID": self.topicData["postID"] as! String, "actionText": sendString, "timeStamp": dateString,"actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": self.myPicString, "postText": self.topicTopLabel.text as! String] as! [String:Any]
+                        let tempDict = ["actionByUsername": self.myUName, "postID": self.topicData["postID"] as! String, "actionText": sendString, "timeStamp": dateString,"actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": self.myPicString, "postText": self.topicTopLabel.text as! String, "isForumPost":true] as! [String:Any]
                         noteArray.append(tempDict)
                         Database.database().reference().child("users").child((self.topicData["posterID"] as! String)).updateChildValues(["notifications": noteArray])
                     } else {
@@ -278,7 +282,7 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
                         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
                         var dateString = dateFormatter.string(from: date)
                         
-                        let tempDict = ["actionByUsername": self.myUName , "postID": self.topicData["postID"] as! String, "actionText": sendString, "timeStamp": dateString,"actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": self.myPicString, "postText": self.topicTopLabel.text] as [String : Any]
+                        let tempDict = ["actionByUsername": self.myUName , "postID": self.topicData["postID"] as! String, "actionText": sendString, "timeStamp": dateString,"actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": self.myPicString, "postText": self.topicTopLabel.text, "isForumPost":true] as [String : Any]
                         Database.database().reference().child("users").child((self.topicData["posterID"] as! String)).updateChildValues(["notifications":[tempDict]])
                     }
                     
@@ -410,7 +414,7 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
                         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
                         var dateString = dateFormatter.string(from: date)
                         
-                        var tempDict = (["actionByUID": Auth.auth().currentUser!.uid,"postID": self.topicData["postID"] as! String, "actionByUserPic": self.myPicString,"actionByUsername": self.myUName,"actionText": tempString,"postText": "postText", "timeStamp": dateString] as! [String : Any])
+                        var tempDict = (["actionByUID": Auth.auth().currentUser!.uid,"postID": self.topicData["postID"] as! String, "actionByUserPic": self.myPicString,"actionByUsername": self.myUName,"actionText": tempString,"postText": "postText", "timeStamp": dateString, "isForumPost":true] as! [String : Any])
                         
                         print("commentNote: \(tempDict)")
                         Database.database().reference().child("users").child(posterID).updateChildValues((["notifications": [tempDict]] as! [String:Any]))
@@ -424,7 +428,7 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
                         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
                         var dateString = dateFormatter.string(from: date)
                         
-                        var tempDict = (["actionByUID": Auth.auth().currentUser!.uid, "postID": self.topicData["postID"] as! String, "actionByUserPic": self.myPicString,"actionByUsername": self.myUName,"actionText": tempString,"postText": "postText", "timeStamp": dateString] as! [String : Any])
+                        var tempDict = (["actionByUID": Auth.auth().currentUser!.uid, "postID": self.topicData["postID"] as! String, "actionByUserPic": self.myPicString,"actionByUsername": self.myUName,"actionText": tempString,"postText": "postText", "timeStamp": dateString, "isForumPost":true] as! [String : Any])
                         
                         //Database.database().reference().child("users").child(uid).updateChildValues((["notifications": [tempDict]] as! [String:Any]))
                         
@@ -448,9 +452,9 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
                         let commStringNum = String(commentsArray.count)
                         var commString = String()
                         if commStringNum == "1"{
-                            commString = "View \(commStringNum) comment"
+                            commString = "\(commStringNum) reply"
                         } else {
-                            commString = "View \(commStringNum) comments"
+                            commString = "\(commStringNum) replies"
                         }
                         self.replyCountButton.setTitle(commString, for: .normal)
                         
@@ -650,7 +654,9 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
     }
     var myPic = UIImage()
 
-    /*
+    var prevScreen = String()
+    
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -658,6 +664,6 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
     }
-    */
+    
 
 }

@@ -11,6 +11,7 @@ import UIKit
 protocol PerformActionsInNotifications {
     
     func performSegueToProfile(uid: String, name: String)
+    func performSegueToPost(postID: String)
     
     
     
@@ -28,6 +29,7 @@ class NotificationCell: UICollectionViewCell {
     @IBOutlet weak var lineView: UIView!
     @IBOutlet weak var postTextLabel: UILabel!
     @IBAction func postPicPressed(_ sender: Any) {
+        delegate?.performSegueToPost(postID: self.postID)
     }
     @IBOutlet weak var postPic: UIButton!
     @IBOutlet weak var noteLabel: UILabel!
@@ -40,6 +42,7 @@ class NotificationCell: UICollectionViewCell {
     var videoUrl: URL?
     var timeStamp: String?
     var actionByUID: String?
+    var postID = String()
     
     override func awakeFromNib() {
         lineView.frame = CGRect(x: lineView.frame.origin.x, y: lineView.frame.origin.y, width: lineView.frame.width, height: 0.5)

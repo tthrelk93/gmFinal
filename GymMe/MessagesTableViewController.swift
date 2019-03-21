@@ -141,8 +141,13 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if(searchActive) {
+            
            let cell = tableView.dequeueReusableCell(withIdentifier: "MessagesTableViewCell") as! MessagesTableViewCell
-            Database.database().reference().child("users").child(((suggestedTableViewData[indexPath.row])["receiverUID"] as! String)).observeSingleEvent(of: .value, with: { (snapshot) in
+            if suggestedTableViewData.count == 0{
+                
+            } else {
+                
+             Database.database().reference().child("users").child(((suggestedTableViewData[indexPath.row])["receiverUID"] as! String)).observeSingleEvent(of: .value, with: { (snapshot) in
                 var userPic = (snapshot.value as! [String:Any])["profPic"] as! String
             
             let recPic = UIImage()
@@ -165,6 +170,7 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
             
             
                 })
+            }
             return cell
         } else {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MessagesTableViewCell") as! MessagesTableViewCell
@@ -246,7 +252,7 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
     
     //search bar functions
     public func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        searchActive = true;
+        /*searchActive = true;
         Database.database().reference().child("users").observeSingleEvent(of: .value, with: { (snapshot) in
             print("nowHereeeeee")
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
@@ -266,7 +272,7 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
                 }
             }
             self.allMessagesTableView.reloadData()
-        })
+        })*/
     }
     
     public func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
@@ -283,42 +289,42 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
         suggestedTableViewData.removeAll()
         allSuggested.removeAll()
         var lowerText = searchText.lowercased()
-        Database.database().reference().child("usernames").observeSingleEvent(of: .value, with: {(snapshot) in
+        Database.database().reference().child("users").observeSingleEvent(of: .value, with: { (snapshott) in
+            print("nowHereeeeee")
+            if let snapshotss = snapshott.children.allObjects as? [DataSnapshot]{
+                Database.database().reference().child("usernames").observeSingleEvent(of: .value, with: {(snapshot) in
             print("here: \(snapshot.value)")
             //let snapshotss = snapshot.value as? [DataSnapshot]
                 print("hereNow")
             for (key, val) in (snapshot.value as! [String:Any]){
                     print("uName=\(key)")
+                if key != "fuck"{
                     let uName = key.lowercased()
                     let rName = (val as! String)
                 let uRange = (uName as NSString).range(of: lowerText, options: NSString.CompareOptions.literal)
                     let rRange = (rName as NSString).range(of: lowerText, options: NSString.CompareOptions.literal)
                     print("rANDu: \(uRange) \(rRange)")
                 if uRange.location != NSNotFound {
-                    self.allSuggested.append(rName)
-                    print("curTextu: \(lowerText) allSuggested1: \(self.allSuggested)")
-                } else if rRange.location != NSNotFound{
+                     if self.allSuggested.contains(rName) == false {
                         self.allSuggested.append(rName)
-                        print("curText: \(lowerText) allSuggested: \(self.allSuggested)")
-                } else if self.allSuggested.contains(rName){
-                        if self.allSuggested.contains(rName){
+                        print("curTextu: \(lowerText) allSuggested1: \(self.allSuggested)")
+                    }
+                    
+                } else if self.allSuggested.contains(rName) == true{
                             self.allSuggested.remove(at: self.allSuggested.index(of: rName)!)
                         }
-                        
                 }
-                
+                        
             }
-                print("nowHereee")
-                Database.database().reference().child("users").observeSingleEvent(of: .value, with: { (snapshot) in
-                    print("nowHereeeeee")
-                    if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                        print("nowHereerrrrreeerererererererre")
-                        for snap in snapshots{
+            print("nowHereee: \(self.allSuggested)")
+            
+                    //print("nowHereerrrrreeerererererererre: \(self.allSuggested)")
+                        for snap in snapshotss{
                             print("snapKey: \(snap.key)")
                             if self.allSuggested.contains(snap.key){
                                 var tempDict = [String:Any]()
                                 tempDict = snap.value as! [String:Any]
-                                print("snapVal: \(snap.value as! [String:Any])")
+                                //print("snapVal: \(snap.value as! [String:Any])")
                                 var noName = "-"
                                 if (tempDict["realName"] as? String) != nil{
                                     noName = (tempDict["realName"] as! String)
@@ -326,10 +332,7 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
                                // var messages = tempDict["messages"]
                                 var cellDict = ["receiverUID":snap.key, "messageText": (tempDict["username"] as! String),"receiverName": noName,"receiverPic":"picccssssssccc", "messageKey": snap.key] as [String:Any]
                                 self.suggestedTableViewData.append(cellDict)
-                                
                             }
-                            
-                            
                         }
                         if(self.suggestedTableViewData.count == 0){
                             print("sugg: \(self.suggestedTableViewData.count)")
@@ -337,12 +340,12 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
                         } else {
                     self.searchActive = true;
                         }
-                       
+                        DispatchQueue.main.async{
                             self.allMessagesTableView.reloadData()
-                        
-                
-                    }
+                        }
+                    
                 })
+            }
         })
         
     } // called when text changes (including clear)
