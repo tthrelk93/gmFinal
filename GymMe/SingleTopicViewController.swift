@@ -593,10 +593,28 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
                     }
                 }
             }
+            
+            let valDict = snapshot.value as! [String:Any]
+            self.myName = valDict["realName"] as! String
+            self.myUName = valDict["username"] as! String
+            self.myPicString = valDict["profPic"] as! String
+            self.following = valDict["following"] as! [String]
+            self.topicTitleLabel.text = self.topicData["topicTitle"] as! String
+            self.topicDescriptionLabel.text = (self.topicData["topicDescription"] as! String)
+            self.likeData = self.topicData["likes"] as! [[String:Any]]
+            if (self.topicData["replies"] as? [[String:Any]]) == nil{
+            self.commentData = []
+        } else {
+            self.commentData = self.topicData["replies"] as! [[String:Any]]
+                if self.commentData.count == 1 && self.commentData.first!["x"] != nil{
+                    self.commentData.removeAll()
+                }
+            
+        }
             var countString = String()
-            var replies = self.topicData["replies"] as? [[String:Any]]
-            var replyCount = replies?.count
-            if replies == nil{
+            
+            var replyCount = self.commentData.count
+            if self.commentData == nil{
                 countString = "0 replies"
             } else if replyCount == 1{
                 countString = "1 reply"
@@ -605,20 +623,6 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
             }
             self.replyCountButton.setTitle(countString, for: .normal)
             
-            let valDict = snapshot.value as! [String:Any]
-            self.myName = valDict["realName"] as! String
-            self.myUName = valDict["username"] as! String
-            self.myPicString = valDict["profPic"] as! String
-            self.following = valDict["following"] as! [String]
-            self.topicTitleLabel.text = self.topicData["topicTitle"] as! String
-            self.topicDescriptionLabel.text = (self.topicData["posterRealName"] as! String)
-            self.likeData = self.topicData["likes"] as! [[String:Any]]
-            if (self.topicData["replies"] as? [[String:Any]]) == nil{
-            
-        } else {
-            self.commentData = self.topicData["replies"] as! [[String:Any]]
-            
-        }
             if let messageImageUrl = URL(string: self.topicData["posterPic"] as! String) {
                 
                 if let imageData: NSData = NSData(contentsOf: messageImageUrl) {

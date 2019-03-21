@@ -51,18 +51,16 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
         super.viewDidLoad()
         messagesSearchBar.delegate = self
         
-       
-        //tableViewData = [[String:Any]]()//[["receiverUID":"dlIJLLijOBR6mOBXGNoO3oCPo7M2", "messageText": "blah bal  sdfkjlhhl lsdjkkj sjkdfkl hsdlf","receiverName": "Thomas","receiverPic":"picccccc"],["receiverUID":"reasdfaacieverUIDDddd", "messageText": "blaaaaasdfdaaaah bal  sdfkjlhhl lsdjkkj sjkdfkl hsdlf","receiverName": "Thomaaaaaas","receiverPic":"piaaaacccccc"]]
-       //suggestedTableViewData = [["receiverUID":"dlIJLLijOBR6mOBXGNoO3oCPo7M2", "messageText": "blah ssssssssbal  sdfkjlhhl lsdjkkj sjkdfkl hsdlf","receiverName": "Thssssomas","receiverPic":"picccssssssccc"]]
+        Database.database().reference().child("users").observeSingleEvent(of: .value, with:
+            { (snapshott) in
+                 var snapshotss = snapshott.value as! [String:Any]
         Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("messages").observeSingleEvent(of: .value, with: { (snapshot) in
             
             if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                Database.database().reference().child("users").observeSingleEvent(of: .value, with: { (snapshott) in
-                 //print("messageDictSnapshot: \(snapshot)")
-                var snapshotss = snapshots.reversed()
                 for snap in snapshots{
-                   
-                    //ERRROR shouldnt be messageDict first but rather last
+                    var thisUser = snapshotss[snap.key] as! [String:Any]
+                    var tableDict = [String:Any]()
+                    tableDict["receiverUID"] = snap.key
                     var messageDict = snap.value as! [String:Any]
                     //print("mddd: \((messageDict.values))")
                     var mArray = [[String:Any]]()
@@ -71,58 +69,50 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
                         if dict.key == "typingIndicator"{
                             print("typingindicator")
                         } else {
-                        var tDict = dict.value as! [String:Any]
-                        var dateFormatter = DateFormatter()
-                        dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
-                        var date = dateFormatter.date(from: tDict["timeStamp"] as! String)
-                        tDict["timeStamp"] = date
-                        mArray.append(tDict)
+                            var tDict = dict.value as! [String:Any]
+                            var dateFormatter = DateFormatter()
+                            dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
+                            var date = dateFormatter.date(from: tDict["timeStamp"] as! String)
+                            tDict["timeStamp"] = date
+                            mArray.append(tDict)
                         }
                     }
                     let sortedResults = (mArray as NSArray).sortedArray(using: [NSSortDescriptor(key: "timeStamp", ascending: true)]) as! [[String:AnyObject]]
-                    print("sortedByDate: \(sortedResults)")
                     
-                    print("cartKey:\(snap.key)")
+                            tableDict["receiverName"] = thisUser["realName"] as! String
+                            tableDict["senderName"] = (sortedResults.last as! [String:Any])["senderName"] as! String
+                            tableDict["messageKey"] = messageDict.first?.key
+                            if ((sortedResults.last as! [String:Any])["text"] as? String == nil){
+                            tableDict["photoURL"] = (sortedResults.last as! [String:Any])["photoURL"] as! String
+                                tableDict["messageText"] = ""
+                            } else {
+                                tableDict["messageText"] = (sortedResults.last as! [String:Any])["text"] as! String
+                            }
+                            self.tableViewData.append(tableDict)
                     
-                        
-                    
-                        
-                    var userDict = ((snapshott.value as! [String:Any])[snap.key] as! [String:Any])
-                        var name = userDict["realName"] as! String
-
-                    var tempDict = [String:Any]()
-                    var tempDict2 = messageDict.reversed()
-                    if ((sortedResults.last as! [String:Any])["text"] as? String == nil){
-                        tempDict = ["receiverUID":snap.key, "messageText":"", "receiverName":name,"senderName":(sortedResults.last as! [String:Any])["senderName"] as! String, "messageKey": messageDict.first?.key, "photoURL":(sortedResults.last as! [String:Any])["photoURL"] as! String]
-                        
-                    } else {
-                    tempDict = ["receiverUID":snap.key, "messageText":(sortedResults.last as! [String:Any])["text"] as! String, "receiverName":name,"senderName":(sortedResults.last as! [String:Any])["senderName"] as! String, "messageKey": messageDict.first?.key]
-                    }
-                    
-                    self.tableViewData.append(tempDict)
-                    
-                    }
-               // DispatchQueue.main.async {
+                }
                 self.allMessagesTableView.register(UINib(nibName: "MessagesTableViewCell", bundle: nil), forCellReuseIdentifier: "MessagesTableViewCell")
+                self.allMessagesTableView.delegate = self
+                self.allMessagesTableView.dataSource = self
                
-                    self.allMessagesTableView.delegate = self
-                    self.allMessagesTableView.dataSource = self
-                    DispatchQueue.main.async {
-                        self.allMessagesTableView.reloadData()
-                    }
-                    if self.prevScreen == "profile"{
-                        if self.backFromMessage == true{
-                            self.performSegue(withIdentifier: "MessageToProfile", sender: self)
-                        } else {
+               
+                        // ready
+                self.allMessagesTableView.reloadData()
+                
+                
+                
+                if self.prevScreen == "profile"{
+                    if self.backFromMessage == true{
+                        self.performSegue(withIdentifier: "MessageToProfile", sender: self)
+                    } else {
                         print("prevScreen = profile curUID: \(self.curUID)")
                         self.performSegue(withIdentifier: "MessagesToChat", sender: self)
-                        }
                     }
-                })
+                }
                 
                 }
-               // }
             
+                })
             })
         
 
@@ -196,11 +186,11 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
                 cell.messageKey = ((self.tableViewData[indexPath.row] )["messageKey"] as! String)
                 cell.receiverUID = ((self.tableViewData[indexPath.row] )["receiverUID"] as! String)
                 cell.messageText.text = ((self.tableViewData[indexPath.row] )["messageText"]! as! String)
-                if ((self.tableViewData[indexPath.row] )["senderName"] as! String) != self.myRealName {
-                    cell.receiverName.text = ((self.tableViewData[indexPath.row] )["senderName"] as! String)
-            } else {
-                    cell.receiverName.text = ((self.tableViewData[indexPath.row] )["receiverName"] as! String)
-            }
+                //if ((self.tableViewData[indexPath.row] )["senderName"] as! String) != self.myRealName {
+                    cell.receiverName.text = (snapshot.value as! [String:Any])["realName"] as! String
+           // } else {
+               //     cell.receiverName.text = ((self.tableViewData[indexPath.row] )["receiverName"] as! String)
+            //}
             })
         return cell
         }

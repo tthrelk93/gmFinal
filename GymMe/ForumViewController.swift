@@ -102,7 +102,7 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
             } else if replyCount == 1{
                 countString = "1 reply"
             } else {
-                countString = "\(replyCount) replies"
+                countString = "\(replyCount!) replies"
             }
             cell.replyCountButton.setTitle(countString, for: .normal)
             
@@ -209,6 +209,7 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
             
             switch indexPath.row {
             case 0:
+                pickerCollect.scrollToItem(at: IndexPath(item: 0, section: 0), at: UICollectionViewScrollPosition(), animated: true)
                 cell1.layer.borderColor = UIColor.red.cgColor
                 cell2.layer.borderColor = UIColor.lightGray.cgColor
                 cell3.layer.borderColor = UIColor.lightGray.cgColor
@@ -226,6 +227,7 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
                // cell4.backgroundColor = UIColor.white
                 //cell4.pickerLabel.textColor = UIColor.lightGray
             case 1:
+                 pickerCollect.scrollToItem(at: IndexPath(item: 1, section: 0), at: UICollectionViewScrollPosition(), animated: true)
                 cell1.layer.borderColor = UIColor.lightGray.cgColor
                 cell2.layer.borderColor = UIColor.red.cgColor
                 cell3.layer.borderColor = UIColor.lightGray.cgColor
@@ -243,6 +245,7 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
                     self.topicCollect.reloadData()
                 }
             case 2:
+                 pickerCollect.scrollToItem(at: IndexPath(item: 2, section: 0), at: UICollectionViewScrollPosition(), animated: true)
                 cell1.layer.borderColor = UIColor.lightGray.cgColor
                 cell2.layer.borderColor = UIColor.lightGray.cgColor
                 cell3.layer.borderColor = UIColor.red.cgColor

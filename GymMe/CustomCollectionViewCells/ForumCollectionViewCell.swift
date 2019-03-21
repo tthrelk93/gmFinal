@@ -39,6 +39,7 @@ class ForumCollectionViewCell: UICollectionViewCell {
     var myUName = String()
     var myRealName = String()
     var favoritedTopics: [String]?
+    
     @IBAction func likeTopicPressed(_ sender: Any) {
         Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { snapshot in
             let valDict = snapshot.value as! [String:Any]
@@ -185,6 +186,11 @@ class ForumCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
         // Initialization code
         posterPicImageView.frame = CGRect(x: posterPicImageView.frame.origin.x, y: posterPicImageView.frame.origin.y, width: 60, height: 60)
+    }
+    
+    override func prepareForReuse(){
+        super.prepareForReuse()
+        self.likeTopicButton.setImage(UIImage(named: "like"), for: .normal)
     }
 
 }

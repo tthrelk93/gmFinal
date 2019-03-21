@@ -11,7 +11,7 @@ import FirebaseDatabase
 import FirebaseStorage
 import FirebaseAuth
 
-class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITextFieldDelegate {
+class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITextFieldDelegate, UITextViewDelegate {
     var prevScreen = String()
     var senderScreen = String()
     var hashtag = String()
@@ -156,7 +156,8 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
         commentTF.isHidden = false
     }
     @IBOutlet weak var commentButton: UIButton!
-    @IBOutlet weak var postText: UILabel!
+    
+    @IBOutlet weak var postText: UITextView!
     @IBAction func commentsCountPressed(_ sender: Any) {
         commentView.isHidden = false
         commentView.isHidden = false
@@ -343,6 +344,8 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
        posterPicButton.layer.cornerRadius = posterPicButton.frame.width/2
         posterPicButton.layer.masksToBounds = true
        
+        postTextView.delegate = self
+        postText.delegate = self
         
         Database.database().reference().child("posts").child(self.thisPostData["postID"] as! String).observeSingleEvent(of: .value, with: {(snapshot) in
             if self.prevScreen == "advancedSearch"{
@@ -386,6 +389,8 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                     self.postTextView.isHidden = false
                     self.postTextView.text = (self.thisPostData["postText"] as! String)
             }
+                self.postTextView.resolveHashTags()
+                
                 if self.thisPostData["city"] != nil{
                     self.cityButton.setTitle((self.thisPostData["city"] as! String), for: .normal)
             }
@@ -501,6 +506,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                 } else {
                         self.postText.text = (self.thisPostData["postText"] as! String)
                 }
+                    self.postText.resolveHashTags()
                     if self.thisPostData["city"] != nil{
                         self.cityButton.setTitle((self.thisPostData["city"] as! String), for: .normal)
                 }
@@ -829,11 +835,30 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
     }
     
 
+    var curName = String()
     var favData = [[String:Any]]()
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "SinglePostToProfile"{
+            if let vc = segue.destination as? ProfileViewController{
+                if toMention == true{
+                    vc.curUID = self.mentionID
+                } else {
+                    vc.curUID = Auth.auth().currentUser!.uid
+                }
+                vc.prevScreen = "singlePost"
+                
+                if selectedCurAuthProfile == true{
+                    vc.viewerIsCurAuth = true
+                    
+                } else {
+                    vc.viewerIsCurAuth = false
+                }
+                vc.curName = self.curName
+            }
+        }
         if segue.identifier == "SinglePostToFav"{
             if let vc = segue.destination as? FavoritesViewController{
                 vc.favData = self.favData
@@ -841,7 +866,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
         }
         if segue.identifier == "SinglePostToHash"{
             if let vc = segue.destination as? HashTagViewController{
-                vc.hashtag = self.hashtag
+                vc.hashtag = self.selectedHash
             }
             
         }
@@ -977,6 +1002,61 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
         self.view.endEditing(true)
         print("return text")
         return false
+    }
+    var selectedCurAuthProfile = true
+    var mentionID = String()
+    var toMention = false
+    func showHashTag(tagType: String, payload: String, postID: String, name: String) {
+        if tagType == "mention"{
+            print("mention: going to \(payload)'s profile")
+            self.curName = name
+            
+           toMention = true
+            Database.database().reference().child("usernames").observeSingleEvent(of: .value, with: { snapshot in
+                let snapshots = snapshot.value as! [String:Any]
+                for snap in snapshots{
+                    if snap.key == payload{
+                        self.mentionID = snap.value as! String
+                        if self.mentionID == Auth.auth().currentUser!.uid{
+                            self.selectedCurAuthProfile = true
+                        } else {
+                            self.selectedCurAuthProfile = false
+                        }
+                       self.toMention = true
+                        self.performSegue(withIdentifier: "SinglePostToProfile", sender: self)
+                    }
+                }
+            })
+        } else {
+            print("hashtag: \(payload) database action")
+            selectedHash = payload
+            performSegue(withIdentifier: "SinglePostToHash", sender: self)
+        }
+        /*let alertView = UIAlertView()
+         alertView.title = "\(tagType) tag detected"
+         // get a handle on the payload
+         alertView.message = "\(payload)"
+         alertView.addButton(withTitle: "Ok")
+         alertView.show()*/
+    }
+    var selectedHash = String()
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+        switch URL.scheme {
+        case "hash" :
+            showHashTagAlert(tagType: "hash", payload: (URL as NSURL).resourceSpecifier!.removingPercentEncoding!)
+        case "mention" :
+            showHashTagAlert(tagType: "mention", payload: (URL as NSURL).resourceSpecifier!.removingPercentEncoding!)
+        default:
+            print("just a regular url")
+        }
+        
+        return true
+    }
+    
+    func showHashTagAlert(tagType:String, payload:String){
+        print("show hash")
+        showHashTag(tagType: tagType, payload: payload, postID: self.postID, name: (self.posterNameButton.titleLabel?.text)!)
+        
     }
 
 }

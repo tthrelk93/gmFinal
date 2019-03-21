@@ -18,6 +18,7 @@ class ChatContainer: UIViewController {
     var newMessage = false
     var curItemKey: String?
    
+    @IBOutlet weak var topLine: UIView!
     @IBAction func BackToMessagesPressed(_ sender: Any) {
         performSegue(withIdentifier: "BackToMessages", sender: self)
     }
@@ -26,6 +27,7 @@ class ChatContainer: UIViewController {
         super.viewDidLoad()
         print("sender: \(sender)")
        
+       topLine.frame.size = CGSize(width: UIScreen.main.bounds.width, height: 0.5)
         Database.database().reference().child("users").child(recipientID).observeSingleEvent(of: .value, with: { (snapshot) in
             let tempDict = snapshot.value as! [String:Any]
             self.sender = tempDict["realName"] as! String
