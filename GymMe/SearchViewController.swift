@@ -616,6 +616,8 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 
                 print("boldName&Comment: \(boldNameAndComment)")
                 cell.commentTextView.attributedText = boldNameAndComment
+                    cell.commentTextView.resolveHashTags()
+                    
                 var tStampDateString = String()
                 if self.topBarCat.titleLabel!.textColor == UIColor.red || self.topBarNearby.titleLabel!.textColor == UIColor.red {
                 tStampDateString = self.curCommentCell!["datePosted"]! as! String
@@ -837,7 +839,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 Database.database().reference().child("posts").child(self.postID).child("favorites").setValue(favesArray)
                 
                 
-                Database.database().reference().child("users").child(self.posterUID).child("posts").child(self.postID).child("favorited").setValue(favesArray)
+                Database.database().reference().child("users").child(self.posterUID).child("posts").child(self.postID).child("favorites").setValue(favesArray)
                 Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("favorited").setValue(favesArray)
                 
             })
@@ -997,7 +999,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 let snapshots = snapshot.value as! [String:Any]
                 for snap in snapshots{
                     if snap.key == payload{
-                        self.mentionID = snap.value as! String
+                        self.mentionID = (snap.value as! [String])[0] as! String
                         if self.mentionID == Auth.auth().currentUser!.uid{
                             self.selectedCurAuthProfile = true
                         } else {
@@ -1249,13 +1251,20 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     var commentsPost: [String:Any]?
                     for item in (selfData["comments"] as! [[String:Any]]){
                         
-                        commentsPost = item as! [String: Any]
+                        commentsPost = item
                         
                     }
+                    var likedBySelf = false
                     for item in (selfData["likes"] as! [[String:Any]]){
                         
-                        likesPost = item as! [String: Any]
-                        
+                        likesPost = item
+                        if likesPost!.count == 1 && likesPost!["x"] != nil{
+                            
+                        } else {
+                        if (likesPost!["uName"] as! String) == self.myUName{
+                            likedBySelf = true
+                        }
+                        }
                     }
                     if likesPost!["x"] != nil {
                         
@@ -1270,7 +1279,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                             
                         }
                         
-                        if (likesPost!["uName"] as! String) == self.myUName{
+                        if likedBySelf == true {
                             self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
                             //cell.likesCountButton.setTitle((feedDataArray[indexPath.row]["likes"] as! [[String:Any]]).count.description, for: .normal)
                         }
@@ -1301,10 +1310,17 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         
                         
                     }
-                    
+                    var favedBySelf = false
                     for item in (selfData["favorites"] as! [[String:Any]]){
                         
                         favesPost = item as! [String: Any]
+                        if favesPost!.count == 1 && favesPost!["x"] != nil{
+                            
+                        } else {
+                            if (favesPost!["uName"] as! String) == self.myUName{
+                                favedBySelf = true
+                            }
+                        }
                         
                     }
                     if favesPost!["x"] != nil {
@@ -1312,7 +1328,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     } else {
                         
                         
-                        if (favesPost!["uName"] as! String) == self.myName{
+                        if favedBySelf == true{
                             favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
                             //favoritesCount.setTitle((((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["favorites"] as! [[String:Any]]).count.description, for: .normal)
                         }
@@ -1348,9 +1364,17 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         commentsPost = item as! [String: Any]
                         
                     }
+                    var likedBySelf = false
                     for item in (selfData["likes"] as! [[String:Any]]){
                         
                         likesPost = item as! [String: Any]
+                        if likesPost!.count == 1 && likesPost!["x"] != nil{
+                            
+                        } else {
+                            if (likesPost!["uName"] as! String) == self.myUName{
+                                likedBySelf = true
+                            }
+                        }
                         
                     }
                     if likesPost!["x"] != nil {
@@ -1359,7 +1383,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         
                         likeButtonCount.setTitle(String((selfData["likes"] as! [[String:Any]]).count), for: .normal)
                         
-                        if (likesPost!["uName"] as! String) == self.myName{
+                        if likedBySelf == true{
                             self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
                             //cell.likesCountButton.setTitle((feedDataArray[indexPath.row]["likes"] as! [[String:Any]]).count.description, for: .normal)
                         }
@@ -1387,10 +1411,17 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                        
                         
                     }
-                    
+                    var favedBySelf = false
                     for item in (selfData["favorites"] as! [[String:Any]]){
                         
                         favesPost = item as! [String: Any]
+                        if favesPost!.count == 1 && favesPost!["x"] != nil{
+                            
+                        } else {
+                            if (favesPost!["uName"] as! String) == self.myUName{
+                                favedBySelf = true
+                            }
+                        }
                         
                     }
                     if favesPost!["x"] != nil {
@@ -1398,7 +1429,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     } else {
                         
                         
-                        if (favesPost!["uName"] as! String) == self.myName{
+                        if favedBySelf == true{
                             favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
                             //favoritesCount.setTitle((((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["favorites"] as! [[String:Any]]).count.description, for: .normal)
                         }
@@ -1417,9 +1448,17 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         commentsPost = item as! [String: Any]
                         
                     }
+                    var likedBySelf = false
                     for item in (selfData["likes"] as! [[String:Any]]){
                         
                         likesPost = item as! [String: Any]
+                        if likesPost!.count == 1 && likesPost!["x"] != nil{
+                            
+                        } else {
+                            if (likesPost!["uName"] as! String) == self.myUName{
+                                likedBySelf = true
+                            }
+                        }
                         
                     }
                     if likesPost!["x"] != nil {
@@ -1428,7 +1467,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         
                         likeButtonCount.setTitle(String((selfData["likes"] as! [[String:Any]]).count), for: .normal)
                         
-                        if (likesPost!["uName"] as! String) == self.myName{
+                        if likedBySelf == true{
                             self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
                             //cell.likesCountButton.setTitle((feedDataArray[indexPath.row]["likes"] as! [[String:Any]]).count.description, for: .normal)
                         }
@@ -1452,29 +1491,42 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         }
                         
                     }
-                    
+                    var favedBySelf = false
                     for item in (selfData["favorites"] as! [[String:Any]]){
                         
                         favesPost = item as! [String: Any]
-                        
+                        if favesPost!.count == 1 && favesPost!["x"] != nil{
+                            
+                        } else {
+                            if (favesPost!["uName"] as! String) == self.myUName{
+                                favedBySelf = true
+                            }
+                        }
                     }
                     if favesPost!["x"] != nil {
                         
                     } else {
-                        if (favesPost!["uName"] as! String) == self.myName{
+                        if favedBySelf == true{
                             favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
-                            //favoritesCount.setTitle((((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["favorites"] as! [[String:Any]]).count.description, for: .normal)
+                            
                         }
                     }
-                    //textPostTV.isHidden = false
-                    //singlePostView2.isHidden = true
-                    UIView.animate(withDuration: 0.5, animations: {
-                        //self.singlePostView3.frame = self.textPostOnlyCommentsPost.frame
-                    })
+                    
+                    
                 }
-                postText.text = (selfData["postText"] as! String)
+                
+                cityLabel.setTitle((selfData["city"] as! String), for: .normal)
+                if (selfData["postText"] as? String) != nil{
+            
+                let attrs = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 15)]
+                let attributedString = NSMutableAttributedString(string:(selfData["postText"] as! String), attributes:attrs)
+                
+                postText.attributedText = attributedString
+                
+                
                 postText.resolveHashTags()
-                //singlePostTextView.text = (((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["postText"] as! String)
+                }
+                
                 UIView.animate(withDuration: 0.5, animations: {
                     self.singlePostView.isHidden = false
                     self.backToCatButton.isHidden = true
@@ -1502,9 +1554,17 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     }
                 }
                 if((((self.popCollectData[indexPath.row]) as! [String:Any])["postText"] as? String) != nil){
-                    postText.text = (((self.popCollectData[indexPath.row]) as! [String:Any])["postText"] as! String)
+                    
+                    let attrs = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 15)]
+                    let attributedString = NSMutableAttributedString(string:(((self.popCollectData[indexPath.row]) as! [String:Any])["postText"] as! String), attributes:attrs)
+                    
+                    postText.attributedText = attributedString
+                    
+                    
+                    postText.resolveHashTags()
+                    
                 }
-                postText.resolveHashTags()
+               
                 
                 //did select picture cell
                 if ((self.popCollectData[indexPath.row]) as! [String:Any])["postPic"] as? String != nil {
@@ -1524,19 +1584,29 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         commentsPost = item as! [String: Any]
                         
                     }
+                    var likedBySelf = false
                     for item in (((self.popCollectData[indexPath.row]) as! [String:Any])["likes"] as! [[String:Any]]){
                         
                         likesPost = item as! [String: Any]
-                        if likesPost!["x"] != nil{
+                        if likesPost!.count == 1 && likesPost!["x"] != nil{
                             
                         } else {
-                        if (likesPost!["uName"] as! String) == self.myName{
-                            self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
-                            //cell.likesCountButton.setTitle((feedDataArray[indexPath.row]["likes"] as! [[String:Any]]).count.description, for: .normal)
+                            if (likesPost!["uName"] as! String) == self.myUName{
+                                likedBySelf = true
                             }
                         }
                         
+                        
                     }
+                        
+                        if likesPost!["x"] != nil{
+                            
+                        } else {
+                            if likedBySelf == true{
+                                self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
+                                
+                            }
+                        }
                    
                         var likesC = ((((self.popCollectData[indexPath.row]) )["likes"] as! [[String:Any]]).count)
                         var likeString = ""
@@ -1582,10 +1652,17 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         
                         
                     }
-                    
+                    var favedBySelf = false
                     for item in (((self.popCollectData[indexPath.row]) as! [String:Any])["favorites"] as! [[String:Any]]){
                         
                         favesPost = item as! [String: Any]
+                        if favesPost!.count == 1 && favesPost!["x"] != nil{
+                            
+                        } else {
+                            if (favesPost!["uName"] as! String) == self.myUName{
+                                favedBySelf = true
+                            }
+                        }
                         
                     }
                     if favesPost!["x"] != nil {
@@ -1593,7 +1670,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     } else {
                         
                         
-                        if (favesPost!["uName"] as! String) == self.myName{
+                        if favedBySelf == true{
                             favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
                             //favoritesCount.setTitle(((self.popCollectData[indexPath.row])["favorites"] as! [[String:Any]]).count.description, for: .normal)
                         }
@@ -1637,20 +1714,28 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                             posterPicButton.setImage(UIImage(data: imageData as Data), for: .normal)
                         }
                     }
+                    var likedBySelf = false
                     for item in (((self.popCollectData[indexPath.row]) as! [String:Any])["likes"] as! [[String:Any]]){
                         
                         likesPost = item as! [String: Any]
-                        if likesPost!["x"] != nil{
+                        if likesPost!.count == 1 && likesPost!["x"] != nil{
                             
                         } else {
-                            if (likesPost!["uName"] as! String) == self.myName{
-                                self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
-                                //cell.likesCountButton.setTitle((feedDataArray[indexPath.row]["likes"] as! [[String:Any]]).count.description, for: .normal)
+                            if (likesPost!["uName"] as! String) == self.myUName{
+                                likedBySelf = true
                             }
                         }
                         
+                        
                     }
-                    
+                    if likesPost!["x"] != nil{
+                        
+                    } else {
+                        if likedBySelf == true{
+                            self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
+                            
+                        }
+                    }
                     var likesC = ((((self.popCollectData[indexPath.row]) )["likes"] as! [[String:Any]]).count)
                     var likeString = ""
                     if likesC == 1 {
@@ -1696,10 +1781,17 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                        
                         
                     }
-                    
+                    var favedBySelf = false
                     for item in (((self.popCollectData[indexPath.row]) as! [String:Any])["favorites"] as! [[String:Any]]){
                         
                         favesPost = item as! [String: Any]
+                        if favesPost!.count == 1 && favesPost!["x"] != nil{
+                            
+                        } else {
+                            if (favesPost!["uName"] as! String) == self.myUName{
+                                favedBySelf = true
+                            }
+                        }
                         
                     }
                     if favesPost!["x"] != nil {
@@ -1707,7 +1799,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     } else {
                         
                         
-                        if (favesPost!["uName"] as! String) == self.myName{
+                        if favedBySelf == true{
                             favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
                             //favoritesCount.setTitle(((self.popCollectData[indexPath.row])["favorites"] as! [[String:Any]]).count.description, for: .normal)
                         }
@@ -1721,33 +1813,43 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     var likesPost: [String:Any]?
                     var favesPost: [String:Any]?
                     var commentsPost: [String:Any]?
-                    if ((self.popCollectData[indexPath.row]) as! [String:Any])["comments"] != nil {
-                    for item in (((self.popCollectData[indexPath.row]) as! [String:Any])["comments"] as! [[String:Any]]){
+                    if ((self.popCollectData[indexPath.row]) )["comments"] != nil {
+                        for item in (((self.popCollectData[indexPath.row]) )["comments"] as! [[String:Any]]){
                         
-                        commentsPost = item as! [String: Any]
+                        commentsPost = item
                         
                     }
                     }
-                    self.posterNameButton.setTitle(((self.popCollectData[indexPath.row]) as! [String:Any])["posterName"] as? String, for: .normal)
+                    self.posterNameButton.setTitle(((self.popCollectData[indexPath.row]) )["posterName"] as? String, for: .normal)
+                    self.cityLabel.setTitle((selfData["city"] as! String), for: .normal)
                     
-                    if let messageImageUrl = URL(string: ((self.popCollectData[indexPath.row]) as! [String:Any])["posterPicURL"] as! String) {
+                    if let messageImageUrl = URL(string: ((self.popCollectData[indexPath.row]) )["posterPicURL"] as! String) {
                         
                         if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
                             posterPicButton.setImage(UIImage(data: imageData as Data), for: .normal)
                         }
                     }
+                    var likedBySelf = false
                     for item in (((self.popCollectData[indexPath.row]) as! [String:Any])["likes"] as! [[String:Any]]){
                         
                         likesPost = item as! [String: Any]
-                        if likesPost!["x"] != nil{
+                        if likesPost!.count == 1 && likesPost!["x"] != nil{
                             
                         } else {
-                            if (likesPost!["uName"] as! String) == self.myName{
-                                self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
-                                //cell.likesCountButton.setTitle((feedDataArray[indexPath.row]["likes"] as! [[String:Any]]).count.description, for: .normal)
+                            if (likesPost!["uName"] as! String) == self.myUName{
+                                likedBySelf = true
                             }
                         }
                         
+                        
+                    }
+                    if likesPost!["x"] != nil{
+                        
+                    } else {
+                        if likedBySelf == true{
+                            self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
+                            
+                        }
                     }
                     
                     var likesC = ((((self.popCollectData[indexPath.row]) )["likes"] as! [[String:Any]]).count)
@@ -1775,46 +1877,35 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         commentedByButton.setTitle(commentString, for: .normal)
                     } else {
                         
-                        print("showComments")
-                        //self.backFromLikedByViewButton.isHidden = false
-                        
-                        //self.commentTF.isHidden = false
-                        
-                        //self.topLabel.text = "Comments"
-                        
-                        
-                        
-                        
                         commentsCollectData = (((self.popCollectData[indexPath.row]) as! [String:Any])["comments"] as! [[String:Any]])
                         var commentString = "View \(commentsCollectData.count) comments"
                         commentedByButton.setTitle(commentString, for: .normal)
                         
-                        //DispatchQueue.main.async {
-                        
-                        
-                        
-                      
-                        
                     }
-                    
+                    var favedBySelf = false
                     for item in (((self.popCollectData[indexPath.row]) as! [String:Any])["favorites"] as! [[String:Any]]){
                         
                         favesPost = item as! [String: Any]
+                        if favesPost!.count == 1 && favesPost!["x"] != nil{
+                            
+                        } else {
+                            if (favesPost!["uName"] as! String) == self.myUName{
+                                favedBySelf = true
+                            }
+                        }
                         
                     }
                     if favesPost!["x"] != nil {
                         
                     } else {
-                        if (favesPost!["uName"] as! String) == self.myName{
+                        if favedBySelf == true {
                             favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
-                            //favoritesCount.setTitle(((self.popCollectData[indexPath.row])["favorites"] as! [[String:Any]]).count.description, for: .normal)
+                            
                         }
                     }
-                   // textPostTV.isHidden = false
-                    //singlePostView2.isHidden = true
+                  
                 }
                
-                //singlePostTextView.text = ((self.popCollectData[indexPath.row])["postText"] as! String)
                 UIView.animate(withDuration: 0.5, animations: {
                     self.singlePostView.isHidden = false
                     self.singlePostView.frame = self.ogSinglePostViewFrame
@@ -2164,7 +2255,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     
                     //reload collect in delegate
                     self.commentsCollectData = commentsArray
-                    if commentsArray.count == 1{
+                    if commentsArray.count == 1 {
                         DispatchQueue.main.async{
                             self.commentCollect.delegate = self
                             self.commentCollect.dataSource = self

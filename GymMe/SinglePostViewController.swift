@@ -56,10 +56,12 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
     var myPicString = String()
     
     @IBAction func favoritesButtonPressed(_ sender: Any) {
+        print("here000")
+        print("df: \(self.favoritesButton.currentBackgroundImage)")
         if self.favoritesButton.currentBackgroundImage == UIImage(named: "favoritesUnfilled.png"){
             self.favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
             print("here111")
-            Database.database().reference().child("posts").child(self.postID ).observeSingleEvent(of: .value, with: { snapshot in
+            Database.database().reference().child("posts").child(self.postID).observeSingleEvent(of: .value, with: { snapshot in
                 let valDict = snapshot.value as! [String:Any]
                 
                 var favoritesArray = valDict["favorites"] as! [[String:Any]]
@@ -71,12 +73,12 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                 if self.myPicString == nil{
                     self.myPicString = "profile-placeholder"
                 }
-                favoritesArray.append(["uName": self.myUName, "realName": self.myUName, "uid": Auth.auth().currentUser!.uid, "pic": self.myPicString])
+                favoritesArray.append(["uName": self.myUName, "realName": self.myRealName, "uid": Auth.auth().currentUser!.uid, "pic": self.myPicString])
                 
                 Database.database().reference().child("posts").child(self.postID).child("favorites").setValue(favoritesArray)
                 Database.database().reference().child("users").child(self.posterUID).child("posts").child(self.postID).child("favorites").setValue(favoritesArray)
                 Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("favorited").updateChildValues([self.postID: self.thisPostData])
-                self.favoritesButton.setTitle(String(favoritesArray.count), for: .normal)
+                // self.favoritesCountButton.setTitle(String(favoritesArray.count), for: .normal)
                 Database.database().reference().child("users").child(self.posterUID).observeSingleEvent(of: .value, with: { snapshot in
                     var uploadDict = [String:Any]()
                     var snapDict = snapshot.value as! [String:Any]
@@ -84,13 +86,13 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                     if snapDict["notifications"] != nil{
                         noteArray = snapDict["notifications"] as! [[String:Any]]
                         let sendString = self.myUName + " favorited your post."
+                        
                         var date = Date()
                         var dateFormatter = DateFormatter()
                         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
                         var dateString = dateFormatter.string(from: date)
                         
-                        
-                        let tempDict = ["actionByUsername": self.myUName , "postID": self.postID,"actionText": sendString, "timeStamp": dateString,"actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": self.myPicString, "postText": "notification"] as! [String:Any]
+                        let tempDict = ["actionByUsername": self.myUName , "postID": self.postID,"actionText": sendString, "timeStamp": dateString,"actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": self.myPicString, "postText": self.postText.text as! String] as! [String:Any]
                         noteArray.append(tempDict)
                         Database.database().reference().child("users").child(self.posterUID).updateChildValues(["notifications": noteArray] as [AnyHashable:Any]){ err, ref in
                             print("done")
@@ -103,7 +105,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
                         var dateString = dateFormatter.string(from: date)
                         
-                        let tempDict = ["actionByUsername": self.myUName ,"postID": self.postID,"actionText": sendString, "timeStamp": dateString,"actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": self.myPicString, "postText": "notification"] as [String : Any]
+                        let tempDict = ["actionByUsername": self.myUName ,"postID": self.postID,"actionText": sendString, "timeStamp": dateString,"actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": self.myPicString, "postText": self.postText.text] as [String : Any]
                         Database.database().reference().child("users").child(self.posterUID).updateChildValues(["notifications":[tempDict]])
                     }
                     
@@ -124,23 +126,24 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                     favesArray.remove(at: 0)
                     favesArray.append(["x": "x"])
                     favesVal = 0
-                    self.favoritesButton.setTitle("0", for: .normal)
+                    //self.favoritesCountButton.setTitle("0", for: .normal)
                 } else {
                     favesArray.remove(at: 0)
                     favesVal = favesArray.count
-                    self.favoritesButton.setTitle(String(favesArray.count), for: .normal)
+                    //self.favoritesCountButton.setTitle(String(favesArray.count), for: .normal)
                 }
                 
                 
                 Database.database().reference().child("posts").child(self.postID).child("favorites").setValue(favesArray)
                 
                 
-                Database.database().reference().child("users").child(self.posterUID).child("posts").child(self.postID).child("favorited").setValue(favesArray)
-                Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("favorited").setValue(favesArray)
+                Database.database().reference().child("users").child(self.posterUID).child("posts").child(self.postID).child("favorites").setValue(favesArray)
+                Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("favorited").child(self.postID).removeValue()
                 
             })
             
         }
+        
     }
     
     @IBOutlet weak var favoritesButton: UIButton!
@@ -181,9 +184,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
         likesCollect.isHidden = false
     }
     @IBAction func likeButtonPressed(_ sender: Any) {
-        print("like")
         var myPic = String()
-        print("fuqqqqq")
         Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { snapshot in
             let valDict = snapshot.value as! [String:Any]
             myPic = valDict["profPic"] as! String
@@ -206,7 +207,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                 // if self.myPicString == nil{
                 // self.myPicString = "profile-placeholder"
                 //}
-                likesArray.append(["uName": self.myUName, "realName": self.myUName, "uid": Auth.auth().currentUser!.uid, "pic": myPic])
+                likesArray.append(["uName": self.myUName, "realName": self.myRealName, "uid": Auth.auth().currentUser!.uid, "pic": myPic])
                 
                 
                 Database.database().reference().child("posts").child(self.postID).child("likes").setValue(likesArray)
@@ -225,7 +226,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                 }
                 self.likesCountButton.setTitle(likesString, for: .normal)
                 
-                //self.delegate?.reloadDataAfterLike()
+               // self.delegate?.reloadDataAfterLike()
                 Database.database().reference().child("users").child(self.posterUID).observeSingleEvent(of: .value, with: { snapshot in
                     var uploadDict = [String:Any]()
                     var snapDict = snapshot.value as! [String:Any]
@@ -239,18 +240,18 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
                         var dateString = dateFormatter.string(from: date)
                         
-                        let tempDict = ["actionByUsername": self.myUName ,"postID": self.postID,"actionText": sendString, "timeStamp": dateString,"actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": myPic, "postText": "notification"] as! [String:Any]
+                        let tempDict = ["actionByUsername": self.myUName ,"postID": self.postID,"actionText": sendString, "timeStamp": dateString,"actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": myPic, "postText": self.postText.text!] as! [String:Any]
                         noteArray.append(tempDict)
                         Database.database().reference().child("users").child(self.posterUID).updateChildValues(["notifications": noteArray])
                     } else {
-                        
+                        let sendString = self.myUName + " liked your post."
                         
                         var date = Date()
                         var dateFormatter = DateFormatter()
                         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
                         var dateString = dateFormatter.string(from: date)
-                        let sendString = self.myUName + " liked your post."
-                        let tempDict = ["actionByUsername": self.myUName ,"postID": self.postID,"actionText": sendString, "timeStamp": dateString,"actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": myPic, "postText": "notification"] as [String : Any]
+                        
+                        let tempDict = ["actionByUsername": self.myUName ,"postID": self.postID,"actionText": sendString, "timeStamp": dateString,"actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": myPic, "postText": self.postText.text] as [String : Any]
                         Database.database().reference().child("users").child(self.posterUID).updateChildValues(["notifications":[tempDict]])
                     }
                     
@@ -301,13 +302,11 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                 Database.database().reference().child("users").child(self.posterUID).child("posts").child(self.postID).child("likes").setValue(likesArray)
                 
                 
-                DispatchQueue.main.async{
-                    self.likesCollect.reloadData()
-                }
+                //self.delegate?.reloadDataAfterLike()
             })
         }
         DispatchQueue.main.async {
-            // self.delegate?.reloadDataAfterLike()
+            //self.reloadDataAfterLike()
         }
     }
     @IBOutlet weak var postPic: UIImageView!
@@ -333,20 +332,40 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
     var commentsArray = [[String:Any]]()
     var likesArray = [[String:Any]]()
     var advancedData = [String:Any]()
+    var myRealName = String()
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        topLine.frame.size = CGSize(width: UIScreen.main.bounds.width, height: 0.5)
+        Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: {(snapshot) in
+            var curUser = snapshot.value as! [String:Any]
+            self.myUName = curUser["username"] as! String
+            self.myRealName = curUser["realName"] as! String
+            
         
-        posterPicButton.frame.size = CGSize(width: 40, height: 40)
-       posterPicButton.layer.cornerRadius = posterPicButton.frame.width/2
-        posterPicButton.layer.masksToBounds = true
+            self.topLine.frame.size = CGSize(width: UIScreen.main.bounds.width, height: 0.5)
+            self.commentTopLine.frame.size = CGSize(width: UIScreen.main.bounds.width, height: 0.5)
+        
+            self.posterPicButton.frame.size = CGSize(width: 40, height: 40)
+            self.posterPicButton.layer.cornerRadius = self.posterPicButton.frame.width/2
+            self.posterPicButton.layer.masksToBounds = true
        
-        postTextView.delegate = self
-        postText.delegate = self
+            self.postTextView.delegate = self
+            self.postText.delegate = self
         
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.keyboardWillShow),
+            name: NSNotification.Name.UIKeyboardWillShow,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.keyboardWillHide),
+            name: NSNotification.Name.UIKeyboardWillHide,
+            object: nil
+        )
         Database.database().reference().child("posts").child(self.thisPostData["postID"] as! String).observeSingleEvent(of: .value, with: {(snapshot) in
             if self.prevScreen == "advancedSearch"{
             
@@ -407,9 +426,17 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
             
                 self.likesCollect.delegate = self
                 self.likesCollect.dataSource = self
+                var likedBySelf = false
             for item in (self.thisPostData["likes"] as? [[String: Any]])!{
                 
                 tempPost = item as! [String: Any]
+                if tempPost!.count == 1 && tempPost!["x"] != nil{
+                    
+                } else {
+                    if (tempPost!["uName"] as! String) == self.myUName{
+                        likedBySelf = true
+                    }
+                }
                 
             }
             if tempPost!["x"] != nil {
@@ -427,7 +454,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                 }
                 self.likesCountButton.setTitle(fullString1, for: .normal)
                 
-                if (self.thisPostData["posterName"] as? String) == self.myUName{
+                if (likedBySelf == true){
                     self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
                     let countStringNum = String((self.thisPostData["likes"] as? [[String: Any]])!.count)
                     var fullString = String()
@@ -440,11 +467,19 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                     
                 }
             }
-            
+            var favedBySelf = false
             var favesPost: [String:Any]?
+                var thisFaves = (self.thisPostData["favorites"] as? [[String: Any]])!
                 for item in (self.thisPostData["favorites"] as? [[String: Any]])!{
                 
                 favesPost = item as! [String: Any]
+                    if favesPost!.count == 1 && favesPost!["x"] != nil{
+                        
+                    } else {
+                        if (favesPost!["uName"] as! String) == self.myUName{
+                            favedBySelf = true
+                        }
+                    }
                 
             }
             if favesPost!["x"] != nil {
@@ -452,7 +487,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
             } else {
                 
                 
-                if (favesPost!["uName"] as! String) == self.myUName{
+                if (favedBySelf == true){
                     self.favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
                     //cell.favoritesCountButton.setTitle((self.feedDataArray[indexPath.row]["favorites"] as! [[String:Any]]).count.description, for: .normal)
                 }
@@ -519,13 +554,22 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                 }
                 
                 var tempPost: [String:Any]?
+                    var likedBySelf = false
                 self.likesArray = ((self.thisPostData["likes"] as? [[String: Any]])!)
                 
                     self.likesCollect.delegate = self
                     self.likesCollect.dataSource = self
+                    
                 for item in (self.thisPostData["likes"] as? [[String: Any]])!{
                     
                     tempPost = item as! [String: Any]
+                    if tempPost!.count == 1 && tempPost!["x"] != nil{
+                        
+                    } else {
+                        if (tempPost!["uName"] as! String) == self.myUName{
+                            likedBySelf = true
+                        }
+                    }
                     
                 }
                 if tempPost!["x"] != nil {
@@ -543,7 +587,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                     }
                     self.likesCountButton.setTitle(fullString1, for: .normal)
                     
-                    if (self.thisPostData["posterName"] as? String) == self.myUName{
+                    if (likedBySelf == true){
                         self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
                         let countStringNum = String((self.thisPostData["likes"] as? [[String: Any]])!.count)
                         var fullString = String()
@@ -556,11 +600,18 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                        
                     }
                 }
-                
+                var favedBySelf = false
                 var favesPost: [String:Any]?
                     for item in (self.thisPostData["favorites"] as? [[String: Any]])!{
                     
                     favesPost = item as! [String: Any]
+                        if favesPost!.count == 1 && favesPost!["x"] != nil{
+                            
+                        } else {
+                        if (favesPost!["uName"] as! String) == self.myUName{
+                            favedBySelf = true
+                        }
+                        }
                     
                 }
                 if favesPost!["x"] != nil {
@@ -568,7 +619,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                 } else {
                     
                     
-                    if (favesPost!["uName"] as! String) == self.myUName{
+                    if favedBySelf == true{
                         self.favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
                         //cell.favoritesCountButton.setTitle((self.feedDataArray[indexPath.row]["favorites"] as! [[String:Any]]).count.description, for: .normal)
                     }
@@ -604,17 +655,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                             
                         }
                     }
-                    /*if self.prevScreen == "hash"{
-                        self.postPic.image = self.thisPostData["postPic"] as! UIImage
-                    } else {
-                        if let messageImageUrl = URL(string: (self.thisPostData["postPic"] as! String)) {
-                            if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
-                                
-                                self.postPic.image = UIImage(data: imageData as Data)
-                                
-                            }
-                        }
-                    }*/
+                    
                     if self.thisPostData["postText"] == nil{
                         
                     } else {
@@ -636,13 +677,21 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                     
                     self.likesCollect.delegate = self
                     self.likesCollect.dataSource = self
+                    var likedBySelf = false
                     for item in (self.thisPostData["likes"] as? [[String: Any]])!{
                         
                         tempPost = item as! [String: Any]
+                        if tempPost!.count == 1 && tempPost!["x"] != nil{
+                            
+                        } else {
+                            if (tempPost!["uName"] as! String) == self.myUName{
+                                likedBySelf = true
+                            }
+                        }
                         
                     }
                     if tempPost!["x"] != nil {
-                        
+                        print("liikedBySelfVidfalse")
                     } else {
                         
                         
@@ -656,7 +705,9 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                         }
                         self.likesCountButton.setTitle(fullString1, for: .normal)
                         
-                        if (self.thisPostData["posterName"] as? String) == self.myUName{
+                        if (likedBySelf == true){
+                           
+                           print("liikedBySelfVidTrue")
                             self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
                             let countStringNum = String((self.thisPostData["likes"] as? [[String: Any]])!.count)
                             var fullString = String()
@@ -671,9 +722,17 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                     }
                     
                     var favesPost: [String:Any]?
+                    var favedBySelf2 = false
                     for item in (self.thisPostData["favorites"] as? [[String: Any]])!{
                         
                         favesPost = item as! [String: Any]
+                        if favesPost!.count == 1 && favesPost!["x"] != nil{
+                            
+                        } else {
+                        if (favesPost!["uName"] as! String) == self.myUName{
+                            favedBySelf2 = true
+                        }
+                        }
                         
                     }
                     if favesPost!["x"] != nil {
@@ -681,7 +740,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                     } else {
                         
                         
-                        if (favesPost!["uName"] as! String) == self.myUName{
+                        if favedBySelf2 == true{
                             self.favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
                             //cell.favoritesCountButton.setTitle((self.feedDataArray[indexPath.row]["favorites"] as! [[String:Any]]).count.description, for: .normal)
                         }
@@ -720,6 +779,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
             }
         }
             print("thisData: \(self.thisPostData)")
+        })
         })
         
         // Do any additional setup after loading the view.
@@ -884,14 +944,50 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
         return attributedString
     }
     
+    @IBOutlet weak var topLabel: UILabel!
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            let keyboardHeight = keyboardSize.height
+            print("keyHeight: \(keyboardHeight)")
+            commentTopLabel.frame = CGRect(x: commentTopLabel.frame.origin.x, y: commentTopLabel.frame.origin.y - keyboardHeight, width: commentTopLabel.frame.width, height: commentTopLabel.frame.height)
+            
+            backFromComments.isHidden = false
+            
+            commentTopLine.frame = CGRect(x: commentTopLine.frame.origin.x, y: commentTopLine.frame.origin.y - keyboardHeight, width: commentTopLine.frame.width, height: commentTopLine.frame.height)
+            
+            
+            commentsCollect.frame = CGRect(x: commentsCollect.frame.origin.x, y: commentsCollect.frame.origin.y - keyboardHeight, width: commentsCollect.frame.width, height: commentsCollect.frame.height)
+        }
+    }
+    
+    @IBOutlet weak var commentTopLine: UIView!
+    @IBOutlet weak var commentTopLabel: UILabel!
+    @IBOutlet weak var backFromComments: UIButton!
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            let keyboardHeight = keyboardSize.height
+            print("keyHeight: \(keyboardHeight)")
+            
+            commentTopLabel.frame = CGRect(x: commentTopLabel.frame.origin.x, y: commentTopLabel.frame.origin.y + keyboardHeight, width: commentTopLabel.frame.width, height: commentTopLabel.frame.height)
+            
+            backFromComments.isHidden = true
+            
+            commentTopLine.frame = CGRect(x: commentTopLine.frame.origin.x, y: commentTopLine.frame.origin.y + keyboardHeight, width: commentTopLine.frame.width, height: commentTopLine.frame.height)
+            
+            
+            commentsCollect.frame = CGRect(x: commentsCollect.frame.origin.x, y: commentsCollect.frame.origin.y + keyboardHeight, width: commentsCollect.frame.width, height: commentsCollect.frame.height)
+        }
+    }
+    
     public func textFieldDidBeginEditing(_ textField: UITextField) {
-        commentsCollect.frame = CGRect(x: commentsCollect.frame.origin.x, y: commentsCollect.frame.origin.y + 300, width: commentsCollect.frame.width, height: commentsCollect.frame.height)
+       // commentsCollect.frame = CGRect(x: commentsCollect.frame.origin.x, y: commentsCollect.frame.origin.y + 300, width: commentsCollect.frame.width, height: commentsCollect.frame.height)
     }// became first responder
     
     
     public func textFieldDidEndEditing(_ textField: UITextField){
         //add comment to post
-         commentsCollect.frame = CGRect(x: commentsCollect.frame.origin.x, y: commentsCollect.frame.origin.y - 300, width: commentsCollect.frame.width, height: commentsCollect.frame.height)
+         //commentsCollect.frame = CGRect(x: commentsCollect.frame.origin.x, y: commentsCollect.frame.origin.y - 300, width: commentsCollect.frame.width, height: commentsCollect.frame.height)
         if textField.text == "" || textField.hasText == false {
             
         } else {
@@ -1016,7 +1112,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                 let snapshots = snapshot.value as! [String:Any]
                 for snap in snapshots{
                     if snap.key == payload{
-                        self.mentionID = snap.value as! String
+                        self.mentionID = (snap.value as! [String])[0] as! String
                         if self.mentionID == Auth.auth().currentUser!.uid{
                             self.selectedCurAuthProfile = true
                         } else {

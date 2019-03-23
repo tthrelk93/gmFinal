@@ -159,7 +159,7 @@ class NewsFeedPicCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
                 Database.database().reference().child("posts").child(self.postID!).child("favorites").setValue(favesArray)
                 
                 
-                Database.database().reference().child("users").child(self.posterUID!).child("posts").child(self.postID!).child("favorited").setValue(favesArray)
+                Database.database().reference().child("users").child(self.posterUID!).child("posts").child(self.postID!).child("favorites").setValue(favesArray)
                 Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("favorited").child(self.postID!).removeValue()
                 
             })

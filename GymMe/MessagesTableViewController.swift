@@ -46,11 +46,13 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
         }
     }
     
+    @IBOutlet weak var topLine: UIView!
     @IBOutlet weak var topLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
         messagesSearchBar.delegate = self
         
+       topLine.frame.size = CGSize(width: UIScreen.main.bounds.width, height: 0.5)
         Database.database().reference().child("users").observeSingleEvent(of: .value, with:
             { (snapshott) in
                  var snapshotss = snapshott.value as! [String:Any]
@@ -286,32 +288,36 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
     var allSuggested = [String]()
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String){
         print("SB text did change: \(searchText)")
-        suggestedTableViewData.removeAll()
-        allSuggested.removeAll()
-        var lowerText = searchText.lowercased()
+        
+           
         Database.database().reference().child("users").observeSingleEvent(of: .value, with: { (snapshott) in
             print("nowHereeeeee")
             if let snapshotss = snapshott.children.allObjects as? [DataSnapshot]{
                 Database.database().reference().child("usernames").observeSingleEvent(of: .value, with: {(snapshot) in
+                    self.suggestedTableViewData.removeAll()
+                    self.allSuggested.removeAll()
+                    var lowerText = searchText.lowercased()
             print("here: \(snapshot.value)")
             //let snapshotss = snapshot.value as? [DataSnapshot]
                 print("hereNow")
+                    
             for (key, val) in (snapshot.value as! [String:Any]){
                     print("uName=\(key)")
                 if key != "fuck"{
                     let uName = key.lowercased()
-                    let rName = (val as! String)
+                    let rName = ((val as! [String])[1]).lowercased()
+                    let uNameID = ((val as! [String])[0])
                 let uRange = (uName as NSString).range(of: lowerText, options: NSString.CompareOptions.literal)
                     let rRange = (rName as NSString).range(of: lowerText, options: NSString.CompareOptions.literal)
                     print("rANDu: \(uRange) \(rRange)")
-                if uRange.location != NSNotFound {
-                     if self.allSuggested.contains(rName) == false {
-                        self.allSuggested.append(rName)
+                if uRange.location != NSNotFound || rRange.location != NSNotFound {
+                     if self.allSuggested.contains(uNameID) == false {
+                        self.allSuggested.append(uNameID)
                         print("curTextu: \(lowerText) allSuggested1: \(self.allSuggested)")
                     }
                     
-                } else if self.allSuggested.contains(rName) == true{
-                            self.allSuggested.remove(at: self.allSuggested.index(of: rName)!)
+                } else if self.allSuggested.contains(uNameID) == true{
+                            self.allSuggested.remove(at: self.allSuggested.index(of: uNameID)!)
                         }
                 }
                         
@@ -340,19 +346,22 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
                         } else {
                     self.searchActive = true;
                         }
-                        DispatchQueue.main.async{
-                            self.allMessagesTableView.reloadData()
-                        }
+                    DispatchQueue.main.async{
+                    self.allMessagesTableView.reloadData()
+                    }
+                    
                     
                 })
             }
         })
+        
         
     } // called when text changes (including clear)
         
     
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar){
         self.searchActive = false
+        searchBar.endEditing(true)
         print("in search pressed")
     } // called when keyboard search button pressed
     
