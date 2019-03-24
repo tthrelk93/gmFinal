@@ -506,45 +506,14 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
     }
     @IBAction func backFuq(_ sender: Any){
         addCatView.isHidden = true
+        cancelPostButton.isHidden = false
     }
 
     var curString = ""
     @IBAction func backToPostPressed(_ sender: Any) {
        // DispatchQueue.main.async{
         print("curCatsAdded: \(self.curCatsAdded), curCatsData: \(self.curCatsData), selectedCellsArr: \(self.selectedCellsArr)")
-       // for str in curCatsAdded{
-         //   curCatsData.append(str)
-       // }
-        /*for cell in selectedCellsArr {
-           
- 
-            
-            if cell.catLabel.textColor == UIColor.red && cell.catLabel.text != "Sports" {
-               
-                if curCatsAdded.contains(cell.catLabel.text!) == false{ self.curCatsAdded.append(cell.catLabel.text!)
-                }
-            
-                if curCatsData.contains(cell.catLabel.text!) == false {
-                self.curCatsData.append(cell.catLabel.text!)
-            }
-                
-                
-                
-            }
-            
-           
-            
-            }*/
-      //  }
-        
-       // for str in curCatsAdded {
-         //   curString = curString + " " + str + ","
-        //}
        
-       
-        
-        //curString.removeLast()
-        //curCatsLabel.text = curString
         curCatsData = Array(Set(curCatsData))
         addCatView.isHidden = true
         var catLabelsSorted = catLabels.sorted { $0.localizedCaseInsensitiveCompare($1) == ComparisonResult.orderedAscending }
@@ -696,7 +665,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
     @IBOutlet weak var topLineCat: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        postLine.frame.size = CGSize(width: UIScreen.main.bounds.width,height: 0.5)
         topLineCat.frame = CGRect(x: topLineCat.frame.origin.x, y: topLineCat.frame.origin.y, width: topLineCat.frame.width, height: 0.5)
         //self.makePostTextView.layer.cornerRadius = 10
         posterPicIV.frame = CGRect(x: posterPicIV.frame.origin.x, y: posterPicIV.frame.origin.y, width: 28, height: 28)

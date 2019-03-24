@@ -34,9 +34,15 @@ class FolloweringViewController: UIViewController, UICollectionViewDelegate, UIC
         self.cellName = ""
          performSegue(withIdentifier: "followToProf", sender: self)
     }
+    @IBOutlet weak var topLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        if followType == "following"{
+            topLabel.text = "Following"
+        } else {
+            topLabel.text = "Followers"
+        }
         topLine.frame.size = CGSize(width: topLine.frame.width, height: 0.5)
         
         self.ffCollect.delegate = self

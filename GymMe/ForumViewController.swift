@@ -26,6 +26,8 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
         // self.refresh()
     }
     
+    @IBOutlet weak var topLine: UIView!
+    @IBOutlet weak var topLabel: UILabel!
     var topicData = [[String:Any]]()
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == pickerCollect{
@@ -293,7 +295,7 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
+        topLine.frame.size = CGSize(width: UIScreen.main.bounds.width,height: 0.5)
         self.topicCollect.register(UINib(nibName: "ForumCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "ForumCollectionViewCell")
         
         self.pickerCollect.delegate = self

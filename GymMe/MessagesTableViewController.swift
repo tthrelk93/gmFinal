@@ -12,7 +12,8 @@ import FirebaseDatabase
 
 class MessagesTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     
-
+    @IBOutlet weak var selectRecipLabel: UILabel!
+    
     var backFromMessage = false
     var selectedMessageKey: String?
     var newMessage = false
@@ -21,7 +22,10 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
     @IBOutlet weak var allMessagesTableView: UITableView!
     @IBAction func rightBarButtonPressed(_ sender: Any) {
         
-        topLabel.text = "Select Recipient"
+        
+        selectRecipLabel.isHidden = false
+        topLabel.isHidden = true
+        
         suggestedLabel.isHidden = false
         newMessage = true
         messagesSearchBar.becomeFirstResponder()
@@ -35,7 +39,8 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
         
         if newMessage == true{
             newMessage = false
-            topLabel.text = "Messages"
+            selectRecipLabel.isHidden = true
+            topLabel.isHidden = false
             suggestedLabel.isHidden = true
             allMessagesTableView.reloadData()
         } else if self.prevScreen == "profile"{

@@ -519,11 +519,17 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
     }
     @IBOutlet weak var commentLineView: UIView!
     
+    @IBOutlet weak var topLine: UIView!
     @IBOutlet weak var commentorPic: UIImageView!
     var following = [String]()
+    
+    @IBOutlet weak var topLabel: UILabel!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        topLine.frame.size = CGSize(width: UIScreen.main.bounds.width,height: 0.5)
         self.likeReplyCollect.register(UINib(nibName: "LikedByCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "LikedByCollectionViewCell")
         
         self.likeReplyCollect.register(UINib(nibName: "CommentCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "CommentCollectionViewCell")

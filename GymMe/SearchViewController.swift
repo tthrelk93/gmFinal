@@ -43,7 +43,9 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         topBarCat.isHidden = false
         topBarPop.isHidden = false
         topBarNearby.isHidden = false
-        discoverLabel.text = "Discover"
+        
+        specCatLabel.isHidden = true
+        
         discoverLabel.isHidden = false
         singlePostTopLabel.text = ""
         popCollect.isHidden = true
@@ -54,7 +56,8 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         sports = false
         //}
     }
-   // var gmRed = UIColor(red: 180/255, green: 29/255, blue: 2/255, alpha: 1.0)
+    @IBOutlet weak var specCatLabel: UILabel!
+    // var gmRed = UIColor(red: 180/255, green: 29/255, blue: 2/255, alpha: 1.0)
     @IBAction func backButtonPressed(_ sender: Any) {
         UIView.animate(withDuration: 0.5, animations: {
             //self.singlePostView3.frame = self.ogCommentPos
@@ -367,6 +370,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         } else if item == tabBar.items![3]{
             performSegue(withIdentifier: "SearchToNotifications", sender: self)
         } else if item == tabBar.items![4]{
+            self.posterUID = Auth.auth().currentUser!.uid
             performSegue(withIdentifier: "SearchToProfile", sender: self)
         } else {
             //curScreen
@@ -1107,7 +1111,9 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         } else if collectionView == categoriesCollect{
             backToCatButton.isHidden = false
         let cellLabel = catCollectData[indexPath.row]
-            self.discoverLabel.text = cellLabel
+            specCatLabel.isHidden = false
+            discoverLabel.isHidden = true
+            specCatLabel.text = cellLabel
             topBarCat.isHidden = true
             topBarPop.isHidden = true
             topBarNearby.isHidden = true
@@ -1153,7 +1159,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             }
                 
                     self.popCollect.isHidden = false
-            sportsCollect.isHidden = true
+            sportsView.isHidden = true
                     self.categoriesCollect.isHidden = true
            
             }
@@ -2422,7 +2428,17 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     @IBAction func doneWithSports(_ sender: Any) {
         sportsView.isHidden = true
         
-        backToCatButton.isHidden = false
+        backToCatButton.isHidden = true
+        border1.isHidden = false
+        border2.isHidden = true
+        border3.isHidden = true
+        topBarCat.isHidden = false
+        topBarPop.isHidden = false
+        topBarNearby.isHidden = false
+        
+        specCatLabel.isHidden = true
+        
+        discoverLabel.isHidden = false
         
         
     }
