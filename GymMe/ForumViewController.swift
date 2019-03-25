@@ -312,6 +312,14 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
                     
                 } else {
                 var tempDict = val as! [String:Any]
+                   
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+                    
+                    let date = dateFormatter.date(from: tempDict["timestamp"] as! String)
+                    tempDict["timestamp"] = date
+                    
                     if self.favoritedTopics == nil{
                         
                     } else {
@@ -327,12 +335,29 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
                 }
                 
             }
-            
+                let sortedResults = (self.topicData as NSArray).sortedArray(using: [NSSortDescriptor(key: "timestamp", ascending: true)]) as! [[String:AnyObject]]
+                self.topicData = sortedResults
+                //self.topicData.reverse()
+                var counter = 0
+                for post in self.topicData{
+                    var tempD = post
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+                    
+                    let str = dateFormatter.string(from: post["timestamp"] as! Date)
+                    tempD["timestamp"] = str
+                    self.topicData[counter] = tempD
+                    counter = counter + 1
+                }
+                self.topicData.reverse()
                 self.ogTopicData = self.topicData
-            DispatchQueue.main.async{
+                
+                
+            
         self.topicCollect.delegate = self
         self.topicCollect.dataSource = self
-            }
+            
                 
             })
         

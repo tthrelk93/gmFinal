@@ -51,6 +51,7 @@ class PopCell: UICollectionViewCell {
         self.popPic.image = nil
         self.popText.text = nil
         self.player?.view.isHidden = true
+        self.popPic.isHidden = false
         
         
         // exampleView.backgroundColor = nil

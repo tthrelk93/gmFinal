@@ -530,6 +530,7 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
         super.viewDidLoad()
 
         topLine.frame.size = CGSize(width: UIScreen.main.bounds.width,height: 0.5)
+         topicTopLine2.frame.size = CGSize(width: UIScreen.main.bounds.width,height: 0.5)
         self.likeReplyCollect.register(UINib(nibName: "LikedByCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "LikedByCollectionViewCell")
         
         self.likeReplyCollect.register(UINib(nibName: "CommentCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "CommentCollectionViewCell")

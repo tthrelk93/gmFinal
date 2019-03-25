@@ -666,6 +666,9 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         postLine.frame.size = CGSize(width: UIScreen.main.bounds.width,height: 0.5)
+        picViewLine1.frame.size = CGSize(width: UIScreen.main.bounds.width,height: 0.5)
+        picViewLine2.frame.size = CGSize(width: UIScreen.main.bounds.width,height: 0.5)
+        picViewLine3.frame.size = CGSize(width: UIScreen.main.bounds.width,height: 0.5)
         topLineCat.frame = CGRect(x: topLineCat.frame.origin.x, y: topLineCat.frame.origin.y, width: topLineCat.frame.width, height: 0.5)
         //self.makePostTextView.layer.cornerRadius = 10
         posterPicIV.frame = CGRect(x: posterPicIV.frame.origin.x, y: posterPicIV.frame.origin.y, width: 28, height: 28)

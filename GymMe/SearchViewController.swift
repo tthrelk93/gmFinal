@@ -1153,8 +1153,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             self.popCollectData = tempData
            print("popCollectDataAfter: \(popCollectData)")
             DispatchQueue.main.async{
-            //self.popCollect.delegate = self
-            //self.popCollect.dataSource = self
+            
                     self.popCollect.reloadData()
             }
                 

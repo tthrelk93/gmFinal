@@ -926,7 +926,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
         }
         if segue.identifier == "SinglePostToHash"{
             if let vc = segue.destination as? HashTagViewController{
-                vc.hashtag = self.selectedHash
+                vc.hashtag = self.hashtag
             }
             
         }

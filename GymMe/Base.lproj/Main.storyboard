@@ -142,11 +142,11 @@
                                     <action selector="BackToMessagesPressed:" destination="PCt-91-fHs" eventType="touchUpInside" id="TZS-iJ-FRm"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="test" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VTc-bU-j8y">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VTc-bU-j8y">
                                 <rect key="frame" x="81" y="42" width="210" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <color key="textColor" red="0.92941176469999998" green="0.10980392160000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qrt-DL-OqE">
@@ -603,8 +603,8 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0k2-Kt-0SK">
                                 <rect key="frame" x="0.0" y="30" width="375" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <color key="textColor" red="0.92941176469999998" green="0.10980392160000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kbz-Hg-9wM">
@@ -617,17 +617,6 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4aZ-Mn-rUx">
-                                <rect key="frame" x="9" y="31" width="12" height="20"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" backgroundImage="icons8-back-34">
-                                    <color key="titleColor" red="0.92941176469999998" green="0.10980392160000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="backButtonPressed:" destination="XcB-lJ-acM" eventType="touchUpInside" id="O3Y-so-CT2"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H7k-r3-cit">
                                 <rect key="frame" x="0.0" y="97" width="375" height="23"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
@@ -640,6 +629,17 @@
                                 <rect key="frame" x="166" y="66" width="41" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4aZ-Mn-rUx">
+                                <rect key="frame" x="6" y="32" width="24" height="25"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" backgroundImage="icons8-back-34">
+                                    <color key="titleColor" red="0.92941176469999998" green="0.10980392160000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="backButtonPressed:" destination="XcB-lJ-acM" eventType="touchUpInside" id="O3Y-so-CT2"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="uOY-IN-hg1"/>
@@ -4087,20 +4087,20 @@
         <image name="GymMe-Final-White" width="346" height="308"/>
         <image name="GymMe-Red-120-filled copy 2" width="40" height="40"/>
         <image name="GymMeSoloLogo" width="72.360000610351562" height="69.120002746582031"/>
-        <image name="Home" width="40" height="40"/>
-        <image name="Home_Selected" width="40" height="40"/>
-        <image name="Icon-App-20x20-1" width="40" height="40"/>
+        <image name="Home" width="50" height="50"/>
+        <image name="Home_Selected" width="50" height="50"/>
+        <image name="Icon-App-20x20-1" width="50" height="50"/>
         <image name="Icon-App-20x20-2" width="40" height="40"/>
-        <image name="Post" width="40" height="40"/>
-        <image name="Profile" width="40" height="40"/>
-        <image name="Profile_Selected" width="40" height="40"/>
-        <image name="Search" width="40" height="40"/>
-        <image name="Search_Selected" width="40" height="40"/>
+        <image name="Post" width="50" height="50"/>
+        <image name="Profile" width="50" height="50"/>
+        <image name="Profile_Selected" width="50" height="50"/>
+        <image name="Search" width="50" height="50"/>
+        <image name="Search_Selected" width="50" height="50"/>
         <image name="addFriends" width="60" height="60"/>
         <image name="camera-1265913_960_720" width="960" height="707"/>
         <image name="favoritesUnfilled" width="40" height="40"/>
         <image name="gjwr8" width="512" height="512"/>
-        <image name="icon-messages-app-27x20" width="40" height="40"/>
+        <image name="icon-messages-app-27x20" width="60" height="60"/>
         <image name="icons8-back-34" width="48" height="48"/>
         <image name="icons8-menu-25" width="55" height="55"/>
         <image name="icons8-new-message-24" width="40" height="40"/>
@@ -4120,17 +4120,17 @@
         <image name="vizio-smart-tv-800x800" width="786" height="448"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="icH-be-aBz"/>
+        <segue reference="xeI-dT-kCv"/>
         <segue reference="keU-n1-j5e"/>
         <segue reference="YSC-2N-emv"/>
         <segue reference="4Kj-ri-BvQ"/>
-        <segue reference="usj-ZK-sIq"/>
+        <segue reference="hD5-e1-AYq"/>
         <segue reference="kTe-m7-s3G"/>
-        <segue reference="dqW-sY-Wz0"/>
-        <segue reference="gx2-Qu-bRU"/>
+        <segue reference="Mi8-hE-uVl"/>
+        <segue reference="JXJ-KW-Ksv"/>
         <segue reference="tek-Ie-9jQ"/>
         <segue reference="3zg-Oy-nUn"/>
-        <segue reference="wYD-EF-M8d"/>
-        <segue reference="4bd-1F-bso"/>
+        <segue reference="FUk-21-8cE"/>
+        <segue reference="B5W-qg-I4o"/>
     </inferredMetricsTieBreakers>
 </document>
