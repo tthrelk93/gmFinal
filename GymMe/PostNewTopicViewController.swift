@@ -85,6 +85,7 @@ class PostNewTopicViewController: UIViewController, UITextViewDelegate {
             postData["posterUsername"] = self.username
             postData["posterRealName"] = self.realName
             postData["likes"] = [["x": "x"]]
+            postData["actualLikes"] = [["x":"x"]]
             var date = Date()
             var dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"

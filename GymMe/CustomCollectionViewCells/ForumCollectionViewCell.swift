@@ -39,7 +39,141 @@ class ForumCollectionViewCell: UICollectionViewCell {
     var myUName = String()
     var myRealName = String()
     var favoritedTopics: [String]?
+    var likedTopics: [String]?
     
+    @IBAction func actualLikeTopicPressed(_ sender: Any) {
+        print("likePressed")
+        Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { snapshot in
+            let valDict = snapshot.value as! [String:Any]
+            self.myPic = valDict["profPic"] as! String
+            self.myUName = valDict["username"] as! String
+            self.myRealName = valDict["realName"] as! String
+            self.likedTopics = valDict["likedTopics"] as? [String]
+        })
+        if self.actualLikeTopic.imageView?.image == UIImage(named: "like.png"){
+            self.actualLikeTopic.setImage(UIImage(named:"likeSelected.png"), for: .normal)
+            // let curLikes = Int((self.likesCountButton.titleLabel?.text)!)
+            //self.likesCountButton.setTitle(String(curLikes! + 1), for: .normal)
+            Database.database().reference().child("forum").child(self.forumID).observeSingleEvent(of: .value, with: { snapshot in
+                let valDict = snapshot.value as! [String:Any]
+                
+                var likesArray = valDict["actualLikes"] as! [[String:Any]]
+                if likesArray.count == 1 && (likesArray.first! as! [String:String]) == ["x": "x"]{
+                    likesArray.remove(at: 0)
+                }
+                var likesVal = likesArray.count
+                likesVal = likesVal + 1
+                //if self.myPicString == nil{
+                //   self.myPicString = "profile-placeholder"
+                //}
+                likesArray.append(["uName": self.myUName, "realName": self.myRealName, "uid": Auth.auth().currentUser!.uid, "pic": self.myPic])
+                
+                if self.likedTopics == nil {
+                    self.likedTopics = [self.forumID]
+                } else {
+                    self.likedTopics!.append(self.forumID)
+                }
+                Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("likedTopics").setValue(self.likedTopics!)
+                Database.database().reference().child("forum").child(self.forumID).child("actualLikes").setValue(likesArray)
+                Database.database().reference().child("users").child((self.forumData["posterID"] as! String)).child("forumPosts").child(self.forumID).child("actualLikes").setValue(likesArray)
+                Database.database().reference().child("users").child((self.forumData["posterID"] as! String)).observeSingleEvent(of: .value, with: { snapshot in
+                    var uploadDict = [String:Any]()
+                    var snapDict = snapshot.value as! [String:Any]
+                    var noteArray = [[String:Any]]()
+                    if snapDict["notifications"] != nil{
+                        noteArray = snapDict["notifications"] as! [[String:Any]]
+                        let sendString = self.myUName + " liked your forum post."
+                        
+                        var date = Date()
+                        var dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                        var dateString = dateFormatter.string(from: date)
+                        
+                        let tempDict = ["actionByUsername": self.myUName, "postID": self.forumID, "actionText": sendString, "timeStamp": dateString,"actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": self.myPic, "postText": self.topicLabel.text as! String, "isForumPost":true] as! [String:Any]
+                        noteArray.append(tempDict)
+                        Database.database().reference().child("users").child((self.forumData["posterID"] as! String)).updateChildValues(["notifications": noteArray])
+                    } else {
+                        let sendString = self.myUName + " liked your forum post."
+                        
+                        var date = Date()
+                        var dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                        var dateString = dateFormatter.string(from: date)
+                        
+                        let tempDict = ["actionByUsername": self.myUName , "postID": self.forumID, "actionText": sendString, "timeStamp": dateString,"actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": self.myPic, "postText": self.topicLabel.text, "isForumPost":true] as [String : Any]
+                        Database.database().reference().child("users").child((self.forumData["posterID"] as! String)).updateChildValues(["notifications":[tempDict]])
+                    }
+                    
+                })
+                
+                
+                
+                var likesString = String()
+                if likesArray.count == 1 {
+                    if(likesArray.first! as! [String:String]) == ["x": "x"]{
+                        likesString = "0 likes"
+                    } else {
+                        likesString = "\(likesArray.count) like"
+                    }
+                } else {
+                    likesString = "\(likesArray.count) likes"
+                }
+                self.likesCountButton.setTitle(likesString, for: .normal)
+                
+                //reload collect in delegate
+                
+            })
+            
+            //update Database for post with new like count
+            
+        } else {
+            self.actualLikeTopic.setImage(UIImage(named:"like.png"), for: .normal)
+            
+            Database.database().reference().child("forum").child(self.forumID).observeSingleEvent(of: .value, with: { snapshot in
+                let valDict = snapshot.value as! [String:Any]
+                var likesVal = Int()
+                var likesArray = valDict["actualLikes"] as! [[String: Any]]
+                if likesArray.count == 1 {
+                    likesArray.remove(at: 0)
+                    likesArray.append(["x": "x"])
+                    likesVal = 0
+                    
+                } else {
+                    likesArray.remove(at: 0)
+                    likesVal = likesArray.count
+                    
+                }
+                var likesString = String()
+                if likesArray.count == 1 {
+                    if(likesArray.first! as! [String:String]) == ["x": "x"]{
+                        likesString = "0 likes"
+                    } else {
+                        likesString = "\(likesArray.count) like"
+                    }
+                } else {
+                    likesString = "\(likesArray.count) likes"
+                }
+                self.likesCountButton.setTitle(likesString, for: .normal)
+                
+                self.likedTopics!.remove(at: self.likedTopics!.firstIndex(of: self.forumID)!)
+                
+                Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("likedTopics").setValue(self.likedTopics!)
+                
+                Database.database().reference().child("forum").child(self.forumID).child("actualLikes").setValue(likesArray)
+                
+                
+                Database.database().reference().child("users").child((self.forumData["posterID"] as! String)).child("forumPosts").child(self.forumID).child("actualLikes").setValue(likesArray)
+                
+                
+            })
+            
+        }
+        DispatchQueue.main.async {
+            self.delegate?.reloadDataAfterLike()
+        }
+    }
+    
+    @IBOutlet weak var actualLikeTopic: UIButton!
     @IBAction func likeTopicPressed(_ sender: Any) {
         Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { snapshot in
             let valDict = snapshot.value as! [String:Any]
@@ -48,8 +182,8 @@ class ForumCollectionViewCell: UICollectionViewCell {
             self.myRealName = valDict["realName"] as! String
             self.favoritedTopics = valDict["favoritedTopics"] as? [String]
          })
-        if self.likeTopicButton.imageView?.image == UIImage(named: "like.png"){
-            self.likeTopicButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
+        if self.likeTopicButton.imageView?.image == UIImage(named: "favoritesUnfilled.png"){
+            self.likeTopicButton.setImage(UIImage(named:"favoritesFilled.png"), for: .normal)
             // let curLikes = Int((self.likesCountButton.titleLabel?.text)!)
             //self.likesCountButton.setTitle(String(curLikes! + 1), for: .normal)
             Database.database().reference().child("forum").child(self.forumID).observeSingleEvent(of: .value, with: { snapshot in
@@ -116,7 +250,7 @@ class ForumCollectionViewCell: UICollectionViewCell {
                 } else {
                     likesString = "\(likesArray.count) likes"
                 }
-                self.likesCountButton.setTitle(likesString, for: .normal)
+                //self.likesCountButton.setTitle(likesString, for: .normal)
                 
                 //reload collect in delegate
                 
@@ -125,7 +259,7 @@ class ForumCollectionViewCell: UICollectionViewCell {
             //update Database for post with new like count
             
         } else {
-            self.likeTopicButton.setImage(UIImage(named:"like.png"), for: .normal)
+            self.likeTopicButton.setImage(UIImage(named:"favoritesUnfilled.png"), for: .normal)
             
             Database.database().reference().child("forum").child(self.forumID).observeSingleEvent(of: .value, with: { snapshot in
                 let valDict = snapshot.value as! [String:Any]
@@ -151,7 +285,7 @@ class ForumCollectionViewCell: UICollectionViewCell {
                 } else {
                     likesString = "\(likesArray.count) likes"
                 }
-                self.likesCountButton.setTitle(likesString, for: .normal)
+                //self.likesCountButton.setTitle(likesString, for: .normal)
                 
                 self.favoritedTopics!.remove(at: self.favoritedTopics!.firstIndex(of: self.forumID)!)
                 
@@ -190,7 +324,7 @@ class ForumCollectionViewCell: UICollectionViewCell {
     
     override func prepareForReuse(){
         super.prepareForReuse()
-        self.likeTopicButton.setImage(UIImage(named: "like"), for: .normal)
+        self.likeTopicButton.setImage(UIImage(named: "favoritesUnfilled"), for: .normal)
     }
 
 }

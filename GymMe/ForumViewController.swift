@@ -144,10 +144,20 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
                 }
             }
             
+            var replyActualLikes = cellData["actualLikes"] as? [[String:Any]]
+            if replyActualLikes!.count == 1{
+                if (replyActualLikes!.first!)["x"] != nil {
+                    cell.likesCountButton.setTitle("0 likes", for: .normal)
+                } else {
+                    cell.likesCountButton.setTitle("1 like", for: .normal)
+                }
+            } else {
+                cell.likesCountButton.setTitle("\(replyActualLikes!.count) likes", for: .normal)
+            }
             
             
             var replyLikes = cellData["likes"] as? [[String:Any]]
-            if replyLikes!.count == 1{
+            /*if replyLikes!.count == 1{
                 if (replyLikes!.first!)["x"] != nil {
                     cell.likesCountButton.setTitle("0 likes", for: .normal)
                 } else {
@@ -155,19 +165,32 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
                 }
             } else {
                 cell.likesCountButton.setTitle("\(replyLikes!.count) likes", for: .normal)
+            }*/
+            if replyActualLikes != nil{
+                for dict in replyActualLikes!{
+                    if (dict["x"] as? String) != nil{
+                        
+                    } else {
+                var tempDict = dict as! [String:Any]
+                if tempDict["uid"] as! String == Auth.auth().currentUser!.uid{
+                    cell.actualLikeTopic.setImage(UIImage(named: "likeSelected"), for: .normal)
+                    break
+                        }
+                    }
+            }
             }
             if replyLikes != nil{
                 for dict in replyLikes!{
                     if (dict["x"] as? String) != nil{
                         
                     } else {
-                var tempDict = dict as! [String:Any]
-                if tempDict["uid"] as! String == Auth.auth().currentUser!.uid{
-                    cell.likeTopicButton.setImage(UIImage(named: "likeSelected"), for: .normal)
-                    break
+                        var tempDict = dict as! [String:Any]
+                        if tempDict["uid"] as! String == Auth.auth().currentUser!.uid{
+                            cell.likeTopicButton.setImage(UIImage(named: "favoritesFilled"), for: .normal)
+                            break
                         }
                     }
-            }
+                }
             }
             
             
@@ -346,7 +369,7 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
                     dateFormatter.locale = Locale(identifier: "en_US_POSIX")
                     
                     let str = dateFormatter.string(from: post["timestamp"] as! Date)
-                    tempD["timestamp"] = str
+                    tempD["timestamp"] = str as! String
                     self.topicData[counter] = tempD
                     counter = counter + 1
                 }
