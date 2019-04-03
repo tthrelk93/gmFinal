@@ -191,6 +191,9 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
         return attributedString
     }
     
+    @IBAction func replyIconButton(_ sender: Any) {
+        
+    }
     
     @IBOutlet weak var backButton: UIButton!
     
@@ -587,7 +590,9 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
                         
                         let tempDict = ["actionByUsername": self.myUName, "postID": cellTypeTemp, "actionText": sendString, "timeStamp": dateString,"actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": self.myPicString, "postText": self.topicDescriptionLabel.text as! String, "isForumPost":true] as! [String:Any]
                         noteArray.append(tempDict)
-                        Database.database().reference().child("users").child(cellTypeTemp).updateChildValues(["notifications": noteArray])
+                       
+                        
+                        Database.database().reference().child("users").child(posterID).updateChildValues(["notifications": noteArray])
                     } else {
                         let sendString = self.myUName + " liked your forum post."
                         

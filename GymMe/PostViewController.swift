@@ -507,6 +507,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
     @IBAction func backFuq(_ sender: Any){
         addCatView.isHidden = true
         cancelPostButton.isHidden = false
+        postButton.isHidden = false
     }
 
     var curString = ""
@@ -531,6 +532,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
     @IBOutlet weak var tagPeopleButton: UIButton!
     @IBOutlet weak var tagPeopleButtonIcon: UIButton!
     @IBAction func tagPeopleButtonPressed(_ sender: Any) {
+        postButton.isHidden = true
         tagView.isHidden = false
         
     }
@@ -665,6 +667,8 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
     @IBOutlet weak var topLineCat: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        postPic.layer.borderColor = UIColor.red.cgColor
+        postText.layer.borderColor = UIColor.red.cgColor
         postLine.frame.size = CGSize(width: UIScreen.main.bounds.width,height: 0.5)
         picViewLine1.frame.size = CGSize(width: UIScreen.main.bounds.width,height: 0.5)
         picViewLine2.frame.size = CGSize(width: UIScreen.main.bounds.width,height: 0.5)
@@ -679,9 +683,9 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
         addToCategoryButton.layer.masksToBounds = true
         shadeView1.layer.cornerRadius = 14
         shadeView2.layer.cornerRadius = 14
-        postPic.layer.borderColor = UIColor.lightGray.cgColor
+        
         postText.layer.borderWidth = 2
-        postText.layer.borderColor = UIColor.lightGray.cgColor
+        
         postPic.layer.borderWidth = 2
         makePostTextView.delegate = self
         
@@ -887,7 +891,9 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
     
     @IBOutlet weak var curCityLabel: UILabel!
     @IBAction func cancelPostButtonPressed(_ sender: Any) {
+        postLine.isHidden = false
         if tagView.isHidden == false{
+            postButton.isHidden = false
             tagView.isHidden = true
             tagSearchBar.resignFirstResponder()
         } else {

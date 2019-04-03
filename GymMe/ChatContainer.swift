@@ -12,6 +12,7 @@ import FirebaseDatabase
 
 class ChatContainer: UIViewController {
     
+    @IBOutlet weak var receiverPic: UIImageView!
     @IBOutlet weak var receiverTopLabel: UILabel!
     var userID = String()
     var recipientID = String()
@@ -31,6 +32,15 @@ class ChatContainer: UIViewController {
         Database.database().reference().child("users").child(recipientID).observeSingleEvent(of: .value, with: { (snapshot) in
             let tempDict = snapshot.value as! [String:Any]
             self.sender = tempDict["realName"] as! String
+            if let messageImageUrl = URL(string: tempDict["profPic"] as! String) {
+                
+                if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                    self.receiverPic.image = UIImage(data: imageData as Data)
+                }
+            }
+            self.receiverPic.frame.size = CGSize(width: 31, height: 31)
+            self.receiverPic.layer.cornerRadius = self.receiverPic.frame.width/2
+            self.receiverPic.layer.masksToBounds = true
             self.receiverTopLabel.text = self.sender
         })
       

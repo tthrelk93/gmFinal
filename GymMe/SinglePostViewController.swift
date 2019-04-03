@@ -157,6 +157,9 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
         commentsCollect.delegate = self
         commentsCollect.dataSource = self
         commentTF.isHidden = false
+        postCommentPic.isHidden = false
+        postCommentButton.isHidden = false
+        commentLine.isHidden = false
     }
     @IBOutlet weak var commentButton: UIButton!
     
@@ -170,6 +173,9 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
         commentsCollect.delegate = self
         commentsCollect.dataSource = self
         commentTF.isHidden = false
+        postCommentPic.isHidden = false
+        postCommentButton.isHidden = false
+        commentLine.isHidden = false
         //DispatchQueue.main.async{
               //  self.commentsCollect.reloadData()
       //  }
@@ -338,11 +344,24 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
     
     override func viewDidLoad() {
         super.viewDidLoad()
+       
+        postCommentPic.layer.cornerRadius = postCommentPic.frame.width/2
+        
+        postCommentPic.layer.masksToBounds = true
+        
+        postCommentPic.frame.size = CGSize(width: 31, height: 31)
+        
+        
         Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: {(snapshot) in
             var curUser = snapshot.value as! [String:Any]
             self.myUName = curUser["username"] as! String
             self.myRealName = curUser["realName"] as! String
-            
+            if let messageImageUrl = URL(string: (curUser["profPic"] as! String)) {
+                if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                    self.postCommentPic.image = UIImage(data: imageData as Data)
+                    
+                }
+            }
         
             self.topLine.frame.size = CGSize(width: UIScreen.main.bounds.width, height: 0.5)
             self.commentTopLine.frame.size = CGSize(width: UIScreen.main.bounds.width, height: 0.5)
@@ -396,6 +415,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                 if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
                     
                     self.posterPicButton.setImage(UIImage(data: imageData as Data), for: .normal)
+                    
                     
                 }
             }
@@ -934,66 +954,229 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
         // Pass the selected object to the new view controller.
        
     }
- 
-    func attributedText(withString string: String, boldString: String, font: UIFont) -> NSAttributedString {
-        let attributedString = NSMutableAttributedString(string: string,
-                                                         attributes: [NSAttributedStringKey.font: font])
-        let boldFontAttribute: [NSAttributedStringKey: Any] = [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: font.pointSize)]
-        let range = (string as NSString).range(of: boldString)
-        attributedString.addAttributes(boldFontAttribute, range: range)
-        return attributedString
-    }
-    
-    @IBOutlet weak var topLabel: UILabel!
-    
-    @objc func keyboardWillHide(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            let keyboardHeight = keyboardSize.height
-            print("keyHeight: \(keyboardHeight)")
-            commentTopLabel.frame = CGRect(x: commentTopLabel.frame.origin.x, y: commentTopLabel.frame.origin.y - keyboardHeight, width: commentTopLabel.frame.width, height: commentTopLabel.frame.height)
-            
-            backFromComments.isHidden = false
-            
-            commentTopLine.frame = CGRect(x: commentTopLine.frame.origin.x, y: commentTopLine.frame.origin.y - keyboardHeight, width: commentTopLine.frame.width, height: commentTopLine.frame.height)
-            
-            
-            commentsCollect.frame = CGRect(x: commentsCollect.frame.origin.x, y: commentsCollect.frame.origin.y - keyboardHeight, width: commentsCollect.frame.width, height: commentsCollect.frame.height)
-        }
-    }
-    
-    @IBOutlet weak var commentTopLine: UIView!
-    @IBOutlet weak var commentTopLabel: UILabel!
-    @IBOutlet weak var backFromComments: UIButton!
-    @objc func keyboardWillShow(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            let keyboardHeight = keyboardSize.height
-            print("keyHeight: \(keyboardHeight)")
-            
-            commentTopLabel.frame = CGRect(x: commentTopLabel.frame.origin.x, y: commentTopLabel.frame.origin.y + keyboardHeight, width: commentTopLabel.frame.width, height: commentTopLabel.frame.height)
-            
-            backFromComments.isHidden = true
-            
-            commentTopLine.frame = CGRect(x: commentTopLine.frame.origin.x, y: commentTopLine.frame.origin.y + keyboardHeight, width: commentTopLine.frame.width, height: commentTopLine.frame.height)
-            
-            
-            commentsCollect.frame = CGRect(x: commentsCollect.frame.origin.x, y: commentsCollect.frame.origin.y + keyboardHeight, width: commentsCollect.frame.width, height: commentsCollect.frame.height)
-        }
-    }
-    
-    public func textFieldDidBeginEditing(_ textField: UITextField) {
-       // commentsCollect.frame = CGRect(x: commentsCollect.frame.origin.x, y: commentsCollect.frame.origin.y + 300, width: commentsCollect.frame.width, height: commentsCollect.frame.height)
-    }// became first responder
+    @IBOutlet weak var commentLine: UIView!
+    @IBOutlet weak var postCommentPic: UIImageView!
     
     
-    public func textFieldDidEndEditing(_ textField: UITextField){
-        //add comment to post
-         //commentsCollect.frame = CGRect(x: commentsCollect.frame.origin.x, y: commentsCollect.frame.origin.y - 300, width: commentsCollect.frame.width, height: commentsCollect.frame.height)
-        if textField.text == "" || textField.hasText == false {
+    @IBOutlet weak var postCommentButton: UIButton!
+    
+    @IBAction func postCommentButtonPressed(_ sender: Any) {
+        var textField = commentTF
+        
+        if textField!.text == "" || textField?.hasText == false {
             
         } else {
             var cellTypeTemp = String()
             var posterID = String()
-           
+            var postID = thisPostData["postID"] as! String
+            //if thisPostData["postPic"] as? String != nil{
+                cellTypeTemp = thisPostData["postID"] as! String
+                posterID = self.posterUID
+          /*  } else {
+                cellTypeTemp = thisPostData["postID"] as! String
+                posterID = thisPostData["posterID"] as! String
+            }*/
+            Database.database().reference().child("posts").child(cellTypeTemp).observeSingleEvent(of: .value, with: { snapshot in
+                let valDict = snapshot.value as! [String:Any]
+                
+                var commentsArray = valDict["comments"] as! [[String:Any]]
+                if commentsArray.count == 1 {
+                    if (commentsArray.first! as! [String:Any])["x"] != nil{
+                        commentsArray.remove(at: 0)
+                    }
+                }
+                var commentsVal = commentsArray.count
+                commentsVal = commentsVal + 1
+                if self.myPicString == nil{
+                    self.myPicString = "profile-placeholder"
+                }
+                //add current users id and uName to comment object and upload to database
+                var now = Date()
+                //var dateFormatter = DateFormatter()
+                //var dateString = dateFormatter.string(from: now)
+                commentsArray.append(["commentorName": self.myUName, "commentorID": Auth.auth().currentUser!.uid, "commentorPic": self.myPicString, "commentText": self.commentTF.text, "commentDate": now.description])
+                Database.database().reference().child("posts").child(cellTypeTemp).child("comments").setValue(commentsArray)
+                Database.database().reference().child("users").child(posterID).child("posts").child(cellTypeTemp).child("comments").setValue(commentsArray)
+                
+                Database.database().reference().child("users").child(posterID).observeSingleEvent(of: .value, with: { (snapshot) in
+                    let valDict = snapshot.value as! [String:Any]
+                    if valDict["notifications"] as? [[String:Any]] == nil {
+                        var tempString = "\(self.myUName) commented on your post."
+                        
+                        var date = Date()
+                        var dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                        var dateString = dateFormatter.string(from: date)
+                        
+                        var tempDict = (["actionByUID": Auth.auth().currentUser!.uid,"postID": postID, "actionByUserPic": self.myPicString,"actionByUsername": self.myUName,"actionText": tempString,"postText": "postText", "timeStamp": dateString] as! [String : Any])
+                        
+                        print("commentNote: \(tempDict)")
+                        Database.database().reference().child("users").child(posterID).updateChildValues((["notifications": [tempDict]] as! [String:Any]))
+                        
+                    } else {
+                        
+                        var tempString = "\(self.myUName) commented on your post" as! String
+                        
+                        var date = Date()
+                        var dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                        var dateString = dateFormatter.string(from: date)
+                        
+                        var tempDict = (["actionByUID": Auth.auth().currentUser!.uid, "postID": postID, "actionByUserPic": self.myPicString,"actionByUsername": self.myUName,"actionText": tempString,"postText": "postText", "timeStamp": dateString] as! [String : Any])
+                        
+                        //Database.database().reference().child("users").child(uid).updateChildValues((["notifications": [tempDict]] as! [String:Any]))
+                        
+                        var tempNotifs = valDict["notifications"] as! [[String:Any]]
+                        tempNotifs.append(tempDict)
+                        print("acommentNote \(posterID)")
+                        Database.database().reference().child("users").child(posterID).updateChildValues((["notifications": tempNotifs] as! [String:Any]))
+                        
+                        
+                    }
+                    
+                    
+                    
+                    
+                    
+                    
+                    self.commentTF.text = nil
+                    
+                    if self.thisPostData["postPic"] as? String != nil{
+                        
+                        let commStringNum = String(commentsArray.count)
+                        var commString = String()
+                        if commStringNum == "1"{
+                            commString = "View \(commStringNum) comment"
+                        } else {
+                            commString = "View \(commStringNum) comments"
+                        }
+                        self.commentsCountButton.setTitle(commString, for: .normal)
+                        
+                    } else {
+                        
+                        
+                        let commStringNum = String(commentsArray.count)
+                        var commString = String()
+                        if commStringNum == "1"{
+                            commString = "View \(commStringNum) comment"
+                        } else {
+                            commString = "View \(commStringNum) comments"
+                        }
+                        self.commentsCountButton.setTitle(commString, for: .normal)
+                        
+                    }
+                    
+                    //reload collect in delegate
+                    self.commentsArray = commentsArray
+                    if commentsArray.count == 1{
+                        DispatchQueue.main.async{
+                            self.commentsCollect.delegate = self
+                            self.commentsCollect.dataSource = self
+                            self.commentsCollect.reloadData()
+                            /*self.likedByCollect.performBatchUpdates(nil, completion: {
+                             (result) in
+                             //self.likedByCollect.reloadData()
+                             })*/
+                        }
+                        
+                    } else {
+                        
+                        print("reloading here")
+                        //var count = 0
+                       // for dict in self.commentsArray{
+                            //if (dict["postID"] as! String) == cellTypeTemp{
+                                Database.database().reference().child("posts").child(self.postID).observeSingleEvent(of: .value, with: { snapshot in
+                                    var tempDict = snapshot.value as! [String:Any]
+                                    if tempDict["postPic"] == nil && tempDict["postVid"] == nil{
+                                        //text
+                                        if (tempDict["posterPicURL"] as! String) == "profile-placeholder"{
+                                            
+                                            var tempImage = UIImage(named: "profile-placeholder")
+                                            tempDict["posterPicURL"] = tempImage
+                                            
+                                        } else {
+                                            if let messageImageUrl = URL(string: (tempDict["posterPicURL"] as! String)) {
+                                                if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                                                    
+                                                    var tempImage = UIImage(data: imageData as Data)
+                                                    tempDict["posterPicURL"] = tempImage
+                                                    
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        if (tempDict["posterPicURL"] as! String) == "profile-placeholder"{
+                                            
+                                            var tempImage = UIImage(named: "profile-placeholder")
+                                            tempDict["posterPicURL"] = tempImage
+                                            
+                                        } else {
+                                            if let messageImageUrl = URL(string: (tempDict["posterPicURL"] as! String)) {
+                                                if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                                                    
+                                                    var tempImage = UIImage(data: imageData as Data)
+                                                    tempDict["posterPicURL"] = tempImage
+                                                    
+                                                }
+                                            }
+                                        }
+                                        if tempDict["postPic"] != nil{
+                                            var picString = tempDict["postPic"] as! String
+                                            
+                                            if let messageImageUrl = URL(string: picString) {
+                                                
+                                                if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                                                    var pic = UIImage(data: imageData as Data)
+                                                    tempDict["postPic"] = pic as! UIImage
+                                                    //self.feedImageArray.append(pic as! UIImage)
+                                                    //self.feedVidArray.append(URL(string: "x")!)
+                                                    
+                                                    
+                                                }
+                                            }
+                                        } else {
+                                            //vid
+                                            
+                                            tempDict["postVid"] = URL(string: tempDict["postVid"] as! String)!
+                                            
+                                        }
+                                    }
+                                    self.thisPostData = tempDict
+                                    self.commentsArray = ((self.thisPostData["comments"] as? [[String: Any]])!)
+                                    DispatchQueue.main.async{
+                                        
+                                        self.commentsCollect.reloadData()
+                                    }
+                                    
+                                })
+                                //break
+                                
+                            //}
+                            //count = count + 1
+                        //}
+                        
+                        
+                        
+                        /*self.likedByCollect.performBatchUpdates(nil, completion: {
+                         (result) in
+                         
+                         })*/
+                        //DispatchQueue.main.async{
+                        //self.likedByCollect.reloadData()
+                        //self.likedByCollect.reloadItems(at: [(self.curCommentCell?.cellIndexPath)!])
+                        //}
+                    }
+                    
+                })
+            })
+        }
+        self.view.endEditing(true)
+        /*if commentTF.text == "" || commentTF.hasText == false {
+            
+        } else {
+            var cellTypeTemp = String()
+            var posterID = String()
+            
             Database.database().reference().child("posts").child(self.postID).observeSingleEvent(of: .value, with: { snapshot in
                 let valDict = snapshot.value as! [String:Any]
                 
@@ -1057,19 +1240,19 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                 
                 self.commentTF.text = nil
                 
-               
-                    
-                let commStringNum = String(self.commentsArray.count)
-                    var commString = String()
-                    if commStringNum == "1"{
-                        commString = "View \(commStringNum) comment"
-                    } else {
-                        commString = "View \(commStringNum) comments"
-                    }
-                    self.commentsCountButton.setTitle(commString, for: .normal)
                 
-                    
-
+                
+                let commStringNum = String(self.commentsArray.count)
+                var commString = String()
+                if commStringNum == "1"{
+                    commString = "View \(commStringNum) comment"
+                } else {
+                    commString = "View \(commStringNum) comments"
+                }
+                self.commentsCountButton.setTitle(commString, for: .normal)
+                
+                
+                
                 
                 //reload collect in delegate
                 
@@ -1091,7 +1274,64 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                 }
                 
             })
+        }*/
+    }
+    
+ 
+    func attributedText(withString string: String, boldString: String, font: UIFont) -> NSAttributedString {
+        let attributedString = NSMutableAttributedString(string: string,
+                                                         attributes: [NSAttributedStringKey.font: font])
+        let boldFontAttribute: [NSAttributedStringKey: Any] = [NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: font.pointSize)]
+        let range = (string as NSString).range(of: boldString)
+        attributedString.addAttributes(boldFontAttribute, range: range)
+        return attributedString
+    }
+    
+    @IBOutlet weak var topLabel: UILabel!
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            let keyboardHeight = keyboardSize.height
+            print("keyHeight: \(keyboardHeight)")
+            commentTopLabel.frame = CGRect(x: commentTopLabel.frame.origin.x, y: commentTopLabel.frame.origin.y - keyboardHeight, width: commentTopLabel.frame.width, height: commentTopLabel.frame.height)
+            
+            backFromComments.isHidden = false
+            
+            commentTopLine.frame = CGRect(x: commentTopLine.frame.origin.x, y: commentTopLine.frame.origin.y - keyboardHeight, width: commentTopLine.frame.width, height: commentTopLine.frame.height)
+            
+            
+            commentsCollect.frame = CGRect(x: commentsCollect.frame.origin.x, y: commentsCollect.frame.origin.y - keyboardHeight, width: commentsCollect.frame.width, height: commentsCollect.frame.height)
         }
+    }
+    
+    @IBOutlet weak var commentTopLine: UIView!
+    @IBOutlet weak var commentTopLabel: UILabel!
+    @IBOutlet weak var backFromComments: UIButton!
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            let keyboardHeight = keyboardSize.height
+            print("keyHeight: \(keyboardHeight)")
+            
+            commentTopLabel.frame = CGRect(x: commentTopLabel.frame.origin.x, y: commentTopLabel.frame.origin.y + keyboardHeight, width: commentTopLabel.frame.width, height: commentTopLabel.frame.height)
+            
+            backFromComments.isHidden = true
+            
+            commentTopLine.frame = CGRect(x: commentTopLine.frame.origin.x, y: commentTopLine.frame.origin.y + keyboardHeight, width: commentTopLine.frame.width, height: commentTopLine.frame.height)
+            
+            
+            commentsCollect.frame = CGRect(x: commentsCollect.frame.origin.x, y: commentsCollect.frame.origin.y + keyboardHeight, width: commentsCollect.frame.width, height: commentsCollect.frame.height)
+        }
+    }
+    
+    public func textFieldDidBeginEditing(_ textField: UITextField) {
+       // commentsCollect.frame = CGRect(x: commentsCollect.frame.origin.x, y: commentsCollect.frame.origin.y + 300, width: commentsCollect.frame.width, height: commentsCollect.frame.height)
+    }// became first responder
+    
+    
+    public func textFieldDidEndEditing(_ textField: UITextField){
+        //add comment to post
+         //commentsCollect.frame = CGRect(x: commentsCollect.frame.origin.x, y: commentsCollect.frame.origin.y - 300, width: commentsCollect.frame.width, height: commentsCollect.frame.height)
+        
     } // may be called if forced even if shouldEndEditing returns NO (e.g. view removed from window) or endEditing:YES called
     
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {

@@ -28,7 +28,7 @@ class FolloweringViewController: UIViewController, UICollectionViewDelegate, UIC
     @IBOutlet weak var ffCollect: UICollectionView!
     
     @IBOutlet weak var followerOrFollowingView: UIView!
-    
+    var prevID = String()
     @IBAction func backFromFF(_ sender: Any) {
         self.cellUID = Auth.auth().currentUser!.uid
         self.cellName = ""
@@ -170,7 +170,7 @@ class FolloweringViewController: UIViewController, UICollectionViewDelegate, UIC
         if segue.identifier == "followToProf"{
             if let vc = segue.destination as? ProfileViewController{
                 
-                vc.curUID = self.cellUID
+                vc.curUID = self.prevID
                 
                 vc.prevScreen = "follow"
                

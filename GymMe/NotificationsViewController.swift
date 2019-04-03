@@ -303,6 +303,16 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
         
         let cell : NotificationCell = collectionView.dequeueReusableCell(withReuseIdentifier: "NotificationCell", for: indexPath) as! NotificationCell
         cell.postID = (self.noteCollectData![indexPath.row] )["postID"] as! String
+        if (self.noteCollectData![indexPath.row] )["isForumPost"] as? Bool != nil{
+            cell.postTextLabel.text = "Forum"
+            cell.postTextLabel.textColor = UIColor.red
+           // cell.postTextLabel.layer.borderColor = UIColor.red.cgColor
+           // cell.postTextLabel.layer.borderWidth = 2
+            cell.postTextLabel.isHidden = false
+        } else {
+            cell.postTextLabel.isHidden = true
+            
+        }
         
         cell.lineView.frame.size = CGSize(width: cell.frame.width, height: 0.5)
         DispatchQueue.main.async{
@@ -388,8 +398,8 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
         }
         
             cell.actionByUID = self.noteCollectData![indexPath.row]["actionByUID"] as! String
-            cell.postTextLabel.text = self.noteCollectData![indexPath.row]["postText"] as? String
-        cell.postTextLabel.isHidden = true
+            
+        //cell.postTextLabel.isHidden = true
         
             if self.noteCollectData![indexPath.row]["actionByUserPic"] as! String == "profile-placeholder"{
                 cell.actionUserPicButton.setImage(UIImage(named: "profile-placeholder"), for: .normal)

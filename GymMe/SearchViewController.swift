@@ -69,6 +69,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             //self.singlePostView1.isHidden = false
            self.backToCatButton.isHidden = false
             self.sports = false
+            self.specCatLabel.isHidden = false
            /* if self.topBarCat.titleLabel?.textColor == UIColor.red{
                 self.border1.isHidden = false
                  self.border2.isHidden = true
@@ -281,9 +282,9 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 2.5, left: 2.5, bottom: 2.5, right: 2.5)
         //layout.itemSize = CGSize(width: screenWidth/2.035, height: screenWidth/2.7)
-        layout.itemSize = CGSize(width: screenWidth/2.045, height: screenWidth/2.045)
+        layout.itemSize = CGSize(width: screenWidth/2.3, height: screenWidth/2.3)
         layout.minimumInteritemSpacing = 4
-        layout.minimumLineSpacing = 4
+        layout.minimumLineSpacing = 15
         categoriesCollect!.collectionViewLayout = layout
         
         let layout2: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -423,6 +424,8 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         let cell : UICollectionViewCell = (collectionView.dequeueReusableCell(withReuseIdentifier: "CatCell", for: indexPath) as! CatCell)
         //cell.layer.borderWidth = 2
         //cell.layer.borderColor = UIColor.lightGray.withAlphaComponent(0.6).cgColor
+            cell.layer.cornerRadius = 12
+            cell.layer.masksToBounds = true
         (cell as! CatCell).catCellLabel.text = catCollectData[indexPath.row]
         (cell as! CatCell).catCellImageView.image = UIImage(named: catCollectPics[indexPath.row])
         
@@ -1069,6 +1072,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         if collectionView == sportsCollect {
             backToCatButton.isHidden = false
             let cellLabel = sportsCollectData[indexPath.row]
+            specCatLabel.text = sportsCollectData[indexPath.row]
             if allCatDataDict[cellLabel] == nil {
                 self.allCatDataDict[cellLabel] = [[String:Any]]()
             }
@@ -1211,6 +1215,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             } else {
                 self.selfData = (self.popCollectData[indexPath.row] as! [String:Any])
             }
+            self.specCatLabel.isHidden = true
              self.posterUID = (selfData["posterUID"] as! String)
             self.postID =  (selfData["postID"] as! String)
             

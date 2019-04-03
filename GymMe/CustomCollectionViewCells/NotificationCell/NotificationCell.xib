@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,7 +20,7 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CNd-hK-No1">
-                        <rect key="frame" x="6" y="9" width="50" height="50"/>
+                        <rect key="frame" x="10" y="9" width="50" height="50"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="50" id="i7C-HD-xi2"/>
                             <constraint firstAttribute="width" constant="50" id="pxF-YM-XfV"/>
@@ -31,7 +31,7 @@
                         </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="P3A-Ri-VPK">
-                        <rect key="frame" x="73" y="35" width="220" height="0.0"/>
+                        <rect key="frame" x="77" y="35" width="220" height="0.0"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="220" id="suL-MD-6UA"/>
                         </constraints>
@@ -39,28 +39,32 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="HJ7-go-QSQ">
-                        <rect key="frame" x="302" y="6" width="60" height="60"/>
+                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="HJ7-go-QSQ">
+                        <rect key="frame" x="302" y="3" width="63" height="63"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="63" id="7ZD-tM-iHc"/>
+                            <constraint firstAttribute="width" constant="63" id="B1r-uH-fHO"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zy5-Uj-bZM">
-                        <rect key="frame" x="302" y="6" width="60" height="60"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zy5-Uj-bZM">
+                        <rect key="frame" x="302" y="3" width="63" height="63"/>
                         <connections>
                             <action selector="postPicPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="vry-6b-ZDh"/>
                         </connections>
                     </button>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bZV-vX-11s">
+                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bZV-vX-11s">
                         <rect key="frame" x="0.0" y="68" width="368" height="1"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rzl-aL-0wU">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rzl-aL-0wU">
                         <rect key="frame" x="59" y="9" width="104" height="50"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="104" id="kQp-bF-CXE"/>
+                        </constraints>
                         <connections>
                             <action selector="posterNameButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="yIs-Vb-21h"/>
                         </connections>
@@ -68,11 +72,23 @@
                 </subviews>
             </view>
             <constraints>
+                <constraint firstItem="rzl-aL-0wU" firstAttribute="bottom" secondItem="CNd-hK-No1" secondAttribute="bottom" id="8Ak-du-4Yt"/>
+                <constraint firstItem="HJ7-go-QSQ" firstAttribute="leading" secondItem="zy5-Uj-bZM" secondAttribute="leading" id="EQv-tO-wCI"/>
+                <constraint firstItem="bZV-vX-11s" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="Eqh-Zo-ko9"/>
                 <constraint firstItem="P3A-Ri-VPK" firstAttribute="leading" secondItem="CNd-hK-No1" secondAttribute="trailing" constant="17" id="Iju-Xf-uxS"/>
+                <constraint firstItem="rzl-aL-0wU" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="59" id="LnO-wf-Qpl"/>
+                <constraint firstItem="HJ7-go-QSQ" firstAttribute="top" secondItem="zy5-Uj-bZM" secondAttribute="top" id="N6c-TG-KxS"/>
                 <constraint firstItem="P3A-Ri-VPK" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="TVB-a8-TwI"/>
-                <constraint firstItem="HJ7-go-QSQ" firstAttribute="leading" secondItem="P3A-Ri-VPK" secondAttribute="trailing" constant="9" id="a4n-cP-Szh"/>
+                <constraint firstItem="HJ7-go-QSQ" firstAttribute="leading" secondItem="P3A-Ri-VPK" secondAttribute="trailing" constant="5" id="a4n-cP-Szh"/>
                 <constraint firstItem="CNd-hK-No1" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="6" id="bVn-u9-pPC"/>
+                <constraint firstAttribute="bottom" secondItem="bZV-vX-11s" secondAttribute="bottom" constant="1" id="glt-Ky-EEO"/>
+                <constraint firstAttribute="trailing" secondItem="bZV-vX-11s" secondAttribute="trailing" id="iOp-Q7-2qV"/>
                 <constraint firstItem="CNd-hK-No1" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="9" id="n5X-Ed-ext"/>
+                <constraint firstItem="HJ7-go-QSQ" firstAttribute="trailing" secondItem="zy5-Uj-bZM" secondAttribute="trailing" id="qGy-83-69s"/>
+                <constraint firstItem="HJ7-go-QSQ" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="3" id="tsj-m7-f6e"/>
+                <constraint firstAttribute="trailing" secondItem="HJ7-go-QSQ" secondAttribute="trailing" constant="3" id="u7x-Jw-7yA"/>
+                <constraint firstItem="rzl-aL-0wU" firstAttribute="top" secondItem="CNd-hK-No1" secondAttribute="top" id="uEm-XT-VJI"/>
+                <constraint firstItem="HJ7-go-QSQ" firstAttribute="bottom" secondItem="zy5-Uj-bZM" secondAttribute="bottom" id="yIf-Au-nJ9"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <size key="customSize" width="328" height="50"/>
