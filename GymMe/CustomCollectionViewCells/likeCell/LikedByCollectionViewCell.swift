@@ -62,8 +62,11 @@ class LikedByCollectionViewCell: UICollectionViewCell {
                         }
                         Database.database().reference().child("users").child(self.likedByUID!).updateChildValues(uploadDict2)
                     }
+                    self.layer.borderColor = UIColor.red.cgColor
+
                     self.likedByFollowButton.setTitle("Unfollow", for: .normal)
-                    self.likedByFollowButton.backgroundColor = UIColor.red
+                    self.likedByFollowButton.backgroundColor = UIColor.white
+                    self.likedByFollowButton.setTitleColor(UIColor.red, for: .normal)
                 })
             })
                     
@@ -99,7 +102,9 @@ class LikedByCollectionViewCell: UICollectionViewCell {
                         Database.database().reference().child("users").child(self.likedByUID!).updateChildValues(uploadDict2)
                     }
                     self.likedByFollowButton.setTitle("Follow", for: .normal)
-                    self.likedByFollowButton.backgroundColor = UIColor.green
+                    self.layer.borderColor = UIColor.red.cgColor
+                    self.likedByFollowButton.backgroundColor = UIColor.red
+                    self.likedByFollowButton.setTitleColor(UIColor.white, for: .normal)
                 })
             })
         }

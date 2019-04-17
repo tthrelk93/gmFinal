@@ -47,7 +47,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         specCatLabel.isHidden = true
         
         discoverLabel.isHidden = false
-        singlePostTopLabel.text = ""
+        //singlePostTopLabel.text = "Post"
         popCollect.isHidden = true
         popCollectData.removeAll()
         //DispatchQueue.main.async{
@@ -61,15 +61,28 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     @IBAction func backButtonPressed(_ sender: Any) {
         UIView.animate(withDuration: 0.5, animations: {
             //self.singlePostView3.frame = self.ogCommentPos
+            print("bPress")
             self.singlePostView.isHidden = true
             //self.singlePostView.frame = self.curCellFrame
             self.singlePostImageView.image = nil
            // self.singlePostTextView.text = nil
             self.player = nil
             //self.singlePostView1.isHidden = false
-           self.backToCatButton.isHidden = false
+           
             self.sports = false
-            self.specCatLabel.isHidden = false
+            if self.curTopBar == "cat"{
+                self.specCatLabel.isHidden = false
+                print("selectedSport: \(self.selectedSport)")
+                self.specCatLabel.text = self.selectedSport
+                self.backToCatButton.isHidden = false
+                
+            } else if self.curTopBar == "pop"{
+                self.specCatLabel.isHidden = true
+                self.backToCatButton.isHidden = true
+                
+            } else {
+                
+            }
            /* if self.topBarCat.titleLabel?.textColor == UIColor.red{
                 self.border1.isHidden = false
                  self.border2.isHidden = true
@@ -182,7 +195,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     @IBOutlet weak var commentedByButton: UIButton!
     
     @IBAction func commentedByButtonPressed(_ sender: Any) {
-        singlePostTopLabel.isHidden = true
+        //singlePostTopLabel.isHidden = true
         commentView.isHidden = false
         commentTF.resignFirstResponder()
         tabBar.isHidden = true
@@ -219,7 +232,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     
     @IBOutlet weak var backToCatFromSports: UIButton!
     @IBAction func hideCommentsPressed(_ sender: Any) {
-        singlePostTopLabel.isHidden = false
+        //singlePostTopLabel.isHidden = false
         commentView.isHidden = true
         tabBar.isHidden = false
         commentTF.resignFirstResponder()
@@ -1036,7 +1049,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     
     //@IBOutlet weak var postText: UILabel!
     @IBAction func commentPressed(_ sender: Any) {
-        singlePostTopLabel.isHidden = true
+        //singlePostTopLabel.isHidden = true
         commentView.isHidden = false
         commentView.isHidden = false
         commentCollect.isHidden = false
@@ -1066,6 +1079,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     var selectedCat = String()
     var allCatDataDict = [String:[[String:Any]]]()
     var ogSinglePostViewFrame = CGRect()
+    var selectedSport = String()
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("cell touched")
         
@@ -1073,6 +1087,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             backToCatButton.isHidden = false
             let cellLabel = sportsCollectData[indexPath.row]
             specCatLabel.text = sportsCollectData[indexPath.row]
+            self.selectedSport = sportsCollectData[indexPath.row]
             if allCatDataDict[cellLabel] == nil {
                 self.allCatDataDict[cellLabel] = [[String:Any]]()
             }
@@ -1089,19 +1104,14 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     print("dict: \(dict)")
                     tempData.append(dict)
                 }
-                
-                
-                //print("popCollectData: \(popCollectData)" \(count))
-                // count = count + 1
+ 
             }
             self.popCollectData = tempData
             //print("popCollectDataAfter: \(popCollectData.count)")
            
             
             DispatchQueue.main.async{
-                //self.popCollect.delegate = self
-                //self.popCollect.dataSource = self
-               
+
                 self.popCollect.reloadData()
             }
             self.popCollect.isHidden = false
@@ -1125,7 +1135,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             border1.isHidden = true
             border2.isHidden = true
             border3.isHidden = true
-            
+            self.selectedSport = catCollectData[indexPath.row]
             topBarSearchButton.isHidden = true
             
             popCollect.frame = noPostsLabel.frame
@@ -1210,12 +1220,14 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             
             
         } else if collectionView == popCollect{
+            
             if curTopBar == "cat"{
             self.selfData = ((self.popCollectData[indexPath.row]).first!.value as! [String:Any])
             } else {
                 self.selfData = (self.popCollectData[indexPath.row] as! [String:Any])
             }
-            self.specCatLabel.isHidden = true
+            self.specCatLabel.isHidden = false
+            self.specCatLabel.text = "Post"
              self.posterUID = (selfData["posterUID"] as! String)
             self.postID =  (selfData["postID"] as! String)
             
@@ -1441,12 +1453,10 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         
                         if favedBySelf == true{
                             favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
-                            //favoritesCount.setTitle((((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["favorites"] as! [[String:Any]]).count.description, for: .normal)
+                            
                         }
                     }
-                    
-                    //textPostTV.isHidden = true
-                    //singlePostView2.isHidden = false
+                   
                 } else {
                     //text post
                     self.curCommentCell = selfData

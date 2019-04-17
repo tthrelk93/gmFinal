@@ -77,6 +77,7 @@ class HashTagViewController: UIViewController, UICollectionViewDelegate,UICollec
         topLine2.frame.size = CGSize(width: UIScreen.main.bounds.width, height: 0.5)
         
          hashTagImage.frame = CGRect(x: hashTagImage.frame.origin.x, y: hashTagImage.frame.origin.y, width: hashTagImage.frame.width, height: hashTagImage.frame.width)
+        
         hashTagImage.layer.cornerRadius = hashTagImage.frame.width/2
         hashTagImage.layer.masksToBounds = true
         
@@ -124,7 +125,7 @@ class HashTagViewController: UIViewController, UICollectionViewDelegate,UICollec
                     if self.hashArray.contains(key){
                         var tempData = val as! [String:Any]
                         if tempData["postPic"] == nil && tempData["postVid"] == nil{
-                            self.hashTagData.append(tempData)
+                            //self.hashTagData.append(tempData)
                         } else {
                        
                             

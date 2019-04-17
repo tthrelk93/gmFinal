@@ -31,6 +31,8 @@ class PopCell: UICollectionViewCell {
         self.addSubview((self.player?.view)!)
          self.player?.view.frame = vidFrame
         self.player?.view.bounds = vidFrame
+        self.player?.autoplay = false
+        self.player?.playbackState = .stopped
         
         // Initialization code
     }

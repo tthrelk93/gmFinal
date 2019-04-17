@@ -679,6 +679,7 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
 
         topLine.frame.size = CGSize(width: UIScreen.main.bounds.width,height: 0.5)
          topicTopLine2.frame.size = CGSize(width: UIScreen.main.bounds.width,height: 0.5)
+        commentorPic.frame = CGRect(x: commentorPic.frame.origin.x, y: commentorPic.frame.origin.x, width: 30, height: 30)
         commentorPic.layer.cornerRadius = commentorPic.frame.width/2
         commentorPic.layer.masksToBounds = true
         

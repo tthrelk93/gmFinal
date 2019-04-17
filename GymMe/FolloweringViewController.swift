@@ -29,7 +29,9 @@ class FolloweringViewController: UIViewController, UICollectionViewDelegate, UIC
     
     @IBOutlet weak var followerOrFollowingView: UIView!
     var prevID = String()
+    var backPressed = false
     @IBAction func backFromFF(_ sender: Any) {
+        backPressed = true
         self.cellUID = Auth.auth().currentUser!.uid
         self.cellName = ""
          performSegue(withIdentifier: "followToProf", sender: self)
@@ -40,6 +42,7 @@ class FolloweringViewController: UIViewController, UICollectionViewDelegate, UIC
 
         if followType == "following"{
             topLabel.text = "Following"
+            
         } else {
             topLabel.text = "Followers"
         }
@@ -88,10 +91,14 @@ class FolloweringViewController: UIViewController, UICollectionViewDelegate, UIC
                     cell.commentTextView.isHidden = true
                     cell.commentTimestamp.isHidden = true
                     cell.likedByUName.text = (self.flwingDataArr[indexPath.row]["username"] as! String)
-                    
+                    cell.layer.borderWidth = 1
+                    cell.layer.borderColor = UIColor.red.cgColor
+                    cell.likedByFollowButton.backgroundColor = UIColor.white
+                    cell.likedByFollowButton.setTitleColor(UIColor.red, for: .normal)
                     cell.likedByUID = (self.flwingDataArr[indexPath.row]["uid"] as! String)
                     
                     cell.likedByName.text = self.flwingDataArr[indexPath.row]["realName"] as! String
+                    
                     if self.flwingDataArr[indexPath.row]["profPic"] as! String == "profile-placeholder"{
                         DispatchQueue.main.async{
                             cell.likedByImage.image = UIImage(named: "profile-placeholder")
@@ -115,13 +122,21 @@ class FolloweringViewController: UIViewController, UICollectionViewDelegate, UIC
                 DispatchQueue.main.async{
                     cell.delegate1 = self
                     if (self.followersArr.contains(self.flwrDataArr[indexPath.row]["uid"] as! String)){
+                        
                         cell.likedByFollowButton.setTitle("Unfollow", for: .normal)
-                        cell.likedByFollowButton.backgroundColor = UIColor.red
+                        
+                        cell.likedByFollowButton.layer.borderWidth = 1
+                        cell.likedByFollowButton.layer.borderColor = UIColor.red.cgColor
+                        cell.likedByFollowButton.backgroundColor = UIColor.white
+                        cell.likedByFollowButton.setTitleColor(UIColor.red, for: .normal)
                         
                     } else {
-                        cell.likedByFollowButton.backgroundColor = UIColor.green
+                        cell.likedByFollowButton.layer.borderWidth = 1
+                        cell.likedByFollowButton.layer.borderColor = UIColor.red.cgColor
+                        cell.likedByFollowButton.backgroundColor = UIColor.red
+                        cell.likedByFollowButton.setTitleColor(UIColor.white, for: .normal)
                     }
-                    
+                   
                     cell.likedByName.isHidden = false
                     cell.likedByUName.isHidden = false
                     cell.likedByFollowButton.isHidden = false
@@ -169,14 +184,23 @@ class FolloweringViewController: UIViewController, UICollectionViewDelegate, UIC
         // Pass the selected object to the new view controller.
         if segue.identifier == "followToProf"{
             if let vc = segue.destination as? ProfileViewController{
-                
+                if backPressed == true {
                 vc.curUID = self.prevID
                 
                 vc.prevScreen = "follow"
                
-                    vc.viewerIsCurAuth = false
+                    vc.viewerIsCurAuth = true
                 
                 vc.curName = self.cellName
+                } else {
+                    vc.curUID = self.cellUID
+                    
+                    vc.prevScreen = "follow"
+                    
+                    vc.viewerIsCurAuth = false
+                    
+                    vc.curName = self.cellName
+                }
                 
             }
         }

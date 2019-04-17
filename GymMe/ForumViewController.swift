@@ -157,15 +157,7 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
             
             
             var replyLikes = cellData["likes"] as? [[String:Any]]
-            /*if replyLikes!.count == 1{
-                if (replyLikes!.first!)["x"] != nil {
-                    cell.likesCountButton.setTitle("0 likes", for: .normal)
-                } else {
-                cell.likesCountButton.setTitle("1 like", for: .normal)
-                }
-            } else {
-                cell.likesCountButton.setTitle("\(replyLikes!.count) likes", for: .normal)
-            }*/
+            
             if replyActualLikes != nil{
                 for dict in replyActualLikes!{
                     if (dict["x"] as? String) != nil{
@@ -203,16 +195,13 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == pickerCollect{
-            //collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-            //collectionView.reloadData()
-            //collectionView.layoutIfNeeded()
+            
             var cell1 = ForumPickerCell()
             var cell2 = ForumPickerCell()
             var cell3 = ForumPickerCell()
             var cell4 = ForumPickerCell()
-            selectedCell = true
             
-            //var scrollPos = UICollectionViewScrollPosition(rawValue: UInt(collectionView.contentOffset.x))
+            selectedCell = true
             
             pickerCollect.scrollToItem(at: IndexPath(item: 0, section: 0), at: UICollectionViewScrollPosition(), animated: false)
             if let cell = getCell(IndexPath(item: 0, section: 0)) {
@@ -281,6 +270,7 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
                 cell2.pickerLabel.textColor = UIColor.lightGray
                 cell3.backgroundColor = UIColor.red
                 cell3.pickerLabel.textColor = UIColor.white
+                
                 self.topicData = self.favoritedTopicsData
                 DispatchQueue.main.async{
                     self.topicCollect.reloadData()
@@ -351,17 +341,35 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
                     }
                     }
                     
+                    
                 self.topicData.append(tempDict)
-                        
                     
                     
                 }
                 
             }
+                var counter1 = 0
+                var tempArr1 = [[String:Any]]()
+                for post in self.favoritedTopicsData{
+                    var tempD = post
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+                    
+                    let str = dateFormatter.string(from: post["timestamp"] as! Date)
+                    tempD["timestamp"] = str as! String
+                    //self.topicData[counter] = tempD
+                    tempArr1.append(tempD)
+                    counter1 = counter1 + 1
+                }
+                self.favoritedTopicsData = tempArr1
+                self.favoritedTopicsData.reverse()
+                
                 let sortedResults = (self.topicData as NSArray).sortedArray(using: [NSSortDescriptor(key: "timestamp", ascending: true)]) as! [[String:AnyObject]]
                 self.topicData = sortedResults
                 //self.topicData.reverse()
                 var counter = 0
+                var tempArr = [[String:Any]]()
                 for post in self.topicData{
                     var tempD = post
                     let dateFormatter = DateFormatter()
@@ -370,9 +378,11 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
                     
                     let str = dateFormatter.string(from: post["timestamp"] as! Date)
                     tempD["timestamp"] = str as! String
-                    self.topicData[counter] = tempD
+                    //self.topicData[counter] = tempD
+                    tempArr.append(tempD)
                     counter = counter + 1
                 }
+                self.topicData = tempArr
                 self.topicData.reverse()
                 self.ogTopicData = self.topicData
                 

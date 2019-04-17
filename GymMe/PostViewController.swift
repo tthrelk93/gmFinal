@@ -50,12 +50,10 @@ class CustomViewFlowLayout: UICollectionViewFlowLayout {
 
 class PostCatSearchSportsCell: UICollectionViewCell {
     @IBOutlet weak var catSportLabel: UILabel!
-    
-    
 }
+
 class PostCatSearchCell: UICollectionViewCell {
     @IBOutlet weak var catLabel: UILabel!
-    
     @IBOutlet weak var catCheck: UIImageView!
 }
 
@@ -139,6 +137,9 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
             
         } else if collectionView == sportsCollect{
             let cell : PostCatSearchSportsCell = collectionView.dequeueReusableCell(withReuseIdentifier: "PostCatSearchSportsCell", for: indexPath) as! PostCatSearchSportsCell
+            cell.layer.cornerRadius = 12
+            cell.layer.masksToBounds = true
+            
             cell.catSportLabel.text = catSportsData[indexPath.row]
             
             return cell
@@ -158,8 +159,8 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
         cell.catLabel.text = catLabelsRefined[indexPath.row]
         let border = CALayer()
         let width = CGFloat(1.0)
-        border.borderColor = UIColor.darkGray.cgColor
-        border.frame = CGRect(x: 0, y: cell.frame.size.height - width, width: cell.frame.size.width, height: cell.frame.size.height)
+        border.borderColor = UIColor.lightGray.cgColor
+        border.frame = CGRect(x: 0, y: cell.frame.size.height - width, width: cell.frame.size.width, height: 0.5)
         
         border.borderWidth = width
         cell.layer.addSublayer(border)
@@ -356,7 +357,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
             let size = string.size(withAttributes: fontAttribute)
             
             // some extraSpace give if like so.
-            let extraSpace : CGFloat = 30.0
+            let extraSpace : CGFloat = 35.0
             let width = size.width + extraSpace
             return CGSize(width:width, height: 24)
         } else if collectionView == tagCollect {
@@ -667,6 +668,16 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
     @IBOutlet weak var topLineCat: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        doneWithSportsButton.layer.cornerRadius = 12
+        doneWithSportsButton.layer.masksToBounds = true
+        postPic.layer.shadowColor = UIColor.black.cgColor
+        postPic.layer.shadowOpacity = 0.35
+        postPic.layer.shadowOffset = CGSize.zero
+        postPic.layer.shadowRadius = 10
+        postText.layer.shadowColor = UIColor.black.cgColor
+        postText.layer.shadowOpacity = 0.35
+        postText.layer.shadowOffset = CGSize.zero
+        postText.layer.shadowRadius = 10
         postPic.layer.borderColor = UIColor.red.cgColor
         postText.layer.borderColor = UIColor.red.cgColor
         postLine.frame.size = CGSize(width: UIScreen.main.bounds.width,height: 0.5)
@@ -891,13 +902,13 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
     
     @IBOutlet weak var curCityLabel: UILabel!
     @IBAction func cancelPostButtonPressed(_ sender: Any) {
-        postLine.isHidden = false
+        
         if tagView.isHidden == false{
             postButton.isHidden = false
             tagView.isHidden = true
             tagSearchBar.resignFirstResponder()
         } else {
-            //makePostTextView.resignFirstResponder()
+           postLine.isHidden = false //makePostTextView.resignFirstResponder()
         makePostImageView.image = nil
         postPlayer?.url = nil
         taggedFriends.removeAll()

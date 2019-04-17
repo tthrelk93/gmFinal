@@ -28,6 +28,7 @@
 		315C4381221A0A4C00C9FAD1 /* SingleTopicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 315C4380221A0A4C00C9FAD1 /* SingleTopicViewController.swift */; };
 		316A734321556F7900D7B1D5 /* CommentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316A734121556F7900D7B1D5 /* CommentCollectionViewCell.swift */; };
 		316A734421556F7900D7B1D5 /* CommentCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 316A734221556F7900D7B1D5 /* CommentCollectionViewCell.xib */; };
+		316CFA2822651D2F00B9EBBD /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316CFA2722651D2F00B9EBBD /* MapViewController.swift */; };
 		317420892210A13C00B07C9E /* ForumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317420882210A13C00B07C9E /* ForumViewController.swift */; };
 		3174208C2210A46F00B07C9E /* ForumCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3174208A2210A46F00B07C9E /* ForumCollectionViewCell.swift */; };
 		3174208D2210A46F00B07C9E /* ForumCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3174208B2210A46F00B07C9E /* ForumCollectionViewCell.xib */; };
@@ -106,6 +107,7 @@
 		315C660C20E00F2E00188328 /* GymMe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GymMe.entitlements; sourceTree = "<group>"; };
 		316A734121556F7900D7B1D5 /* CommentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCollectionViewCell.swift; sourceTree = "<group>"; };
 		316A734221556F7900D7B1D5 /* CommentCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentCollectionViewCell.xib; sourceTree = "<group>"; };
+		316CFA2722651D2F00B9EBBD /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		317420882210A13C00B07C9E /* ForumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumViewController.swift; sourceTree = "<group>"; };
 		3174208A2210A46F00B07C9E /* ForumCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForumCollectionViewCell.swift; sourceTree = "<group>"; };
 		3174208B2210A46F00B07C9E /* ForumCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ForumCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -355,6 +357,7 @@
 				31359ECC20DC465000F5ED11 /* ProfileViewController.swift */,
 				31EEAE6C20DEB8600015B8B2 /* EditProfileView.swift */,
 				3108E1F722175FD70058E009 /* FavoritesViewController.swift */,
+				316CFA2722651D2F00B9EBBD /* MapViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -698,6 +701,7 @@
 				315C4381221A0A4C00C9FAD1 /* SingleTopicViewController.swift in Sources */,
 				31BF011F2101295E0012F933 /* ChatContainer.swift in Sources */,
 				3193061920E94C5900942DCF /* NewsFeedCellCollectionViewCell.swift in Sources */,
+				316CFA2822651D2F00B9EBBD /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

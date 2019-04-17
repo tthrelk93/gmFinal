@@ -321,8 +321,7 @@ class NewsFeedCellCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
         self.postText.delegate = self
         self.profImageView.layer.cornerRadius = self.profImageView.frame.width/2
         self.profImageView.layer.masksToBounds = true
-        //self.contentView.autoresizingMask.insert(.flexibleHeight)
-        //self.contentView.autoresivar selezingMask.insert(.flexibleWidth)
+        
         print(self.gestureRecognizers)
         // Initialization code
     }

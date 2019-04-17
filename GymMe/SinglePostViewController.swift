@@ -559,7 +559,19 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                     if self.thisPostData["postText"] == nil{
                     
                 } else {
-                        self.postText.text = (self.thisPostData["postText"] as! String)
+                        let boldText  = (self.thisPostData["posterName"] as! String) + " "
+                        let attrs = [NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 15)]
+                        let attributedString = NSMutableAttributedString(string:boldText, attributes:attrs)
+                        
+                        let normalText = self.thisPostData["postText"] as! String
+                        let attrs2 = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 15, weight: .regular)]
+                        let normalString = NSMutableAttributedString(string:normalText, attributes: attrs2)
+                        
+                        
+                        attributedString.append(normalString)
+                        
+                        self.postText.attributedText = attributedString
+                        
                 }
                     self.postText.resolveHashTags()
                     if self.thisPostData["city"] != nil{
@@ -679,7 +691,18 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                     if self.thisPostData["postText"] == nil{
                         
                     } else {
-                        self.postText.text = (self.thisPostData["postText"] as! String)
+                        let boldText  = (self.thisPostData["posterName"] as! String) + " "
+                        let attrs = [NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 15)]
+                        let attributedString = NSMutableAttributedString(string:boldText, attributes:attrs)
+                        
+                        let normalText = self.thisPostData["postText"] as! String
+                        let attrs2 = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 15, weight: .regular)]
+                        let normalString = NSMutableAttributedString(string:normalText, attributes: attrs2)
+                        
+                        
+                        attributedString.append(normalString)
+                        
+                        self.postText.attributedText = attributedString
                     }
                     if self.thisPostData["city"] != nil{
                         self.cityButton.setTitle((self.thisPostData["city"] as! String), for: .normal)
