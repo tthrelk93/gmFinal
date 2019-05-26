@@ -96,7 +96,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
     
     @IBOutlet weak var sportsCollect: UICollectionView!
     @IBOutlet weak var sportsView: UIView!
-    var catSportsData = ["Soccer","Football","Lacrosse", "Track & Field", "Tennis","Baseball","Swimming"]
+    var catSportsData = ["Soccer","Football","Lacrosse", "Track & Field", "Tennis","Baseball","Swimming","Basketball","Rock Climbing"]
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
          if collectionView == sportsCollect{
             return catSportsData.count
@@ -147,6 +147,10 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
             let cell : CurCatsCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CurCatsCollectionViewCell", for: indexPath) as! CurCatsCollectionViewCell
             cell.delegate = self
             cell.curCatLabel.text = curCatsData[indexPath.row]
+            //cell.removeCatButton.trailingAnchor.constraint(equalTo: cell.trailingAnchor, constant: -5).isActive = true
+            let margins = cell.layoutMarginsGuide
+            cell.removeCatButton.trailingAnchor.constraint(equalTo: margins.trailingAnchor).isActive = true
+            //cell.removeCatButton.frame = CGRect(x: cell.frame.maxX - 5, y: cell.removeCatButton.frame.origin.y, width: cell.removeCatButton.frame.width, height: cell.removeCatButton.frame.height)
             return cell
         } else {
         let cell : PostCatSearchCell = collectionView.dequeueReusableCell(withReuseIdentifier: "PostCatSearchCell", for: indexPath) as! PostCatSearchCell
@@ -230,10 +234,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
                 
                 taggedFriends.remove(at: count)
             }
-                
-                
-    
-                
+ 
             print("taggedFriends: \(taggedFriends)")
             taggedString = ""
             for dict in taggedFriends{
@@ -242,6 +243,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
             print("taggedString: \(taggedString)")
             tagPeopleLabel.text = taggedString
             tagView.isHidden = true
+            postButton.isHidden = false
             tagSearchBar.text = ""
             tagSearchBar.endEditing(true)
             tagSearchBar.resignFirstResponder()
@@ -254,7 +256,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
             
         } else if collectionView == curCatsCollect{
             
-        } else if collectionView == sportsCollect{
+        } else if collectionView == sportsCollect {
             var sportCellSelected = collectionView.cellForItem(at: indexPath) as! PostCatSearchSportsCell
             if sportCellSelected.catSportLabel.textColor == UIColor.red {
                 curCatCount = curCatCount - 1
@@ -357,7 +359,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
             let size = string.size(withAttributes: fontAttribute)
             
             // some extraSpace give if like so.
-            let extraSpace : CGFloat = 35.0
+            let extraSpace : CGFloat = 30.0
             let width = size.width + extraSpace
             return CGSize(width:width, height: 24)
         } else if collectionView == tagCollect {
@@ -985,10 +987,10 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
             }
             
             self.newPost!["tagged"] = finalTag
-            if self.curCatsAdded == nil || self.curCatsAdded.count == 0{
-                curCatsAdded.append("Other")
+            if self.curCatsData == nil || self.curCatsData.count == 0{
+                curCatsData.append("Other")
             }
-            self.newPost!["categories"] = self.curCatsAdded
+            self.newPost!["categories"] = self.curCatsData
             self.newPost!["city"] = self.curCityLabel.text
           
             //let curLoc = locationManager.location

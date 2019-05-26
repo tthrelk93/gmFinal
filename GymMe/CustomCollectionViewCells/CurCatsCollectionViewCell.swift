@@ -16,6 +16,7 @@ protocol RemoveCatDelegate {
 
 class CurCatsCollectionViewCell: UICollectionViewCell {
 
+    @IBOutlet weak var removeCatButton: UIButton!
     @IBAction func removeCatPressed(_ sender: Any) {
         print("inremoveDel")
         delegate?.removeCat(catLabel: self.curCatLabel.text!)

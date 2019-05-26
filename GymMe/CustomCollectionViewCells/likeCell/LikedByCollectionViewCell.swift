@@ -13,6 +13,7 @@ import FirebaseAuth
 protocol ToProfileDelegate {
     
     func segueToProf(cellUID: String, name: String)
+    func shareCirclePressed(likedByUID: String,indexPath:IndexPath)
     
     
 }
@@ -29,7 +30,12 @@ class LikedByCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var likedByImage: UIImageView!
     @IBOutlet weak var likedByFollowButton: UIButton!
     
+    @IBAction func shareCheckPressed(_ sender: Any) {
+        print("shareCirc: \(likedByUID!) \(indexPath!)")
+        delegate1?.shareCirclePressed(likedByUID: self.likedByUID!, indexPath: indexPath!)
+    }
     var likedByUID: String?
+    var indexPath: IndexPath?
     @IBAction func likedByFollowButtonPressed(_ sender: Any) {
         //add selected User to curUsers Following field
         if likedByFollowButton.titleLabel?.text == "Follow"{
@@ -112,6 +118,7 @@ class LikedByCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var toProfileButton: UIButton!
     @IBAction func toProfileButtonPressed(_ sender: Any) {
+        print("yuh")
         delegate1?.segueToProf(cellUID: self.likedByUID!, name: self.likedByName.text!)
     }
     

@@ -43,6 +43,7 @@
 		31AA6E8C214306D000CF0EFE /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31AA6E8B214306D000CF0EFE /* NotificationsViewController.swift */; };
 		31AA6E8F2143072800CF0EFE /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31AA6E8D2143072800CF0EFE /* NotificationCell.swift */; };
 		31AA6E902143072800CF0EFE /* NotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 31AA6E8E2143072800CF0EFE /* NotificationCell.xib */; };
+		31B793012278AFF600DB7B38 /* DumbViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B793002278AFF600DB7B38 /* DumbViewController.swift */; };
 		31B89F85212358D900B32F1D /* LoginRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B89F84212358D900B32F1D /* LoginRegisterViewController.swift */; };
 		31BF011A2100EA300012F933 /* MessagesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BF01182100EA300012F933 /* MessagesTableViewCell.swift */; };
 		31BF011B2100EA300012F933 /* MessagesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 31BF01192100EA300012F933 /* MessagesTableViewCell.xib */; };
@@ -122,6 +123,7 @@
 		31AA6E8B214306D000CF0EFE /* NotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
 		31AA6E8D2143072800CF0EFE /* NotificationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
 		31AA6E8E2143072800CF0EFE /* NotificationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationCell.xib; sourceTree = "<group>"; };
+		31B793002278AFF600DB7B38 /* DumbViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DumbViewController.swift; sourceTree = "<group>"; };
 		31B89F84212358D900B32F1D /* LoginRegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRegisterViewController.swift; sourceTree = "<group>"; };
 		31BF01182100EA300012F933 /* MessagesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesTableViewCell.swift; sourceTree = "<group>"; };
 		31BF01192100EA300012F933 /* MessagesTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MessagesTableViewCell.xib; sourceTree = "<group>"; };
@@ -358,6 +360,7 @@
 				31EEAE6C20DEB8600015B8B2 /* EditProfileView.swift */,
 				3108E1F722175FD70058E009 /* FavoritesViewController.swift */,
 				316CFA2722651D2F00B9EBBD /* MapViewController.swift */,
+				31B793002278AFF600DB7B38 /* DumbViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -697,6 +700,7 @@
 				31AA6E8C214306D000CF0EFE /* NotificationsViewController.swift in Sources */,
 				31F6C23C20DAF4EE00026C0B /* User.swift in Sources */,
 				3193061520E94B5A00942DCF /* HomeFeedViewController.swift in Sources */,
+				31B793012278AFF600DB7B38 /* DumbViewController.swift in Sources */,
 				31E3DD36220F8BBE0009A5CC /* HashTagViewController.swift in Sources */,
 				315C4381221A0A4C00C9FAD1 /* SingleTopicViewController.swift in Sources */,
 				31BF011F2101295E0012F933 /* ChatContainer.swift in Sources */,
@@ -804,7 +808,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -855,7 +859,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";

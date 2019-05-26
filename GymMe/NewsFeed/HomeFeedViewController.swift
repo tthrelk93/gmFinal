@@ -13,13 +13,28 @@ import SwiftOverlays
 import JSQMessagesViewController
 
 
-class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITabBarDelegate, PerformActionsInFeedDelegate,UIGestureRecognizerDelegate, UITextFieldDelegate, UISearchBarDelegate, CommentLike, UITextViewDelegate {
+class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITabBarDelegate, PerformActionsInFeedDelegate,UIGestureRecognizerDelegate, UITextFieldDelegate, UISearchBarDelegate, CommentLike, UITextViewDelegate, ToProfileDelegate {
     
     
-    /*func performHashtagDatabaseAction(hashtag: String, postID: String) {
-        print("here in hashtag")
-        Database.database().reference().child("hashtags").updateChildValues([hashtag:postID])
-    }*/
+    func commentGoToProf(cellUID:String,name:String) {
+        print("madeIt")
+        self.curName = name
+        self.selectedCellUID = cellUID
+        if cellUID == Auth.auth().currentUser!.uid {
+            selectedCurAuthProfile = true
+        } else {
+            selectedCurAuthProfile = false
+        }
+        performSegue(withIdentifier: "FeedToProfile", sender: self)
+    }
+    
+    func segueToProf(cellUID: String, name: String) {
+        
+        //
+    }
+    
+    
+   
     
     @IBOutlet weak var likeTopLabel: UILabel!
     var mentionID = String()
@@ -87,10 +102,14 @@ class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UIColle
     func locationButtonTextCellPressed(sentBy: String, cell: NewsFeedCellCollectionViewCell){
         print("locationTextCell")
         //SwiftOverlays.showBlockingWaitOverlayWithText("searching")
+        if cell.postLocationButton.titleLabel!.text == nil{
+            
+        } else {
         self.locationSegString = sentBy
         self.locationNamePressed = cell.postLocationButton.titleLabel!.text!
         self.locationPostID = cell.postID!
         performSegue(withIdentifier: "FeedToAdvancedSearch", sender: self)
+        }
         
     }
     var locationSegString = String()
@@ -745,7 +764,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
             
             tpTextView.frame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
             tpTextView.isScrollEnabled = false
-            
+            tpTimestampLabel.text = cell.timeStambLabel.text
             
             tpImageView.image = cell.profImageView.image!
             tpLikeButton.setImage(cell.likeButton.imageView!.image, for: .normal)
@@ -809,6 +828,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                 self.likedByCollect.dataSource = self
                 DispatchQueue.main.async{
                     self.likedByCollect.reloadData()
+                    
                 }
             }
         } else if sentBy == "showComments" {
@@ -827,7 +847,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
             
             tpTextView.frame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
             tpTextView.isScrollEnabled = false
-            
+             tpTimestampLabel.text = cell.timeStambLabel.text
             
             tpImageView.image = cell.profImageView.image!
             tpLikeButton.setImage(cell.likeButton.imageView!.image, for: .normal)
@@ -1032,11 +1052,12 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                 })
             self.present(alert, animated: true)
         } else if sentBy == "showCommentsCount"{
-            likedByCollectData.removeAll()
+            
             print("showCommentsCountPic")
             self.selectedPostForComments = cell.postID!
             self.selectedPostPosterID = cell.posterUID!
             self.backFromLikedByViewButton.isHidden = false
+            likedByCollectData.removeAll()
             SwiftOverlays.showBlockingTextOverlay("loading comments")
             self.likedByCollect.performBatchUpdates(nil, completion: {
                 (result) in
@@ -1057,7 +1078,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                 
             } else {
                 
-                
+                likedByCollectData.removeAll()
                 
                 likedByCollectData = (feedDataArray[(cell.cellIndexPath?.row)!]["comments"] as! [[String:Any]])
                 
@@ -1142,13 +1163,10 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                     cell.contentView.layer.borderColor = UIColor.clear.cgColor
                     cell.contentView.layer.masksToBounds = true
                     cell.shareCheck.isHidden = false
+                    cell.shareCheck.frame.size = CGSize(width: 25, height: 25)
                     
-                    //cell.layer.shadowColor = UIColor.gray.cgColor
-                    //cell.layer.shadowOffset = CGSize(width: 0, height: 2.0)
-                    //cell.layer.shadowRadius = 2.0;
-                    //cell.layer.shadowOpacity = 0.6;
-                    //cell.layer.masksToBounds = false
-                   // cell.layer.shadowPath = UIBezierPath(roundedRect:cell.bounds, cornerRadius:cell.contentView.layer.cornerRadius).cgPath
+                    
+                   
                 cell.selectButton.isHidden = true
                 cell.layer.cornerRadius = 10
                 cell.layer.masksToBounds = true
@@ -1156,7 +1174,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                 cell.likedByFollowButton.isHidden = true
                 
                 //cell.selectButton.isHidden = false
-                
+                cell.delegate1 = self
                 cell.likedByName.isHidden = false
                 cell.likedByUName.isHidden = false
                 cell.commentName.isHidden = true
@@ -1164,7 +1182,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                 //cell.commentTimestamp.isHidden = true
                 //if (likedByCollectData[indexPath.row])["x"] != nil{
                 cell.likedByUName.text = ((self.likedByCollectData[indexPath.row] )["uName"] as? String)
-                
+                cell.indexPath = indexPath
                 cell.likedByUID = ((self.likedByCollectData[indexPath.row])["uid"] as! String)
                 
                 cell.likedByName.text = ((self.likedByCollectData[indexPath.row] )["realName"] as! String)
@@ -1241,8 +1259,8 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                 //DispatchQueue.main.async{
                cell.myRealName = self.myRealName
                 cell.posterUID = self.selectedPostPosterID
+                cell.posterName = (self.likedByCollectData[indexPath.row]["commentorName"] as! String)
                 
-                //cell.likeButton.setImage(UIImage(named:"like.png"), for: .normal)
                 cell.postID = self.selectedPostForComments
                     cell.commentDelegate = self
                     cell.indexPath = indexPath
@@ -1256,7 +1274,9 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                 
                     cell.commentorPic.layer.cornerRadius = cell.commentorPic.frame.width/2
                 cell.commentorPic.layer.masksToBounds = true
+                if self.likedByCollectData.count == 0{
                     
+                } else {
                     if self.likedByCollectData[indexPath.row]["likes"] as? [[String:Any]] == nil{
                         
                     } else {
@@ -1330,7 +1350,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                         }
                     }
                 }
-                
+                }
                 return cell
             } else if sentBy == "addFriends" {
                 let cell : LikedByCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "LikedByCollectionViewCell", for: indexPath) as! LikedByCollectionViewCell
@@ -2193,6 +2213,23 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
        
     }
     
+    func shareCirclePressed(likedByUID: String, indexPath: IndexPath){
+        print("shareCirc2: \(likedByUID) \(indexPath)")
+        if (likedByCollect.cellForItem(at: indexPath) as! LikedByCollectionViewCell).shareCheck.backgroundColor == UIColor.red{
+            
+            (likedByCollect.cellForItem(at: indexPath) as! LikedByCollectionViewCell).shareCheck.backgroundColor = UIColor.clear
+            
+            sharedCellSelectedDict.removeValue(forKey: likedByCollectData[indexPath.row]["uid"] as! String)
+            
+            
+            
+        } else {
+            (likedByCollect.cellForItem(at: indexPath) as! LikedByCollectionViewCell).shareCheck.backgroundColor = UIColor.red
+            sharedCellSelectedDict[(likedByCollectData[indexPath.row]["uid"] as! String)] = indexPath
+            
+        }
+    }
+    
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath){
     //if the collection view does not equal the feed collect than load data for the each cells internal likedBy collect
         if collectionView == self.likedByCollect {
@@ -2225,6 +2262,8 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                 self.selectedCell.postID = nil
                 
                 likedByCollectData = feedDataArray[indexPath.row]["likes"] as! [[String : Any]]
+                var tempCell = feedCollect.cellForItem(at: indexPath) as! NewsFeedCellCollectionViewCell
+                showLikedByViewTextCell(sentBy: "showCommentsCount", cell: tempCell)
             } else {
                 self.selectedCell2.postID = nil
                 self.selectedCell = collectionView.cellForItem(at: indexPath) as! NewsFeedPicCollectionViewCell
@@ -2308,13 +2347,19 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
         var width = CGFloat()
         var height = CGFloat()
         if collectionView == self.likedByCollect || collectionView == self.findFriendsCollect{
+            if collectionView == self.likedByCollect && textPostCommentView.isHidden == false{
+                width = collectionView.frame.width - 20
+                if let text = (likedByCollectData[indexPath.row])["commentText"] {
+                    height = estimateFrameForText(text: text as! String).height + 50
+                 
+                }
+                return CGSize(width: width, height: height)
+                
+            } else {
             return CGSize(width: collectionView.frame.width - 20, height: 75)
+            }
         } else {
-       // print("")
-        // Compute the dimension of a cell for an NxN layout with space S between
-        // cells.  Take the collection view's width, subtract (N-1)*S points for
-        // the spaces between the cells, and then divide by N to find the final
-        // dimension for the cell's width and height.
+       
         
         if feedDataArray[indexPath.row]["postPic"] == nil && feedDataArray[indexPath.row]["postVid"] == nil {
             width = collectionView.frame.width - 20
@@ -2325,7 +2370,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                         print("suh")
                     } else {
                     
-                    height = estimateFrameForText(text: text as! String).height + 130
+                    height = estimateFrameForText(text: text as! String).height + 150
                     }
                  } else if (estimateFrameForText(text: text as! String).height) > 140 {
                     height = estimateFrameForText(text: text as! String).height + 140
@@ -2401,7 +2446,9 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
         //self.edgesForExtendedLayout = []
         ogLikeCollectFrame = self.likedByCollect.frame
         print("startLoad")
-        self.showWaitOverlayWithText("Loading Feed")
+        //self.showWaitOverlayWithText("Loading Feed")
+         self.view.addSubview(UIView().customActivityIndicator(view: self.view, widthView: nil, backgroundColor:UIColor.black, textColor: UIColor.white, message: "Loading Feed"))
+        
        self.tpTextView.delegate = self //SwiftOverlays.showBlockingWaitOverlayWithText("Loading Feed")
         selfCommentPic.frame = CGRect(x: selfCommentPic.frame.origin.x, y: selfCommentPic.frame.origin.y, width: 30.0, height: 30.0)
        findFriendsSearchBar.showsCancelButton = true
@@ -2676,6 +2723,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                     // ready
                     //SwiftOverlays.removeAllBlockingOverlays()
                     self.removeAllOverlays()
+                    self.hideLoader(removeFrom: self.view)
                     print("doneLoading3")
                 })
                // SwiftOverlays.removeAllBlockingOverlays()
@@ -3156,7 +3204,9 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.findFriendsSearchBar.endEditing(true)
     }
-    
+    func hideLoader(removeFrom : UIView){
+        removeFrom.subviews.last?.removeFromSuperview()
+    }
     
     //search bar delegatte
     var searchActive = Bool()
@@ -3405,26 +3455,7 @@ extension HomeFeedViewController:PlayerPlaybackDelegate {
 }
 extension HomeFeedViewController {
     
-   /* @objc func handleTapGestureRecognizer(_ gestureRecognizer: UITapGestureRecognizer) {
-        
-        switch (self.selectedCell.player?.playbackState.rawValue) {
-        case PlaybackState.stopped.rawValue?:
-            self.selectedCell.player?.playFromBeginning()
-            break
-        case PlaybackState.paused.rawValue?:
-            self.selectedCell.player?.playFromCurrentTime()
-            break
-        case PlaybackState.playing.rawValue?:
-            self.selectedCell.player?.pause()
-            break
-        case PlaybackState.failed.rawValue?:
-            self.selectedCell.player?.pause()
-            break
-        default:
-            self.selectedCell.player?.pause()
-            break
-        }*/
-    //}
+   
     
 }
 
@@ -3522,19 +3553,71 @@ class SafeAreaFixTabBar: UITabBar {
         }
     }
 }
-/*extension UITabBar {
-    override open func sizeThatFits(_ size: CGSize) -> CGSize {
-        super.sizeThatFits(size)
-        print("blahblahy")
-        guard let window = UIApplication.shared.keyWindow else {
-            return super.sizeThatFits(size)
+
+extension UIView{
+    func customActivityIndicator(view: UIView, widthView: CGFloat?,backgroundColor: UIColor?, textColor:UIColor?, message: String?) -> UIView{
+        
+        //Config UIView
+        self.backgroundColor = backgroundColor?.withAlphaComponent(0.3) //Background color of your view which you want to set
+        
+        var selfWidth = view.frame.width
+        if widthView != nil{
+            selfWidth = widthView ?? selfWidth
         }
-        var sizeThatFits = super.sizeThatFits(size)
-        if #available(iOS 11.0, *) {
-            sizeThatFits.height = window.safeAreaInsets.bottom + 40
-        } else {
-            // Fallback on earlier versions
+        
+        let selfHeigh = view.frame.height
+        let loopImages = UIImageView()
+        
+       let imageListArray = [UIImage(named:"spin1.png")!,UIImage(named:"spin2.png")!, UIImage(named:"spin3.png")!, UIImage(named:"spin5.png")!, UIImage(named:"spin6.png")!, UIImage(named:"spin7.png")!, UIImage(named:"spin8.png")!, UIImage(named:"spin9.png")!, UIImage(named:"spin11.png")!, UIImage(named:"spin12.png")!, UIImage(named:"spin13.png")!, UIImage(named:"spin14.png")!, UIImage(named:"spin15.png")!, UIImage(named:"spin16.png")!, UIImage(named:"spin17.png")!, UIImage(named:"spin18.png")!, UIImage(named:"spin19.png")!, UIImage(named:"spin20.png")!, UIImage(named:"spin21.png")!, UIImage(named:"spin22.png")!, UIImage(named:"spin23.png")!] as! [UIImage] // Put your desired array of images in a specific order the way you want to display animation.
+        // let imageListArray = [UIImage(named:"spin1"), UIImage(named:"spin2")] as! [UIImage]
+        
+        loopImages.animationImages = imageListArray
+        loopImages.animationDuration = TimeInterval(0.9 )
+        loopImages.startAnimating()
+        
+        let imageFrameX = (selfWidth / 2) - 30
+        let imageFrameY = (selfHeigh / 2) - 60
+        var imageWidth = CGFloat(60)
+        var imageHeight = CGFloat(60)
+        
+        if widthView != nil{
+            imageWidth = widthView ?? imageWidth
+            imageHeight = widthView ?? imageHeight
         }
-        return sizeThatFits
-    }
-}*/
+        
+        //ConfigureLabel
+        let label = UILabel()
+        label.textAlignment = .center
+        label.textColor = UIColor.white.withAlphaComponent(0.5)
+       // label.font = UIFont(name: "System", size: 17.0)! // Your Desired UIFont Style and Size
+        label.numberOfLines = 0
+        label.text = message ?? ""
+        //label.textColor = textColor ?? UIColor.clear
+        label.alpha = 1.0
+        
+        //Config frame of label
+        let labelFrameX = (selfWidth / 2) - 100
+        let labelFrameY = (selfHeigh / 2) - 30
+        let labelWidth = CGFloat(200)
+        let labelHeight = CGFloat(70)
+        
+        // Define UIView frame
+        self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width , height: UIScreen.main.bounds.size.height)
+        
+        
+        //ImageFrame
+        loopImages.frame = CGRect(x: imageFrameX, y: imageFrameY, width: imageWidth, height: imageHeight)
+        loopImages.alpha = 0.4
+        
+        //LabelFrame
+        label.frame = CGRect(x: labelFrameX, y: labelFrameY, width: labelWidth, height: labelHeight)
+        
+       
+        
+        //add loading and label to customView
+        self.addSubview(loopImages)
+        self.addSubview(label)
+        //label.blink()
+       
+        return self }}
+

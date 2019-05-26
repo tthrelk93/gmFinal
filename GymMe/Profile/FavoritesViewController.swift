@@ -93,6 +93,26 @@ class FavoritesViewController: UIViewController, UICollectionViewDelegate, UICol
         DispatchQueue.main.async{
             
             self.favoritesCollect.reloadData()
+            if item == tabBar.items![0]{
+            let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+            layout.sectionInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
+            layout.minimumInteritemSpacing = 1
+            layout.minimumLineSpacing = 1
+                self.favoritesCollect.collectionViewLayout.invalidateLayout()
+                
+                self.favoritesCollect.layoutIfNeeded()
+                self.favoritesCollect!.collectionViewLayout = layout
+            } else {
+                let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+                layout.sectionInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
+                layout.minimumInteritemSpacing = 1
+                layout.minimumLineSpacing = 10
+               self.favoritesCollect.collectionViewLayout.invalidateLayout()
+                self.favoritesCollect.layoutIfNeeded()
+                self.favoritesCollect!.collectionViewLayout = layout
+            }
+            //self.favoritesCollect.collectionViewLayout.invalidateLayout()
+            
         }
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -357,6 +377,11 @@ class FavoritesViewController: UIViewController, UICollectionViewDelegate, UICol
         self.favoritesCollect.register(UINib(nibName: "NewsFeedCellCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "NewsFeedCellCollectionViewCell")
        // self.favoritesCollect.register(UINib(nibName: "NewsFeedPicCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "NewsFeedPicCollectionViewCell")
         self.favoritesCollect.register(UINib(nibName: "PopCell", bundle: nil), forCellWithReuseIdentifier: "PopCell")
+        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
+        layout.minimumInteritemSpacing = 1
+        layout.minimumLineSpacing = 1
+        favoritesCollect!.collectionViewLayout = layout
         favoritesCollect.delegate = self
         favoritesCollect.dataSource = self
 

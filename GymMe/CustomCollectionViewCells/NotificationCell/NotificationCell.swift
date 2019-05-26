@@ -26,7 +26,7 @@ class NotificationCell: UICollectionViewCell {
     }
     
     var delegate: PerformActionsInNotifications?
-    @IBOutlet weak var lineView: UIView!
+   // @IBOutlet weak var lineView: UIView!
     @IBOutlet weak var postTextLabel: UILabel!
     @IBAction func postPicPressed(_ sender: Any) {
         delegate?.performSegueToPost(postID: self.postID)
@@ -45,11 +45,12 @@ class NotificationCell: UICollectionViewCell {
     var postID = String()
     
     override func awakeFromNib() {
-        lineView.frame = CGRect(x: lineView.frame.origin.x, y: lineView.frame.origin.y, width: lineView.frame.width, height: 0.5)
+        
         super.awakeFromNib()
         // Initialization code
         self.player = Player()
-        postPic.frame = CGRect(x: postPic.frame.origin.x, y: postPic.frame.origin.y, width: 60, height: 60)
+        postPic.frame = CGRect(x: postPic.frame.origin.x, y: postPic.frame.origin.y, width: 50, height: 50)
+        actionUserPicButton.frame = CGRect(x: actionUserPicButton.frame.origin.x, y: actionUserPicButton.frame.origin.y, width: 50, height: 50)
         self.actionUserPicButton.layer.cornerRadius = actionUserPicButton.frame.width/2
         self.actionUserPicButton.layer.masksToBounds = true
         
@@ -75,10 +76,12 @@ class NotificationCell: UICollectionViewCell {
     }
     override func prepareForReuse(){
         self.postPic.imageView?.image = nil
+        
         self.postTextLabel.text = ""
         self.player?.view.isHidden = true
+        //self.lineView.frame = CGRect(x: lineView.frame.origin.x, y: lineView.frame.origin.y, width: lineView.frame.width, height: 0.5)
         super.prepareForReuse()
-       
+       //self.lineView.frame = CGRect(x: lineView.frame.origin.x, y: lineView.frame.origin.y, width: lineView.frame.width, height: 0.5)
         
         
         

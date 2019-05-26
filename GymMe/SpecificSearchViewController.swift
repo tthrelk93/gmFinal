@@ -20,7 +20,7 @@ var myUName = String()
     
     @IBAction func swipeBack(_ sender: Any) {
         if prevScreen == "feed"{
-            performSegue(withIdentifier: "AdvancedSearchToFeed", sender: self)
+            performSegue(withIdentifier: "SpecificSearchToFeed", sender: self)
         } else {
             performSegue(withIdentifier: "specificToGeneralSearch", sender: self)
         }
@@ -232,7 +232,7 @@ var myUName = String()
                 vc.fromNotifPostID = self.locationPostID
             }
         }
-        if segue.identifier == "AdvancedSearchToFeed"{
+        if segue.identifier == "SpecificSearchToFeed"{
             if let vc = segue.destination as? HomeFeedViewController{
                 vc.prevScreen = "advancedSearch"
             }

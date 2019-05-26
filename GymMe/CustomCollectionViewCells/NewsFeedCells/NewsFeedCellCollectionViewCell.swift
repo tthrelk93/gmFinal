@@ -321,10 +321,17 @@ class NewsFeedCellCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
         self.postText.delegate = self
         self.profImageView.layer.cornerRadius = self.profImageView.frame.width/2
         self.profImageView.layer.masksToBounds = true
-        
-        print(self.gestureRecognizers)
+       // let thisTap = UITapGestureRecognizer()
+        //thisTap.numberOfTapsRequired = 1
+        //thisTap.addTarget(self, action: #selector(NewsFeedCellCollectionViewCell.showComments))
+       // postText.addGestureRecognizer(thisTap)
+        //print(self.gestureRecognizers)
         // Initialization code
     }
+    @objc func showComments(){
+        delegate?.showLikedByViewTextCell(sentBy: "showCommentsCount", cell: self)
+    }
+    
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
         switch URL.scheme {
         case "hash" :

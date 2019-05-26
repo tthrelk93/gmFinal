@@ -658,6 +658,10 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
          }
          }*/
     }
+    func hideLoader(removeFrom : UIView){
+        removeFrom.subviews.last?.removeFromSuperview()
+    }
+    
     
     /*func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
      print("Firebase registration token: \(fcmToken)")

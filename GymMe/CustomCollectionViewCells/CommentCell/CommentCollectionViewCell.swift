@@ -15,11 +15,17 @@ import FirebaseAuth
 protocol CommentLike {
     
     func likeComment()
+    func commentGoToProf(cellUID:String,name:String)
 
 }
 
 class CommentCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
 
+    var posterName:String?
+    @IBAction func goToProfPressed(_ sender: Any) {
+        
+        commentDelegate?.commentGoToProf(cellUID: posterUID,name:posterName!)
+    }
     @IBOutlet weak var lineView: UIView!
     
     var commentDelegate: CommentLike?

@@ -47,8 +47,11 @@ class HashTagViewController: UIViewController, UICollectionViewDelegate,UICollec
     @IBAction func backButtonPressed(_ sender: Any) {
         if prevScreen == "search"{
             performSegue(withIdentifier: "HashToSearch", sender: self)
+        } else if prevScreen == "prof" {
+            performSegue(withIdentifier: "HashToProf", sender: self)
+            
         } else {
-        performSegue(withIdentifier: "HashToFeed", sender: self)
+            performSegue(withIdentifier: "HashToFeed", sender: self)
         }
     }
     
@@ -115,9 +118,11 @@ class HashTagViewController: UIViewController, UICollectionViewDelegate,UICollec
         })
         
         Database.database().reference().child("hashtags").child(hashtag).observeSingleEvent(of: .value, with: { snapshot in
-            var valDict = snapshot.value as! [String]
-            for str in valDict{
+            var valDict = snapshot.value as? [String]
+            if valDict as? [String] != nil{
+            for str in valDict!{
                 self.hashArray.append(str)
+            }
             }
             Database.database().reference().child("posts").observeSingleEvent(of: .value, with: { snapshot in
                 var valDict = snapshot.value as! [String:Any]
@@ -185,9 +190,18 @@ class HashTagViewController: UIViewController, UICollectionViewDelegate,UICollec
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
+    var curName = String()
+    var curUID = String()
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "HashToProf"{
+            if let vc = segue.destination as? ProfileViewController{
+                vc.curUID = self.curUID
+                vc.curName = self.curName
+            }
+        }
         if segue.identifier == "HashToSinglePost"{
         if let vc = segue.destination as? SinglePostViewController{
             

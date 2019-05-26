@@ -17,7 +17,7 @@ import SwiftOverlays
 class SearchViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarDelegate, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UITextViewDelegate, CLLocationManagerDelegate {
     @IBOutlet weak var backToCatButton: UIButton!
     var prevScreen = String()
-    var sportsCollectData = ["Soccer","Football","Lacrosse", "Track & Field", "Tennis","Baseball","Swimming"]
+    var sportsCollectData = ["Soccer","Football","Lacrosse", "Track & Field", "Tennis","Baseball","Swimming","Basketball","Rock Climbing"]
     
     @IBOutlet weak var sportsView: UIView!
     
@@ -1246,12 +1246,9 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 
                
                 
-                self.cityLabel.titleLabel!.text = selfData["city"] as? String
-                
-                
-                
                 //did select picture cell
                 if selfData["postPic"] as? String != nil {
+                    self.singlePostView.bringSubview(toFront: singlePostImageView)
                     if let messageImageUrl = URL(string: selfData["postPic"] as! String) {
                         
                         if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
@@ -1303,7 +1300,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         
                         if likedBySelf == true {
                             self.likeButton.setImage(UIImage(named:"likeSelected.png"), for: .normal)
-                            //cell.likesCountButton.setTitle((feedDataArray[indexPath.row]["likes"] as! [[String:Any]]).count.description, for: .normal)
+                           
                         }
                     }
                     //set comments count
@@ -1352,16 +1349,16 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         
                         if favedBySelf == true{
                             favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
-                            //favoritesCount.setTitle((((self.popCollectData[indexPath.row]).first?.value as! [String:Any])["favorites"] as! [[String:Any]]).count.description, for: .normal)
+                            
                         }
                     }
                     
-                   // textPostTV.isHidden = true
-                   // singlePostView2.isHidden = false
+                  
                 } else if (selfData["postVid"] as? String != nil) {
                     //vid post//////////
                     //self.singlePostView3.frame = ogCommentPos
                     self.player = Player()
+                   // self.singlePostImageView.isHidden = true
                    // textPostTV.isHidden = true
                     self.player!.view.frame = self.singlePostImageView.frame
                     player?.url = URL(string: selfData["postVid"] as! String)
@@ -1375,8 +1372,16 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     let vidFrame = singlePostImageView.frame
                     self.player?.view.frame = vidFrame
                     self.player?.didMove(toParentViewController: self)
-                    singlePostView.sendSubview(toBack: (player?.view)!)
-                    
+                    singlePostView.bringSubview(toFront: (player?.view)!)
+                    if let messageImageUrl = URL(string: selfData["posterPicURL"] as! String) {
+                        
+                        if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                            posterPicButton.setImage(UIImage(data: imageData as Data), for: .normal)
+                        }
+                    }
+                    self.likedCollectData = (selfData["likes"] as! [[String:Any]])
+                    self.cityLabel.setTitle(selfData["city"] as? String, for: .normal)
+                    self.posterNameButton.setTitle(selfData["posterName"] as? String, for: .normal)
                     self.curCommentCell = selfData
                     var likesPost: [String:Any]?
                     var favesPost: [String:Any]?
@@ -1459,6 +1464,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                    
                 } else {
                     //text post
+                    //
                     self.curCommentCell = selfData
                     var likesPost: [String:Any]?
                     var favesPost: [String:Any]?
@@ -1559,6 +1565,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 })
                 //^%%%%%%%%
             } else if topBarPop.titleLabel!.textColor == UIColor.red {
+                
                 print("wut wut")
                 backToCatButton.isHidden = true
                  selfData = (self.popCollectData[indexPath.row] as! [String:Any])
@@ -1588,12 +1595,15 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 
                 //did select picture cell
                 if ((self.popCollectData[indexPath.row]) as! [String:Any])["postPic"] as? String != nil {
+                    self.singlePostView.bringSubview(toFront: singlePostImageView)
                     if let messageImageUrl = URL(string: ((self.popCollectData[indexPath.row]) as! [String:Any])["postPic"] as! String) {
                         
                         if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
                             singlePostImageView.image = UIImage(data: imageData as Data)
                         }
                     }
+                    
+                    
                     
                     self.curCommentCell = ((self.popCollectData[indexPath.row]) as! [String:Any])
                     var likesPost: [String:Any]?
@@ -1658,14 +1668,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         print("showComments")
                         //self.backFromLikedByViewButton.isHidden = false
                         
-                        //self.commentTF.isHidden = false
-                        
-                        //self.topLabel.text = "Comments"
                        
-                            
-                            
-                            
-                            //commentsCollectData = (((self.popCollectData[indexPath.row]) as! [String:Any])["comments"] as! [[String:Any]])
                             var commentString = "View \(commentsCollectData.count) comments"
                             commentedByButton.setTitle(commentString, for: .normal)
                             
@@ -1715,7 +1718,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     self.player?.view.frame = vidFrame
                     self.singlePostView.addSubview((self.player?.view)!)
                     self.player?.didMove(toParentViewController: self)
-                    singlePostView.sendSubview(toBack: (player?.view)!)
+                    singlePostView.bringSubview(toFront: (player?.view)!)
                     
                     self.curCommentCell = self.popCollectData[indexPath.row] as! [String:Any]
                     var likesPost: [String:Any]?

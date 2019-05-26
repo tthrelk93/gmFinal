@@ -12,6 +12,10 @@ import FirebaseDatabase
 import FirebaseAuth
 
 class FolloweringViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, ToProfileDelegate{
+    func shareCirclePressed(likedByUID: String, indexPath: IndexPath) {
+        
+    }
+    
     
     func segueToProf(cellUID: String, name: String) {
         print("hereghghgh")
@@ -91,8 +95,8 @@ class FolloweringViewController: UIViewController, UICollectionViewDelegate, UIC
                     cell.commentTextView.isHidden = true
                     cell.commentTimestamp.isHidden = true
                     cell.likedByUName.text = (self.flwingDataArr[indexPath.row]["username"] as! String)
-                    cell.layer.borderWidth = 1
-                    cell.layer.borderColor = UIColor.red.cgColor
+                    cell.likedByFollowButton.layer.borderWidth = 1
+                    cell.likedByFollowButton.layer.borderColor = UIColor.red.cgColor
                     cell.likedByFollowButton.backgroundColor = UIColor.white
                     cell.likedByFollowButton.setTitleColor(UIColor.red, for: .normal)
                     cell.likedByUID = (self.flwingDataArr[indexPath.row]["uid"] as! String)
