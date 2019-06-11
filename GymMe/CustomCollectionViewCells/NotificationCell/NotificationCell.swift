@@ -43,13 +43,14 @@ class NotificationCell: UICollectionViewCell {
     var timeStamp: String?
     var actionByUID: String?
     var postID = String()
-    
+    @IBOutlet weak var tpIconPosition: UIView!
+    var ogPostPicFrame = CGRect()
     override func awakeFromNib() {
         
         super.awakeFromNib()
         // Initialization code
         self.player = Player()
-        postPic.frame = CGRect(x: postPic.frame.origin.x, y: postPic.frame.origin.y, width: 50, height: 50)
+        postPic.frame = CGRect(x: ogPostPicFrame.origin.x, y: ogPostPicFrame.origin.y, width: 50, height: 50)
         actionUserPicButton.frame = CGRect(x: actionUserPicButton.frame.origin.x, y: actionUserPicButton.frame.origin.y, width: 50, height: 50)
         self.actionUserPicButton.layer.cornerRadius = actionUserPicButton.frame.width/2
         self.actionUserPicButton.layer.masksToBounds = true

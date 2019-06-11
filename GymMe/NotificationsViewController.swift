@@ -417,14 +417,15 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
                     //}
                 }
             }
-            
+            cell.ogPostPicFrame = cell.postPic.frame
             if self.picDict[self.noteCollectData![indexPath.row]["postID"] as! String] != nil{
-                //cell.postPic.layer.cornerRadius = cell.postPic.frame.width/2
-                //cell.postPic.layer.masksToBounds = true
+                cell.postPic.frame = cell.ogPostPicFrame
                 cell.postPic.setImage(self.picDict[self.noteCollectData![indexPath.row]["postID"] as! String], for: .normal)
             } else {
                 if (self.noteCollectData![indexPath.row]["isForumPost"] as? Bool) == nil {
+                   cell.postPic.frame = cell.tpIconPosition.frame
                     cell.postPic.setBackgroundImage(UIImage(named: "List-Grey-120 copy 2"), for: .normal)
+                    
                 } else {
                     cell.postPic.isHidden = true
                 }

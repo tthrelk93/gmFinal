@@ -135,7 +135,9 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
              let cell : ForumCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "ForumCollectionViewCell", for: indexPath) as! ForumCollectionViewCell
-            
+        
+            cell.layer.addBor(edge: .top, color: UIColor.lightGray, thickness: 0.5)
+        
             var cellData = topicData[indexPath.row] as! [String:Any]
             if let messageImageUrl = URL(string: cellData["posterPic"] as! String) {
                 
@@ -408,4 +410,28 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
     }
     
 
+}
+extension CALayer {
+    
+    func addBor(edge: UIRectEdge, color: UIColor, thickness: CGFloat) {
+        
+        let border = CALayer()
+        
+        switch edge {
+        case .top:
+            border.frame = CGRect(x: 0, y: 0, width: frame.width, height: thickness)
+        case .bottom:
+            border.frame = CGRect(x: 0, y: frame.height - thickness, width: frame.width, height: thickness)
+        case .left:
+            border.frame = CGRect(x: 0, y: 0, width: thickness, height: frame.height)
+        case .right:
+            border.frame = CGRect(x: frame.width - thickness, y: 0, width: thickness, height: frame.height)
+        default:
+            break
+        }
+        
+        border.backgroundColor = color.cgColor;
+        
+        addSublayer(border)
+    }
 }

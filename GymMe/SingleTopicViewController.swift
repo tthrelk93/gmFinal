@@ -41,14 +41,8 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
                 cell.contentView.layer.borderWidth = 1.0
                 cell.contentView.layer.borderColor = UIColor.clear.cgColor
                 cell.contentView.layer.masksToBounds = true
-                
-                // cell.layer.shadowColor = UIColor.gray.cgColor
-                //cell.layer.shadowOffset = CGSize(width: 0, height: 2.0);
-                //cell.layer.shadowRadius = 2.0;
-                //cell.layer.shadowOpacity = 1.0;
                 cell.layer.masksToBounds = false
-                //cell.layer.shadowPath = UIBezierPath(roundedRect:cell.bounds, cornerRadius:cell.contentView.layer.cornerRadius).cgPath
-                
+             
                 if (self.following.contains(self.likeData[indexPath.row]["uid"] as! String)){
                     cell.likedByFollowButton.setTitle("Unfollow", for: .normal)
                 }
@@ -84,13 +78,13 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
             }
             return cell
         } else {
-            //commentTF.becomeFirstResponder()
+           
             let cell : CommentCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CommentCollectionViewCell", for: indexPath) as! CommentCollectionViewCell
-            //DispatchQueue.main.async{
+            
             cell.myRealName = self.myName
             cell.posterUID = self.topicData["posterID"] as! String
             cell.forum = true
-            //cell.likeButton.setImage(UIImage(named:"like.png"), for: .normal)
+           
             cell.postID = self.topicData["postID"] as! String
             cell.commentDelegate = self
             cell.indexPath = indexPath
@@ -143,7 +137,7 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
             let date = dateFormatter.date(from: tStampDateString)
             
             let now = Date()
-            //print("tStampDateString: \(tStampDateString), date: \(date!), now: \(now)")
+            
             var hoursBetween = Int(now.days(from: date!))
             print("hrs Between: \(hoursBetween)")
             if hoursBetween < 1{
@@ -241,8 +235,7 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
         
         if self.likeButton.imageView?.image == UIImage(named: "favoritesUnfilled.png"){
             self.likeButton.setImage(UIImage(named:"favoritesFilled.png"), for: .normal)
-            // let curLikes = Int((self.likesCountButton.titleLabel?.text)!)
-            //self.likesCountButton.setTitle(String(curLikes! + 1), for: .normal)
+            
             Database.database().reference().child("forum").child(self.topicData["postID"] as! String).observeSingleEvent(of: .value, with: { snapshot in
                 let valDict = snapshot.value as! [String:Any]
                 
@@ -252,9 +245,7 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
                 }
                 var likesVal = likesArray.count
                 likesVal = likesVal + 1
-                //if self.myPicString == nil{
-                //   self.myPicString = "profile-placeholder"
-                //}
+               
                 likesArray.append(["uName": self.myUName, "realName": self.myRealName, "uid": Auth.auth().currentUser!.uid, "pic": self.myPicString])
                 
                 if self.favoritedTopics == nil {
@@ -650,10 +641,12 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
         }
         
     }
-    
+    var ogDescriptFrame = CGRect()
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        ogDescriptFrame = topicDescriptionLabel.frame
+        
         topLine.frame.size = CGSize(width: UIScreen.main.bounds.width,height: 0.5)
          topicTopLine2.frame.size = CGSize(width: UIScreen.main.bounds.width,height: 0.5)
         commentorPic.frame = CGRect(x: commentorPic.frame.origin.x, y: commentorPic.frame.origin.x, width: 30, height: 30)
@@ -777,6 +770,20 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
                 }
             
         }
+            var descriptFrame = self.estimateFrameForText(text: (self.topicData["topicDescription"] as! String), type: "")
+            self.topicDescriptionLabel.frame = CGRect(x: self.topicDescriptionLabel.frame.origin.x, y: self.topicDescriptionLabel.frame.origin.y, width: descriptFrame.width, height: descriptFrame.height)
+            var offset = abs(self.ogDescriptFrame.height - self.topicDescriptionLabel.frame.height)
+           // offset = offset
+            print("offset: \(offset)")
+            self.commentIconButton.frame.origin = CGPoint(x: self.commentIconButton.frame.origin.x, y: self.commentIconButton.frame.origin.y + offset)
+            self.actualLikeButton.frame.origin = CGPoint(x: self.actualLikeButton.frame.origin.x, y: self.actualLikeButton.frame.origin.y + offset)
+            self.topicTopLine2.frame.origin = CGPoint(x: self.topicTopLine2.frame.origin.x, y: self.topicTopLine2.frame.origin.y + offset)
+            self.likeReplyCollect.frame = CGRect(x: self.likeReplyCollect.frame.origin.x, y: self.likeReplyCollect.frame.origin.y + offset, width: self.likeReplyCollect.frame.width, height: self.likeReplyCollect.frame.height - offset)
+            self.timeStampLabel.frame.origin = CGPoint(x: self.timeStampLabel.frame.origin.x, y: self.timeStampLabel.frame.origin.y + offset)
+            self.likesCountButton.frame.origin = CGPoint(x: self.likesCountButton.frame.origin.x, y: self.likesCountButton.frame.origin.y + offset)
+         
+            self.replyCountButton.frame.origin = CGPoint(x: self.replyCountButton.frame.origin.x, y: self.replyCountButton.frame.origin.y + offset)
+            
             var countString = String()
             
             var replyCount = self.commentData.count
@@ -823,32 +830,32 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             let keyboardHeight = keyboardSize.height
             print("keyHeight: \(keyboardHeight)")
-            topLine.frame = CGRect(x: topLine.frame.origin.x, y: topLine.frame.origin.y - keyboardHeight, width: topLine.frame.width, height: topLine.frame.height)
+            //topLine.frame = CGRect(x: topLine.frame.origin.x, y: topLine.frame.origin.y - keyboardHeight, width: topLine.frame.width, height: topLine.frame.height)
             
             backButton.isHidden = false
             //self.likeTopLabel.isHidden = true
             
-            commentView.frame = CGRect(x: commentView.frame.origin.x, y: commentView.frame.origin.y - keyboardHeight, width: commentView.frame.width, height: commentView.frame.height)
-            topLabel.frame = CGRect(x: topLabel.frame.origin.x, y: topLabel.frame.origin.y - keyboardHeight, width: topLabel.frame.width, height: topLabel.frame.height)
+            commentView.frame = CGRect(x: commentView.frame.origin.x, y: commentView.frame.origin.y + keyboardHeight, width: commentView.frame.width, height: commentView.frame.height)
+           // topLabel.frame = CGRect(x: topLabel.frame.origin.x, y: topLabel.frame.origin.y - keyboardHeight, width: topLabel.frame.width, height: topLabel.frame.height)
             
-            replyCountButton.frame = CGRect(x: replyCountButton.frame.origin.x, y: replyCountButton.frame.origin.y - keyboardHeight, width: replyCountButton.frame.width, height: replyCountButton.frame.height)
+           // replyCountButton.frame = CGRect(x: replyCountButton.frame.origin.x, y: replyCountButton.frame.origin.y - keyboardHeight, width: replyCountButton.frame.width, height: replyCountButton.frame.height)
             
-            likesCountButton.frame = CGRect(x: likesCountButton.frame.origin.x, y: likesCountButton.frame.origin.y - keyboardHeight, width: likesCountButton.frame.width, height: likesCountButton.frame.height)
+          //  likesCountButton.frame = CGRect(x: likesCountButton.frame.origin.x, y: likesCountButton.frame.origin.y - keyboardHeight, width: likesCountButton.frame.width, height: likesCountButton.frame.height)
             
-            posterImageView.frame = CGRect(x: posterImageView.frame.origin.x, y: posterImageView.frame.origin.y - keyboardHeight, width: posterImageView.frame.width, height: posterImageView.frame.height)
-            timeStampLabel.frame = CGRect(x: timeStampLabel.frame.origin.x, y: timeStampLabel.frame.origin.y - keyboardHeight, width: timeStampLabel.frame.width, height: timeStampLabel.frame.height)
-            likeButton.frame = CGRect(x: likeButton.frame.origin.x, y: likeButton.frame.origin.y - keyboardHeight, width: likeButton.frame.width, height: likeButton.frame.height)
-            actualLikeButton.frame = CGRect(x: actualLikeButton.frame.origin.x, y: actualLikeButton.frame.origin.y - keyboardHeight, width: actualLikeButton.frame.width, height: actualLikeButton.frame.height)
-            topicTopLine2.frame = CGRect(x: topicTopLine2.frame.origin.x, y: topicTopLine2.frame.origin.y - keyboardHeight, width: topicTopLine2.frame.width, height: topicTopLine2.frame.height)
+           // posterImageView.frame = CGRect(x: posterImageView.frame.origin.x, y: posterImageView.frame.origin.y - keyboardHeight, width: posterImageView.frame.width, height: posterImageView.frame.height)
+           // timeStampLabel.frame = CGRect(x: timeStampLabel.frame.origin.x, y: timeStampLabel.frame.origin.y - keyboardHeight, width: timeStampLabel.frame.width, height: timeStampLabel.frame.height)
+          //  likeButton.frame = CGRect(x: likeButton.frame.origin.x, y: likeButton.frame.origin.y - keyboardHeight, width: likeButton.frame.width, height: likeButton.frame.height)
+          //  actualLikeButton.frame = CGRect(x: actualLikeButton.frame.origin.x, y: actualLikeButton.frame.origin.y - keyboardHeight, width: actualLikeButton.frame.width, height: actualLikeButton.frame.height)
+          //  topicTopLine2.frame = CGRect(x: topicTopLine2.frame.origin.x, y: topicTopLine2.frame.origin.y - keyboardHeight, width: topicTopLine2.frame.width, height: topicTopLine2.frame.height)
             
-            topicTitleLabel.frame = CGRect(x: topicTitleLabel.frame.origin.x, y: topicTitleLabel.frame.origin.y - keyboardHeight, width: topicTitleLabel.frame.width, height: topicTitleLabel.frame.height)
+           // topicTitleLabel.frame = CGRect(x: topicTitleLabel.frame.origin.x, y: topicTitleLabel.frame.origin.y - keyboardHeight, width: topicTitleLabel.frame.width, height: topicTitleLabel.frame.height)
             
-            posterPicButton.frame = CGRect(x: posterPicButton.frame.origin.x, y: posterPicButton.frame.origin.y - keyboardHeight, width: posterPicButton.frame.width, height: posterPicButton.frame.height)
+           // posterPicButton.frame = CGRect(x: posterPicButton.frame.origin.x, y: posterPicButton.frame.origin.y - keyboardHeight, width: posterPicButton.frame.width, height: posterPicButton.frame.height)
             
-            topicDescriptionLabel.frame = CGRect(x: topicDescriptionLabel.frame.origin.x, y: topicDescriptionLabel.frame.origin.y - keyboardHeight, width: topicDescriptionLabel.frame.width, height: topicDescriptionLabel.frame.height)
+            //topicDescriptionLabel.frame = CGRect(x: topicDescriptionLabel.frame.origin.x, y: topicDescriptionLabel.frame.origin.y - keyboardHeight, width: topicDescriptionLabel.frame.width, height: topicDescriptionLabel.frame.height)
             
-            likeReplyCollect.frame = CGRect(x: likeReplyCollect.frame.origin.x, y: likeReplyCollect.frame.origin.y - keyboardHeight, width: likeReplyCollect.frame.width, height: likeReplyCollect.frame.height)
-            commentIconButton.frame = CGRect(x: commentIconButton.frame.origin.x, y: commentIconButton.frame.origin.y - keyboardHeight, width: commentIconButton.frame.width, height: commentIconButton.frame.height)
+           //likeReplyCollect.frame = CGRect(x: likeReplyCollect.frame.origin.x, y: likeReplyCollect.frame.origin.y - keyboardHeight, width: likeReplyCollect.frame.width, height: likeReplyCollect.frame.height)
+            //commentIconButton.frame = CGRect(x: commentIconButton.frame.origin.x, y: commentIconButton.frame.origin.y - keyboardHeight, width: commentIconButton.frame.width, height: commentIconButton.frame.height)
             print("hiding keyb")
         }
     }
@@ -860,33 +867,33 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             let keyboardHeight = keyboardSize.height
             print("keyHeight: \(keyboardHeight)")
-            topLine.frame = CGRect(x: topLine.frame.origin.x, y: topLine.frame.origin.y + keyboardHeight, width: topLine.frame.width, height: topLine.frame.height)
+            //topLine.frame = CGRect(x: topLine.frame.origin.x, y: topLine.frame.origin.y + keyboardHeight, width: topLine.frame.width, height: topLine.frame.height)
             
             backButton.isHidden = true
             //self.likeTopLabel.isHidden = true
             
-            commentView.frame = CGRect(x: commentView.frame.origin.x, y: commentView.frame.origin.y + keyboardHeight, width: commentView.frame.width, height: commentView.frame.height)
-            topLabel.frame = CGRect(x: topLabel.frame.origin.x, y: topLabel.frame.origin.y + keyboardHeight, width: topLabel.frame.width, height: topLabel.frame.height)
+            commentView.frame = CGRect(x: commentView.frame.origin.x, y: commentView.frame.origin.y - keyboardHeight, width: commentView.frame.width, height: commentView.frame.height)
+            //topLabel.frame = CGRect(x: topLabel.frame.origin.x, y: topLabel.frame.origin.y + keyboardHeight, width: topLabel.frame.width, height: topLabel.frame.height)
             
-            replyCountButton.frame = CGRect(x: replyCountButton.frame.origin.x, y: replyCountButton.frame.origin.y + keyboardHeight, width: replyCountButton.frame.width, height: replyCountButton.frame.height)
+            //replyCountButton.frame = CGRect(x: replyCountButton.frame.origin.x, y: replyCountButton.frame.origin.y + keyboardHeight, width: replyCountButton.frame.width, height: replyCountButton.frame.height)
             
-            likesCountButton.frame = CGRect(x: likesCountButton.frame.origin.x, y: likesCountButton.frame.origin.y + keyboardHeight, width: likesCountButton.frame.width, height: likesCountButton.frame.height)
-            actualLikeButton.frame = CGRect(x: actualLikeButton.frame.origin.x, y: actualLikeButton.frame.origin.y + keyboardHeight, width: actualLikeButton.frame.width, height: actualLikeButton.frame.height)
-            topicTopLine2.frame = CGRect(x: topicTopLine2.frame.origin.x, y: topicTopLine2.frame.origin.y + keyboardHeight, width: topicTopLine2.frame.width, height: topicTopLine2.frame.height)
-            commentIconButton.frame = CGRect(x: commentIconButton.frame.origin.x, y: commentIconButton.frame.origin.y + keyboardHeight, width: commentIconButton.frame.width, height: commentIconButton.frame.height)
-            posterImageView.frame = CGRect(x: posterImageView.frame.origin.x, y: posterImageView.frame.origin.y + keyboardHeight, width: posterImageView.frame.width, height: posterImageView.frame.height)
-            timeStampLabel.frame = CGRect(x: timeStampLabel.frame.origin.x, y: timeStampLabel.frame.origin.y + keyboardHeight, width: timeStampLabel.frame.width, height: timeStampLabel.frame.height)
-            likeButton.frame = CGRect(x: likeButton.frame.origin.x, y: likeButton.frame.origin.y + keyboardHeight, width: likeButton.frame.width, height: likeButton.frame.height)
+            //likesCountButton.frame = CGRect(x: likesCountButton.frame.origin.x, y: likesCountButton.frame.origin.y + keyboardHeight, width: likesCountButton.frame.width, height: likesCountButton.frame.height)
+            //actualLikeButton.frame = CGRect(x: actualLikeButton.frame.origin.x, y: actualLikeButton.frame.origin.y + keyboardHeight, width: actualLikeButton.frame.width, height: actualLikeButton.frame.height)
+           // topicTopLine2.frame = CGRect(x: topicTopLine2.frame.origin.x, y: topicTopLine2.frame.origin.y + keyboardHeight, width: topicTopLine2.frame.width, height: topicTopLine2.frame.height)
+            //commentIconButton.frame = CGRect(x: commentIconButton.frame.origin.x, y: commentIconButton.frame.origin.y + keyboardHeight, width: commentIconButton.frame.width, height: commentIconButton.frame.height)
+           // posterImageView.frame = CGRect(x: posterImageView.frame.origin.x, y: posterImageView.frame.origin.y + keyboardHeight, width: posterImageView.frame.width, height: posterImageView.frame.height)
+            //timeStampLabel.frame = CGRect(x: timeStampLabel.frame.origin.x, y: timeStampLabel.frame.origin.y + keyboardHeight, width: timeStampLabel.frame.width, height: timeStampLabel.frame.height)
+           // likeButton.frame = CGRect(x: likeButton.frame.origin.x, y: likeButton.frame.origin.y + keyboardHeight, width: likeButton.frame.width, height: likeButton.frame.height)
             
-            topicTitleLabel.frame = CGRect(x: topicTitleLabel.frame.origin.x, y: topicTitleLabel.frame.origin.y + keyboardHeight, width: topicTitleLabel.frame.width, height: topicTitleLabel.frame.height)
+            //topicTitleLabel.frame = CGRect(x: topicTitleLabel.frame.origin.x, y: topicTitleLabel.frame.origin.y + keyboardHeight, width: topicTitleLabel.frame.width, height: topicTitleLabel.frame.height)
             
-            posterPicButton.frame = CGRect(x: posterPicButton.frame.origin.x, y: posterPicButton.frame.origin.y + keyboardHeight, width: posterPicButton.frame.width, height: posterPicButton.frame.height)
+           // posterPicButton.frame = CGRect(x: posterPicButton.frame.origin.x, y: posterPicButton.frame.origin.y + keyboardHeight, width: posterPicButton.frame.width, height: posterPicButton.frame.height)
             
-            topicDescriptionLabel.frame = CGRect(x: topicDescriptionLabel.frame.origin.x, y: topicDescriptionLabel.frame.origin.y + keyboardHeight, width: topicDescriptionLabel.frame.width, height: topicDescriptionLabel.frame.height)
+          //  topicDescriptionLabel.frame = CGRect(x: topicDescriptionLabel.frame.origin.x, y: topicDescriptionLabel.frame.origin.y + keyboardHeight, width: topicDescriptionLabel.frame.width, height: topicDescriptionLabel.frame.height)
             
             //posterImageView.frame = CGRect(x: posterImageView.frame.origin.x, y: posterImageView.frame.origin.y + keyboardHeight, width: posterImageView.frame.width, height: posterImageView.frame.height)
             
-            likeReplyCollect.frame = CGRect(x: likeReplyCollect.frame.origin.x, y: likeReplyCollect.frame.origin.y + keyboardHeight, width: likeReplyCollect.frame.width, height: likeReplyCollect.frame.height)
+           // likeReplyCollect.frame = CGRect(x: likeReplyCollect.frame.origin.x, y: likeReplyCollect.frame.origin.y + keyboardHeight, width: likeReplyCollect.frame.width, height: likeReplyCollect.frame.height)
             print("hiding keyb")
             
         }
@@ -900,5 +907,43 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
         // Pass the selected object to the new view controller.
     }
     
+    private func estimateFrameForText(text: String, type: String) -> CGRect {
+        //we make the height arbitrarily large so we don't undershoot height in calculation
+        let height: CGFloat = 1000
+        
+        let size = CGSize(width: topicDescriptionLabel.frame.width, height: height)
+        let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+        
+            let attributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.regular)]
+            return NSString(string: text).boundingRect(with: size, options: options, attributes: attributes, context: nil)
+        
+    }
+    
+    
+    
 
+}
+extension CALayer {
+    
+    func addB(edge: UIRectEdge, color: UIColor, thickness: CGFloat) {
+        
+        let border = CALayer()
+        
+        switch edge {
+        case .top:
+            border.frame = CGRect(x: 0, y: 0, width: frame.width, height: thickness)
+        case .bottom:
+            border.frame = CGRect(x: 0, y: frame.height - thickness, width: frame.width, height: thickness)
+        case .left:
+            border.frame = CGRect(x: 0, y: 0, width: thickness, height: frame.height)
+        case .right:
+            border.frame = CGRect(x: frame.width - thickness, y: 0, width: thickness, height: frame.height)
+        default:
+            break
+        }
+        
+        border.backgroundColor = color.cgColor;
+        
+        addSublayer(border)
+    }
 }

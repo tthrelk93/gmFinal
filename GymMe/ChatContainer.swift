@@ -18,7 +18,21 @@ class ChatContainer: UIViewController {
     var recipientID = String()
     var newMessage = false
     var curItemKey: String?
-   
+   var curName = String()
+    var selectedUID = String()
+    var selectedCurAuthProfile = Bool()
+    @IBAction func toProfilePressed(_ sender: Any) {
+        self.curName = self.receiverTopLabel.text!
+        self.selectedUID = self.recipientID
+        if selectedUID == Auth.auth().currentUser!.uid {
+            selectedCurAuthProfile = true
+        } else {
+            selectedCurAuthProfile = false
+        }
+        performSegue(withIdentifier: "MessagesToProfile", sender: self)
+        
+    }
+    
     @IBOutlet weak var topLine: UIView!
     @IBAction func BackToMessagesPressed(_ sender: Any) {
         performSegue(withIdentifier: "BackToMessages", sender: self)
@@ -66,6 +80,21 @@ class ChatContainer: UIViewController {
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "MessagesToProfile"{
+            if let vc = segue.destination as? ProfileViewController{
+                vc.curUID = self.selectedUID
+                vc.prevScreen = "feed"
+                if selectedCurAuthProfile == true{
+                    vc.viewerIsCurAuth = true
+                    
+                } else {
+                    vc.viewerIsCurAuth = false
+                }
+                vc.curName = self.curName
+                
+            }
+        }
+        
         if segue.identifier == "BackToMessages"{
             if let vc = segue.destination as? MessagesTableViewController{
                 vc.prevScreen = self.prevScreen

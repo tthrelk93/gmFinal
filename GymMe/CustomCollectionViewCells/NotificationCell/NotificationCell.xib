@@ -30,6 +30,11 @@
                             <action selector="actionUserPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="bvw-Zd-U13"/>
                         </connections>
                     </button>
+                    <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GwS-0R-0pD">
+                        <rect key="frame" x="304" y="10" width="47" height="47"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="P3A-Ri-VPK">
                         <rect key="frame" x="73" y="35" width="220" height="0.0"/>
                         <constraints>
@@ -91,6 +96,7 @@
                 <outlet property="noteLabel" destination="P3A-Ri-VPK" id="IE9-2U-HGI"/>
                 <outlet property="postPic" destination="zy5-Uj-bZM" id="VcQ-y4-5jV"/>
                 <outlet property="postTextLabel" destination="HJ7-go-QSQ" id="twF-DS-HPZ"/>
+                <outlet property="tpIconPosition" destination="GwS-0R-0pD" id="2d9-iN-9SI"/>
             </connections>
             <point key="canvasLocation" x="236.80000000000001" y="64.767616191904054"/>
         </collectionViewCell>

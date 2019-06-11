@@ -4,6 +4,10 @@ import FirebaseAuth
 
 protocol PerformActionsInFeedDelegate {
     
+    
+    
+    
+    
     func performSegueToPosterProfile(uid: String, name: String)
     func showLikedByViewTextCell(sentBy: String, cell: NewsFeedCellCollectionViewCell)
      func showLikedByViewPicCell(sentBy: String, cell: NewsFeedPicCollectionViewCell)

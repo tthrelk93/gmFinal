@@ -540,6 +540,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
         
     }
     //@IBOutlet weak var addToCatBigButton: UIButton!
+    @IBOutlet weak var addToCategoryLabel: UILabel!
     @IBOutlet weak var addToCatIconButton: UIButton!
     @IBOutlet weak var addToCategoryButton: UIButton!
     @IBAction func addToCategoryButtonPressed(_ sender: Any) {
@@ -573,7 +574,9 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
         startLocationManager()
         self.postType = "text"
         //makePostTextView.layer.borderColor = UIColor.clear.cgColor
+        addToCategoryLabel.isHidden = true
         addToCategoryButton.isHidden = true
+        self.addToCategoryLabel.isHidden = true
         makePostTextView.delegate = self
         makePostTextView.becomeFirstResponder()
         makePostTextView.selectAll(nil)
@@ -584,10 +587,10 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
             //self.shareButton.isHidden = true
             //self.shareIconButton.isHidden = true
             self.addToCatIconButton.isHidden = true
+            self.addToCategoryLabel.isHidden = true
             self.addToCategoryButton.isHidden = true
             self.curCatsLabel.isHidden = true
-            self.addToCategoryButton.isHidden = true
-            self.addToCatIconButton.isHidden = true
+            
             self.curCatsLabel.isHidden = true
             self.makePostTextView.frame = self.textPostTextViewPos.frame
             self.addToCatIconButton.frame = self.addCat1TextPos.frame
@@ -630,6 +633,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
         
        // makePostTextView.layer.borderColor = UIColor.lightGray.cgColor
         addToCategoryButton.isHidden = false
+        addToCategoryLabel.isHidden = false
         
         var config = YPImagePickerConfiguration()
         config.screens = [.library, .video]
@@ -930,6 +934,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
         makePostTextView.text = "Write a caption..."
         self.addToCatIconButton.isHidden = false
         self.addToCategoryButton.isHidden = false
+        self.addToCategoryLabel.isHidden = false
         self.curCatsLabel.text = ""
         self.curCatsLabel.isHidden = false
         makePostTextView.frame = picPostTextViewPos!
@@ -1037,6 +1042,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
                         
                         self.addToCatIconButton.isHidden = false
                         self.addToCategoryButton.isHidden = false
+                        self.addToCategoryLabel.isHidden = false
                     
                         self.curCatsLabel.text = ""
                         self.curCatsLabel.isHidden = false

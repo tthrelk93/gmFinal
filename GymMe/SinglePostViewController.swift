@@ -341,6 +341,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
     var myRealName = String()
     
     
+    @IBOutlet weak var tpPostCommentSep: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -368,7 +369,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                     
                 }
             }
-        
+        self.tpPostCommentSep.frame.size = CGSize(width: UIScreen.main.bounds.width, height: 0.5)
             self.topLine.frame.size = CGSize(width: UIScreen.main.bounds.width, height: 0.5)
             self.commentTopLine.frame.size = CGSize(width: UIScreen.main.bounds.width, height: 0.5)
             self.tpCommentTopLine.frame.size = CGSize(width: UIScreen.main.bounds.width, height: 0.5)

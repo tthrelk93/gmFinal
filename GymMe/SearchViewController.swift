@@ -197,6 +197,8 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     @IBAction func commentedByButtonPressed(_ sender: Any) {
         //singlePostTopLabel.isHidden = true
         commentView.isHidden = false
+        singlePostImageView.isHidden = true
+        specCatLabel.isHidden = true
         commentTF.resignFirstResponder()
         tabBar.isHidden = true
        // singlePostView3.isHidden = false
@@ -234,6 +236,8 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     @IBAction func hideCommentsPressed(_ sender: Any) {
         //singlePostTopLabel.isHidden = false
         commentView.isHidden = true
+        singlePostImageView.isHidden = false
+        specCatLabel.isHidden = false
         tabBar.isHidden = false
         commentTF.resignFirstResponder()
     }
@@ -1051,13 +1055,13 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     @IBAction func commentPressed(_ sender: Any) {
         //singlePostTopLabel.isHidden = true
         commentView.isHidden = false
-        commentView.isHidden = false
         commentCollect.isHidden = false
         likesCollect.isHidden = true
        // print("commentsArray: \(commentsArray)")
         commentCollect.delegate = self
         commentCollect.dataSource = self
-        
+        singlePostImageView.isHidden = true
+        specCatLabel.isHidden = true
         commentTF.becomeFirstResponder()
         tabBar.isHidden = true
         //commentTF.isHidden = false

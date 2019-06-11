@@ -17,7 +17,7 @@ class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UIColle
     
     
     func commentGoToProf(cellUID:String,name:String) {
-        print("madeIt")
+        //print("madeIt")
         self.curName = name
         self.selectedCellUID = cellUID
         if cellUID == Auth.auth().currentUser!.uid {
@@ -40,7 +40,7 @@ class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UIColle
     var mentionID = String()
     func showHashTag(tagType: String, payload: String, postID: String, name: String) {
         if tagType == "mention"{
-            print("mention: going to \(payload)'s profile")
+           // print("mention: going to \(payload)'s profile")
            self.curName = name
             Database.database().reference().child("usernames").observeSingleEvent(of: .value, with: { snapshot in
                 let snapshots = snapshot.value as! [String:Any]
@@ -60,7 +60,7 @@ class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UIColle
                 }
             })
         } else {
-            print("hashtag: \(payload) database action")
+           // print("hashtag: \(payload) database action")
             selectedHash = payload
             performSegue(withIdentifier: "FeedToHash", sender: self)
         }
@@ -87,7 +87,7 @@ class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UIColle
     
     
     func showHashTagAlert(tagType:String, payload:String){
-        print("show hash")
+       // print("show hash")
         showHashTag(tagType: tagType, payload: payload, postID: curCell.postID!, name: (self.tpPosterNameButton.titleLabel?.text)!)
         
     }
@@ -100,27 +100,65 @@ class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UIColle
     }
     
     func locationButtonTextCellPressed(sentBy: String, cell: NewsFeedCellCollectionViewCell){
-        print("locationTextCell")
+       // print("locationTextCell")
         //SwiftOverlays.showBlockingWaitOverlayWithText("searching")
         if cell.postLocationButton.titleLabel!.text == nil{
             
         } else {
-        self.locationSegString = sentBy
-        self.locationNamePressed = cell.postLocationButton.titleLabel!.text!
-        self.locationPostID = cell.postID!
+            self.locationOptionsMenu.isHidden = false
+            
+        
+        }
+        
+    }
+    
+    @IBOutlet weak var locationOptionsMenu: UIView!
+    
+    @IBOutlet weak var backFromLocation: UIButton!
+    @IBOutlet weak var viewPostsButton: UIButton!
+    @IBAction func viewPostsPressed(_ sender: Any) {
+        self.locationSegString = locSentBy
+        if locCellPic == nil{
+            self.locationNamePressed = locCellText!.postLocationButton.titleLabel!.text!
+            self.locationPostID = locCellText!.postID!
+            performSegue(withIdentifier: "FeedToAdvancedSearch", sender: self)
+        } else {
+            self.locationNamePressed = locCellPic!.postLocationButton.titleLabel!.text!
+            self.locationPostID = locCellPic!.postID!
         performSegue(withIdentifier: "FeedToAdvancedSearch", sender: self)
         }
         
     }
+    
+    @IBOutlet weak var mapButton: UIButton!
+    @IBAction func mapButtonPressed(_ sender: Any) {
+        self.locationSegString = locSentBy
+        if locCellPic == nil{
+            self.locationNamePressed = locCellText!.postLocationButton.titleLabel!.text!
+            self.locationPostID = locCellText!.postID!
+            performSegue(withIdentifier: "FeedToMap", sender: self)
+        } else {
+            self.locationNamePressed = locCellPic!.postLocationButton.titleLabel!.text!
+            self.locationPostID = locCellPic!.postID!
+            performSegue(withIdentifier: "FeedToMap", sender: self)
+        }
+        
+    }
+    
+    @IBAction func backFromLocationPressed(_ sender: Any) {
+        locationOptionsMenu.isHidden = true
+    }
     var locationSegString = String()
     var locationPostID = String()
+    var locSentBy = String()
+    var locCellPic: NewsFeedPicCollectionViewCell?
+    var locCellText: NewsFeedCellCollectionViewCell?
     func locationButtonPicCellPressed(sentBy: String, cell: NewsFeedPicCollectionViewCell){
-         print("locationPicCell")
-        //SwiftOverlays.showBlockingWaitOverlayWithText("searching")
-        self.locationSegString = sentBy
-        self.locationNamePressed = cell.postLocationButton.titleLabel!.text!
-        self.locationPostID = cell.postID!
-        performSegue(withIdentifier: "FeedToAdvancedSearch", sender: self)
+        // print("locationPicCell")
+        self.locCellPic = cell
+        self.locSentBy = sentBy
+       locationOptionsMenu.isHidden = false //SwiftOverlays.showBlockingWaitOverlayWithText("searching")
+       
     }
     func likeComment() {
         
@@ -367,7 +405,7 @@ class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UIColle
         print("df: \(self.tpFavoriteButton.currentBackgroundImage)")
         if self.tpFavoriteButton.currentBackgroundImage == UIImage(named: "favoritesUnfilled.png"){
             self.tpFavoriteButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
-            print("here111")
+            //print("here111")
             Database.database().reference().child("posts").child(cell.postID!).observeSingleEvent(of: .value, with: { snapshot in
                 let valDict = snapshot.value as! [String:Any]
                 
@@ -403,7 +441,7 @@ class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UIColle
                         let tempDict = ["actionByUsername": cell.myUName! ,"postID": cell.postID!, "actionText": sendString, "timeStamp": dateString,"actionByUID": Auth.auth().currentUser!.uid,"actionByUserPic": cell.myPicString, "postText": cell.postText.text as! String] as! [String:Any]
                         noteArray.append(tempDict)
                         Database.database().reference().child("users").child(cell.posterUID!).updateChildValues(["notifications": noteArray] as [AnyHashable:Any]){ err, ref in
-                            print("done")
+                           // print("done")
                         }
                     } else {
                         let sendString = cell.myUName! + " favorited your post."
@@ -488,7 +526,7 @@ class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UIColle
         self.backFromLikedByViewButton.isHidden = true
         self.likedByCollectData.removeAll()
         //DispatchQueue.main.async {
-            print("reloadingFeedAfterComment")
+           // print("reloadingFeedAfterComment")
         DispatchQueue.main.async{
             
             self.likedByCollect.reloadData()
@@ -544,7 +582,7 @@ class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UIColle
         if collectionView == feedCollect{
             return feedDataArray.count
         } else if collectionView == likedByCollect {
-            print("likedByDataCount: \(likedByCollectData.count)")
+            //print("likedByDataCount: \(likedByCollectData.count)")
             return likedByCollectData.count
         } else {
             return findFriendsData.count
@@ -563,7 +601,7 @@ class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UIColle
                 
                 
                 if (feedDataArray[centerCellIndexPath!.row])["postVid"] != nil{
-                    print("scrollingInFeedStopping: \(centerCellIndexPath)")
+                   // print("scrollingInFeedStopping: \(centerCellIndexPath)")
                     curVidCell = (feedCollect.cellForItem(at: centerCellIndexPath!) as! NewsFeedPicCollectionViewCell)
                     curVidCell!.player!.playFromBeginning() 
                 }
@@ -602,7 +640,7 @@ class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UIColle
         performSegue(withIdentifier: "FeedToProfile", sender: self)
     }
     func showLikedByView(sentBy: String){
-        print("showLikedByView")
+        //print("showLikedByView")
     }
     var sentBy: String?
     var selectedPostForComments = String()
@@ -611,11 +649,7 @@ class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UIColle
     var curIndex = IndexPath()
     func showLikedByViewTextCell(sentBy: String, cell: NewsFeedCellCollectionViewCell){
         
-        print("showLikedByViewTextCell")
-        
-        //loadFeedData()
-        
-        
+       
         
         self.logoWords.isHidden = true
         self.sentBy = sentBy
@@ -626,7 +660,7 @@ class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UIColle
         self.addFriendsButton.isHidden = true
         if sentBy == "likedBy"{
             likedByCollectData.removeAll()
-            print("likedBy")
+            //print("likedBy")
             if ((feedDataArray[(cell.cellIndexPath?.row)!]["likes"] as! [[String:Any]]).first as! [String:Any])["x"] != nil{
                 commentTFView.isHidden = true
             } else {
@@ -693,7 +727,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                 let followingArr = valDict["following"] as! [String]
                 var mergedArr = Array(Set(followersArr + followingArr))
                 var sortedMergedArr = mergedArr.sort()
-                print("mergedArr: \(sortedMergedArr)")
+                //print("mergedArr: \(sortedMergedArr)")
              
 
                 
@@ -701,7 +735,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                     let valDict2 = snapshot.value as! [String:Any]
                     for (key, vall) in valDict2{
                         var val = vall as! [String:Any]
-                        print("key: \(key), val: \(val)")
+                        //print("key: \(key), val: \(val)")
                         if mergedArr.contains(key){
                             var collectDataDict = ["pic": (val["profPic"] as! String), "-": self.myUName, "realName": (val["realName"] as! String), "uid":
                                 key]
@@ -777,9 +811,19 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
             tpPostLocationButton.setTitle(cell.postLocationButton.titleLabel!.text, for: .normal)
             var viewSize = sizeForTextPostCommentView(sizeText: cell.postText.text as! String)
             
-            textPostCommentView.frame = CGRect(x: textPostCommentView.frame.origin.x, y: textPostCommentView.frame.origin.y, width: viewSize.width, height: viewSize.height)
+            //var comHeight = tpTopView.frame.height + viewSize.height + tpBottomView.frame.height
+            print("curCellHeight: \(curCell.frame.height)")
+            print("viewSizeHeight: \(viewSize.height)")
+            tpPosterNameButton.frame = CGRect(x: 51, y: 5, width: tpPosterNameButton.frame.width, height: 25)
+            tpPostLocationButton.frame = CGRect(x: 51, y: 26, width: tpPostLocationButton.frame.width, height: 25)
+            textPostCommentView.frame = CGRect(x: textPostCommentView.frame.origin.x, y: textPostCommentView.frame.origin.y, width: viewSize.width, height: curCell.frame.height - 15)
+            
+            tpTopView.frame = CGRect(x: 0, y: 0, width: tpTopView.frame.width, height: 51)
+            tpTextView.frame = CGRect(x: 8, y: 0 + tpTopView.frame.height, width: textPostCommentView.frame.width, height: curCell.postText.frame.height)
+            tpBottomView.frame = CGRect(x: 8, y: 0 + tpTopView.frame.height + tpTextView.frame.height - 15, width: tpBottomView.frame.width, height: textPostCommentView.frame.height - tpTextView.frame.height - tpTopView.frame.height + 5)
             
             tpImageView.frame.size = CGSize(width: 35, height: 35)
+            
             tpImageView.layer.cornerRadius = tpImageView.frame.width/2
             tpImageView.layer.masksToBounds = true
             
@@ -792,7 +836,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
             self.topLabel.isHidden = false
             
             likedByCollectData.removeAll()
-            print("showCommentsCount")
+           // print("showCommentsCount")
            
             //self.likeTopLabel.isHidden = false
             
@@ -804,7 +848,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                 self.commentTF.resignFirstResponder
                 SwiftOverlays.removeAllBlockingOverlays()
                 
-                print("doneLoading5")
+                //print("doneLoading5")
             })
             
             self.postCommentButton.isHidden = false
@@ -872,7 +916,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
             self.selectedPostPosterID = cell.posterUID!
             self.commentTF.delegate = self
             likedByCollectData.removeAll()
-            print("showComments")
+           // print("showComments")
            
             //self.likeTopLabel.isHidden = false
             
@@ -884,7 +928,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                 self.commentTF.becomeFirstResponder()
                 SwiftOverlays.removeAllBlockingOverlays()
                 
-                print("doneLoading5")
+                //print("doneLoading5")
             })
             
             //self.postCommentButton.isHidden = false
@@ -931,7 +975,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
 @IBOutlet weak var lineView: UIView!
 
     func showLikedByViewPicCell(sentBy: String, cell: NewsFeedPicCollectionViewCell){
-        print("showLikedByViewPicCell")
+       // print("showLikedByViewPicCell")
         likedByCollect.frame = ogLikeCollectFrame
         textPostCommentView.isHidden = true
         self.addFriendsButton.isHidden = true
@@ -944,7 +988,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
         if sentBy == "likedBy"{
             commentTFView.isHidden = true
             likedByCollectData.removeAll()
-            print("likedBy")
+           // print("likedBy")
             if ((feedDataArray[(cell.cellIndexPath?.row)!]["likes"] as! [[String:Any]]).first as! [String:Any])["x"] != nil{
                 commentTFView.isHidden = true
             } else {
@@ -1004,7 +1048,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                     let followingArr = valDict["following"] as! [String]
                     var mergedArr = Array(Set(followersArr + followingArr))
                     var sortedMergedArr = mergedArr.sort()
-                    print("mergedArr: \(sortedMergedArr)")
+                   // print("mergedArr: \(sortedMergedArr)")
                     
                     
                     
@@ -1012,7 +1056,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                         let valDict2 = snapshot.value as! [String:Any]
                         for (key, vall) in valDict2{
                             var val = vall as! [String:Any]
-                            print("key: \(key), val: \(val)")
+                            //print("key: \(key), val: \(val)")
                             if mergedArr.contains(key){
                                 var collectDataDict = ["pic": (val["profPic"] as! String), "-": self.myUName, "realName": (val["realName"] as! String), "uid":
                                     key]
@@ -1053,7 +1097,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
             self.present(alert, animated: true)
         } else if sentBy == "showCommentsCount"{
             
-            print("showCommentsCountPic")
+            //print("showCommentsCountPic")
             self.selectedPostForComments = cell.postID!
             self.selectedPostPosterID = cell.posterUID!
             self.backFromLikedByViewButton.isHidden = false
@@ -1065,7 +1109,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                 self.commentTF.resignFirstResponder
                 SwiftOverlays.removeAllBlockingOverlays()
                 
-                print("doneLoading5")
+               // print("doneLoading5")
             })
             //self.postCommentButton.isHidden = false
             self.commentTFView.isHidden = false
@@ -1095,7 +1139,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
             likedByCollectData.removeAll()
             self.selectedPostForComments = cell.postID!
             self.selectedPostPosterID = cell.posterUID!
-            print("showComments")
+           // print("showComments")
             self.commentTF.delegate = self
             self.backFromLikedByViewButton.isHidden = false
             SwiftOverlays.showBlockingTextOverlay("loading comments")
@@ -1105,7 +1149,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                 self.commentTF.becomeFirstResponder()
                 SwiftOverlays.removeAllBlockingOverlays()
                 
-                print("doneLoading5")
+                //print("doneLoading5")
             })
             self.commentTFView.isHidden = false
             self.topLabel.isHidden = false
@@ -1120,11 +1164,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                 
                 likedByCollectData = (feedDataArray[(cell.cellIndexPath?.row)!]["comments"] as! [[String:Any]])
                 
-                //DispatchQueue.main.async {
                 
-                
-                //self.likedByCollect.delegate = self
-                //self.likedByCollect.dataSource = self
                 DispatchQueue.main.async{
                     self.likedByCollect.reloadData()
                 }
@@ -1150,7 +1190,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
     var likedByCollectData = [[String:Any]]()
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        print("hey there sd")
+       // print("hey there sd")
         
         if cellButtonsPressedView.isHidden == false && likedByCollectData[indexPath.row]["x"] == nil || sentBy == "addFriends" || collectionView == likedByCollect{
            // print("likedByCollectData at indexPath: \(likedByCollectData[indexPath.row])")
@@ -1299,9 +1339,9 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                     }
                     
                 let nameAndComment = (self.likedByCollectData[indexPath.row]["commentorName"] as! String) + " " +  (self.likedByCollectData[indexPath.row]["commentText"] as! String)
-                print("name&Comment: \(nameAndComment)")
+                //print("name&Comment: \(nameAndComment)")
                     let boldNameAndComment = self.attributedText(withString: nameAndComment, boldString: (self.likedByCollectData[indexPath.row]["commentorName"] as! String), font: cell.commentTextView.font!)
-                print("boldName&Comment: \(boldNameAndComment)")
+                //print("boldName&Comment: \(boldNameAndComment)")
                 cell.commentTextView.attributedText = boldNameAndComment
                 let tStampDateString = self.likedByCollectData[indexPath.row]["commentDate"] as! String
                 cell.commentTextView.resolveHashTags()
@@ -1315,7 +1355,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                 let now = Date()
                 //print("tStampDateString: \(tStampDateString), date: \(date!), now: \(now)")
                     var hoursBetween = Int(now.days(from: date!))
-                    print("hrs Between: \(hoursBetween)")
+                    //print("hrs Between: \(hoursBetween)")
                     if hoursBetween < 1{
                         hoursBetween = Int(now.hours(from: date!))!
                         if hoursBetween < 1 {
@@ -1395,7 +1435,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
             }
         } else {
             //else if its a feed cell
-            print("FeedCollect pic or vid cell")
+           // print("FeedCollect pic or vid cell")
         //print("PostID: \(feedDataArray[indexPath.row]["postID"])")
         if feedDataArray[indexPath.row]["postPic"] == nil && feedDataArray[indexPath.row]["postVid"] == nil {
             
@@ -1421,7 +1461,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
 
             cell.delegate = self
                 var tempDict = self.feedDataArray[indexPath.row]
-                print("roll: \(tempDict["postPicString"]) \(tempDict["postPic"])")
+                //print("roll: \(tempDict["postPicString"]) \(tempDict["postPic"])")
                 tempDict["postPic"] = tempDict["postPicString"]
                 tempDict["posterPicURL"] = tempDict["posterPicString"]
                 if tempDict["postVid"] != nil{
@@ -1453,15 +1493,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
             cell.postLocationButton.setTitle(self.feedDataArray[indexPath.row]["city"] as? String, for: .normal)
             //cell.postText.text = (self.feedDataArray[indexPath.row]["postText"] as! String)
                 
-                
-                
-                
-                
-                
-                
-                
-                    //cell.postText.resolveHashTags()
-                
+   
 
             cell.postID = self.feedDataArray[indexPath.row]["postID"] as? String
             cell.posterName = self.feedDataArray[indexPath.row]["posterName"] as? String
@@ -1579,7 +1611,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
             let now = Date()
             //print("tStampDateString: \(tStampDateString), date: \(date!), now: \(now)")
                 var hoursBetween = Int(now.days(from: date!))
-                print("hrs Between: \(hoursBetween)")
+               // print("hrs Between: \(hoursBetween)")
                 if hoursBetween < 1{
                     hoursBetween = Int(now.hours(from: date!))!
                     if hoursBetween < 1 {
@@ -1635,13 +1667,13 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                 for dict in taggedFriends{
                     taggedString = taggedString + " " + (dict["realName"] as! String) + ","
                 }
-                print("taggedString: \(taggedString)")
+               // print("taggedString: \(taggedString)")
                 cell.tagLabel.text = taggedString
             }
             
             
                 var tempDict = self.feedDataArray[indexPath.row]
-                print("roll2: \(tempDict["postPicString"]) \(tempDict["postPic"])")
+                //print("roll2: \(tempDict["postPicString"]) \(tempDict["postPic"])")
                 tempDict["postPic"] = tempDict["postPicString"]
                 tempDict["posterPicURL"] = tempDict["posterPicString"]
                 if tempDict["postVid"] != nil{
@@ -1729,7 +1761,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                     if favedBySelf == true{
                         DispatchQueue.main.async{
                             cell.favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
-                            //cell.favoritesCountButton.setTitle((self.feedDataArray[indexPath.row]["favorites"] as! [[String:Any]]).count.description, for: .normal)
+                            
                         }
                     }
                 }
@@ -1762,7 +1794,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
             let now = Date()
             
                 var hoursBetween = Int(now.days(from: date!))
-                print("hrs Between: \(hoursBetween)")
+               // print("hrs Between: \(hoursBetween)")
                 if hoursBetween < 1{
                     hoursBetween = Int(now.hours(from: date!))!
                     if hoursBetween < 1 {
@@ -1823,7 +1855,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                     cell.postText.resolveHashTags()
                 
                 //var extraSpace =
-                print("text: \(cell.postText.text), cellHeight: \(cell.frame.height), textPostHeight: \(cell.postText.frame.height), textPostEstimated: \(self.estimateFrameForText(text: cell.postText.text as! String).height), heightShouldBe: \(474 + self.estimateFrameForText(text: cell.postText.text as! String).height), indexPath: \(indexPath)")
+                //print("text: \(cell.postText.text), cellHeight: \(cell.frame.height), textPostHeight: \(cell.postText.frame.height), textPostEstimated: \(self.estimateFrameForText(text: cell.postText.text as! String).height), heightShouldBe: \(474 + self.estimateFrameForText(text: cell.postText.text as! String).height), indexPath: \(indexPath)")
                 //cell.frame.size = CGSize(width: cell.frame.width, height: 474 + cell.postText.frame.height)
                 
                 
@@ -1847,7 +1879,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                 cell.viewCount.isHidden = true
                 
             } else {
-                print("vid not nil")
+               // print("vid not nil")
                 cell.soundToggle.isHidden = false
                 DispatchQueue.main.async{
                     var url = self.feedDataArray[indexPath.row]["postVid"] as! URL
@@ -1955,7 +1987,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
             myPic = valDict["profPic"] as! String
             
         })
-        print("inDubTap")
+       // print("inDubTap")
         let tappedPoint: CGPoint = (sender as! UITapGestureRecognizer).location(in: self.feedCollect)
         
         let tappedCellPath: IndexPath = self.feedCollect.indexPathForItem(at: tappedPoint)!
@@ -1975,10 +2007,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                     }
                     var likesVal = likesArray.count
                     likesVal = likesVal + 1
-                    print("my pic string: \(self.myPicString)")
-                    //if self.myPicString == nil{
-                       // self.myPicString = "profile-placeholder"
-                    //}
+                   
                     likesArray.append(["uName": self.myUName!, "realName": self.myRealName, "uid": Auth.auth().currentUser!.uid, "pic": myPic])
                     
                     
@@ -2148,9 +2177,9 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
     var fromNotifPostID: String?
     @IBAction func shareFinalizePressed(_ sender: Any) {
         
-        print("sharrrrreeeeeeeeeeee: \(sharedCellSelectedDict)")
+        //print("sharrrrreeeeeeeeeeee: \(sharedCellSelectedDict)")
         for (uid, val) in sharedCellSelectedDict {
-            print("beginning of share: uid: \(uid) val: \(val) myPicString: \(self.myPicString)")
+            //print("beginning of share: uid: \(uid) val: \(val) myPicString: \(self.myPicString)")
             Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
                 self.curUserRef = Database.database().reference().child("users").child(uid)
                 self.messageRef = self.curUserRef.child("messages").child(Auth.auth().currentUser!.uid)
@@ -2169,7 +2198,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                     
                     var tempDict = (["actionByUID": Auth.auth().currentUser!.uid,"postID": self.curPostID, "actionByUserPic": self.myPicString,"actionByUsername": self.myUName!,"actionText": tempString,"postText": "postText", "timeStamp": dateString] as! [String : Any])
                     
-                   print("aboutToShare: \(tempDict)")
+                  // print("aboutToShare: \(tempDict)")
                     Database.database().reference().child("users").child(uid).updateChildValues((["notifications": [tempDict]] as! [String:Any]))
                     
                 } else {
@@ -2186,7 +2215,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                     
                     var tempNotifs = valDict["notifications"] as! [[String:Any]]
                     tempNotifs.append(tempDict)
-                    print("aboutToShare: \(uid)")
+                    //print("aboutToShare: \(uid)")
                     Database.database().reference().child("users").child(uid).updateChildValues((["notifications": tempNotifs] as! [String:Any]))
                     
                     
@@ -2209,7 +2238,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
     var sharedCellSelectedDict = [String: IndexPath]()
     
     func shareCellSelected(collectionView: UICollectionView, indexPath: IndexPath){
-        print("shareSelected")
+       // print("shareSelected")
        
     }
     
@@ -2253,7 +2282,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
         } else if collectionView == findFriendsCollect {
             performSegueToPosterProfile(uid: (findFriendsData[indexPath.row])["uid"] as! String, name: (findFriendsData[indexPath.row])["uName"] as! String)
                //perform segue to the persons profile
-            print("hellomate")
+            //print("hellomate")
         } else {
             
             if typeOfCellAtIndexPath[indexPath] == 0 {
@@ -2304,13 +2333,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
     @IBOutlet weak var backFromFindFriendsButton: UIButton!
     
     @IBAction func addFriendsButtonPressed(_ sender: Any) {
-        /*inboxButton.isHidden = true
-            sentBy = "addFriends"
-            findFriendsView.isHidden = false
-        topLabel.isHidden = true
         
-        addFriendsButton.isHidden = true
-        backFromFindFriendsButton.isHidden = false*/
         performSegue(withIdentifier: "FeedToForum", sender: self)
         
     }
@@ -2324,10 +2347,10 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
         var height = Double()
         
         if let text = sizeText {
-            if (estimateFrameForText(text: text ).height) > 70 && (estimateFrameForText(text: text as! String).height) < 140 {
+            /*if (estimateFrameForText(text: text ).height) > 70 && (estimateFrameForText(text: text as! String).height) < 140 {
                 if (estimateFrameForText(text: text ).height) > 100{
                     height = Double(estimateFrameForText(text: text ).height + 160)
-                    print("suhhhh")
+                    //print("suhhhh")
                 } else {
                     
                     height = Double(estimateFrameForText(text: text ).height + 130)
@@ -2336,8 +2359,38 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                 height = Double(estimateFrameForText(text: text ).height + 140)
             } else {
                 height = Double(estimateFrameForText(text: text ).height + 163)
+            }*/
+            if (estimateFrameForText(text: text ).height) >= 70 && (estimateFrameForText(text: text as! String).height) < 140 {
+                if (estimateFrameForText(text: text ).height) >= 70 && (estimateFrameForText(text: text as! String).height) < 100{
+                    height = Double(estimateFrameForText(text: text as! String).height + 160)
+                    //print("suh")
+                } else if (estimateFrameForText(text: text ).height) > 100 && (estimateFrameForText(text: text as! String).height) < 110{
+                    height = Double(estimateFrameForText(text: text as! String).height + 155)
+                    //print("suh")
+                } else if (estimateFrameForText(text: text ).height) >= 110 && (estimateFrameForText(text: text as! String).height) < 120{
+                    height = Double(estimateFrameForText(text: text as! String).height + 150)
+                    
+                } else if (estimateFrameForText(text: text ).height) >= 120 && (estimateFrameForText(text: text as! String).height) < 130{
+                    height = Double(estimateFrameForText(text: text as! String).height + 145)
+                    
+                } else if (estimateFrameForText(text: text ).height) >= 130 {
+                    
+                    height = Double(estimateFrameForText(text: text as! String).height + 140)
+                }
+            } else if (estimateFrameForText(text: text ).height) > 140 && (estimateFrameForText(text: text as! String).height) < 175{
+                height = Double(estimateFrameForText(text: text as! String).height + 140)
+            } else if (estimateFrameForText(text: text ).height) > 175 && (estimateFrameForText(text: text as! String).height) < 210{
+                height = Double(estimateFrameForText(text: text as! String).height + 135)
+            } else if (estimateFrameForText(text: text ).height) > 210 && (estimateFrameForText(text: text as! String).height) < 230{
+                height = Double(estimateFrameForText(text: text as! String).height + 130)
+            } else if (estimateFrameForText(text: text ).height) >= 230 && (estimateFrameForText(text: text as! String).height) < 240{
+                height = Double(estimateFrameForText(text: text as! String).height + 130)
+            } else if (estimateFrameForText(text: text ).height) > 240{
+                height = Double(estimateFrameForText(text: text as! String).height + 125)
+            } else {
+                height = Double(estimateFrameForText(text: text as! String).height + 160)
             }
-            print("textCell height for: \(text) = \(estimateFrameForText(text: text ).height)")
+            print("textCell Comment height for: \(text) = \(estimateFrameForText(text: text ).height)")
             //print("text: \(text), height: \(height), indexPath: \(indexPath)")
         }
         return CGSize(width: width, height: height)
@@ -2364,18 +2417,33 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
         if feedDataArray[indexPath.row]["postPic"] == nil && feedDataArray[indexPath.row]["postVid"] == nil {
             width = collectionView.frame.width - 20
             if let text = (feedDataArray[indexPath.row])["postText"] {
-                 if (estimateFrameForText(text: text as! String).height) > 70 && (estimateFrameForText(text: text as! String).height) < 140 {
-                    if (estimateFrameForText(text: text as! String).height) > 100{
+                 if (estimateFrameForText(text: text as! String).height) >= 70 && (estimateFrameForText(text: text as! String).height) < 140 {
+                    if (estimateFrameForText(text: text as! String).height) >= 70 && (estimateFrameForText(text: text as! String).height) < 100{
                         height = estimateFrameForText(text: text as! String).height + 145
-                        print("suh")
-                    } else {
+                        //print("suh")
+                    } else if (estimateFrameForText(text: text as! String).height) > 100 && (estimateFrameForText(text: text as! String).height) < 110{
+                        height = estimateFrameForText(text: text as! String).height + 140
+                        //print("suh")
+                    } else if (estimateFrameForText(text: text as! String).height) >= 110 && (estimateFrameForText(text: text as! String).height) < 120{
+                        height = estimateFrameForText(text: text as! String).height + 135
                     
-                    height = estimateFrameForText(text: text as! String).height + 150
+                    } else if (estimateFrameForText(text: text as! String).height) >= 120 && (estimateFrameForText(text: text as! String).height) < 130{
+                        height = estimateFrameForText(text: text as! String).height + 130
+                        
+                    } else if (estimateFrameForText(text: text as! String).height) >= 130 {
+                    
+                    height = estimateFrameForText(text: text as! String).height + 125
                     }
-                 } else if (estimateFrameForText(text: text as! String).height) > 140 {
-                    height = estimateFrameForText(text: text as! String).height + 140
+                 } else if (estimateFrameForText(text: text as! String).height) > 140 && (estimateFrameForText(text: text as! String).height) < 175{
+                    height = estimateFrameForText(text: text as! String).height + 133
+                 } else if (estimateFrameForText(text: text as! String).height) > 175 && (estimateFrameForText(text: text as! String).height) < 210{
+                    height = estimateFrameForText(text: text as! String).height + 120
+                 } else if (estimateFrameForText(text: text as! String).height) > 210 && (estimateFrameForText(text: text as! String).height) < 240{
+                    height = estimateFrameForText(text: text as! String).height + 110
+                 } else if (estimateFrameForText(text: text as! String).height) > 240{
+                    height = estimateFrameForText(text: text as! String).height + 100
                  } else {
-                height = estimateFrameForText(text: text as! String).height + 163
+                    height = estimateFrameForText(text: text as! String).height + 160
                 }
                 print("textCell height for: \(text) = \(estimateFrameForText(text: text as! String).height)")
                 //print("text: \(text), height: \(height), indexPath: \(indexPath)")
@@ -2392,6 +2460,16 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                         height = (estimateFrameForText(text: text as! String).height/1.75) + 474 + 55
                     } else if (estimateFrameForText(text: text as! String).height) < 120 {
                         height = (estimateFrameForText(text: text as! String).height/1.75) + 474 + 60
+                    } else if (estimateFrameForText(text: text as! String).height) < 130 {
+                        height = (estimateFrameForText(text: text as! String).height/1.75) + 474 + 65
+                    } else if (estimateFrameForText(text: text as! String).height) < 140 {
+                        height = (estimateFrameForText(text: text as! String).height/1.75) + 474 + 70
+                    } else if (estimateFrameForText(text: text as! String).height) < 150 {
+                        height = (estimateFrameForText(text: text as! String).height/1.75) + 474 + 75
+                    } else if (estimateFrameForText(text: text as! String).height) < 160 {
+                        height = (estimateFrameForText(text: text as! String).height/1.75) + 474 + 80
+                    } else if (estimateFrameForText(text: text as! String).height) < 170 {
+                        height = (estimateFrameForText(text: text as! String).height/1.75) + 474 + 85
                     } else {
                         height = (estimateFrameForText(text: text as! String).height/1.75) + 474 + 90
                     }
@@ -2399,6 +2477,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                     
                     height = (estimateFrameForText(text: text as! String).height/1.75) + 474 + 100
                 }
+                print("picCell height for: \(text) = \(estimateFrameForText(text: text as! String).height)")
                 //print("text: \(text), height: \(estimateFrameForText(text: text as! String).height), indexPath: \(indexPath)")
             }
             //height = CGFloat(563)
@@ -2445,9 +2524,13 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
         super.viewDidLoad()
         //self.edgesForExtendedLayout = []
         ogLikeCollectFrame = self.likedByCollect.frame
-        print("startLoad")
+       // print("startLoad")
         //self.showWaitOverlayWithText("Loading Feed")
-         self.view.addSubview(UIView().customActivityIndicator(view: self.view, widthView: nil, backgroundColor:UIColor.black, textColor: UIColor.white, message: "Loading Feed"))
+        locationOptionsMenu.layer.cornerRadius = 6
+        mapButton.layer.cornerRadius = 6
+        viewPostsButton.layer.cornerRadius = 6
+        
+        self.view.addSubview(UIView().customActivityIndicator(view: self.view, widthView: nil, backgroundColor:UIColor.black, textColor: UIColor.white, message: "Loading Feed"))
         
        self.tpTextView.delegate = self //SwiftOverlays.showBlockingWaitOverlayWithText("Loading Feed")
         selfCommentPic.frame = CGRect(x: selfCommentPic.frame.origin.x, y: selfCommentPic.frame.origin.y, width: 30.0, height: 30.0)
@@ -2524,7 +2607,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                     
                 }
                 DispatchQueue.main.async{
-                    print("self: \(self.myRealName), \(self.myUName)")
+                    //print("self: \(self.myRealName), \(self.myUName)")
                     self.loadFeedData()
                 }
             }
@@ -2724,7 +2807,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                     //SwiftOverlays.removeAllBlockingOverlays()
                     self.removeAllOverlays()
                     self.hideLoader(removeFrom: self.view)
-                    print("doneLoading3")
+                  
                 })
                // SwiftOverlays.removeAllBlockingOverlays()
                 //self.removeAllOverlays()
@@ -2752,7 +2835,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                     
                     
                     //following line of code is for invisible cells
-                    print("row: \(row) postID: \(self.fromNotifPostID!)")
+                   // print("row: \(row) postID: \(self.fromNotifPostID!)")
                     if (self.feedDataArray[indexPath.row])["postID"] as! String == self.fromNotifPostID{
                         self.feedCollect.scrollToItem(at: indexPath as IndexPath, at: .top, animated: true)
                         break
@@ -2777,7 +2860,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
         
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             let keyboardHeight = keyboardSize.height
-            print("keyHeight: \(keyboardHeight)")
+            //print("keyHeight: \(keyboardHeight)")
             commentTopLine.frame = CGRect(x: commentTopLine.frame.origin.x, y: commentTopLine.frame.origin.y - keyboardHeight, width: commentTopLine.frame.width, height: commentTopLine.frame.height)
             
             backFromLikedByViewButton.isHidden = false
@@ -2789,7 +2872,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
             
             
             likedByCollect.frame = CGRect(x: likedByCollect.frame.origin.x, y: likedByCollect.frame.origin.y - keyboardHeight, width: likedByCollect.frame.width, height: likedByCollect.frame.height)
-            print("hiding keyb")
+            //print("hiding keyb")
         }
     }
     
@@ -2798,7 +2881,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
        
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             let keyboardHeight = keyboardSize.height
-            print("keyHeight: \(keyboardHeight)")
+            //print("keyHeight: \(keyboardHeight)")
             
             commentTopLine.frame = CGRect(x: commentTopLine.frame.origin.x, y: commentTopLine.frame.origin.y + keyboardHeight, width: commentTopLine.frame.width, height: commentTopLine.frame.height)
             
@@ -2812,7 +2895,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
            
             
             likedByCollect.frame = CGRect(x: likedByCollect.frame.origin.x, y: likedByCollect.frame.origin.y + keyboardHeight, width: likedByCollect.frame.width, height: likedByCollect.frame.height)
-            print("showing keyb")
+            //print("showing keyb")
         }
     }
     
@@ -2869,7 +2952,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                         
                         var tempDict = (["actionByUID": Auth.auth().currentUser!.uid,"postID": self.curPostID, "actionByUserPic": self.myPicString,"actionByUsername": self.myUName!,"actionText": tempString,"postText": "postText", "timeStamp": dateString] as! [String : Any])
                         
-                        print("commentNote: \(tempDict)")
+                       // print("commentNote: \(tempDict)")
                         Database.database().reference().child("users").child(posterID).updateChildValues((["notifications": [tempDict]] as! [String:Any]))
                         
                     } else {
@@ -2887,7 +2970,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                         
                         var tempNotifs = valDict["notifications"] as! [[String:Any]]
                         tempNotifs.append(tempDict)
-                        print("acommentNote \(posterID)")
+                        //print("acommentNote \(posterID)")
                         Database.database().reference().child("users").child(posterID).updateChildValues((["notifications": tempNotifs] as! [String:Any]))
                         
                         
@@ -2940,7 +3023,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                     
                 } else {
                     
-                    print("reloading here")
+                   // print("reloading here")
                     var count = 0
                     for dict in self.feedDataArray{
                         if (dict["postID"] as! String) == cellTypeTemp{
@@ -3043,7 +3126,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
     @IBAction func swipeHandler(_ gestureRecognizer : UISwipeGestureRecognizer) {
         if gestureRecognizer.state == .ended {
             // Perform action.
-            print("swipeRight: \(prevScreen)")
+            //print("swipeRight: \(prevScreen)")
             if prevScreen == "notifications"{
                 performSegue(withIdentifier: "FeedToNotifications", sender: self)
             }
@@ -3063,6 +3146,13 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
     var toMention = false
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
        self.showWaitOverlay()
+        if segue.identifier == "FeedToMap"{
+            if let vc = segue.destination as? MapViewController{
+                vc.mapType = "feed"
+                vc.myCity = locationNamePressed
+                
+            }
+        }
         if segue.identifier == "FeedToHash"{
             if let vc = segue.destination as? HashTagViewController{
                 vc.hashtag = self.selectedHash
@@ -3145,7 +3235,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
     
    
     @IBAction func editingDidEnd(_ sender: Any) {
-        print("tfe")
+       // print("tfe")
         commentBlockTopBar.isHidden = true
         dumbCommentsLabel.isHidden = true
     }
@@ -3155,7 +3245,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
     @IBOutlet weak var postCommentButton: UIButton!
     var height = UIScreen.main.bounds.height/2.15
     @IBAction func editingDidBegin(_ sender: Any) {
-        print("tfb")
+        //print("tfb")
         
        /* commentBlockTopBar.isHidden = false
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -3168,9 +3258,9 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
     public func textFieldDidBeginEditing(_ textField: UITextField) {
         
         //commentTFView.layer.zPosition = .greatestFiniteMagnitude
-        print("heyg: \(height)")
+       // print("heyg: \(height)")
         
-        print("balls")
+        //print("balls")
         
         
     }// became first responder
@@ -3180,7 +3270,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
     var curCommentPicCell: NewsFeedPicCollectionViewCell?
     public func textFieldDidEndEditing(_ textField: UITextField){
         //add comment to post
-        print("hereyyy")
+        //print("hereyyy")
         
        
         
@@ -3188,7 +3278,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
     
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true)
-        print("return text")
+        //print("return text")
         return false
     }
     
@@ -3227,17 +3317,17 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
     
     var allSuggested = [String]()
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String){
-        print("SB text did change: \(searchText)")
+        //print("SB text did change: \(searchText)")
         findFriendsData.removeAll()
         allSuggested.removeAll()
         
         var tempUserDict = [String:Any]()
         Database.database().reference().child("users").observeSingleEvent(of: .value, with: {(snapshot) in
-            print("here: \(snapshot.value)")
+            //print("here: \(snapshot.value)")
             //let snapshotss = snapshot.value as? [DataSnapshot]
-            print("hereNow")
+            //print("hereNow")
             for (key, val) in (snapshot.value as! [String:Any]){
-                print("uName=\(((val as! [String:Any])["username"] as! String))")
+               // print("uName=\(((val as! [String:Any])["username"] as! String))")
                 let uName = ((val as! [String:Any])["username"] as! String)
                 let rName = ((val as! [String:Any])["realName"] as! String)
                 let picString = ((val as! [String:Any])["profPic"] as! String)
@@ -3258,7 +3348,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                 
                 let uRange = (uName as NSString).range(of: searchText, options: NSString.CompareOptions.literal)
                 let rRange = (rName as NSString).range(of: searchText, options: NSString.CompareOptions.literal)
-                print("rANDu: \(uRange) \(rRange)")
+                //print("rANDu: \(uRange) \(rRange)")
                 if uRange.location != NSNotFound {
                     tempUserDict[key] = ["uName":uName, "rName":rName, "pic": pic!, "uid": uid]
                     self.allSuggested.append(rName)
@@ -3280,19 +3370,19 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                 }
                 
             }
-            print("nowHereee")
+           // print("nowHereee")
             var tempCurUids = [String]()
             for dict in self.findFriendsData{
                 tempCurUids.append(dict["uid"] as! String)
                 
             }
                     for (key, val) in tempUserDict {
-                        print("snapKey: \(key)")
+                      //  print("snapKey: \(key)")
                         if self.allSuggested.contains(key){
                            
                             var tempDict = [String:Any]()
                             tempDict = val as! [String:Any]
-                            print("snapVal: \(val as! [String:Any])")
+                            //print("snapVal: \(val as! [String:Any])")
                             var noName = "-"
                             var uName = tempDict["uName"] as! String
                             
@@ -3330,7 +3420,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
     
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar){
         self.searchActive = false
-        print("in search pressed")
+        //print("in search pressed")
     } // called when keyboard search button pressed
     
     //handle message
@@ -3358,11 +3448,11 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
             
             
             var now = Date()
-            print("tDate:\(now)")
+            //print("tDate:\(now)")
             var dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd hh:mm:ss"
             var stringDate = dateFormatter.string(from: now)
-            print("tString: \(stringDate)")
+            //print("tString: \(stringDate)")
                 
                 
                 
@@ -3588,7 +3678,7 @@ extension UIView{
         //ConfigureLabel
         let label = UILabel()
         label.textAlignment = .center
-        label.textColor = UIColor.white.withAlphaComponent(0.5)
+        label.textColor = UIColor.white.withAlphaComponent(0.68)
        // label.font = UIFont(name: "System", size: 17.0)! // Your Desired UIFont Style and Size
         label.numberOfLines = 0
         label.text = message ?? ""
