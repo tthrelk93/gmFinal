@@ -70,6 +70,7 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
     var myRealName = String()
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         showWaitOverlayWithText("loading notifications")
         topLine.frame = CGRect(x: topLine.frame.origin.x, y: topLine.frame.origin.y, width: topLine.frame.width, height: 0.5)
         self.notifyCollect.register(UINib(nibName: "NotificationCell", bundle: nil), forCellWithReuseIdentifier: "NotificationCell")
@@ -157,15 +158,18 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
                     self.notifyCollect.performBatchUpdates(nil, completion: {
                         (result) in
                         // ready
+                        self.notifyCollect.isHidden = false
                         self.removeAllOverlays()
                         print("doneLoading3")
                     })
                 }
+                
                 //cell.delegate = self
             })
             }
             //SwiftOverlays.removeAllBlockingOverlays()
         })
+        
 
         // Do any additional setup after loading the view.
     }

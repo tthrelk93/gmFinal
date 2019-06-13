@@ -42,6 +42,7 @@ class CommentCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
     override func awakeFromNib() {
         lineView.frame = CGRect(x: lineView.frame.origin.x, y: lineView.frame.origin.y, width: lineView.frame.width, height: 0.5)
         commentorPic.frame.size = CGSize(width: 35, height: 35)
+        likeButton.frame.size = CGSize(width: 25, height: 25)
         self.commentTextView.delegate = self
         super.awakeFromNib()
         // Initialization code

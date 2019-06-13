@@ -11,9 +11,12 @@ import FirebaseStorage
 import FirebaseDatabase
 import FirebaseAuth
 
-class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITextFieldDelegate, CommentLike {
+class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, CommentLike {
     func commentGoToProf(cellUID: String, name: String) {
-        
+        print("yo \(cellUID), \(name)")
+        self.curName = name
+        self.selectedCellUID = cellUID
+        performSegue(withIdentifier: "SingleTopicToProfile", sender: self)
     }
     
     func likeComment() {
@@ -78,13 +81,16 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
             }
             return cell
         } else {
-           
+           print("cellFor")
             let cell : CommentCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CommentCollectionViewCell", for: indexPath) as! CommentCollectionViewCell
             
             cell.myRealName = self.myName
-            cell.posterUID = self.topicData["posterID"] as! String
+            cell.posterUID = (self.commentData[indexPath.row] )["commentorID"] as! String
+            cell.posterName = (self.commentData[indexPath.row])["commentorName"] as! String
             cell.forum = true
-           
+            
+            cell.likeButton.frame.size = CGSize(width: 25, height: 25)
+            
             cell.postID = self.topicData["postID"] as! String
             cell.commentDelegate = self
             cell.indexPath = indexPath
@@ -95,6 +101,7 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
             
             
             cell.commentorPic.frame.size = CGSize(width: 35, height: 35)
+            cell.likeButton.frame.size = CGSize(width: 25, height: 25)
             
             cell.commentorPic.layer.cornerRadius = cell.commentorPic.frame.width/2
             cell.commentorPic.layer.masksToBounds = true
@@ -179,6 +186,22 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
             return cell
         }
     }
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        print("cellSize")
+        var width = CGFloat()
+        var height = CGFloat()
+        
+                width = collectionView.frame.width - 20
+        let nameAndComment = (self.commentData[indexPath.row]["commentorName"] as! String) + " " +  (self.commentData[indexPath.row]["commentText"] as! String)
+        let text = nameAndComment
+        height = estimateFrameForText(text: text , type: "").height + 35
+                    
+        
+       // print("size: \(CGSize(width: width, height: height))")
+                return CGSize(width: width, height: height)
+        
+    }
+
     
     func attributedText(withString string: String, boldString: String, font: UIFont) -> NSAttributedString {
         let attributedString = NSMutableAttributedString(string: string,
@@ -421,7 +444,7 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
                         
                     } else {
                         
-                        var tempString = "\(self.myUName) replied to your forum topic" as! String
+                        var tempString = "\(self.myUName) replied to your forum topic." as! String
                         
                         var date = Date()
                         var dateFormatter = DateFormatter()
@@ -430,7 +453,6 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
                         
                         var tempDict = (["actionByUID": Auth.auth().currentUser!.uid, "postID": self.topicData["postID"] as! String, "actionByUserPic": self.myPicString,"actionByUsername": self.myUName,"actionText": tempString,"postText": "postText", "timeStamp": dateString, "isForumPost":true] as! [String : Any])
                         
-                        //Database.database().reference().child("users").child(uid).updateChildValues((["notifications": [tempDict]] as! [String:Any]))
                         
                         var tempNotifs = valDict["notifications"] as! [[String:Any]]
                         tempNotifs.append(tempDict)
@@ -873,27 +895,9 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
             //self.likeTopLabel.isHidden = true
             
             commentView.frame = CGRect(x: commentView.frame.origin.x, y: commentView.frame.origin.y - keyboardHeight, width: commentView.frame.width, height: commentView.frame.height)
-            //topLabel.frame = CGRect(x: topLabel.frame.origin.x, y: topLabel.frame.origin.y + keyboardHeight, width: topLabel.frame.width, height: topLabel.frame.height)
             
-            //replyCountButton.frame = CGRect(x: replyCountButton.frame.origin.x, y: replyCountButton.frame.origin.y + keyboardHeight, width: replyCountButton.frame.width, height: replyCountButton.frame.height)
             
-            //likesCountButton.frame = CGRect(x: likesCountButton.frame.origin.x, y: likesCountButton.frame.origin.y + keyboardHeight, width: likesCountButton.frame.width, height: likesCountButton.frame.height)
-            //actualLikeButton.frame = CGRect(x: actualLikeButton.frame.origin.x, y: actualLikeButton.frame.origin.y + keyboardHeight, width: actualLikeButton.frame.width, height: actualLikeButton.frame.height)
-           // topicTopLine2.frame = CGRect(x: topicTopLine2.frame.origin.x, y: topicTopLine2.frame.origin.y + keyboardHeight, width: topicTopLine2.frame.width, height: topicTopLine2.frame.height)
-            //commentIconButton.frame = CGRect(x: commentIconButton.frame.origin.x, y: commentIconButton.frame.origin.y + keyboardHeight, width: commentIconButton.frame.width, height: commentIconButton.frame.height)
-           // posterImageView.frame = CGRect(x: posterImageView.frame.origin.x, y: posterImageView.frame.origin.y + keyboardHeight, width: posterImageView.frame.width, height: posterImageView.frame.height)
-            //timeStampLabel.frame = CGRect(x: timeStampLabel.frame.origin.x, y: timeStampLabel.frame.origin.y + keyboardHeight, width: timeStampLabel.frame.width, height: timeStampLabel.frame.height)
-           // likeButton.frame = CGRect(x: likeButton.frame.origin.x, y: likeButton.frame.origin.y + keyboardHeight, width: likeButton.frame.width, height: likeButton.frame.height)
-            
-            //topicTitleLabel.frame = CGRect(x: topicTitleLabel.frame.origin.x, y: topicTitleLabel.frame.origin.y + keyboardHeight, width: topicTitleLabel.frame.width, height: topicTitleLabel.frame.height)
-            
-           // posterPicButton.frame = CGRect(x: posterPicButton.frame.origin.x, y: posterPicButton.frame.origin.y + keyboardHeight, width: posterPicButton.frame.width, height: posterPicButton.frame.height)
-            
-          //  topicDescriptionLabel.frame = CGRect(x: topicDescriptionLabel.frame.origin.x, y: topicDescriptionLabel.frame.origin.y + keyboardHeight, width: topicDescriptionLabel.frame.width, height: topicDescriptionLabel.frame.height)
-            
-            //posterImageView.frame = CGRect(x: posterImageView.frame.origin.x, y: posterImageView.frame.origin.y + keyboardHeight, width: posterImageView.frame.width, height: posterImageView.frame.height)
-            
-           // likeReplyCollect.frame = CGRect(x: likeReplyCollect.frame.origin.x, y: likeReplyCollect.frame.origin.y + keyboardHeight, width: likeReplyCollect.frame.width, height: likeReplyCollect.frame.height)
+           
             print("hiding keyb")
             
         }
@@ -902,9 +906,25 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
+    var selectedCellUID = String()
+    var curName = String()
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        if segue.identifier == "SingleTopicToProfile"{
+            if let vc = segue.destination as? ProfileViewController{
+                vc.singleTopic = self.topicData
+                vc.prevScreen = "singleTopic"
+                vc.curUID = self.selectedCellUID
+                if selectedCellUID == Auth.auth().currentUser!.uid {
+                    vc.viewerIsCurAuth = true
+                    
+                } else {
+                    vc.viewerIsCurAuth = false
+                }
+                vc.curName = self.curName
+            }
+        }
     }
     
     private func estimateFrameForText(text: String, type: String) -> CGRect {

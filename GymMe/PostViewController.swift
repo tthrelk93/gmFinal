@@ -88,7 +88,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
     @IBOutlet weak var shadeView2: UIView!
     @IBOutlet weak var shadeView1: UIView!
     var catLabels = ["Abs","Arms","Back","Body Building","Cardio","Chest","Crossfit", "Legs","Nutrition", "Shoulders","Sports","Stretching","Speed and Agility"]
-    //var catLabels = ["Abs","Arms","Back","Chest","Legs","Shoulders"]
+    
     var placeAddress = String()
     var place: GMSPlace?
     var catLabelsRefined = [String]()
@@ -147,10 +147,10 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
             let cell : CurCatsCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CurCatsCollectionViewCell", for: indexPath) as! CurCatsCollectionViewCell
             cell.delegate = self
             cell.curCatLabel.text = curCatsData[indexPath.row]
-            //cell.removeCatButton.trailingAnchor.constraint(equalTo: cell.trailingAnchor, constant: -5).isActive = true
+            
             let margins = cell.layoutMarginsGuide
             cell.removeCatButton.trailingAnchor.constraint(equalTo: margins.trailingAnchor).isActive = true
-            //cell.removeCatButton.frame = CGRect(x: cell.frame.maxX - 5, y: cell.removeCatButton.frame.origin.y, width: cell.removeCatButton.frame.width, height: cell.removeCatButton.frame.height)
+            
             return cell
         } else {
         let cell : PostCatSearchCell = collectionView.dequeueReusableCell(withReuseIdentifier: "PostCatSearchCell", for: indexPath) as! PostCatSearchCell
@@ -182,21 +182,14 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
             print("indexPatht:\(indexPath)")
             
             if ((sportsCollect.cellForItem(at: indexPath) as! PostCatSearchSportsCell).catSportLabel.textColor == UIColor.red) {
-               //var cell = PostCatSearchCell()
-                //var label = UILabel()
-                //label.text = (sportsCollect.cellForItem(at: indexPath as IndexPath) as! PostCatSearchSportsCell).catSportLabel.text!
-                //cell.catLabel = label
+               
                 print("sportText: \((sportsCollect.cellForItem(at: indexPath as IndexPath) as! PostCatSearchSportsCell).catSportLabel.text!)")
             
                 
                 //selectedCellsArr.append(cell)
                 
                 curCatsData.append((sportsCollect.cellForItem(at: indexPath as IndexPath) as! PostCatSearchSportsCell).catSportLabel.text!)
-                
-               // var indexP = IndexPath(row: selectedCellsArr.count, section: 0)
-                //let cell : PostCatSearchCell = addCatCollect.dequeueReusableCell(withReuseIdentifier: "PostCatSearchCell", for: indexP) as! PostCatSearchCell
-                //cell.catLabel.text = (sportsCollect.cellForItem(at: indexPath as IndexPath) as! PostCatSearchSportsCell).catSportLabel.text!
-                //selectedCellsArr.append(cell)
+               
                 
             }
         }
@@ -323,32 +316,11 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
         }
         
     }
-    
-   // @IBOutlet weak var likedByCell: LikedByCollectionViewCell!
-   /* fileprivate var sectionInsets: UIEdgeInsets {
-        return UIEdgeInsetsMake(5, 5, 5, 5)
-    }
-    
-    fileprivate var itemsPerRow: CGFloat {
-        return 3
-    }
-    
-    fileprivate var interitemSpace: CGFloat {
-        return 5.0
-    }
-    public func collectionView(_ collectionView: UICollectionView,
-                               layout collectionViewLayout: UICollectionViewLayout,
-                               insetForSectionAt section: Int) -> UIEdgeInsets {
-        
-        return sectionInsets
-    }*/
+   
     @IBOutlet weak var layout: UICollectionViewFlowLayout!
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == curCatsCollect{
-           /* var labelWidth = (curCatsData[indexPath.row] as! String).width(withConstrainedHeight: 24.0, font: .systemFont(ofSize: 13))
-            var size = labelWidth + 30
-            var retSize = CGSize(width: size, height: 24)
-            return retSize*/
+           
             let string = curCatsData[indexPath.row] as! String
             
             // your label font.
@@ -396,10 +368,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
     @IBOutlet weak var addPicButton: UIButton!
     @IBAction func addPicTouched(_ sender: AnyObject) {
         currentPicker = "photo"
-        /*imagePicker.allowsEditing = true
-        //imagePicker.mediaTypes = ["kUTTypeImage"] //[.kUTTypeImage as String]
-        self.postType = "pic"
-        present(imagePicker, animated: true, completion: nil)*/
+        
         let picker = YPImagePicker()
         
         self.postType = "pic"
@@ -573,7 +542,6 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
         
         startLocationManager()
         self.postType = "text"
-        //makePostTextView.layer.borderColor = UIColor.clear.cgColor
         addToCategoryLabel.isHidden = true
         addToCategoryButton.isHidden = true
         self.addToCategoryLabel.isHidden = true
@@ -692,6 +660,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
         picViewLine3.frame.size = CGSize(width: UIScreen.main.bounds.width,height: 0.5)
         topLineCat.frame = CGRect(x: topLineCat.frame.origin.x, y: topLineCat.frame.origin.y, width: topLineCat.frame.width, height: 0.5)
         //self.makePostTextView.layer.cornerRadius = 10
+        
         posterPicIV.frame = CGRect(x: posterPicIV.frame.origin.x, y: posterPicIV.frame.origin.y, width: 28, height: 28)
         self.backToPostButton.layer.cornerRadius = 10
         picker.delegate = self
@@ -808,6 +777,17 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    private func estimateFrameForText(text: String, type: String) -> CGRect {
+        //we make the height arbitrarily large so we don't undershoot height in calculation
+        let height: CGFloat = 1000
+        
+        let size = CGSize(width: makePostTextView.frame.width, height: height)
+        let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+        
+        let attributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.regular)]
+        return NSString(string: text).boundingRect(with: size, options: options, attributes: attributes, context: nil)
+        
     }
     @objc func handleTap(sender: AnyObject) {
         addCatView.isHidden = false

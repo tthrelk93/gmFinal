@@ -342,7 +342,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
     
     
     @IBOutlet weak var tpPostCommentSep: UIView!
-    
+    //var ogTextViewHeight = Double()
     override func viewDidLoad() {
         super.viewDidLoad()
        
@@ -442,7 +442,24 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                     self.favoritesButton.isHidden = true
                     self.commentButton.isHidden = true
                     self.shareButton.isHidden = true
-                    self.postTextView.text = (self.thisPostData["postText"] as! String)
+                    //self.postTextView.text = (self.thisPostData["postText"] as! String)
+                    let attrs = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 15)]
+                    let attributedString = NSMutableAttributedString(string:(self.thisPostData["postText"] as! String), attributes:attrs)
+                    
+                    self.postTextView.attributedText = attributedString
+                    let fixedWidth = self.postTextView.frame.size.width
+                    
+                    let newSize = self.postTextView.sizeThatFits(CGSize(width: fixedWidth, height: self.estimateFrameForText(text: self.postTextView.text as! String).height))
+                    
+                    self.postTextView.frame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
+                    self.postTextView.isScrollEnabled = false
+                    var x = self.tpView.frame.origin.x
+                    var w = self.tpView.frame.width
+                    var y = self.postTextView.frame.origin.y + self.postTextView.frame.height
+                    var h = abs(y - UIScreen.main.bounds.maxY)
+                    
+                    self.tpView.frame = CGRect(x: x, y: y, width: w, height: h)
+                    self.tpCommentorPic.frame.size = CGSize(width: self.tpCommentTF.frame.height, height: self.tpCommentTF.frame.height)
             }
                 self.postTextView.resolveHashTags()
                 
@@ -863,7 +880,16 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
             return likesArray.count
         }
     }
-    
+    private func estimateFrameForText(text: String) -> CGRect {
+        //we make the height arbitrarily large so we don't undershoot height in calculation
+        let height: CGFloat = 1000
+        
+        let size = CGSize(width: postTextView.frame.width, height: height)
+        let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+        let attributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.regular)]
+        
+        return NSString(string: text).boundingRect(with: size, options: options, attributes: attributes, context: nil)
+    }
     @IBOutlet weak var shareButton: UIButton!
     var following = [String]()
     
@@ -1639,11 +1665,11 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
             
             commentsCollect.frame = CGRect(x: commentsCollect.frame.origin.x, y: commentsCollect.frame.origin.y - keyboardHeight, width: commentsCollect.frame.width, height: commentsCollect.frame.height)
             } else {
-                //tpCommentCollect.frame = CGRect(x: tpCommentCollect.frame.origin.x, y: tpCommentCollect.frame.origin.y - keyboardHeight, width: tpCommentCollect.frame.width, height: tpCommentCollect.frame.height)
+                tpCommentCollect.frame = CGRect(x: tpCommentCollect.frame.origin.x, y: tpCommentCollect.frame.origin.y + keyboardHeight, width: tpCommentCollect.frame.width, height: tpCommentCollect.frame.height)
                 
                 postTextView.frame = CGRect(x: postTextView.frame.origin.x, y: postTextView.frame.origin.y - keyboardHeight, width: postTextView.frame.width, height: postTextView.frame.height)
                 tpView.frame = CGRect(x: tpView.frame.origin.x, y: tpView.frame.origin.y - keyboardHeight, width: tpView.frame.width, height: tpView.frame.height)
-                 //tpCommentView.frame = CGRect(x: tpCommentView.frame.origin.x, y: tpCommentView.frame.origin.y - keyboardHeight, width: tpCommentView.frame.width, height: tpCommentView.frame.height)
+                 tpCommentView.frame = CGRect(x: tpCommentView.frame.origin.x, y: tpCommentView.frame.origin.y + keyboardHeight, width: tpCommentView.frame.width, height: tpCommentView.frame.height)
             }
         }
     }
@@ -1665,12 +1691,12 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
             
             commentsCollect.frame = CGRect(x: commentsCollect.frame.origin.x, y: commentsCollect.frame.origin.y + keyboardHeight, width: commentsCollect.frame.width, height: commentsCollect.frame.height)
             } else {
-                 //tpCommentCollect.frame = CGRect(x: tpCommentCollect.frame.origin.x, y: tpCommentCollect.frame.origin.y + keyboardHeight, width: tpCommentCollect.frame.width, height: tpCommentCollect.frame.height)
+                 tpCommentCollect.frame = CGRect(x: tpCommentCollect.frame.origin.x, y: tpCommentCollect.frame.origin.y - keyboardHeight, width: tpCommentCollect.frame.width, height: tpCommentCollect.frame.height)
                 
                 postTextView.frame = CGRect(x: postTextView.frame.origin.x, y: postTextView.frame.origin.y + keyboardHeight, width: postTextView.frame.width, height: postTextView.frame.height)
                 
                 tpView.frame = CGRect(x: tpView.frame.origin.x, y: tpView.frame.origin.y + keyboardHeight, width: tpView.frame.width, height: tpView.frame.height)
-                 //tpCommentView.frame = CGRect(x: tpCommentView.frame.origin.x, y: tpCommentView.frame.origin.y - keyboardHeight, width: tpCommentView.frame.width, height: tpCommentView.frame.height)
+                 tpCommentView.frame = CGRect(x: tpCommentView.frame.origin.x, y: tpCommentView.frame.origin.y - keyboardHeight, width: tpCommentView.frame.width, height: tpCommentView.frame.height)
             }
         }
     }

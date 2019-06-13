@@ -81,6 +81,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 self.backToCatButton.isHidden = true
                 
             } else {
+                self.specCatLabel.isHidden = true
                 
             }
            /* if self.topBarCat.titleLabel?.textColor == UIColor.red{
@@ -1243,12 +1244,9 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     cData = (self.popCollectData[indexPath.row] as! [String:Any])
                     selfData = (self.popCollectData[indexPath.row] as! [String:Any])
                 } else {
-                    
-                    cData = ((self.popCollectData[indexPath.row]).first!.value as! [String:Any])
+                    cData = (self.popCollectData[indexPath.row] as! [String:Any])
+                    //cData = ((self.popCollectData[indexPath.row]).first!.value as! [String:Any])
                 }
-                
-                
-               
                 
                 //did select picture cell
                 if selfData["postPic"] as? String != nil {

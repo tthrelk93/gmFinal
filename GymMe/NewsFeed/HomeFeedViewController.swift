@@ -2345,21 +2345,47 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
         
         var width = Double(textPostCommentView.frame.width)
         var height = Double()
-        
-        if let text = sizeText {
-            /*if (estimateFrameForText(text: text ).height) > 70 && (estimateFrameForText(text: text as! String).height) < 140 {
-                if (estimateFrameForText(text: text ).height) > 100{
-                    height = Double(estimateFrameForText(text: text ).height + 160)
-                    //print("suhhhh")
+        if(UIScreen.main.bounds.height == 896){
+            //iphone xr
+            print("sizingXR")
+            if let text = sizeText {
+                
+                if (estimateFrameForText(text: text ).height) >= 70 && (estimateFrameForText(text: text as! String).height) < 140 {
+                    if (estimateFrameForText(text: text ).height) >= 70 && (estimateFrameForText(text: text as! String).height) < 100{
+                        height = Double(estimateFrameForText(text: text as! String).height + 160)
+                        //print("suh")
+                    } else if (estimateFrameForText(text: text ).height) > 100 && (estimateFrameForText(text: text as! String).height) < 110{
+                        height = Double(estimateFrameForText(text: text as! String).height + 155)
+                        //print("suh")
+                    } else if (estimateFrameForText(text: text ).height) >= 110 && (estimateFrameForText(text: text as! String).height) < 120{
+                        height = Double(estimateFrameForText(text: text as! String).height + 150)
+                        
+                    } else if (estimateFrameForText(text: text ).height) >= 120 && (estimateFrameForText(text: text as! String).height) < 130{
+                        height = Double(estimateFrameForText(text: text as! String).height + 145)
+                        
+                    } else if (estimateFrameForText(text: text ).height) >= 130 {
+                        
+                        height = Double(estimateFrameForText(text: text as! String).height + 140)
+                    }
+                } else if (estimateFrameForText(text: text ).height) > 140 && (estimateFrameForText(text: text as! String).height) < 175{
+                    height = Double(estimateFrameForText(text: text as! String).height + 140)
+                } else if (estimateFrameForText(text: text ).height) > 175 && (estimateFrameForText(text: text as! String).height) < 210{
+                    height = Double(estimateFrameForText(text: text as! String).height + 135)
+                } else if (estimateFrameForText(text: text ).height) > 210 && (estimateFrameForText(text: text as! String).height) < 230{
+                    height = Double(estimateFrameForText(text: text as! String).height + 130)
+                } else if (estimateFrameForText(text: text ).height) >= 230 && (estimateFrameForText(text: text as! String).height) < 240{
+                    height = Double(estimateFrameForText(text: text as! String).height + 130)
+                } else if (estimateFrameForText(text: text ).height) > 240{
+                    height = Double(estimateFrameForText(text: text as! String).height + 125)
                 } else {
-                    
-                    height = Double(estimateFrameForText(text: text ).height + 130)
+                    height = Double(estimateFrameForText(text: text as! String).height + 160)
                 }
-            } else if (estimateFrameForText(text: text ).height) > 140 {
-                height = Double(estimateFrameForText(text: text ).height + 140)
-            } else {
-                height = Double(estimateFrameForText(text: text ).height + 163)
-            }*/
+                print("textCell Comment height for: \(text) = \(estimateFrameForText(text: text ).height)")
+                //print("text: \(text), height: \(height), indexPath: \(indexPath)")
+            }
+        } else {
+        if let text = sizeText {
+            
             if (estimateFrameForText(text: text ).height) >= 70 && (estimateFrameForText(text: text as! String).height) < 140 {
                 if (estimateFrameForText(text: text ).height) >= 70 && (estimateFrameForText(text: text as! String).height) < 100{
                     height = Double(estimateFrameForText(text: text as! String).height + 160)
@@ -2393,6 +2419,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
             print("textCell Comment height for: \(text) = \(estimateFrameForText(text: text ).height)")
             //print("text: \(text), height: \(height), indexPath: \(indexPath)")
         }
+        }
         return CGSize(width: width, height: height)
     }
     
@@ -2413,7 +2440,73 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
             }
         } else {
        
-        
+            if(UIScreen.main.bounds.height == 896){
+                //iphone xr
+                print("sizingXR")
+                if feedDataArray[indexPath.row]["postPic"] == nil && feedDataArray[indexPath.row]["postVid"] == nil {
+                    width = collectionView.frame.width - 20
+                    if let text = (feedDataArray[indexPath.row])["postText"] {
+                        if (estimateFrameForText(text: text as! String).height) >= 70 && (estimateFrameForText(text: text as! String).height) < 140 {
+                            if (estimateFrameForText(text: text as! String).height) >= 70 && (estimateFrameForText(text: text as! String).height) < 100{
+                                height = estimateFrameForText(text: text as! String).height + 165
+                                //print("suh")
+                            } else if (estimateFrameForText(text: text as! String).height) > 100 && (estimateFrameForText(text: text as! String).height) < 110{
+                                height = estimateFrameForText(text: text as! String).height + 160
+                                //print("suh")
+                            } else if (estimateFrameForText(text: text as! String).height) >= 110 && (estimateFrameForText(text: text as! String).height) < 120{
+                                height = estimateFrameForText(text: text as! String).height + 155
+                                
+                            } else if (estimateFrameForText(text: text as! String).height) >= 120 && (estimateFrameForText(text: text as! String).height) < 130{
+                                height = estimateFrameForText(text: text as! String).height + 150
+                                
+                            } else if (estimateFrameForText(text: text as! String).height) >= 130 {
+                                
+                                height = estimateFrameForText(text: text as! String).height + 145
+                            }
+                        } else if (estimateFrameForText(text: text as! String).height) > 140 && (estimateFrameForText(text: text as! String).height) < 175{
+                            height = estimateFrameForText(text: text as! String).height + 140
+                        } else if (estimateFrameForText(text: text as! String).height) > 175 && (estimateFrameForText(text: text as! String).height) < 210{
+                            height = estimateFrameForText(text: text as! String).height + 135
+                        } else if (estimateFrameForText(text: text as! String).height) > 210 && (estimateFrameForText(text: text as! String).height) < 240{
+                            height = estimateFrameForText(text: text as! String).height + 130
+                        } else if (estimateFrameForText(text: text as! String).height) > 240{
+                            height = estimateFrameForText(text: text as! String).height + 125
+                        } else {
+                            height = estimateFrameForText(text: text as! String).height + 180
+                        }
+                        print("textCell height for: \(text) = \(estimateFrameForText(text: text as! String).height)")
+                    }
+                } else {
+                    width = collectionView.frame.width - 20
+                    if let text = (feedDataArray[indexPath.row])["postText"] {
+                        if (estimateFrameForText(text: text as! String).height) < 300 {
+                            
+                            if (estimateFrameForText(text: text as! String).height) < 40 {
+                                height = (estimateFrameForText(text: text as! String).height/1.75) + 474 + 70
+                            } else if (estimateFrameForText(text: text as! String).height) < 120 {
+                                height = (estimateFrameForText(text: text as! String).height/1.75) + 474 + 75
+                            } else if (estimateFrameForText(text: text as! String).height) < 130 {
+                                height = (estimateFrameForText(text: text as! String).height/1.75) + 474 + 80
+                            } else if (estimateFrameForText(text: text as! String).height) < 140 {
+                                height = (estimateFrameForText(text: text as! String).height/1.75) + 474 + 85
+                            } else if (estimateFrameForText(text: text as! String).height) < 150 {
+                                height = (estimateFrameForText(text: text as! String).height/1.75) + 474 + 90
+                            } else if (estimateFrameForText(text: text as! String).height) < 160 {
+                                height = (estimateFrameForText(text: text as! String).height/1.75) + 474 + 95
+                            } else if (estimateFrameForText(text: text as! String).height) < 170 {
+                                height = (estimateFrameForText(text: text as! String).height/1.75) + 474 + 100
+                            } else {
+                                height = (estimateFrameForText(text: text as! String).height/1.75) + 474 + 105
+                            }
+                        } else {
+                            
+                            height = (estimateFrameForText(text: text as! String).height/1.75) + 474 + 110
+                        }
+                        print("picCell height for: \(text) = \(estimateFrameForText(text: text as! String).height)")
+                    }
+                }
+            } else {
+                //iphone X
         if feedDataArray[indexPath.row]["postPic"] == nil && feedDataArray[indexPath.row]["postVid"] == nil {
             width = collectionView.frame.width - 20
             if let text = (feedDataArray[indexPath.row])["postText"] {
@@ -2446,7 +2539,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                     height = estimateFrameForText(text: text as! String).height + 160
                 }
                 print("textCell height for: \(text) = \(estimateFrameForText(text: text as! String).height)")
-                //print("text: \(text), height: \(height), indexPath: \(indexPath)")
+                
             }
             //height = CGFloat(195)
             
@@ -2478,10 +2571,10 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                     height = (estimateFrameForText(text: text as! String).height/1.75) + 474 + 100
                 }
                 print("picCell height for: \(text) = \(estimateFrameForText(text: text as! String).height)")
-                //print("text: \(text), height: \(estimateFrameForText(text: text as! String).height), indexPath: \(indexPath)")
             }
+                }
             //height = CGFloat(563)
-        }
+            }
             return CGSize(width: width, height: height)
         }
         
@@ -2529,7 +2622,8 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
         locationOptionsMenu.layer.cornerRadius = 6
         mapButton.layer.cornerRadius = 6
         viewPostsButton.layer.cornerRadius = 6
-        
+        print("the screen height is: \(UIScreen.main.bounds.height)")
+        print("the screen width is: \(UIScreen.main.bounds.width)")
         self.view.addSubview(UIView().customActivityIndicator(view: self.view, widthView: nil, backgroundColor:UIColor.black, textColor: UIColor.white, message: "Loading Feed"))
         
        self.tpTextView.delegate = self //SwiftOverlays.showBlockingWaitOverlayWithText("Loading Feed")
@@ -2937,6 +3031,15 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                 //var dateFormatter = DateFormatter()
                 //var dateString = dateFormatter.string(from: now)
                 commentsArray.append(["commentorName": self.myUName, "commentorID": Auth.auth().currentUser!.uid, "commentorPic": self.myPicString, "commentText": self.commentTF.text, "commentDate": now.description])
+                var index = 0
+                for data in self.feedDataArray {
+                    var dict = data as! [String:Any]
+                    if (dict["postID"] as! String == cellTypeTemp){
+                        dict["comments"] = commentsArray
+                        self.feedDataArray[index] = dict
+                    }
+                    index+=1
+                }
                 Database.database().reference().child("posts").child(cellTypeTemp).child("comments").setValue(commentsArray)
                 Database.database().reference().child("users").child(posterID).child("posts").child(cellTypeTemp).child("comments").setValue(commentsArray)
                 
@@ -2966,8 +3069,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                         
                         var tempDict = (["actionByUID": Auth.auth().currentUser!.uid, "postID": self.curPostID, "actionByUserPic": self.myPicString,"actionByUsername": self.myUName!,"actionText": tempString,"postText": "postText", "timeStamp": dateString] as! [String : Any])
                         
-                        //Database.database().reference().child("users").child(uid).updateChildValues((["notifications": [tempDict]] as! [String:Any]))
-                        
+                       
                         var tempNotifs = valDict["notifications"] as! [[String:Any]]
                         tempNotifs.append(tempDict)
                         //print("acommentNote \(posterID)")
@@ -3015,10 +3117,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                         self.likedByCollect.delegate = self
                         self.likedByCollect.dataSource = self
                         self.likedByCollect.reloadData()
-                        /*self.likedByCollect.performBatchUpdates(nil, completion: {
-                            (result) in
-                            //self.likedByCollect.reloadData()
-                        })*/
+                        
                     }
                     
                 } else {
@@ -3083,6 +3182,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                                         
                                     }
                                 }
+                                tempDict["comments"] =
                                 self.feedDataArray[count] = tempDict
                                 DispatchQueue.main.async{
                                     
@@ -3096,16 +3196,6 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                         count = count + 1
                     }
                     
-                        
-                    
-                    /*self.likedByCollect.performBatchUpdates(nil, completion: {
-                        (result) in
-                     
-                    })*/
-                    //DispatchQueue.main.async{
-                        //self.likedByCollect.reloadData()
-                        //self.likedByCollect.reloadItems(at: [(self.curCommentCell?.cellIndexPath)!])
-                    //}
                 }
                 
             })

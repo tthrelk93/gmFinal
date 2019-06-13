@@ -184,8 +184,7 @@ class ForumCollectionViewCell: UICollectionViewCell {
          })
         if self.likeTopicButton.imageView?.image == UIImage(named: "favoritesUnfilled.png"){
             self.likeTopicButton.setImage(UIImage(named:"favoritesFilled.png"), for: .normal)
-            // let curLikes = Int((self.likesCountButton.titleLabel?.text)!)
-            //self.likesCountButton.setTitle(String(curLikes! + 1), for: .normal)
+            
             Database.database().reference().child("forum").child(self.forumID).observeSingleEvent(of: .value, with: { snapshot in
                 let valDict = snapshot.value as! [String:Any]
                 
@@ -250,9 +249,7 @@ class ForumCollectionViewCell: UICollectionViewCell {
                 } else {
                     likesString = "\(likesArray.count) likes"
                 }
-                //self.likesCountButton.setTitle(likesString, for: .normal)
-                
-                //reload collect in delegate
+               
                 
             })
             
@@ -286,8 +283,11 @@ class ForumCollectionViewCell: UICollectionViewCell {
                     likesString = "\(likesArray.count) likes"
                 }
                 //self.likesCountButton.setTitle(likesString, for: .normal)
-                
+                if((self.favoritedTopics?.contains(self.forumID))!){
                 self.favoritedTopics!.remove(at: self.favoritedTopics!.firstIndex(of: self.forumID)!)
+                } else {
+                    print("aready removed")
+                }
                 
                 Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("favoritedTopics").setValue(self.favoritedTopics!)
                 
