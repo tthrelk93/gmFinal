@@ -12,9 +12,6 @@ protocol PerformActionsInNotifications {
     
     func performSegueToProfile(uid: String, name: String)
     func performSegueToPost(postID: String)
-    
-    
-    
 }
 
 
@@ -24,29 +21,26 @@ class NotificationCell: UICollectionViewCell {
         print("posterNamePressed")
         delegate?.performSegueToProfile(uid: actionByUID!, name: self.name)
     }
-    
+    var name = String()
+    var ogPostPicFrame = CGRect()
+    var player: Player?
+    var videoUrl: URL?
+    var timeStamp: String?
+    var actionByUID: String?
+    var postID = String()
     var delegate: PerformActionsInNotifications?
-   // @IBOutlet weak var lineView: UIView!
     @IBOutlet weak var postTextLabel: UILabel!
     @IBAction func postPicPressed(_ sender: Any) {
         delegate?.performSegueToPost(postID: self.postID)
     }
     @IBOutlet weak var postPic: UIButton!
     @IBOutlet weak var noteLabel: UILabel!
-    var name = String()
     @IBAction func actionUserPressed(_ sender: Any) {
         delegate?.performSegueToProfile(uid: actionByUID!, name: self.name)
     }
     @IBOutlet weak var actionUserPicButton: UIButton!
-    var player: Player?
-    var videoUrl: URL?
-    var timeStamp: String?
-    var actionByUID: String?
-    var postID = String()
     @IBOutlet weak var tpIconPosition: UIView!
-    var ogPostPicFrame = CGRect()
     override func awakeFromNib() {
-        
         super.awakeFromNib()
         // Initialization code
         self.player = Player()
@@ -77,17 +71,10 @@ class NotificationCell: UICollectionViewCell {
     }
     override func prepareForReuse(){
         self.postPic.imageView?.image = nil
-        
         self.postTextLabel.text = ""
         self.player?.view.isHidden = true
-        //self.lineView.frame = CGRect(x: lineView.frame.origin.x, y: lineView.frame.origin.y, width: lineView.frame.width, height: 0.5)
         super.prepareForReuse()
-       //self.lineView.frame = CGRect(x: lineView.frame.origin.x, y: lineView.frame.origin.y, width: lineView.frame.width, height: 0.5)
-        
-        
-        
-        // exampleView.backgroundColor = nil
-        //exampleView.layer.cornerRadius = 0
+ 
     }
 
 }

@@ -19,8 +19,11 @@ protocol ToProfileDelegate {
 }
 
 class LikedByCollectionViewCell: UICollectionViewCell {
-
+    var likedByUID: String?
+    var indexPath: IndexPath?
     var delegate1: ToProfileDelegate?
+    var delegate: PerformActionsInFeedDelegate?
+    var postID: String?
     @IBOutlet weak var shareCheck: UIButton!
     @IBOutlet weak var commentTextView: UITextView!
     @IBOutlet weak var commentTimestamp: UILabel!
@@ -29,13 +32,9 @@ class LikedByCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var likedByName: UILabel!
     @IBOutlet weak var likedByImage: UIImageView!
     @IBOutlet weak var likedByFollowButton: UIButton!
-    
     @IBAction func shareCheckPressed(_ sender: Any) {
-        print("shareCirc: \(likedByUID!) \(indexPath!)")
         delegate1?.shareCirclePressed(likedByUID: self.likedByUID!, indexPath: indexPath!)
     }
-    var likedByUID: String?
-    var indexPath: IndexPath?
     @IBAction func likedByFollowButtonPressed(_ sender: Any) {
         //add selected User to curUsers Following field
         if likedByFollowButton.titleLabel?.text == "Follow"{
@@ -115,19 +114,14 @@ class LikedByCollectionViewCell: UICollectionViewCell {
             })
         }
     }
-    
     @IBOutlet weak var toProfileButton: UIButton!
     @IBAction func toProfileButtonPressed(_ sender: Any) {
         print("yuh")
         delegate1?.segueToProf(cellUID: self.likedByUID!, name: self.likedByName.text!)
     }
-    
     @IBAction func selectButton(_ sender: Any) {
     }
-    
     @IBOutlet weak var selectButton: UIButton!
-    var delegate: PerformActionsInFeedDelegate?
-    var postID: String?
     override func awakeFromNib() {
         super.awakeFromNib()
         likedByFollowButton.layer.cornerRadius = 10

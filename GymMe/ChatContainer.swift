@@ -11,16 +11,18 @@ import FirebaseDatabase
 
 
 class ChatContainer: UIViewController {
-    
-    @IBOutlet weak var receiverPic: UIImageView!
-    @IBOutlet weak var receiverTopLabel: UILabel!
     var userID = String()
     var recipientID = String()
     var newMessage = false
     var curItemKey: String?
-   var curName = String()
+    var curName = String()
     var selectedUID = String()
+    var sender = String()
+    var prevScreen = String()
     var selectedCurAuthProfile = Bool()
+    @IBOutlet weak var chatViewContainer: UIView!
+    @IBOutlet weak var receiverPic: UIImageView!
+    @IBOutlet weak var receiverTopLabel: UILabel!
     @IBAction func toProfilePressed(_ sender: Any) {
         self.curName = self.receiverTopLabel.text!
         self.selectedUID = self.recipientID
@@ -30,9 +32,7 @@ class ChatContainer: UIViewController {
             selectedCurAuthProfile = false
         }
         performSegue(withIdentifier: "MessagesToProfile", sender: self)
-        
     }
-    
     @IBOutlet weak var topLine: UIView!
     @IBAction func BackToMessagesPressed(_ sender: Any) {
         performSegue(withIdentifier: "BackToMessages", sender: self)
@@ -57,12 +57,6 @@ class ChatContainer: UIViewController {
             self.receiverPic.layer.masksToBounds = true
             self.receiverTopLabel.text = self.sender
         })
-      
-      
-        //performSegue(withIdentifier: "EmbeddedSegue", sender: self)
-        
-        
-        
         
     }
     
@@ -70,13 +64,8 @@ class ChatContainer: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    @IBOutlet weak var chatViewContainer: UIView!
-    
-    
+
     // MARK: - Navigation
-    var sender = String()
-    var prevScreen = String()
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

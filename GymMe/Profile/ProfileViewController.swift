@@ -19,11 +19,504 @@ import YPImagePicker
 
 
 class ProfileViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITabBarDelegate, UIScrollViewDelegate, UITextViewDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, MessagingDelegate, UISearchBarDelegate, ToProfileDelegate {
+    
+    @IBOutlet weak var reauthView: UIView!
+    @IBOutlet weak var nameLine: UIView!
+    @IBOutlet weak var cityLine: UIView!
+    @IBOutlet weak var topLine: UIView!
+    @IBOutlet weak var editPasswordTF: UITextField!
+    @IBOutlet weak var editEmailTF: UITextField!
+    @IBOutlet weak var editBioTextView: UITextView!
+    @IBOutlet weak var editProfNameTextField: UITextField!
+    @IBOutlet weak var editProfBackButton: UIButton!
+    @IBOutlet weak var editProfSaveButton: UIButton!
+    @IBAction func editProfBackPressed(_ sender: Any) {
+        navBarView.isHidden = false
+        editProfView.isHidden = true
+    }
+    @IBOutlet weak var sepLine7: UIView!
+    @IBOutlet weak var sepLine6: UIView!
+    @IBOutlet weak var sepLine5: UIView!
+    @IBOutlet weak var sepLine4: UIView!
+    @IBOutlet weak var sepLine3: UIView!
+    @IBOutlet weak var sepLine2: UIView!
+    @IBOutlet weak var sepLine1: UIView!
+    @IBOutlet weak var updatePasswordButton: UIButton!
+    @IBOutlet weak var usernameLab: UILabel!
+    @IBOutlet weak var nameLab: UILabel!
+    @IBOutlet weak var bioLab: UILabel!
+    @IBOutlet weak var emailLab: UILabel!
+    @IBOutlet weak var cityLab: UILabel!
+    @IBOutlet weak var passwordLab: UILabel!
+    @IBOutlet weak var selectPicButton: UIButton!
+    @IBOutlet weak var gymLab: UILabel!
+    @IBOutlet weak var editProfTopLabel: UILabel!
+    @IBOutlet weak var editProfPicButton: UIButton!
+    @IBOutlet weak var editProfImageView: UIImageView!
+    @IBOutlet weak var editProfView: UIView!
+    @IBOutlet weak var tabBar: UITabBar!
+    @IBOutlet weak var favoritesCollect: UICollectionView!
+    @IBOutlet weak var innerScreenTabBar: UITabBar!
+    @IBOutlet weak var collectViewResize: UIView!
+    @IBOutlet weak var collectView: UIView!
+    @IBOutlet weak var bioTextView: UITextView!
+    @IBOutlet weak var editGymTF: UITextField!
+    @IBOutlet weak var editCityTF: UITextField!
+    @IBAction func editProfButtonPressed(_ sender: Any) {
+        if editProfView.isHidden == true{
+            navBarView.isHidden = true
+            oldEmail = editEmailTF.text!
+            editProfView.isHidden = false
+            self.oldUsername = userNameTop.text!
+            picker.delegate = self
+            editBioTextView.delegate = self
+            editProfNameTextField.delegate = self
+        } else {
+            navBarView.isHidden = false
+            editProfView.isHidden = true
+        }
+    }
+    @IBOutlet weak var findFriendsTopLine: UIView!
+    @IBAction func findFriendsPressed(_ sender: Any) {
+        addFriendsTopLabel.isHidden = false
+        findFriendsView.isHidden = false
+        userNameTop.isHidden = true
+        findFriends.isHidden = true
+        backFromFriends.isHidden = false
+        topLine.isHidden = true
+        messageButton.isHidden = true
+    }
+    @IBOutlet weak var addFriendsTopLabel: UILabel!
+    @IBAction func backFromFriendsPressed(_ sender: Any) {
+        addFriendsTopLabel.isHidden = true
+        findFriendsSearchBar.resignFirstResponder()
+        findFriendsView.isHidden = true
+        backFromFriends.isHidden = true
+        userNameTop.isHidden = false
+        findFriends.isHidden = false
+        topLine.isHidden = false
+        messageButton.isHidden = false
+    }
+    @IBOutlet weak var backFromFriends: UIButton!
+    @IBOutlet weak var findFriends: UIButton!
+    @IBOutlet weak var userNameTop: UILabel!
+    @IBOutlet weak var navBarView: UIView!
+    @IBOutlet weak var editProfButton: UIButton!
+    @IBOutlet weak var followingCount: UILabel!
+    @IBOutlet weak var followersCount: UILabel!
+    @IBOutlet weak var profName: UILabel!
+    @IBOutlet weak var profPic: UIImageView!
+    @IBOutlet weak var topLeftNav: UIButton!
+    @IBAction func topLeftNavButton(_ sender: Any) {
+        if topLeftNav.titleLabel?.text == "Back"{ } else {
+            do {
+                try Auth.auth().signOut()
+                performSegue(withIdentifier: "LogoutSegue", sender: self)
+            } catch let err {
+                print(err)
+            }
+        }
+    }
+    @IBOutlet var swipeGestureRecognizer: UISwipeGestureRecognizer!
+    @IBAction func swipeHandler(_ gestureRecognizer : UISwipeGestureRecognizer) {
+        if gestureRecognizer.state == .ended {
+            if prevScreen == "feed"{
+                performSegue(withIdentifier: "ProfileToFeed", sender: self)
+            }
+            if prevScreen == "forum"{
+                performSegue(withIdentifier: "ProfileToForum", sender: self)
+            }
+            if prevScreen == "post"{
+                performSegue(withIdentifier: "ProfileToPost", sender: self)
+            }
+            if prevScreen == "search"{
+                performSegue(withIdentifier: "ProfileToSearch", sender: self)
+            }
+            if prevScreen == "notifications"{
+                performSegue(withIdentifier: "ProfileToNotifications", sender: self)
+            }
+            if prevScreen == "favorites"{
+                performSegue(withIdentifier: "ProfileToFavorites", sender: self)
+            }
+        }
+    }
+    @IBOutlet weak var messageButton: UIButton!
+    @IBAction func messageButtonPressed(_ sender: Any) {
+        if viewerIsCurAuth != true {
+            messageRecipID = self.curUID!
+            performSegue(withIdentifier: "ProfileToMessages", sender: self)
+        } else {
+            performSegue(withIdentifier: "ProfileToFavorites", sender: self)
+        }
+    }
+    @IBOutlet weak var innerTabTopLine: UIView!
+    @IBOutlet weak var innerTabBottomLine: UIView!
+    @IBAction func editProfSelectPicPressed(_ sender: Any) {
+        currentPicker = "photo"
+        let picker = YPImagePicker()
+        picker.didFinishPicking { [unowned picker] items, _ in
+            if let photo = items.singlePhoto {
+                print(photo.fromCamera) // Image source (camera or library)
+                print(photo.image) // Final image selected by the user
+                print(photo.originalImage) // original image selected by the user, unfiltered
+                print(photo.modifiedImage) // Transformed image, can be nil
+                print(photo.exifMeta)
+                self.editProfImageView.image = photo.image
+                self.updatePic = true
+            }
+            picker.dismiss(animated: true, completion: nil)
+        }
+        present(picker, animated: true, completion: nil)
+    }
+    @IBAction func editProfSavePressed(_ sender: Any) {
+        
+        self.reloadCollect = false
+        if self.updateUsername == false && self.updateBio == false && self.updatePic == false && updateRealName == false && updateEmail == false && updateCity == false && updateGym == false{
+            //nothing to update
+            let alert = UIAlertController(title: "No Changes Made", message: "There are no changes to update.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            
+            return
+        }
+        let imageName = NSUUID().uuidString
+        let storageRef = Storage.storage().reference().child("profile_images").child(Auth.auth().currentUser!.uid).child("\(imageName).jpg")
+        
+        if self.updatePic == true{
+            
+            let profileImage = self.editProfImageView.image
+            
+            let uploadData = UIImageJPEGRepresentation(profileImage!, 0.1)
+            storageRef.putData(uploadData!, metadata: nil, completion: { (metadata, error) in
+                
+                if error != nil {
+                    print(error as Any)
+                    return
+                }
+                
+                if let profileImageUrl = metadata?.downloadURL()?.absoluteString {
+                    
+                    self.editUpdateData["profPic"] = profileImageUrl
+                    if self.updateBio == true {
+                        if self.editBioTextView.text == "Tap here to edit bio."{
+                            self.editUpdateData["bio"] = " "
+                        } else {
+                            self.editUpdateData["bio"] = self.editBioTextView.text
+                            self.collectView.frame = self.ogCollectViewSize
+                        }
+                    }
+                    if self.updateGym == true && self.editGymTF.text! != self.curGymText{
+                        self.editUpdateData["homeGym"] = self.editGymObject
+                        
+                    }
+                    if self.updateCity == true{
+                        self.editUpdateData["city"] = self.editCityTF.text
+                        print("cityCoord: \(self.editCityObject)")
+                        self.editUpdateData["cityCoord"] = self.editCityObject
+                        //cit
+                    }
+                    if self.updateUsername == true {
+                        self.editUpdateData["username"] = self.editProfNameTextField.text
+                        Database.database().reference().child("usernames").updateChildValues([self.editProfNameTextField.text!: [Auth.auth().currentUser!.uid, self.editNameTF.text!]])
+                        
+                        print("oldUname: \(self.oldUsername)")
+                        Database.database().reference().child("usernames").child(self.oldUsername).removeValue()
+                    }
+                    
+                    if self.updateRealName == true{
+                        print("updateRealName: \(self.editNameTF.text!)")
+                        Database.database().reference().child("users").child((Auth.auth().currentUser?.uid)!).updateChildValues(["realName": self.editNameTF.text!])
+                    }
+                    if self.updateEmail == true {
+                        
+                        let alertVC = UIAlertController(title: "Verify Email Address", message: "Select Send to get a verification email sent to \(String(describing: self.editEmailTF.text!)). Your account will be created  and ready for use upon return to the app.", preferredStyle: .alert)
+                        let alertActionOkay = UIAlertAction(title: "Send", style: .default) {
+                            (_) in
+                            Auth.auth().currentUser?.sendEmailVerification(completion: nil)
+                            
+                            self.verificationTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.checkIfTheEmailIsVerified) , userInfo: nil, repeats: true)
+                        }
+                        let alertActionCancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+                        alertVC.addAction(alertActionCancel)
+                        alertVC.addAction(alertActionOkay)
+                        self.present(alertVC, animated: true, completion: nil)
+                    } else {
+                        print("emailVer == true")
+                    }
+                    Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).updateChildValues(self.editUpdateData, withCompletionBlock: {(error, ref) in
+                        // upload completet
+                        var counter2 = 0
+                        for post in self.postData{
+                            var tempD = post
+                            let dateFormatter = DateFormatter()
+                            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+                            dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+                            
+                            let date = dateFormatter.date(from: tempD["datePosted"] as! String)
+                            tempD["datePosted"] = date
+                            self.postData[counter2] = tempD
+                            counter2 = counter2 + 1
+                        }
+                        var counter3 = 0
+                        for post in self.postDataText{
+                            var tempD = post
+                            let dateFormatter = DateFormatter()
+                            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+                            dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+                            
+                            let date = dateFormatter.date(from: tempD["datePosted"] as! String)
+                            tempD["datePosted"] = date
+                            self.postDataText[counter3] = tempD
+                            counter3 = counter3 + 1
+                        }
+                        self.loadViewController()
+                        
+                        return
+                    })
+                    for dict in self.profCollectData{
+                        var tempDict = dict as! [String:Any]
+                        Database.database().reference().child("posts").child((tempDict["postID"] as! String)).updateChildValues(["posterPicURL": profileImageUrl])
+                    }
+                }
+            })
+        } else {
+            //no new image
+            if self.updateGym == true{
+                self.editUpdateData["homeGym"] = self.editGymObject
+            }
+            if self.updateCity == true{
+                self.editUpdateData["city"] = self.editCityTF.text
+                self.editUpdateData["cityCoord"] = self.editCityObject
+            }
+            
+            if self.updateBio == true {
+                if self.editBioTextView.text == "Tap here to edit bio."{
+                    self.editUpdateData["bio"] = " "
+                } else {
+                    self.editUpdateData["bio"] = self.editBioTextView.text
+                    self.collectView.frame = ogCollectViewSize
+                }
+            }
+            if self.updateUsername == true {
+                self.editUpdateData["username"] = self.editProfNameTextField.text
+                
+                
+                Database.database().reference().child("usernames").updateChildValues([self.editProfNameTextField.text!: [Auth.auth().currentUser!.uid, self.editNameTF.text!]])
+                
+                print("oldUname: \(self.oldUsername)")
+                Database.database().reference().child("usernames").child(self.oldUsername).removeValue()
+            }
+            if self.updatePassword == true {
+                
+                Auth.auth().currentUser?.updatePassword(to: self.editPasswordTF.text!) { (error) in
+                    // ...
+                    if error != nil{
+                        print("passError: \(error?.localizedDescription)")
+                    }
+                }
+            }
+            if self.updateRealName == true{
+                print("updateRealName: \(self.editNameTF.text!)")
+                Database.database().reference().child("users").child((Auth.auth().currentUser?.uid)!).updateChildValues(["realName": self.editNameTF.text!])
+            }
+            if self.updateEmail == true {
+                
+                let alertVC = UIAlertController(title: "Verify Email Address", message: "Select Send to get a verification email sent to \(String(describing: self.editEmailTF.text!)). Your account will be created  and ready for use upon return to the app.", preferredStyle: .alert)
+                let alertActionOkay = UIAlertAction(title: "Send", style: .default) {
+                    (_) in
+                    Auth.auth().currentUser?.sendEmailVerification(completion: nil)
+                    
+                    self.verificationTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.checkIfTheEmailIsVerified) , userInfo: nil, repeats: true)
+                }
+                let alertActionCancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+                alertVC.addAction(alertActionCancel)
+                alertVC.addAction(alertActionOkay)
+                self.present(alertVC, animated: true, completion: nil)
+            } else {
+                print("emailVer == true")
+            }
+            Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).updateChildValues(self.editUpdateData, withCompletionBlock: {(error, ref) in
+                // upload completet
+                var counter2 = 0
+                for post in self.postData{
+                    var tempD = post
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+                    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+                    
+                    let date = dateFormatter.date(from: tempD["datePosted"] as! String)
+                    tempD["datePosted"] = date
+                    self.postData[counter2] = tempD
+                    counter2 = counter2 + 1
+                }
+                var counter3 = 0
+                for post in self.postDataText{
+                    var tempD = post
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+                    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+                    
+                    let date = dateFormatter.date(from: tempD["datePosted"] as! String)
+                    tempD["datePosted"] = date
+                    self.postDataText[counter3] = tempD
+                    counter3 = counter3 + 1
+                }
+                self.loadViewController()
+                return
+            })
+        }
+        navBarView.isHidden = false
+        editProfView.isHidden = true
+        
+    }
+    @IBOutlet weak var gymButtonIcon: UIButton!
+    @IBOutlet weak var cityButtonIcon: UIButton!
+    @IBOutlet weak var cityButton: UIButton!
+    @IBOutlet weak var homeGymButton: UIButton!
+    @IBAction func cityButtonPressed(_ sender: Any) {
+        self.mapType = "city"
+        performSegue(withIdentifier: "ProfileToMap", sender: self)
+    }
+    @IBAction func homeGymButtonPressed(_ sender: Any) {
+        self.mapType = "gym"
+        performSegue(withIdentifier: "ProfileToMap", sender: self)
+    }
+    @IBOutlet weak var editBioFrame2: UIView!
+    @IBOutlet weak var FollowUnfollowButton: UIButton!
+    @IBAction func followUnfollowPressed(_ sender: Any) {
+        if FollowUnfollowButton.titleLabel?.text == "Follow"{
+            Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                    var uploadDict = [String:Any]()
+                    for snap in snapshots{
+                        if snap.key == "following"{
+                            var tempFollowing = snap.value as! [String]
+                            tempFollowing.append(self.curUID!)
+                            uploadDict["following"] = tempFollowing
+                            break
+                        }
+                    }
+                    Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).updateChildValues(uploadDict)
+                }
+                Database.database().reference().child("users").child(self.curUID!).observeSingleEvent(of: .value, with: { (snapshot) in
+                    if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                        var uploadDict2 = [String:Any]()
+                        for snap in snapshots{
+                            if snap.key == "followers"{
+                                var tempFollowing = snap.value as! [String]
+                                tempFollowing.append(Auth.auth().currentUser!.uid)
+                                
+                                uploadDict2["followers"] = tempFollowing
+                                break
+                                
+                            }
+                        }
+                        Database.database().reference().child("users").child(self.curUID!).updateChildValues(uploadDict2)
+                    }
+                    self.FollowUnfollowButton.setTitle("Unfollow", for: .normal)
+                    self.FollowUnfollowButton.backgroundColor = UIColor.white.withAlphaComponent(0.5)
+                    self.FollowUnfollowButton.setTitleColor(self.gmRed, for: .normal)
+                    self.FollowUnfollowButton.layer.borderWidth = 1
+                    self.FollowUnfollowButton.layer.borderColor = self.gmRed.cgColor
+                })
+            })
+            
+        } else {
+            //remove from curUsers following and selected users followers
+            Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                    var uploadDict = [String:Any]()
+                    for snap in snapshots{
+                        if snap.key == "following"{
+                            var tempFollowing = snap.value as! [String]
+                            tempFollowing.remove(at: tempFollowing.index(of: self.curUID!)!)
+                            uploadDict["following"] = tempFollowing
+                            break
+                        }
+                    }
+                    Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).updateChildValues(uploadDict)
+                }
+                Database.database().reference().child("users").child(self.curUID!).observeSingleEvent(of: .value, with: { (snapshot) in
+                    if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
+                        var uploadDict2 = [String:Any]()
+                        for snap in snapshots{
+                            if snap.key == "followers"{
+                                var tempFollowers = snap.value as! [String]
+                                tempFollowers.remove(at: tempFollowers.index(of: Auth.auth().currentUser!.uid)!)
+                                
+                                uploadDict2["followers"] = tempFollowers
+                                break
+                                
+                            }
+                        }
+                        Database.database().reference().child("users").child(self.curUID!).updateChildValues(uploadDict2)
+                    }
+                    self.FollowUnfollowButton.setTitle("Follow", for: .normal)
+                    self.FollowUnfollowButton.backgroundColor = self.gmRed
+                    self.FollowUnfollowButton.setTitleColor(UIColor.white, for: .normal)
+                    
+                })
+            })
+        }
+    }
+    @IBAction func followerButtonPressed(_ sender: Any) {
+        followType = "follower"
+        performSegue(withIdentifier: "profToFollow", sender: self)
+    }
+    //findFriends
+    @IBOutlet weak var findFriendsView: UIView!
+    @IBOutlet weak var findFriendsCollect: UICollectionView!
+    @IBOutlet weak var findFriendsSearchBar: UISearchBar!
+    @IBAction func followingButtonPressed(_ sender: Any) {
+        followType = "following"
+        performSegue(withIdentifier: "profToFollow", sender: self)
+    }
+    @IBOutlet weak var editProfTopLine: UIView!
+    @IBOutlet weak var reauthPassTF: UITextField!
+    @IBOutlet weak var reauthEmailTF: UITextField!
+    @IBOutlet weak var editNameTF: UITextField!
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBAction func reauthButtonPressed(_ sender: Any) {
+        if reauthEmailTF.hasText && reauthPassTF.hasText && editPasswordTF.hasText{
+            self.credential = EmailAuthProvider.credential(withEmail: reauthEmailTF.text!, password: reauthPassTF.text!)
+            updatePassword = true
+            reauthView.isHidden = true
+            
+            Auth.auth().currentUser?.reauthenticate(with: self.credential!, completion: { (error) in
+                if error == nil {
+                    Auth.auth().currentUser!.updatePassword(to: self.editPasswordTF.text!) { (error) in
+                        //completion(error)
+                        
+                    }
+                } else {
+                    //completion(error)
+                    print("reauthPassError: \(error?.localizedDescription)")
+                }
+                //self.reloadCollect = false
+                self.editProfView.isHidden = true
+                self.navBarView.isHidden = false
+                
+            })
+            
+            
+        } else {
+            let alert = UIAlertController(title: "Missing Info", message: "Make sure you did not leave the email or password field blank.", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            return
+        }
+        
+    }
+    @IBAction func updatePasswordButtonPressed(_ sender: Any) {
+        reauthView.isHidden = false
+    }
     func shareCirclePressed(likedByUID: String, indexPath: IndexPath) {
         
     }
     
-   
+    let picker = UIImagePickerController()
     var profToProf = false
     func segueToProf(cellUID: String, name: String) {
         self.profToProf = true
@@ -32,7 +525,6 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         performSegue(withIdentifier: "ProfToDumbView", sender: self)
         
     }
-    
     func loadProfToProf(){
          sepLine4.frame.size = CGSize(width: UIScreen.main.bounds.width, height: 0.5)
         cityLine.frame.size = CGSize(width: UIScreen.main.bounds.width, height: 0.5)
@@ -94,259 +586,17 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         profPic.layer.borderColor = UIColor.white.withAlphaComponent(87).cgColor
         loadViewController()
     }
-
-    @IBOutlet weak var nameLine: UIView!
-    
-    @IBOutlet weak var cityLine: UIView!
-    
-    @IBOutlet weak var topLine: UIView!
-    
     @IBAction func cancelReauthPressed(_ sender: Any) {
         reauthView.isHidden = true
     }
-    
     var updateRealName = false
     var updateEmail = false
     var updatePassword = false
-    @IBOutlet weak var editPasswordTF: UITextField!
-    @IBOutlet weak var editEmailTF: UITextField!
-    @IBOutlet weak var editBioTextView: UITextView!
-    @IBOutlet weak var editProfNameTextField: UITextField!
-    
-    
     var currentPicker = String()
-    @IBAction func editProfSelectPicPressed(_ sender: Any) {
-        currentPicker = "photo"
-        
-        let picker = YPImagePicker()
-        
-        
-        picker.didFinishPicking { [unowned picker] items, _ in
-            if let photo = items.singlePhoto {
-                print(photo.fromCamera) // Image source (camera or library)
-                print(photo.image) // Final image selected by the user
-                print(photo.originalImage) // original image selected by the user, unfiltered
-                print(photo.modifiedImage) // Transformed image, can be nil
-                print(photo.exifMeta)
-                self.editProfImageView.image = photo.image
-                self.updatePic = true
-            }
-            picker.dismiss(animated: true, completion: nil)
-        }
-        present(picker, animated: true, completion: nil)
-        
-    }
-    
     var editUpdateData = [String:Any]()
     var oldUsername = String()
     var updateCity = false
     var updateGym = false
-    @IBAction func editProfSavePressed(_ sender: Any) {
-        
-        self.reloadCollect = false
-        if self.updateUsername == false && self.updateBio == false && self.updatePic == false && updateRealName == false && updateEmail == false && updateCity == false && updateGym == false{
-            //nothing to update
-            let alert = UIAlertController(title: "No Changes Made", message: "There are no changes to update.", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-            
-            return
-        }
-        let imageName = NSUUID().uuidString
-        let storageRef = Storage.storage().reference().child("profile_images").child(Auth.auth().currentUser!.uid).child("\(imageName).jpg")
-        
-        if self.updatePic == true{
-            
-        let profileImage = self.editProfImageView.image
-        
-        let uploadData = UIImageJPEGRepresentation(profileImage!, 0.1)
-        storageRef.putData(uploadData!, metadata: nil, completion: { (metadata, error) in
-            
-            if error != nil {
-                print(error as Any)
-                return
-            }
-            
-            if let profileImageUrl = metadata?.downloadURL()?.absoluteString {
-                
-                self.editUpdateData["profPic"] = profileImageUrl
-                if self.updateBio == true {
-                    if self.editBioTextView.text == "Tap here to edit bio."{
-                        self.editUpdateData["bio"] = " "
-                    } else {
-                        self.editUpdateData["bio"] = self.editBioTextView.text
-                        self.collectView.frame = self.ogCollectViewSize
-                    }
-                }
-                if self.updateGym == true && self.editGymTF.text! != self.curGymText{
-                    self.editUpdateData["homeGym"] = self.editGymObject
-                   
-                }
-                if self.updateCity == true{
-                    self.editUpdateData["city"] = self.editCityTF.text
-                    print("cityCoord: \(self.editCityObject)")
-                    self.editUpdateData["cityCoord"] = self.editCityObject
-                    //cit
-                }
-                if self.updateUsername == true {
-                    self.editUpdateData["username"] = self.editProfNameTextField.text
-                    Database.database().reference().child("usernames").updateChildValues([self.editProfNameTextField.text!: [Auth.auth().currentUser!.uid, self.editNameTF.text!]])
-                    
-                    print("oldUname: \(self.oldUsername)")
-                    Database.database().reference().child("usernames").child(self.oldUsername).removeValue()
-                }
-                
-                if self.updateRealName == true{
-                    print("updateRealName: \(self.editNameTF.text!)")
-                    Database.database().reference().child("users").child((Auth.auth().currentUser?.uid)!).updateChildValues(["realName": self.editNameTF.text!])
-                }
-                if self.updateEmail == true {
-                    
-                    let alertVC = UIAlertController(title: "Verify Email Address", message: "Select Send to get a verification email sent to \(String(describing: self.editEmailTF.text!)). Your account will be created  and ready for use upon return to the app.", preferredStyle: .alert)
-                    let alertActionOkay = UIAlertAction(title: "Send", style: .default) {
-                        (_) in
-                        Auth.auth().currentUser?.sendEmailVerification(completion: nil)
-                        
-                        self.verificationTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.checkIfTheEmailIsVerified) , userInfo: nil, repeats: true)
-                    }
-                    let alertActionCancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)
-                    alertVC.addAction(alertActionCancel)
-                    alertVC.addAction(alertActionOkay)
-                    self.present(alertVC, animated: true, completion: nil)
-                } else {
-                    print("emailVer == true")
-                }
-                Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).updateChildValues(self.editUpdateData, withCompletionBlock: {(error, ref) in
-                    // upload completet
-                    var counter2 = 0
-                    for post in self.postData{
-                        var tempD = post
-                        let dateFormatter = DateFormatter()
-                        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
-                        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-                        
-                        let date = dateFormatter.date(from: tempD["datePosted"] as! String)
-                        tempD["datePosted"] = date
-                        self.postData[counter2] = tempD
-                        counter2 = counter2 + 1
-                    }
-                    var counter3 = 0
-                    for post in self.postDataText{
-                        var tempD = post
-                        let dateFormatter = DateFormatter()
-                        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
-                        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-                        
-                        let date = dateFormatter.date(from: tempD["datePosted"] as! String)
-                        tempD["datePosted"] = date
-                        self.postDataText[counter3] = tempD
-                        counter3 = counter3 + 1
-                    }
-                    self.loadViewController()
-                    
-                    return
-                })
-                for dict in self.profCollectData{
-                    var tempDict = dict as! [String:Any]
-                    Database.database().reference().child("posts").child((tempDict["postID"] as! String)).updateChildValues(["posterPicURL": profileImageUrl])
-                }
-            }
-        })
-        } else {
-            //no new image
-            if self.updateGym == true{
-                self.editUpdateData["homeGym"] = self.editGymObject
-            }
-            if self.updateCity == true{
-                self.editUpdateData["city"] = self.editCityTF.text
-                self.editUpdateData["cityCoord"] = self.editCityObject
-            }
-            
-            if self.updateBio == true {
-                if self.editBioTextView.text == "Tap here to edit bio."{
-                    self.editUpdateData["bio"] = " "
-                } else {
-                    self.editUpdateData["bio"] = self.editBioTextView.text
-                    self.collectView.frame = ogCollectViewSize
-                }
-            }
-            if self.updateUsername == true {
-                self.editUpdateData["username"] = self.editProfNameTextField.text
-                
-                
-                Database.database().reference().child("usernames").updateChildValues([self.editProfNameTextField.text!: [Auth.auth().currentUser!.uid, self.editNameTF.text!]])
-                
-                print("oldUname: \(self.oldUsername)")
-                Database.database().reference().child("usernames").child(self.oldUsername).removeValue()
-            }
-            if self.updatePassword == true {
-                
-                Auth.auth().currentUser?.updatePassword(to: self.editPasswordTF.text!) { (error) in
-                    // ...
-                    if error != nil{
-                        print("passError: \(error?.localizedDescription)")
-                    }
-                }
-            }
-            if self.updateRealName == true{
-                print("updateRealName: \(self.editNameTF.text!)")
-                Database.database().reference().child("users").child((Auth.auth().currentUser?.uid)!).updateChildValues(["realName": self.editNameTF.text!])
-            }
-            if self.updateEmail == true {
-                
-                let alertVC = UIAlertController(title: "Verify Email Address", message: "Select Send to get a verification email sent to \(String(describing: self.editEmailTF.text!)). Your account will be created  and ready for use upon return to the app.", preferredStyle: .alert)
-                let alertActionOkay = UIAlertAction(title: "Send", style: .default) {
-                    (_) in
-                    Auth.auth().currentUser?.sendEmailVerification(completion: nil)
-                    
-                    self.verificationTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.checkIfTheEmailIsVerified) , userInfo: nil, repeats: true)
-                }
-                let alertActionCancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)
-                alertVC.addAction(alertActionCancel)
-                alertVC.addAction(alertActionOkay)
-                self.present(alertVC, animated: true, completion: nil)
-            } else {
-                print("emailVer == true")
-            }
-            
-            
-            
-            //done*/
-            Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).updateChildValues(self.editUpdateData, withCompletionBlock: {(error, ref) in
-                // upload completet
-                var counter2 = 0
-                for post in self.postData{
-                    var tempD = post
-                    let dateFormatter = DateFormatter()
-                    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
-                    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-                    
-                    let date = dateFormatter.date(from: tempD["datePosted"] as! String)
-                    tempD["datePosted"] = date
-                    self.postData[counter2] = tempD
-                    counter2 = counter2 + 1
-                }
-                var counter3 = 0
-                for post in self.postDataText{
-                    var tempD = post
-                    let dateFormatter = DateFormatter()
-                    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
-                    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-                    
-                    let date = dateFormatter.date(from: tempD["datePosted"] as! String)
-                    tempD["datePosted"] = date
-                    self.postDataText[counter3] = tempD
-                    counter3 = counter3 + 1
-                }
-                self.loadViewController()
-                return
-            })
-        }
-        navBarView.isHidden = false
-        editProfView.isHidden = true
-        
-    }
-    
     var verificationTimer : Timer = Timer()    // Timer's  Global declaration
     var uploadData = [String:Any]()
     @objc func checkIfTheEmailIsVerified(){
@@ -380,128 +630,9 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     var inEditBio = false
     var ogEditBioTextViewFrame = CGRect()
-    @IBOutlet weak var editProfBackButton: UIButton!
-    @IBOutlet weak var editProfSaveButton: UIButton!
-    @IBAction func editProfBackPressed(_ sender: Any) {
-        
-            navBarView.isHidden = false
-            editProfView.isHidden = true
-        
-        //, animated: true, completion: nil)
-        
-    }
-    @IBOutlet weak var editProfPicButton: UIButton!
-    @IBOutlet weak var editProfImageView: UIImageView!
-    @IBOutlet weak var editProfView: UIView!
-    @IBOutlet weak var tabBar: UITabBar!
-    @IBOutlet weak var favoritesCollect: UICollectionView!
-    @IBOutlet weak var innerScreenTabBar: UITabBar!
-    
-    @IBOutlet weak var collectViewResize: UIView!
-    
-    @IBOutlet weak var collectView: UIView!
-    
-    @IBOutlet weak var bioTextView: UITextView!
-    //@IBOutlet weak var bioLabel: UILabel!
-    let picker = UIImagePickerController()
-    @IBAction func editProfButtonPressed(_ sender: Any) {
-        
-        
-        if editProfView.isHidden == true{
-            navBarView.isHidden = true
-            oldEmail = editEmailTF.text!
-            editProfView.isHidden = false
-            self.oldUsername = userNameTop.text!
-            picker.delegate = self
-            editBioTextView.delegate = self
-            editProfNameTextField.delegate = self
-        } else {
-            navBarView.isHidden = false
-            editProfView.isHidden = true
-        }
-        
-    }
-    @IBOutlet weak var findFriendsTopLine: UIView!
-    @IBAction func findFriendsPressed(_ sender: Any) {
-        addFriendsTopLabel.isHidden = false
-        findFriendsView.isHidden = false
-        userNameTop.isHidden = true
-        findFriends.isHidden = true
-        backFromFriends.isHidden = false
-        topLine.isHidden = true
-        messageButton.isHidden = true
-        
-        
-    }
-    @IBOutlet weak var addFriendsTopLabel: UILabel!
-    @IBAction func backFromFriendsPressed(_ sender: Any) {
-       addFriendsTopLabel.isHidden = true
-        findFriendsSearchBar.resignFirstResponder()
-        findFriendsView.isHidden = true
-        backFromFriends.isHidden = true
-        userNameTop.isHidden = false
-       
-        findFriends.isHidden = false
-        topLine.isHidden = false
-        messageButton.isHidden = false
-    }
-    @IBOutlet weak var backFromFriends: UIButton!
-    
-    @IBOutlet weak var findFriends: UIButton!
-    @IBOutlet weak var userNameTop: UILabel!
-    
-    @IBOutlet weak var navBarView: UIView!
-    
-    
-    @IBOutlet weak var editProfButton: UIButton!
-    @IBOutlet weak var followingCount: UILabel!
-    @IBOutlet weak var followersCount: UILabel!
-    @IBOutlet weak var profName: UILabel!
-    @IBOutlet weak var profPic: UIImageView!
-    @IBOutlet weak var topLeftNav: UIButton!
-    
+
     override var prefersStatusBarHidden: Bool {
         return true
-    }
-    
-    @IBAction func topLeftNavButton(_ sender: Any) {
-        if topLeftNav.titleLabel?.text == "Back"{
-            
-        } else {
-            do {
-                try Auth.auth().signOut()
-                performSegue(withIdentifier: "LogoutSegue", sender: self)
-            } catch let err {
-                print(err)
-            }
-        }
-    }
-    @IBOutlet var swipeGestureRecognizer: UISwipeGestureRecognizer!
-    
-    @IBAction func swipeHandler(_ gestureRecognizer : UISwipeGestureRecognizer) {
-        if gestureRecognizer.state == .ended {
-            // Perform action.
-            print("swipeRight: \(prevScreen)")
-            if prevScreen == "feed"{
-                performSegue(withIdentifier: "ProfileToFeed", sender: self)
-            }
-            if prevScreen == "forum"{
-                performSegue(withIdentifier: "ProfileToForum", sender: self)
-            }
-            
-            if prevScreen == "post"{
-                performSegue(withIdentifier: "ProfileToPost", sender: self)
-            }
-            if prevScreen == "search"{
-                performSegue(withIdentifier: "ProfileToSearch", sender: self)
-            }
-            if prevScreen == "notifications"{
-                performSegue(withIdentifier: "ProfileToNotifications", sender: self)
-            }
-            if prevScreen == "favorites"{
-                performSegue(withIdentifier: "ProfileToFavorites", sender: self)
-            }
-        }
     }
     
     @objc func dismiss(fromGesture gesture: UISwipeGestureRecognizer) {
@@ -543,23 +674,10 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     var curUID: String?
     let screenHeight = UIScreen.main.bounds.height
     let scrollViewContentHeight = 1200 as CGFloat
-    
-    
     @IBOutlet weak var tableHeight: NSLayoutConstraint!
     var ogCollectViewSize = CGRect()
     var messageRecipID = String()
-    @IBOutlet weak var messageButton: UIButton!
-    @IBAction func messageButtonPressed(_ sender: Any) {
-      // centerObject(obj: profPic)
-        
-        if viewerIsCurAuth != true {
-            messageRecipID = self.curUID!
-            performSegue(withIdentifier: "ProfileToMessages", sender: self)
-        } else {
-       
-            performSegue(withIdentifier: "ProfileToFavorites", sender: self)
-        }
-    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         editProfImageView.frame = CGRect(x: editProfImageView.frame.origin.x, y: editProfImageView.frame.origin.x, width: editProfImageView.frame.width, height: editProfImageView.frame.width)
@@ -570,9 +688,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         editProfPicButton.layer.masksToBounds = true
     }
     var singleTopic = [String:Any]()
-    @IBOutlet weak var innerTabTopLine: UIView!
     var superOGCollectViewFrame = CGRect()
-    @IBOutlet weak var innerTabBottomLine: UIView!
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
@@ -603,18 +719,13 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         findFriendsSearchBar.delegate = self
         findFriendsCollect.delegate = self
         findFriendsCollect.dataSource = self
-        
         scrollView.delegate = self
-        
-        
         FollowUnfollowButton.layer.cornerRadius = 10
         var superOGCollectViewFrame = collectView.frame
-        
         self.favoritesCollect.isScrollEnabled = false
         //no need to write following if checked in storyboard
         self.scrollView.bounces = false
         self.favoritesCollect.bounces = true
-        
         let gesture = UISwipeGestureRecognizer(target: self, action: #selector(dismiss(fromGesture:)))
        self.view.addGestureRecognizer(gesture)
         print("curUID: \(curUID)")
@@ -717,9 +828,6 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         
     }
     
-    @IBOutlet weak var editGymTF: UITextField!
-    
-    @IBOutlet weak var editCityTF: UITextField!
     
     var realName: String?
     var favorites = [String:Any]()
@@ -740,34 +848,22 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         
         tokenDict["deviceToken"] = [mToken: true] as [String:Any]?
         Database.database().reference().child("users").child((Auth.auth().currentUser?.uid)!).updateChildValues(tokenDict)
-        print("vica: \(viewerIsCurAuth)")
-        
-       
+        //print("vica: \(viewerIsCurAuth)")
         profName.text = curName
-        
-        
         editBioTextView.layer.cornerRadius = 6
         editProfBackButton.layer.cornerRadius = 6
         editProfSaveButton.layer.cornerRadius = 6
         editProfView.layer.cornerRadius = 2
-        
         innerScreenTabBar.selectedItem = innerScreenTabBar.items?[0]
-        
         editProfButton.layer.cornerRadius = 4
         editProfButton.layer.masksToBounds = true
         tabBar.delegate = self
         innerScreenTabBar.delegate = self
         self.editEmailTF.text = Auth.auth().currentUser?.email!
         loadThatShit()
- 
-        
     }
     @IBOutlet weak var ffCollect: UICollectionView!
-    
-    
-    
-    
-    
+
     var flwrDataArr = [[String:Any]]()
     var flwingDataArr = [[String:Any]]()
     var followersFollowingArr = [String]()
@@ -780,22 +876,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     var username = String()
     var city: String?
     var homeGym: String?
-    
-    @IBOutlet weak var gymButtonIcon: UIButton!
-    @IBOutlet weak var cityButtonIcon: UIButton!
-    @IBOutlet weak var cityButton: UIButton!
-    @IBOutlet weak var homeGymButton: UIButton!
     var mapType = String()
-    @IBAction func cityButtonPressed(_ sender: Any) {
-        self.mapType = "city"
-        performSegue(withIdentifier: "ProfileToMap", sender: self)
-    }
-    @IBAction func homeGymButtonPressed(_ sender: Any) {
-        self.mapType = "gym"
-        performSegue(withIdentifier: "ProfileToMap", sender: self)
-    }
-    
-    @IBOutlet weak var editBioFrame2: UIView!
     var ogCityFrame: CGRect?
     var ogGymFrame: CGRect?
     var ogCityIconFrame: CGRect?
@@ -1149,105 +1230,10 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         })
     }
     var postDataText = [[String:Any]]()
-    @IBOutlet weak var FollowUnfollowButton: UIButton!
     
-    @IBAction func followUnfollowPressed(_ sender: Any) {
-        if FollowUnfollowButton.titleLabel?.text == "Follow"{
-            Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
-                
-                if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                    var uploadDict = [String:Any]()
-                    for snap in snapshots{
-                        if snap.key == "following"{
-                            var tempFollowing = snap.value as! [String]
-                            tempFollowing.append(self.curUID!)
-                            uploadDict["following"] = tempFollowing
-                            break
-                        }
-                    }
-                    Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).updateChildValues(uploadDict)
-                }
-                Database.database().reference().child("users").child(self.curUID!).observeSingleEvent(of: .value, with: { (snapshot) in
-                    if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                        var uploadDict2 = [String:Any]()
-                        for snap in snapshots{
-                            if snap.key == "followers"{
-                                var tempFollowing = snap.value as! [String]
-                                tempFollowing.append(Auth.auth().currentUser!.uid)
-                                
-                                uploadDict2["followers"] = tempFollowing
-                                break
-                                
-                            }
-                        }
-                        Database.database().reference().child("users").child(self.curUID!).updateChildValues(uploadDict2)
-                    }
-                    self.FollowUnfollowButton.setTitle("Unfollow", for: .normal)
-                    self.FollowUnfollowButton.backgroundColor = UIColor.white.withAlphaComponent(0.5)
-                    self.FollowUnfollowButton.setTitleColor(self.gmRed, for: .normal)
-                    self.FollowUnfollowButton.layer.borderWidth = 1
-                    self.FollowUnfollowButton.layer.borderColor = self.gmRed.cgColor
-                })
-            })
-            
-        } else {
-            //remove from curUsers following and selected users followers
-            Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
-                
-                if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                    var uploadDict = [String:Any]()
-                    for snap in snapshots{
-                        if snap.key == "following"{
-                            var tempFollowing = snap.value as! [String]
-                            tempFollowing.remove(at: tempFollowing.index(of: self.curUID!)!)
-                            uploadDict["following"] = tempFollowing
-                            break
-                        }
-                    }
-                    Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).updateChildValues(uploadDict)
-                }
-                Database.database().reference().child("users").child(self.curUID!).observeSingleEvent(of: .value, with: { (snapshot) in
-                    if let snapshots = snapshot.children.allObjects as? [DataSnapshot]{
-                        var uploadDict2 = [String:Any]()
-                        for snap in snapshots{
-                            if snap.key == "followers"{
-                                var tempFollowers = snap.value as! [String]
-                                tempFollowers.remove(at: tempFollowers.index(of: Auth.auth().currentUser!.uid)!)
-                                
-                                uploadDict2["followers"] = tempFollowers
-                                break
-                                
-                            }
-                        }
-                        Database.database().reference().child("users").child(self.curUID!).updateChildValues(uploadDict2)
-                    }
-                    self.FollowUnfollowButton.setTitle("Follow", for: .normal)
-                    self.FollowUnfollowButton.backgroundColor = self.gmRed
-                    self.FollowUnfollowButton.setTitleColor(UIColor.white, for: .normal)
-                    
-                })
-            })
-        }
-    }
-    
-    @IBAction func followerButtonPressed(_ sender: Any) {
-        followType = "follower"
-         performSegue(withIdentifier: "profToFollow", sender: self)
-    }
-    
-    //findFriends
-    @IBOutlet weak var findFriendsView: UIView!
-    @IBOutlet weak var findFriendsCollect: UICollectionView!
-    @IBOutlet weak var findFriendsSearchBar: UISearchBar!
-    
-    
-    @IBAction func followingButtonPressed(_ sender: Any) {
-        followType = "following"
-        performSegue(withIdentifier: "profToFollow", sender: self)
-    }
     var findFriendsData = [[String:Any]]()
     
-    @IBOutlet weak var editProfTopLine: UIView!
+    
     var innerStat = String()
     var postData = [[String:Any]]()
     var profCollectData = [Any]()
@@ -2050,49 +2036,14 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
             
         }
     }
-    @IBOutlet weak var reauthView: UIView!
     
-    @IBOutlet weak var reauthPassTF: UITextField!
-    @IBOutlet weak var reauthEmailTF: UITextField!
-    @IBOutlet weak var editNameTF: UITextField!
-    @IBOutlet weak var scrollView: UIScrollView!
+    
+    
     var credential: AuthCredential?
     
-    @IBAction func reauthButtonPressed(_ sender: Any) {
-        if reauthEmailTF.hasText && reauthPassTF.hasText && editPasswordTF.hasText{
-            self.credential = EmailAuthProvider.credential(withEmail: reauthEmailTF.text!, password: reauthPassTF.text!)
-            updatePassword = true
-            reauthView.isHidden = true
-            
-                Auth.auth().currentUser?.reauthenticate(with: self.credential!, completion: { (error) in
-                    if error == nil {
-                        Auth.auth().currentUser!.updatePassword(to: self.editPasswordTF.text!) { (error) in
-                            //completion(error)
-                            
-                        }
-                    } else {
-                        //completion(error)
-                        print("reauthPassError: \(error?.localizedDescription)")
-                    }
-                    //self.reloadCollect = false
-                    self.editProfView.isHidden = true
-                    self.navBarView.isHidden = false
-                    
-                })
-                
-            
-        } else {
-            let alert = UIAlertController(title: "Missing Info", message: "Make sure you did not leave the email or password field blank.", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-            return
-        }
-        
-    }
     
-    @IBAction func updatePasswordButtonPressed(_ sender: Any) {
-        reauthView.isHidden = false
-    }
+    
+    
     var curTF = String()
     var didCancelAutopicker = false
     public func textFieldDidBeginEditing(_ textField: UITextField){
@@ -2193,23 +2144,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         }
     }
     
-    @IBOutlet weak var sepLine7: UIView!
-    @IBOutlet weak var sepLine6: UIView!
-    @IBOutlet weak var sepLine5: UIView!
-    @IBOutlet weak var sepLine4: UIView!
-    @IBOutlet weak var sepLine3: UIView!
-    @IBOutlet weak var sepLine2: UIView!
-    @IBOutlet weak var sepLine1: UIView!
-    @IBOutlet weak var updatePasswordButton: UIButton!
-    @IBOutlet weak var usernameLab: UILabel!
-    @IBOutlet weak var nameLab: UILabel!
-    @IBOutlet weak var bioLab: UILabel!
-    @IBOutlet weak var emailLab: UILabel!
-    @IBOutlet weak var cityLab: UILabel!
-    @IBOutlet weak var passwordLab: UILabel!
-    @IBOutlet weak var selectPicButton: UIButton!
-    @IBOutlet weak var gymLab: UILabel!
-    @IBOutlet weak var editProfTopLabel: UILabel!
+    
     
     public func textViewDidBeginEditing(_ textView: UITextView){
         print("beginEdit")

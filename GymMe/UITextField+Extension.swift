@@ -34,25 +34,8 @@ extension String {
         }
     }
 }
-//fileprivate var ascociatedObjectPointer : UInt8 = 99
-//fileprivate var ascociatedObjectPointer2 : UInt8 = 99
 extension UITextView {
-    /*var myDelegate : PerformHashtagDatabaseAction? {
-        get {
-            return objc_getAssociatedObject(self, &ascociatedObjectPointer) as? PerformHashtagDatabaseAction
-        }
-        set {
-            objc_setAssociatedObject(self, &ascociatedObjectPointer, myDelegate, .OBJC_ASSOCIATION_RETAIN)
-        }
-    }
-    var myPostID : String? {
-        get {
-            return objc_getAssociatedObject(self, &ascociatedObjectPointer) as? String
-        }
-        set {
-            objc_setAssociatedObject(self, &ascociatedObjectPointer, myPostID, .OBJC_ASSOCIATION_RETAIN)
-        }
-    }*/
+    
     public func resolveHashTags(possibleUserDisplayNames:[String]? = nil) {
         
         let schemeMap = [

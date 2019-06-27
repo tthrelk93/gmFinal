@@ -12,6 +12,15 @@ import FirebaseAuth
 import FirebaseStorage
 
 class FavoritesViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITabBarDelegate, UITextViewDelegate, PerformActionsInFeedDelegate {
+    
+    @IBOutlet weak var topLine: UIView!
+    @IBOutlet weak var bottomLine: UIView!
+    @IBAction func backButtonPressed(_ sender: Any) {
+        performSegue(withIdentifier: "FavoritesToProfile", sender: self)
+    }
+    @IBOutlet weak var favoritesCollect: UICollectionView!
+    @IBOutlet weak var tabBar: UITabBar!
+    
     func performSegueToPosterProfile(uid: String, name: String) {
         self.curName = name
         self.selectedCellUID = uid
@@ -25,9 +34,7 @@ class FavoritesViewController: UIViewController, UICollectionViewDelegate, UICol
     var curName = String()
     var selectedCellUID: String?
     
-    @IBOutlet weak var topLine: UIView!
     
-    @IBOutlet weak var bottomLine: UIView!
     func showLikedByViewTextCell(sentBy: String, cell: NewsFeedCellCollectionViewCell) {
         
     }
@@ -388,12 +395,7 @@ class FavoritesViewController: UIViewController, UICollectionViewDelegate, UICol
         // Do any additional setup after loading the view.
     }
     
-    @IBAction func backButtonPressed(_ sender: Any) {
-        performSegue(withIdentifier: "FavoritesToProfile", sender: self)
-    }
     
-    @IBOutlet weak var favoritesCollect: UICollectionView!
-    @IBOutlet weak var tabBar: UITabBar!
     
     // MARK: - Navigation
 

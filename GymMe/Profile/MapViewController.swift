@@ -14,6 +14,43 @@ import FirebaseStorage
 import Nominatim
 
 class MapViewController: UIViewController, MKMapViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource, ToProfileDelegate {
+    @IBOutlet weak var backButton: UIButton!
+    @IBOutlet weak var mapView: MKMapView!
+    var backPressed = false
+    @IBAction func backButtonPressed(_ sender: Any) {
+        if mapType == "feed"{
+            performSegue(withIdentifier: "MapToFeed", sender: self)
+        } else {
+            backPressed = true
+            self.cellUID = Auth.auth().currentUser!.uid
+            self.cellName = ""
+            
+            performSegue(withIdentifier: "MapToProfile", sender: self)
+        }
+    }
+    @IBOutlet weak var mapCollect: UICollectionView!
+    @IBOutlet weak var ogFrame: UIView!
+    @IBOutlet weak var showHideCollectButton: UIButton!
+    @IBAction func showHideCollectButtonPressed(_ sender: Any) {
+        if extended == false{
+            UIView.animate(withDuration: 0.5, animations: {
+                self.showHideCollectButton.frame = self.ogButtonFrame
+                self.mapCollect.isHidden = false
+                self.mapCollect.frame = self.ogCollectFrame
+                self.extended = true
+                
+            })
+        } else {
+            UIView.animate(withDuration: 0.5, animations: {
+                self.showHideCollectButton.frame = self.ogFrame.frame
+                
+                self.mapCollect.frame = self.ogFrame.frame
+                
+                self.mapCollect.isHidden = true
+                self.extended = false
+            })
+        }
+    }
     func shareCirclePressed(likedByUID: String, indexPath: IndexPath) {
         
     }
@@ -100,49 +137,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, UICollectionViewDe
         }
         return cell
     }
-    
-    @IBOutlet weak var backButton: UIButton!
-    
-    @IBOutlet weak var mapView: MKMapView!
-    
-    var backPressed = false
-    @IBAction func backButtonPressed(_ sender: Any) {
-        if mapType == "feed"{
-            performSegue(withIdentifier: "MapToFeed", sender: self)
-        } else {
-        backPressed = true
-        self.cellUID = Auth.auth().currentUser!.uid
-        self.cellName = ""
-        
-        performSegue(withIdentifier: "MapToProfile", sender: self)
-        }
-    }
-    @IBOutlet weak var mapCollect: UICollectionView!
-    
-    @IBOutlet weak var ogFrame: UIView!
-    @IBOutlet weak var showHideCollectButton: UIButton!
+
     var ogButtonFrame = CGRect()
     var ogCollectFrame = CGRect()
-    @IBAction func showHideCollectButtonPressed(_ sender: Any) {
-        if extended == false{
-            UIView.animate(withDuration: 0.5, animations: {
-                self.showHideCollectButton.frame = self.ogButtonFrame
-                self.mapCollect.isHidden = false
-                self.mapCollect.frame = self.ogCollectFrame
-                self.extended = true
-                
-            })
-        } else {
-            UIView.animate(withDuration: 0.5, animations: {
-                self.showHideCollectButton.frame = self.ogFrame.frame
-                
-                self.mapCollect.frame = self.ogFrame.frame
-                
-                self.mapCollect.isHidden = true
-                self.extended = false
-            })
-        }
-    }
     var coordFromFeed: [String:Any]?
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -168,18 +165,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, UICollectionViewDe
             let viewRegion = MKCoordinateRegionMakeWithDistance(coord, 800, 800)
             self.mapView.addAnnotation(annotation)
             self.mapView.setRegion(viewRegion, animated: false)
-            
-           
-            
-           /* self.getLocation(forPlaceCalled: self.myCity) { (location) in
-                
-                annotation.coordinate = location!.coordinate
-                let viewRegion = MKCoordinateRegionMakeWithDistance(location!.coordinate, 800, 800)
-                self.mapView.addAnnotation(annotation)
-                self.mapView.setRegion(viewRegion, animated: false)
-                print("tempLoc: \(location)")
-            }*/
-            
             
             
         } else if mapType == "gym"{

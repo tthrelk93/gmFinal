@@ -18,12 +18,102 @@ class ForumPickerCell: UICollectionViewCell{
 }
 
 class ForumViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, ForumDelegate {
+    @IBOutlet weak var favoritesButton: UIButton!
+    @IBOutlet weak var favPos2: UIView!
+    @IBOutlet weak var favPos1: UIView!
+    @IBOutlet weak var popPos3: UIView!
+    @IBOutlet weak var popPos2: UIView!
+    @IBOutlet weak var popPos1: UIView!
+    @IBOutlet weak var topLine: UIView!
+    @IBOutlet weak var topLabel: UILabel!
+    @IBOutlet weak var topicCollect: UICollectionView!
+    @IBOutlet weak var mostRecentButton: UIButton!
+    @IBAction func backButtonPressed(_ sender: Any) {
+        performSegue(withIdentifier: "ForumToFeed", sender: self)
+    }
+    @IBAction func popularButtonPressed(_ sender: Any) {
+        if popularButton.backgroundColor == UIColor.red{
+            
+        } else {
+            mostRecentButton.layer.borderColor = UIColor.lightGray.cgColor
+            popularButton.layer.borderColor = UIColor.red.cgColor
+            favoritesButton.layer.borderColor = UIColor.lightGray.cgColor
+            mostRecentButton.backgroundColor = UIColor.white
+            mostRecentButton.setTitleColor(UIColor.lightGray, for: .normal)
+            popularButton.backgroundColor = UIColor.red
+            popularButton.setTitleColor(UIColor.white, for: .normal)
+            favoritesButton.backgroundColor = UIColor.white
+            favoritesButton.setTitleColor(UIColor.lightGray, for: .normal)
+            DispatchQueue.main.async{
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.popularButton.frame = self.popPos2.frame
+                    
+                    self.favoritesButton.frame = self.favPos1.frame
+                    self.mostRecentButton.frame = CGRect(x: 6, y: self.popularButton.frame.origin.y, width: 103, height: self.mostRecentButton.frame.height)
+                })
+                self.topicData = self.topicData.sorted(by: { ($0["likes"] as! [[String:Any]]).count > ($1["likes"] as! [[String:Any]]).count })
+                
+                self.topicCollect.reloadData()
+            }
+        }
+    }
+    @IBOutlet weak var popularButton: UIButton!
+    @IBAction func favoritesButtonPressed(_ sender: Any) {
+        if favoritesButton.backgroundColor == UIColor.red{
+            
+        } else {
+            mostRecentButton.layer.borderColor = UIColor.lightGray.cgColor
+            favoritesButton.layer.borderColor = UIColor.red.cgColor
+            popularButton.layer.borderColor = UIColor.lightGray.cgColor
+            mostRecentButton.backgroundColor = UIColor.white
+            mostRecentButton.setTitleColor(UIColor.lightGray, for: .normal)
+            favoritesButton.backgroundColor = UIColor.red
+            favoritesButton.setTitleColor(UIColor.white, for: .normal)
+            popularButton.backgroundColor = UIColor.white
+            popularButton.setTitleColor(UIColor.lightGray, for: .normal)
+            DispatchQueue.main.async{
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.favoritesButton.frame = self.favPos2.frame
+                    self.popularButton.frame = self.popPos3.frame
+                    self.mostRecentButton.frame = CGRect(x: 6, y: self.popularButton.frame.origin.y, width: 103, height: self.mostRecentButton.frame.size.height)
+                })
+                
+                self.topicData = self.favoritedTopicsData
+                
+                self.topicCollect.reloadData()
+            }
+        }
+    }
     
-    
-    
+    @IBAction func mostRecentButtonPressed(_ sender: Any) {
+        if mostRecentButton.backgroundColor == UIColor.red{
+            
+        } else {
+            popularButton.layer.borderColor = UIColor.lightGray.cgColor
+            mostRecentButton.layer.borderColor = UIColor.red.cgColor
+            favoritesButton.layer.borderColor = UIColor.lightGray.cgColor
+            //cell4.layer.borderColor = UIColor.lightGray.cgColor
+            popularButton.backgroundColor = UIColor.white
+            popularButton.setTitleColor(UIColor.lightGray, for: .normal)
+            mostRecentButton.backgroundColor = UIColor.red
+            mostRecentButton.setTitleColor(UIColor.white, for: .normal)
+            favoritesButton.backgroundColor = UIColor.white
+            favoritesButton.setTitleColor(UIColor.lightGray, for: .normal)
+            DispatchQueue.main.async{
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.popularButton.frame = self.popPos1.frame
+                    self.favoritesButton.frame = self.favPos1.frame
+                    self.mostRecentButton.frame = self.mrBigFrame
+                })
+                self.topicData = self.ogTopicData
+                self.topicCollect.reloadData()
+            }
+        }
+    }
     var curName = String()
     var selectedCellUID = String()
     var selectedCurAuthProfile = true
+    
     func performSegueToPosterProfile(uid: String, name: String){
         self.curName = name
         self.selectedCellUID = uid
@@ -38,116 +128,14 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
         if likeType == "actualLike"{
             self.topicData[indexPathRow]["actualLikes"] = newData
         } else {
-        //print("newData:\(newData), \(indexPathRow)")
-       // print("beforeTopicD:\(self.topicData[indexPathRow])")
         self.topicData[indexPathRow]["likes"] = newData
-        //print("afterTopicD:\(self.topicData[indexPathRow])")
-        }
-        /*DispatchQueue.main.async{
-            self.topicCollect.reloadData()
-        }*/
-        // self.refresh()
-    }
-    @IBAction func mostRecentButtonPressed(_ sender: Any) {
-        if mostRecentButton.backgroundColor == UIColor.red{
-            
-        } else {
-        popularButton.layer.borderColor = UIColor.lightGray.cgColor
-        mostRecentButton.layer.borderColor = UIColor.red.cgColor
-        favoritesButton.layer.borderColor = UIColor.lightGray.cgColor
-        //cell4.layer.borderColor = UIColor.lightGray.cgColor
-        popularButton.backgroundColor = UIColor.white
-        popularButton.setTitleColor(UIColor.lightGray, for: .normal)
-        mostRecentButton.backgroundColor = UIColor.red
-        mostRecentButton.setTitleColor(UIColor.white, for: .normal)
-        favoritesButton.backgroundColor = UIColor.white
-        favoritesButton.setTitleColor(UIColor.lightGray, for: .normal)
-            DispatchQueue.main.async{
-        UIView.animate(withDuration: 0.2, animations: {
-            self.popularButton.frame = self.popPos1.frame
-        self.favoritesButton.frame = self.favPos1.frame
-        self.mostRecentButton.frame = self.mrBigFrame
-        })
         
-        self.topicData = self.ogTopicData
-        
-            self.topicCollect.reloadData()
         }
-        }
-       
     }
-    @IBOutlet weak var mostRecentButton: UIButton!
-    @IBAction func popularButtonPressed(_ sender: Any) {
-        if popularButton.backgroundColor == UIColor.red{
-            
-        } else {
-        mostRecentButton.layer.borderColor = UIColor.lightGray.cgColor
-        popularButton.layer.borderColor = UIColor.red.cgColor
-        favoritesButton.layer.borderColor = UIColor.lightGray.cgColor
-        //cell4.layer.borderColor = UIColor.lightGray.cgColor
-        mostRecentButton.backgroundColor = UIColor.white
     
-        mostRecentButton.setTitleColor(UIColor.lightGray, for: .normal)
-        
-        popularButton.backgroundColor = UIColor.red
-        popularButton.setTitleColor(UIColor.white, for: .normal)
-        
-        favoritesButton.backgroundColor = UIColor.white
-        favoritesButton.setTitleColor(UIColor.lightGray, for: .normal)
-            DispatchQueue.main.async{
-        UIView.animate(withDuration: 0.2, animations: {
-        self.popularButton.frame = self.popPos2.frame
-        
-        self.favoritesButton.frame = self.favPos1.frame
-        self.mostRecentButton.frame = CGRect(x: 6, y: self.popularButton.frame.origin.y, width: 103, height: self.mostRecentButton.frame.height)
-        })
-                self.topicData = self.topicData.sorted(by: { ($0["likes"] as! [[String:Any]]).count > ($1["likes"] as! [[String:Any]]).count })
-        
-            self.topicCollect.reloadData()
-        }
-        }
-        
-    }
-    @IBOutlet weak var popularButton: UIButton!
-    @IBAction func favoritesButtonPressed(_ sender: Any) {
-        if favoritesButton.backgroundColor == UIColor.red{
-            
-        } else {
-        mostRecentButton.layer.borderColor = UIColor.lightGray.cgColor
-        favoritesButton.layer.borderColor = UIColor.red.cgColor
-        popularButton.layer.borderColor = UIColor.lightGray.cgColor
-        //cell4.layer.borderColor = UIColor.lightGray.cgColor
-        mostRecentButton.backgroundColor = UIColor.white
+   
     
-        mostRecentButton.setTitleColor(UIColor.lightGray, for: .normal)
-        
-        favoritesButton.backgroundColor = UIColor.red
-        favoritesButton.setTitleColor(UIColor.white, for: .normal)
-        
-        popularButton.backgroundColor = UIColor.white
-        popularButton.setTitleColor(UIColor.lightGray, for: .normal)
-            DispatchQueue.main.async{
-        UIView.animate(withDuration: 0.2, animations: {
-        self.favoritesButton.frame = self.favPos2.frame
-        self.popularButton.frame = self.popPos3.frame
-        self.mostRecentButton.frame = CGRect(x: 6, y: self.popularButton.frame.origin.y, width: 103, height: self.mostRecentButton.frame.size.height)
-        })
-        
-        self.topicData = self.favoritedTopicsData
-        
-            self.topicCollect.reloadData()
-        }
-        }
-    }
-    @IBOutlet weak var favoritesButton: UIButton!
-    
-    @IBOutlet weak var favPos2: UIView!
-    @IBOutlet weak var favPos1: UIView!
-    @IBOutlet weak var popPos3: UIView!
-    @IBOutlet weak var popPos2: UIView!
-    @IBOutlet weak var popPos1: UIView!
-    @IBOutlet weak var topLine: UIView!
-    @IBOutlet weak var topLabel: UILabel!
+    //@IBOutlet weak var pickerCollect: UICollectionView!
     var topicData = [[String:Any]]()
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
@@ -283,8 +271,8 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
     }
     var selectedTopicData = [String:Any]()
 
-    @IBOutlet weak var topicCollect: UICollectionView!
-    //@IBOutlet weak var pickerCollect: UICollectionView!
+    
+    
     var favoritedTopics: [String]?
     var favoritedTopicsData = [[String:Any]]()
     var ogTopicData = [[String:Any]]()
@@ -396,30 +384,11 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
         // Do any additional setup after loading the view.
     }
     
-    /*func getCell(_ indexPath: IndexPath) -> ForumPickerCell? {
-        pickerCollect.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition(), animated: false)
-        var cell = pickerCollect.cellForItem(at: indexPath) as? ForumPickerCell
-        if cell == nil {
-            pickerCollect.layoutIfNeeded()
-            cell = pickerCollect.cellForItem(at: indexPath) as? ForumPickerCell
-        }
-        if cell == nil {
-            pickerCollect.reloadData()
-            pickerCollect.layoutIfNeeded()
-            cell = pickerCollect.cellForItem(at: indexPath) as? ForumPickerCell
-        }
-        return cell
-    }*/
     
-    @IBAction func backButtonPressed(_ sender: Any) {
-        performSegue(withIdentifier: "ForumToFeed", sender: self)
-    }
     
     @IBAction func newTopicPressed(_ sender: Any) {
         performSegue(withIdentifier: "ForumToNewTopic", sender: self)
     }
-    
-
     
     // MARK: - Navigation
 

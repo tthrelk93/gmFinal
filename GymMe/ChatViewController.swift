@@ -16,36 +16,34 @@ import JSQMessagesViewController
 
 final class ChatViewController: JSQMessagesViewController, UINavigationControllerDelegate,UINavigationBarDelegate {
     // MARK: Properties
-    //var getSessionID: GetSessionIDDelegate?
+    var jobType = String()
+    lazy var outgoingBubbleImageView: JSQMessagesBubbleImage = self.setupOutgoingBubble()
+    lazy var incomingBubbleImageView: JSQMessagesBubbleImage = self.setupIncomingBubble()
+    var thisUser = DatabaseReference()
+    var thisUserIsTypingRef = DatabaseReference()
+    var thisUsersTypingQuery = DatabaseReference()
+    var myName = String()
+    var myUName = String()
+    var myPicString = String()
+    var following = [String]()
+    var backFromMessage = false
     var senderName = String()
     private let imageURLNotSetKey = "NOTSET"
     var thisSessionID: String!
     var sessionRef: DatabaseReference?
     var senderView = String()
     var jobID = String()
-   // var job = JobPost()
-    
     var curUserRef = DatabaseReference()
-    //  @IBOutlet weak var navBar: UINavigationBar!
     var messageRef = DatabaseReference()
-    
     let imageName = NSUUID().uuidString
-    
     fileprivate lazy var storageRef = Storage.storage().reference().child("message_images").child(Auth.auth().currentUser!.uid).child("\(imageName).jpg")
-    
     var userIsTypingRef = DatabaseReference()
     var usersTypingQuery = DatabaseQuery()
-    
     private var newMessageRefHandle: DatabaseHandle?
     private var updatedMessageRefHandle: DatabaseHandle?
-    
-    //@IBAction func backButtonPressed(_ sender: Any) {
-    //  }
     private var messages: [JSQMessage] = []
     private var photoMessageMap = [String: JSQPhotoMediaItem]()
-    
     private var localTyping = false
-    
     var isTyping: Bool {
         get {
             return localTyping
@@ -55,54 +53,25 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
             userIsTypingRef.setValue(newValue)
         }
     }
-    //var bandID = String()
     var selectedPostID = String()
     override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
         if segue.identifier == "MessagesToSinglePost"{
             if let vc = segue.destination as? SinglePostViewController{
-                
-                    
                 vc.thisPostData = self.thisPostData
                 vc.myUName = self.myUName
                 vc.following = self.following
                 vc.myPicString = self.myPicString
-                    vc.prevScreen = "messages"
-                    vc.senderScreen = "messages"
-            
+                vc.prevScreen = "messages"
+                vc.senderScreen = "messages"
             }
         }
-        
     }
-    
-    // @IBOutlet weak var backButton: UIButton!
-    
-    
-    
+
     func goBack(){
-        /*if self.senderView == "poster"{
-         performSegue(withIdentifier: "ChatBackToBand", sender: self)
-         } else {
-         performSegue(withIdentifier: "ChatBackToONB", sender: self)
-         }*/
         
     }
-    
-    
-    
-    var jobType = String()
-    // @IBOutlet weak var navItem: UINavigationItem!
-    lazy var outgoingBubbleImageView: JSQMessagesBubbleImage = self.setupOutgoingBubble()
-    lazy var incomingBubbleImageView: JSQMessagesBubbleImage = self.setupIncomingBubble()
-    
+
     // MARK: View Lifecycle
-    var thisUser = DatabaseReference()
-    var thisUserIsTypingRef = DatabaseReference()
-    var thisUsersTypingQuery = DatabaseReference()
-    var myName = String()
-    var myUName = String()
-    var myPicString = String()
-    var following = [String]()
-    var backFromMessage = false
     override func viewDidLoad() {
         super.viewDidLoad()
        

@@ -20,11 +20,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GymMe/Profile/FavoritesViewController.swift"
-            timestampString = "578340219.994969"
+            timestampString = "583355789.188923"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "185"
-            endingLineNumber = "185"
+            startingLineNumber = "192"
+            endingLineNumber = "192"
             landmarkName = "collectionView(_:cellForItemAt:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -36,12 +36,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GymMe/SinglePostViewController.swift"
-            timestampString = "583105712.810678"
+            timestampString = "583355789.1909831"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "797"
-            endingLineNumber = "797"
-            landmarkName = "viewDidLoad()"
+            startingLineNumber = "1339"
+            endingLineNumber = "1339"
+            landmarkName = "postCommentButtonPressed(_:)"
             landmarkType = "7">
             <Locations>
                <Location
@@ -84,12 +84,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GymMe/SinglePostViewController.swift"
-            timestampString = "583105712.811799"
+            timestampString = "583355789.1914999"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "659"
-            endingLineNumber = "659"
-            landmarkName = "viewDidLoad()"
+            startingLineNumber = "1201"
+            endingLineNumber = "1201"
+            landmarkName = "tpPostCommentButtonPressed(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -100,12 +100,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GymMe/SinglePostViewController.swift"
-            timestampString = "583105712.8122931"
+            timestampString = "583355789.191769"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "662"
-            endingLineNumber = "662"
-            landmarkName = "viewDidLoad()"
+            startingLineNumber = "1204"
+            endingLineNumber = "1204"
+            landmarkName = "tpPostCommentButtonPressed(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -116,12 +116,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GymMe/SinglePostViewController.swift"
-            timestampString = "583105712.812699"
+            timestampString = "583355789.192044"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "701"
-            endingLineNumber = "701"
-            landmarkName = "viewDidLoad()"
+            startingLineNumber = "1243"
+            endingLineNumber = "1243"
+            landmarkName = "postCommentButtonPressed(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -132,12 +132,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GymMe/SinglePostViewController.swift"
-            timestampString = "583105712.81309"
+            timestampString = "583355789.192317"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "704"
-            endingLineNumber = "704"
-            landmarkName = "viewDidLoad()"
+            startingLineNumber = "1246"
+            endingLineNumber = "1246"
+            landmarkName = "postCommentButtonPressed(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -148,12 +148,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GymMe/SinglePostViewController.swift"
-            timestampString = "583105712.813449"
+            timestampString = "583355789.192654"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "683"
-            endingLineNumber = "683"
-            landmarkName = "viewDidLoad()"
+            startingLineNumber = "1225"
+            endingLineNumber = "1225"
+            landmarkName = "postCommentButtonPressed(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -164,12 +164,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GymMe/SinglePostViewController.swift"
-            timestampString = "583105712.813802"
+            timestampString = "583355789.19293"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "668"
-            endingLineNumber = "668"
-            landmarkName = "viewDidLoad()"
+            startingLineNumber = "1210"
+            endingLineNumber = "1210"
+            landmarkName = "tpPostCommentButtonPressed(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -180,12 +180,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GymMe/SinglePostViewController.swift"
-            timestampString = "583105712.8141381"
+            timestampString = "583355789.193236"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "715"
-            endingLineNumber = "715"
-            landmarkName = "viewDidLoad()"
+            startingLineNumber = "1257"
+            endingLineNumber = "1257"
+            landmarkName = "postCommentButtonPressed(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -196,11 +196,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GymMe/NewsFeed/HomeFeedViewController.swift"
-            timestampString = "583213087.4527121"
+            timestampString = "583355789.193633"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "589"
-            endingLineNumber = "589"
+            startingLineNumber = "1083"
+            endingLineNumber = "1083"
             landmarkName = "backFromLikedByViewButtonPressed(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -212,11 +212,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GymMe/NewsFeed/HomeFeedViewController.swift"
-            timestampString = "583213087.45353"
+            timestampString = "583355789.193996"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "593"
-            endingLineNumber = "593"
+            startingLineNumber = "1085"
+            endingLineNumber = "1085"
             landmarkName = "backFromLikedByViewButtonPressed(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -228,11 +228,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GymMe/NewsFeed/HomeFeedViewController.swift"
-            timestampString = "583213087.453907"
+            timestampString = "583355789.194205"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "594"
-            endingLineNumber = "594"
+            startingLineNumber = "1086"
+            endingLineNumber = "1086"
             landmarkName = "backFromLikedByViewButtonPressed(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -244,11 +244,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GymMe/NewsFeed/HomeFeedViewController.swift"
-            timestampString = "583213087.454221"
+            timestampString = "583355789.194452"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "576"
-            endingLineNumber = "576"
+            startingLineNumber = "1071"
+            endingLineNumber = "1071"
             landmarkName = "backFromLikedByViewButtonPressed(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -260,11 +260,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GymMe/NewsFeed/HomeFeedViewController.swift"
-            timestampString = "583213087.454528"
+            timestampString = "583355789.19469"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1385"
-            endingLineNumber = "1385"
+            startingLineNumber = "1856"
+            endingLineNumber = "1856"
             landmarkName = "collectionView(_:cellForItemAt:)"
             landmarkType = "7">
          </BreakpointContent>

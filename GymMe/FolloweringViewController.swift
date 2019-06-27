@@ -12,35 +12,26 @@ import FirebaseDatabase
 import FirebaseAuth
 
 class FolloweringViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, ToProfileDelegate{
-    func shareCirclePressed(likedByUID: String, indexPath: IndexPath) {
-        
+    @IBOutlet weak var topLine: UIView!
+    @IBOutlet weak var ffCollect: UICollectionView!
+    @IBOutlet weak var followerOrFollowingView: UIView!
+    @IBAction func backFromFF(_ sender: Any) {
+        backPressed = true
+        self.cellUID = Auth.auth().currentUser!.uid
+        self.cellName = ""
+        performSegue(withIdentifier: "followToProf", sender: self)
     }
-    
-    
+    @IBOutlet weak var topLabel: UILabel!
+    func shareCirclePressed(likedByUID: String, indexPath: IndexPath) {}
     func segueToProf(cellUID: String, name: String) {
         print("hereghghgh")
         self.cellUID = cellUID
         self.cellName = name
         performSegue(withIdentifier: "followToProf", sender: self)
     }
-    
-
     var cellName = String()
-    
-    @IBOutlet weak var topLine: UIView!
-    
-    @IBOutlet weak var ffCollect: UICollectionView!
-    
-    @IBOutlet weak var followerOrFollowingView: UIView!
     var prevID = String()
     var backPressed = false
-    @IBAction func backFromFF(_ sender: Any) {
-        backPressed = true
-        self.cellUID = Auth.auth().currentUser!.uid
-        self.cellName = ""
-         performSegue(withIdentifier: "followToProf", sender: self)
-    }
-    @IBOutlet weak var topLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -67,11 +58,8 @@ class FolloweringViewController: UIViewController, UICollectionViewDelegate, UIC
             }
         
     }
-    
     var selectedData = [String:Any]()
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-       
     }
     var flwrDataArr = [[String:Any]]()
     var flwingDataArr = [[String:Any]]()
@@ -175,10 +163,6 @@ class FolloweringViewController: UIViewController, UICollectionViewDelegate, UIC
             return cell
         
     }
-    
-    
-
-    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation

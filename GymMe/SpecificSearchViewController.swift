@@ -13,19 +13,41 @@ import FirebaseStorage
 import SwiftOverlays
 
 class SpecificSearchViewController: UIViewController, UICollectionViewDelegate,UICollectionViewDataSource, UISearchBarDelegate {
-var myUName = String()
+    var myUName = String()
     var following = [String]()
     var myPicString = String()
     var myRealName = String()
-    
+    var selectedCurAuthProfile = true
+    var selectedCellUID = String()
+    var curName = String()
+    var selectedData = [String:Any]()
+    var prevScreen = String()
+    var locationFromFeed = String()
+    var locationPostID = String()
+    var searchActive = Bool()
+    var allSuggested = [String]()
+    @IBAction func addFriendsButtonPressed(_ sender: Any) {
+    }
+    @IBAction func backButtonPressed(_ sender: Any) {
+        if locationSegString == "locationPicCell" || locationSegString == "locationTextCell"{
+            performSegue(withIdentifier: "SpecificSearchToFeed", sender: self)
+        } else {
+            performSegue(withIdentifier: "specificToGeneralSearch", sender: self)
+        }
+    }
+    @IBOutlet weak var backButton: UIButton!
+    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var searchSegment: UISegmentedControl!
+    @IBOutlet weak var searchCollect: UICollectionView!
+    @IBOutlet weak var addFriendsButton: UIButton!
     @IBAction func swipeBack(_ sender: Any) {
         if prevScreen == "feed"{
             performSegue(withIdentifier: "SpecificSearchToFeed", sender: self)
         } else {
             performSegue(withIdentifier: "specificToGeneralSearch", sender: self)
         }
-        
     }
+    
     @objc func dismiss(fromGesture gesture: UISwipeGestureRecognizer) {
         
     }
@@ -56,8 +78,7 @@ var myUName = String()
                             // self.myPicString = messageImageUrl
                             
                             if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
-                                //self.myPic = UIImage(data: imageData as Data)
-                                //self.selfCommentPic.image = UIImage(data: imageData as Data)
+                                
                                 
                             }
                             
@@ -74,16 +95,9 @@ var myUName = String()
                     //self.loadFeedData()
                 }
             }
-            
-            //self.loadFeedData()
-            
-            
-            
+
         })
-        
-        
-        
-        
+
         searchCollect.register(UINib(nibName: "LikedByCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "LikedByCollectionViewCell")
         searchCollect.delegate = self
         searchCollect.dataSource = self
@@ -92,30 +106,9 @@ var myUName = String()
         // Do any additional setup after loading the view.
     }
     
-    
-    @IBAction func addFriendsButtonPressed(_ sender: Any) {
-        
-        
-    }
     var locationSegString = String()
-     @IBAction func backButtonPressed(_ sender: Any) {
-        if locationSegString == "locationPicCell" || locationSegString == "locationTextCell"{
-            performSegue(withIdentifier: "SpecificSearchToFeed", sender: self)
-        } else {
-        performSegue(withIdentifier: "specificToGeneralSearch", sender: self)
-        }
-        
-    }
     
-    @IBOutlet weak var backButton: UIButton!
     
-    @IBOutlet weak var searchBar: UISearchBar!
-    
-    @IBOutlet weak var searchSegment: UISegmentedControl!
-    
-    @IBOutlet weak var searchCollect: UICollectionView!
-    
-    @IBOutlet weak var addFriendsButton: UIButton!
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var width = CGFloat()
@@ -201,9 +194,7 @@ var myUName = String()
 
     }
     
-    var selectedCurAuthProfile = true
-    var selectedCellUID = String()
-    var curName = String()
+    
     func performSegueToPosterProfile(uid: String, name: String){
         self.curName = name
         self.selectedCellUID = uid
@@ -220,9 +211,7 @@ var myUName = String()
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    var selectedData = [String:Any]()
-    var prevScreen = String()
-    var locationFromFeed = String()
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
@@ -278,13 +267,12 @@ var myUName = String()
         searchActive = false;
         
     }
-    var locationPostID = String()
+    
     public func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchActive = false;
         self.searchBar.endEditing(true)
     }
-    var searchActive = Bool()
-    var allSuggested = [String]()
+    
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String){
         print("SB text did change: \(searchText)")
         
@@ -627,9 +615,7 @@ var myUName = String()
         
         
     } // called when text changes (including clear)
-    
-    
-    
+
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar){
         self.searchActive = false
         print("in search pressed")

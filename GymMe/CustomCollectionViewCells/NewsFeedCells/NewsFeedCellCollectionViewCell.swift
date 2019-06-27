@@ -3,10 +3,7 @@ import FirebaseDatabase
 import FirebaseAuth
 
 protocol PerformActionsInFeedDelegate {
-    
-    
-    
-    
+
     
     func performSegueToPosterProfile(uid: String, name: String)
     func showLikedByViewTextCell(sentBy: String, cell: NewsFeedCellCollectionViewCell)
@@ -15,27 +12,13 @@ protocol PerformActionsInFeedDelegate {
     func locationButtonPicCellPressed(sentBy: String, cell: NewsFeedPicCollectionViewCell)
     func reloadDataAfterLike()
     func showHashTag(tagType: String, payload:String, postID: String, name: String)
-    
-    
-    
-    
+
 }
 
 class NewsFeedCellCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
     var myRealName: String?
     var myPicString: String?
     var coords: [String:Any]?
-    @IBOutlet weak var bottomSizeView: UIView!
-    @IBOutlet weak var topSizeView: UIView!
-    @IBAction func locationButtonPressed(_ sender: Any) {
-        delegate?.locationButtonTextCellPressed(sentBy: "locationTextCell", cell: self)
-        
-        
-    
-    }
-    
-    @IBOutlet weak var timeStambLabel: UILabel!
-    @IBOutlet weak var tapGesture: UITapGestureRecognizer!
     var delegate: PerformActionsInFeedDelegate?
     var posterUID: String?
     var curName: String?
@@ -43,7 +26,15 @@ class NewsFeedCellCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
     var postID: String?
     var posterName: String?
     var selfData: [String:Any]?
-    
+    var myUName: String?
+    @IBOutlet weak var bottomSizeView: UIView!
+    @IBOutlet weak var topSizeView: UIView!
+    @IBAction func locationButtonPressed(_ sender: Any) {
+        delegate?.locationButtonTextCellPressed(sentBy: "locationTextCell", cell: self)
+
+    }
+    @IBOutlet weak var timeStambLabel: UILabel!
+    @IBOutlet weak var tapGesture: UITapGestureRecognizer!
     @IBOutlet weak var shareButton: UIButton!
     @IBAction func shareButtonPressed(_ sender: Any) {
         
@@ -57,8 +48,6 @@ class NewsFeedCellCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
         delegate?.showLikedByViewTextCell(sentBy: "showComments", cell: self)
     }
     @IBOutlet weak var commentButton: UIButton!
-    
-    
     @IBAction func favoritesCountButtonPressed(_ sender: Any) {
     }
     @IBOutlet weak var favoritesCountButton: UIButton!
@@ -120,12 +109,7 @@ class NewsFeedCellCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
                     
                 })
                 
-                //reload collect in delegate
-                
             })
-            
-            
-            
         } else {
             self.favoritesButton.setBackgroundImage(UIImage(named:"favoritesUnfilled.png"), for: .normal)
             
@@ -144,9 +128,7 @@ class NewsFeedCellCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
                     favesVal = favesArray.count
                    // self.favoritesCountButton.setTitle(String(favesArray.count), for: .normal)
                 }
-                
-                
-                Database.database().reference().child("posts").child(self.postID!).child("favorites").setValue(favesArray)
+                 Database.database().reference().child("posts").child(self.postID!).child("favorites").setValue(favesArray)
                 
                 
                 Database.database().reference().child("users").child(self.posterUID!).child("posts").child(self.postID!).child("favorites").setValue(favesArray)
@@ -157,17 +139,11 @@ class NewsFeedCellCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
         }
     }
     @IBOutlet weak var favoritesButton: UIButton!
-    
-    
     @IBAction func likesCountButtonPressed(_ sender: Any) {
         //self.delegate?.reloadDataAfterLike()
         delegate?.showLikedByViewTextCell(sentBy: "likedBy", cell: self)
-        
-        
     }
     @IBOutlet weak var likesCountButton: UIButton!
-    var myUName: String?
-    
     @IBAction func likeButtonPressed(_ sender: Any) {
         var myPic = String()
         Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { snapshot in

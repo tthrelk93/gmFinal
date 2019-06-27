@@ -13,6 +13,35 @@ import FirebaseStorage
 
 class HashTagViewController: UIViewController, UICollectionViewDelegate,UICollectionViewDataSource, UITabBarDelegate {
     
+    @IBOutlet weak var tabBar: UITabBar!
+    @IBOutlet weak var hashTagCollect: UICollectionView!
+    @IBOutlet weak var hashTagImage: UIImageView!
+    @IBOutlet weak var topLine: UIView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var backButton: UIButton!
+    @IBOutlet weak var hashTagCount: UILabel!
+    @IBOutlet weak var topLine2: UIView!
+    @IBAction func backButtonPressed(_ sender: Any) {
+        if prevScreen == "search"{
+            performSegue(withIdentifier: "HashToSearch", sender: self)
+        } else if prevScreen == "prof" {
+            performSegue(withIdentifier: "HashToProf", sender: self)
+            
+        } else {
+            performSegue(withIdentifier: "HashToFeed", sender: self)
+        }
+    }
+   
+    var hashtag = String()
+    var hashTagData = [[String:Any]]()
+    var hashArray = [String]()
+    var myUName = String()
+    var myRealName = String()
+    var myPicString = String()
+    var following = [String]()
+    var selectedData = [String:Any]()
+    var curName = String()
+    var curUID = String()
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return hashTagData.count
     }
@@ -39,37 +68,17 @@ class HashTagViewController: UIViewController, UICollectionViewDelegate,UICollec
     }
     
 
-    @IBOutlet weak var tabBar: UITabBar!
-    @IBOutlet weak var hashTagCollect: UICollectionView!
-    @IBOutlet weak var hashTagImage: UIImageView!
-    @IBOutlet weak var topLine: UIView!
+    
     var prevScreen = String()
-    @IBAction func backButtonPressed(_ sender: Any) {
-        if prevScreen == "search"{
-            performSegue(withIdentifier: "HashToSearch", sender: self)
-        } else if prevScreen == "prof" {
-            performSegue(withIdentifier: "HashToProf", sender: self)
-            
-        } else {
-            performSegue(withIdentifier: "HashToFeed", sender: self)
-        }
-    }
     
-    @IBOutlet weak var titleLabel: UILabel!
     
-    @IBOutlet weak var backButton: UIButton!
-    var hashtag = String()
-    var hashTagData = [[String:Any]]()
-    var hashArray = [String]()
-    var myUName = String()
-    var myRealName = String()
-    var myPicString = String()
-    var following = [String]()
-    var selectedData = [String:Any]()
     
-    @IBOutlet weak var hashTagCount: UILabel!
     
-    @IBOutlet weak var topLine2: UIView!
+    
+    
+    
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -190,8 +199,7 @@ class HashTagViewController: UIViewController, UICollectionViewDelegate,UICollec
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    var curName = String()
-    var curUID = String()
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.

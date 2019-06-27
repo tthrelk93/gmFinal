@@ -13,11 +13,26 @@ import FirebaseAuth
 import SwiftOverlays
 
 class NotificationsViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarDelegate, PerformActionsInNotifications {
+    var prevScreen = String()
+    let refreshControl = UIRefreshControl()
+    var gmRed = UIColor(red: 237/255, green: 28/255, blue: 39/255, alpha: 1.0)
+    var idArray = [String]()
+    var picDict = [String:UIImage]()
+    var myUName = String()
+    var myPicString = String()
+    var following = [String]()
+    var myRealName = String()
+    var curName = String()
+    var selectedCellUID = String()
+    var noteCollectData: [[String:Any]]?
+    var senderScreen = String()
+    var selectedPostID = String()
+    var selectedCurAuthProfile = true
+    var selectedData = [String:Any]()
     
+    @IBOutlet weak var notifyCollect: UICollectionView!
     @IBOutlet weak var topLine: UIView!
     @IBOutlet var swipeGestureRecognizer: UISwipeGestureRecognizer!
-    var prevScreen = String()
-    
     @IBAction func swipeHandler(_ gestureRecognizer : UISwipeGestureRecognizer) {
         if gestureRecognizer.state == .ended {
             // Perform action.
@@ -39,7 +54,6 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
             }
         }
     }
-    
     @IBOutlet weak var tabBar: UITabBar!
     public func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem){
         if item == tabBar.items![0]{
@@ -53,21 +67,7 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
         } else {
             //curScreen
         }
-        
     }
-    
-
-    let refreshControl = UIRefreshControl()
-    
-    
-    var gmRed = UIColor(red: 237/255, green: 28/255, blue: 39/255, alpha: 1.0)
-    var idArray = [String]()
-    var picDict = [String:UIImage]()
-    @IBOutlet weak var notifyCollect: UICollectionView!
-    var myUName = String()
-    var myPicString = String()
-    var following = [String]()
-    var myRealName = String()
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -279,10 +279,6 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return noteCollectData!.count
     }
-    var curName = String()
-    var selectedCellUID = String()
-    var noteCollectData: [[String:Any]]?
-    
     func performSegueToPost(postID: String){
         Database.database().reference().child("posts").child(postID).observeSingleEvent(of: .value, with: { (snapshot) in
             
@@ -444,8 +440,7 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
         
         
         }
-    var senderScreen = String()
-        var selectedPostID = String()
+    
         func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath){
             var notifCell = collectionView.cellForItem(at: indexPath) as! NotificationCell
             self.selectedPostID = (noteCollectData![indexPath.row] as! [String:Any])["postID"] as! String
@@ -479,8 +474,7 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    var selectedCurAuthProfile = true
-    var selectedData = [String:Any]()
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.

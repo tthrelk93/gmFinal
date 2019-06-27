@@ -9,40 +9,153 @@ import UserNotifications
 import FirebaseStorage
 
 class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, MessagingDelegate {
-    @IBOutlet weak var logoSpinPosition2: UIImageView!
     var ogSignInPos = CGRect()
     var ogForgotLabelPos = CGRect()
     var ogForgotButtonPos = CGRect()
     var ogFirstNamePos = CGRect()
     var ogLastNamePos = CGRect()
     var ogUserNamePos = CGRect()
-    
-    @IBOutlet weak var logoSpinner: UIImageView!
-    @IBOutlet weak var lastNameTextField: UITextField!
-    @IBOutlet weak var firstNameTextField: UITextField!
-    @IBOutlet weak var CAForgotTextPosition: UIView!
-    
-    @IBOutlet weak var CAFirstNamePosition: UIView!
-    @IBOutlet weak var CAForgotButtonPosition: UIView!
-    
-    @IBOutlet weak var CASignInPosition: UIView!
-    
-    @IBOutlet weak var CAUserNamePosition: UIView!
-    
-    @IBOutlet weak var createAccountView: UIView!
-    
-    @IBOutlet weak var userNameTextField: UITextField!
-    
-    @IBOutlet weak var confirmPasswordTextField: UITextField!
-    @IBOutlet weak var confirmEmailTextField: UITextField!
-    @IBOutlet weak var passwordTextField: UITextField!
-    
-    @IBOutlet weak var CAPasswordPosition: UIView!
-    @IBOutlet weak var CAEmailPosition: UIView!
     var crypt = String()
     var user = User()
     var emailVerificationSent = false
     var profPicked = false
+    var gmRed = UIColor(red: 237/255, green: 28/255, blue: 39/255, alpha: 1.0)
+    var authUser = String()
+    
+    @IBOutlet weak var logoSpinPosition2: UIImageView!
+    @IBOutlet weak var logoSpinner: UIImageView!
+    @IBOutlet weak var lastNameTextField: UITextField!
+    @IBOutlet weak var firstNameTextField: UITextField!
+    @IBOutlet weak var CAForgotTextPosition: UIView!
+    @IBOutlet weak var CAFirstNamePosition: UIView!
+    @IBOutlet weak var CAForgotButtonPosition: UIView!
+    @IBOutlet weak var CASignInPosition: UIView!
+    @IBOutlet weak var CAUserNamePosition: UIView!
+    @IBOutlet weak var createAccountView: UIView!
+    @IBOutlet weak var userNameTextField: UITextField!
+    @IBOutlet weak var confirmPasswordTextField: UITextField!
+    @IBOutlet weak var confirmEmailTextField: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var CAPasswordPosition: UIView!
+    @IBOutlet weak var CAEmailPosition: UIView!
+    @IBOutlet weak var profPicLabel: UILabel!
+    @IBAction func selectProfPicPressed(_ sender: Any) {
+        
+        picker.allowsEditing = true
+        
+        present(picker, animated: true, completion: nil)
+    }
+    @IBOutlet weak var thirdImageView: UIImageView!
+    @IBOutlet weak var whiteLineForUName: UIView!
+    @IBOutlet weak var logo: UIImageView!
+    @IBOutlet weak var forgotLabel: UILabel!
+    @IBOutlet weak var profPicImageView: UIImageView!
+    @IBOutlet weak var selectProfPicView: UIView!
+    @IBAction func signUpButtonPressed(_ sender: Any) {
+        if logRegIndex == 0{
+            logRegIndex = 1
+            UIView.animate(withDuration: 0.5, animations: {
+                self.forgotPasswordButton.isHidden = true
+                self.userNameTextField.frame = self.CAEmailPosition.frame
+                
+                self.passwordTextField.frame = self.CAPasswordPosition.frame
+                self.uNameTextField.frame = self.CAUserNamePos.frame
+                self.uNameTextField.bounds = self.CAUserNamePos.frame
+                self.uNameTextField.layer.frame = self.CAUserNamePos.frame
+                self.uNameTextField.layer.bounds = self.CAUserNamePos.frame
+                self.firstNameTextField.isHidden = false
+                self.firstNameTextField.frame = self.CAFirstNamePosition.frame
+                self.signInButton.frame = self.CASignInPosition.frame
+                self.lastNameTextField.isHidden = false
+                self.forgotLabel.isHidden = true
+                self.forgotPasswordButton.isHidden = true
+                self.uNameTextField.isHidden = false
+                self.selectProfPicView.isHidden = true
+                self.signUpButton.setTitle("Back", for: .normal)
+                self.signInButton.setTitle("Sign Up", for: .normal)
+                self.whiteLineForUName.isHidden = false
+            }, completion: {(error) in
+                
+                self.confirmPasswordTextField.isHidden = false
+                self.confirmEmailTextField.isHidden = false
+            })
+        } else {
+            logRegIndex = 0
+            UIView.animate(withDuration: 0.5, animations: {
+                
+                self.forgotPasswordButton.isHidden = false
+                self.userNameTextField.frame = self.OGEmailPosition
+                self.uNameTextField.frame = self.OGUNamePosition
+                self.uNameTextField.bounds = self.OGUNamePosition
+                self.uNameTextField.layer.frame = self.OGUNamePosition
+                self.uNameTextField.layer.bounds = self.OGUNamePosition
+                self.confirmEmailTextField.isHidden = true
+                self.passwordTextField.frame = self.OGPasswordPosition
+                self.firstNameTextField.isHidden = true
+                self.firstNameTextField.frame = self.ogFirstNamePos
+                self.signInButton.frame = self.ogSignInPos
+                self.lastNameTextField.isHidden = true
+                self.forgotLabel.isHidden = false
+                self.forgotPasswordButton.isHidden = false
+                self.confirmPasswordTextField.isHidden = true
+                self.uNameTextField.isHidden = true
+                self.signUpButton.setTitle("Don't have an account? Sign Up!", for: .normal)
+                self.signInButton.titleLabel?.text = "Sign In"
+                self.selectProfPicView.isHidden = true
+                // self.logo.isHidden = false
+                self.whiteLineForUName.isHidden = true
+                
+            }, completion: nil)
+        }
+    }
+    @IBOutlet weak var CAUserNamePos: UIView!
+    @IBOutlet weak var keepMeLoggedIn: UISwitch!
+    @IBOutlet weak var passResetLabel: UILabel!
+    @IBOutlet weak var signUpButton: UIButton!
+    @IBOutlet weak var notSignedUpLabel: UILabel!
+    @IBOutlet weak var signInButton: UIButton!
+    @IBAction func forgotPasswordPressed(_ sender: Any) {
+        if forgotPasswordButton.titleLabel?.text == "Back"{
+            UIView.animate(withDuration: 0.5, animations: {
+                self.signUpButton.isHidden = false
+                
+                self.userNameTextField.frame = self.OGEmailPosition
+                self.passwordTextField.frame = self.OGPasswordPosition
+                self.passResetLabel.isHidden = true
+                self.userNameTextField.isHidden = false
+                self.passwordTextField.isHidden = false
+                self.confirmEmailTextField.isHidden = true
+                self.confirmPasswordTextField.isHidden = true
+                self.signInButton.setTitle("Sign In", for: .normal)
+                self.forgotPasswordButton.setTitle("Forgot Password", for: .normal)
+            })
+            
+        } else {
+            UIView.animate(withDuration: 0.5, animations: {
+                self.signUpButton.isHidden = true
+                self.userNameTextField.frame = self.OGEmailPosition
+                self.passwordTextField.frame = self.OGPasswordPosition
+                self.passResetLabel.isHidden = false
+                self.userNameTextField.isHidden = false
+                self.passwordTextField.isHidden = true
+                self.confirmEmailTextField.isHidden = true
+                self.confirmPasswordTextField.isHidden = true
+                self.uNameTextField.isHidden = true
+                self.signInButton.setTitle("Send Password Reset", for: .normal)
+                self.forgotPasswordButton.setTitle("Back", for: .normal)
+            })
+            
+            
+        }
+    }
+    @IBOutlet weak var firstImageView: UIImageView!
+    @IBOutlet weak var forgotPasswordButton: UIButton!
+    @IBOutlet weak var uNameTextField: UITextField!
+    @IBOutlet weak var secondImageView: UIImageView!
+    @IBAction func emailTFEditing(_ sender: Any) {
+        
+    }
+    @IBOutlet weak var selectProfPicButton: UIButton!
     @IBAction func signInButtonPressed(_ sender: Any) {
         print("why")
         Database.database().reference().child("usernames").observeSingleEvent(of: .value, with: {(snapshot) in
@@ -51,8 +164,6 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
             print("please\(self.logRegIndex)")
             if self.signInButton.titleLabel?.text == "Send Password Reset"{
                 Auth.auth().sendPasswordReset(withEmail: self.userNameTextField.text!) { error in
-                // Your code here
-                
             }
         } else {
                 print("here?: \(self.logRegIndex)")
@@ -65,8 +176,7 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
                         alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
                         self.present(alert, animated: true, completion: nil)
                     }
-                    
-                        
+
                         var tempDict = snapshot.value as! [String:Any]
                         print("tempDictUnames: \(tempDict)")
                         for (key, val) in tempDict {
@@ -104,25 +214,21 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
                     self.uploadData["realName"] = self.firstNameTextField.text! + " " + self.lastNameTextField.text!
                     
                     Database.database().reference().child("usernames").updateChildValues([self.uNameTextField.text!: [Auth.auth().currentUser!.uid, self.uploadData["realName"] as! String]])
-                    
-                    
+
                     Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).updateChildValues(self.uploadData, withCompletionBlock: {(error, ref) in
                         //SwiftOverlays.showBlockingWaitOverlayWithText("Loading Feed")
                         self.performSegue(withIdentifier: "LoginToFeed", sender: self)
                         return
                     })
                     })
-                    
-                    
-                    
+     
                 } else {
                     
                     let alert = UIAlertController(title: "Login/Register Failed", message: "Check that you entered the correct information.", preferredStyle: UIAlertControllerStyle.alert)
                     alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
                     self.present(alert, animated: true, completion: nil)
                 }
-                
-                //copy done
+
             } else if self.logRegIndex == 0 {
                 
                 guard let email = self.userNameTextField.text, let password = self.passwordTextField.text
@@ -133,14 +239,12 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
                         self.present(alert, animated: true, completion: nil)
                         return
                 }
-                
-                
-                
+
                 Auth.auth().signIn(withEmail: email, password: password, completion: {
                     (authResult, error) in
                     
                     if error != nil{
-                        // SwiftOverlays.removeAllBlockingOverlays()
+                        
                         let alert = UIAlertController(title: "Login/Register Failed", message: "Check that you entered the correct information.", preferredStyle: UIAlertControllerStyle.alert)
                         alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
                         self.present(alert, animated: true, completion: nil)
@@ -148,10 +252,10 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
                         return
                     }
                     else{
-                        // self.user = (user?.uid)!
+                        
                         print("Successful Login")
                         var userBool = false
-                         //SwiftOverlays.showBlockingWaitOverlayWithText("Loading Feed")
+                        
                         self.performSegue(withIdentifier: "LoginToFeed", sender: self)
                         
                     }
@@ -218,136 +322,10 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
         
     }
     let picker = UIImagePickerController()
-    @IBOutlet weak var profPicLabel: UILabel!
-    @IBAction func selectProfPicPressed(_ sender: Any) {
-        
-        picker.allowsEditing = true
-        
-        present(picker, animated: true, completion: nil)
-    }
-    @IBOutlet weak var thirdImageView: UIImageView!
     
-    @IBOutlet weak var whiteLineForUName: UIView!
-    @IBOutlet weak var logo: UIImageView!
-    @IBOutlet weak var forgotLabel: UILabel!
-    @IBOutlet weak var profPicImageView: UIImageView!
-    @IBOutlet weak var selectProfPicView: UIView!
     var logRegIndex = 0
-    @IBAction func signUpButtonPressed(_ sender: Any) {
-        if logRegIndex == 0{
-            logRegIndex = 1
-            UIView.animate(withDuration: 0.5, animations: {
-                self.forgotPasswordButton.isHidden = true
-                self.userNameTextField.frame = self.CAEmailPosition.frame
-                
-                self.passwordTextField.frame = self.CAPasswordPosition.frame
-                self.uNameTextField.frame = self.CAUserNamePos.frame
-                self.uNameTextField.bounds = self.CAUserNamePos.frame
-                self.uNameTextField.layer.frame = self.CAUserNamePos.frame
-                self.uNameTextField.layer.bounds = self.CAUserNamePos.frame
-                self.firstNameTextField.isHidden = false
-                self.firstNameTextField.frame = self.CAFirstNamePosition.frame
-                self.signInButton.frame = self.CASignInPosition.frame
-                self.lastNameTextField.isHidden = false
-                self.forgotLabel.isHidden = true
-                self.forgotPasswordButton.isHidden = true
-                self.uNameTextField.isHidden = false
-                self.selectProfPicView.isHidden = true
-               
-                
-                //self.logo.isHidden = true
-                
-                self.signUpButton.setTitle("Back", for: .normal)
-                self.signInButton.setTitle("Sign Up", for: .normal)
-                
-                self.whiteLineForUName.isHidden = false
-            }, completion: {(error) in
-                
-                self.confirmPasswordTextField.isHidden = false
-                self.confirmEmailTextField.isHidden = false
-            })
-        } else {
-            logRegIndex = 0
-            UIView.animate(withDuration: 0.5, animations: {
-                
-                self.forgotPasswordButton.isHidden = false
-                self.userNameTextField.frame = self.OGEmailPosition
-                
-                self.uNameTextField.frame = self.OGUNamePosition
-                self.uNameTextField.bounds = self.OGUNamePosition
-                self.uNameTextField.layer.frame = self.OGUNamePosition
-                self.uNameTextField.layer.bounds = self.OGUNamePosition
-                self.confirmEmailTextField.isHidden = true
-                self.passwordTextField.frame = self.OGPasswordPosition
-                self.firstNameTextField.isHidden = true
-                self.firstNameTextField.frame = self.ogFirstNamePos
-                self.signInButton.frame = self.ogSignInPos
-                self.lastNameTextField.isHidden = true
-                self.forgotLabel.isHidden = false
-                self.forgotPasswordButton.isHidden = false
-                self.confirmPasswordTextField.isHidden = true
-                self.uNameTextField.isHidden = true
-                self.signUpButton.setTitle("Don't have an account? Sign Up!", for: .normal)
-                self.signInButton.titleLabel?.text = "Sign In"
-                self.selectProfPicView.isHidden = true
-               // self.logo.isHidden = false
-                self.whiteLineForUName.isHidden = true
-                
-            }, completion: nil)
-        }
-    }
     
-    @IBOutlet weak var CAUserNamePos: UIView!
-    @IBOutlet weak var keepMeLoggedIn: UISwitch!
-    
-    @IBOutlet weak var passResetLabel: UILabel!
-    @IBOutlet weak var signUpButton: UIButton!
-    @IBOutlet weak var notSignedUpLabel: UILabel!
-    @IBOutlet weak var signInButton: UIButton!
-    @IBAction func forgotPasswordPressed(_ sender: Any) {
-        if forgotPasswordButton.titleLabel?.text == "Back"{
-            UIView.animate(withDuration: 0.5, animations: {
-                self.signUpButton.isHidden = false
-                
-                self.userNameTextField.frame = self.OGEmailPosition
-                self.passwordTextField.frame = self.OGPasswordPosition
-                self.passResetLabel.isHidden = true
-                self.userNameTextField.isHidden = false
-                self.passwordTextField.isHidden = false
-                self.confirmEmailTextField.isHidden = true
-                self.confirmPasswordTextField.isHidden = true
-                self.signInButton.setTitle("Sign In", for: .normal)
-                self.forgotPasswordButton.setTitle("Forgot Password", for: .normal)
-            })
-            
-        } else {
-            UIView.animate(withDuration: 0.5, animations: {
-                self.signUpButton.isHidden = true
-                self.userNameTextField.frame = self.OGEmailPosition
-                self.passwordTextField.frame = self.OGPasswordPosition
-                self.passResetLabel.isHidden = false
-                self.userNameTextField.isHidden = false
-                self.passwordTextField.isHidden = true
-                self.confirmEmailTextField.isHidden = true
-                self.confirmPasswordTextField.isHidden = true
-                self.uNameTextField.isHidden = true
-                self.signInButton.setTitle("Send Password Reset", for: .normal)
-                self.forgotPasswordButton.setTitle("Back", for: .normal)
-            })
-            
-            
-        }
-    }
     var handle: AuthStateDidChangeListenerHandle?
-    
-    @IBOutlet weak var firstImageView: UIImageView!
-    
-    @IBOutlet weak var forgotPasswordButton: UIButton!
-    
-    @IBOutlet weak var uNameTextField: UITextField!
-    
-    @IBOutlet weak var secondImageView: UIImageView!
-    
     var isListening = false
     var OGEmailPosition = CGRect()
     var OGPasswordPosition = CGRect()
@@ -380,9 +358,6 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
         
         lastNameTextField.leftView = UIView(frame: CGRect(x: 0,y: 0,width: 30,height: self.lastNameTextField.frame.height))
         lastNameTextField.leftViewMode = UITextFieldViewMode.always
-        
-        
-        
         signInButton.layer.cornerRadius = 6
         signInButton.layer.masksToBounds = false
         profPicImageView.layer.cornerRadius = profPicImageView.frame.width/2
@@ -404,17 +379,14 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
         ogForgotLabelPos = forgotLabel.frame
         ogForgotButtonPos = forgotPasswordButton.frame
         ogSignInPos = signInButton.frame
-        
         let border = CALayer()
         let width = CGFloat(1.0)
         border.borderColor = UIColor.groupTableViewBackground.cgColor
         border.frame = CGRect(x: 0, y: userNameTextField.frame.size.height - width, width: userNameTextField.frame.size.width, height: userNameTextField.frame.size.height)
-        
         border.borderWidth = width
         userNameTextField.layer.addSublayer(border)
         
         userNameTextField.layer.masksToBounds = true
-        
         //tf2
         let border2 = CALayer()
         let width2 = CGFloat(1.0)
@@ -530,25 +502,15 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
             
             
         }
-        
-        //images.append(UIImage(named: "pexels-photo-241456.png")!)
-        
-        //firstImageView.image = images[0]
-        print("hereee")
         UIView.animate(withDuration: 1.0, delay: 0, options: [UIViewAnimationOptions.autoreverse, UIViewAnimationOptions.repeat], animations: {
-            //self.firstImageView.image = self.images[self.currentImageindex]
-            // self.currentImageindex = (self.currentImageindex + 1) % self.images.count
             
         }, completion: nil)
     }
-    
-    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         /*firstImageView.frame = view.frame
          secondImageView.frame = view.frame*/
     }
-    
     override func viewDidAppear(_ animated: Bool) {
         /*do {
             try Auth.auth().signOut()
@@ -582,21 +544,12 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
         
     }
     
-    
-    
-    
-    
-    
-    
-    //userNameTextField.color
-    // Do any additional setup after loading the view.
-    var gmRed = UIColor(red: 237/255, green: 28/255, blue: 39/255, alpha: 1.0)
     override func viewWillAppear(_ animated: Bool) {
         //self.signInButton.layer.borderColor = (UIColor.lightGray.withAlphaComponent(0.6)).cgColor
         
         //self.signInButton.layer.borderWidth = 2
     }
-    var authUser = String()
+    
     override func viewWillDisappear(_ animated: Bool) {
         if isListening == true{
             Auth.auth().removeStateDidChangeListener(handle!)
@@ -630,9 +583,7 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
     }
     //public func textFieldDid
     
-    @IBAction func emailTFEditing(_ sender: Any) {
-        
-    }
+    
     public func textFieldDidBeginEditing(_ textField: UITextField) {
         /*if textField == passwordTextField{
          if userNameTextField.hasText {
@@ -682,7 +633,7 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
     
     
     
-    @IBOutlet weak var selectProfPicButton: UIButton!
+    
     
     @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         print("hey thereee")

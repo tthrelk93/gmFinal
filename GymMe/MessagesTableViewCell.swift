@@ -10,7 +10,6 @@ import UIKit
 
 class MessagesTableViewCell: UITableViewCell {
     @IBOutlet weak var receiverPic: UIImageView!
-    
     @IBOutlet weak var timeStamp: UILabel!
     @IBOutlet weak var messageText: UILabel!
     @IBOutlet weak var receiverName: UILabel!

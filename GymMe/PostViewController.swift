@@ -67,6 +67,603 @@ class PostCatSearchCell: UICollectionViewCell {
 
 class PostViewController: UIViewController, UITabBarDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UITextViewDelegate, CLLocationManagerDelegate, UICollectionViewDelegate,
 UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDelegate, RemoveCatDelegate{
+    var catLabels = ["Abs","Arms","Back","Body Building","Cardio","Chest","Crossfit", "Legs","Nutrition", "Shoulders","Sports","Stretching","Speed & Agility"]
+    var catSportsData = ["Soccer","Football","Lacrosse", "Track & Field", "Tennis","Baseball","Swimming","Basketball","Rock Climbing","Softball","Golf","Ice Hockey","Boxing","Cycling","Rugby","MMA","Volleyball"]
+    var placeAddress = String()
+    var place: GMSPlace?
+    var catLabelsRefined = [String]()
+    var prevScreen = String()
+    var selectedCellsArr = [PostCatSearchCell]()
+    var picPostTextViewPos: CGRect?
+    var extended = false
+    var ogVidPosit = CGRect()
+    var ogPicPosit = CGRect()
+    var ogPicVidPosit = CGRect()
+    var currentPicker = String()
+    let picker = UIImagePickerController()
+    let imagePicker = UIImagePickerController()
+    var curCatsAdded = [String]()
+    var taggedString = String()
+    var curString = ""
+    var curCatsData = [String]()
+    var ogCat1Pos = CGRect()
+    var ogCat2Pos = CGRect()
+    var ogCat3Pos = CGRect()
+    var newPost: [String:Any]?
+   
+    @IBOutlet weak var tagSearchBar: UISearchBar!
+    @IBOutlet weak var addCat3TextPos: UIView!
+    @IBOutlet weak var addCat2TextPos: UIView!
+    @IBOutlet weak var addCat1TextPos: UIView!
+    @IBOutlet weak var whiteShadeView: UIView!
+    @IBOutlet weak var curCatsLabel: UILabel!
+    @IBOutlet weak var shadeView2: UIView!
+    @IBOutlet weak var shadeView1: UIView!
+    @IBOutlet weak var sportsCollect: UICollectionView!
+    @IBOutlet weak var sportsView: UIView!
+    @IBOutlet weak var tagPeopleLabel: UILabel!
+    @IBOutlet weak var doneWithSportsButton: UIButton!
+    @IBOutlet weak var tagView: UIView!
+    @IBOutlet weak var layout: UICollectionViewFlowLayout!
+    @IBOutlet weak var picViewLine1: UIView!
+    @IBOutlet weak var picViewLine2: UIView!
+    @IBOutlet weak var picViewLine3: UIView!
+    @IBOutlet weak var addCatView: UIView!
+    @IBOutlet weak var addCatCollect: UICollectionView!
+    @IBOutlet weak var textPostTextViewPos: UIView!
+    @IBOutlet weak var posterPicTextPos: UIView!
+    @IBOutlet weak var tabBar: UITabBar!
+    @IBOutlet weak var postText: UIView!
+    @IBOutlet weak var postPic: UIView!
+    @IBOutlet weak var picVidButton: UIButton!
+    @IBOutlet weak var picVidSmallFrame: UIView!
+    @IBOutlet weak var addPicButton: UIButton!
+    @IBOutlet weak var catTopLabel: UILabel!
+    @IBOutlet weak var picButtonPositionOut: UIView!
+    @IBOutlet weak var backToPostButton: UIButton!
+    @IBOutlet weak var tagPeopleButton: UIButton!
+    @IBOutlet weak var tagPeopleButtonIcon: UIButton!
+    @IBOutlet weak var addToCategoryLabel: UILabel!
+    @IBOutlet weak var addToCatIconButton: UIButton!
+    @IBOutlet weak var addToCategoryButton: UIButton!
+    @IBOutlet weak var addLocationIcon: UIButton!
+    @IBOutlet weak var shareIconButton: UIButton!
+    @IBOutlet weak var shareButton: UIButton!
+    @IBOutlet weak var addVidButton: UIButton!
+    @IBOutlet weak var posterPicIV: UIImageView!
+    @IBOutlet weak var postLine: UIView!
+    @IBOutlet weak var vidButtonPositionOut: UIView!
+    @IBOutlet weak var curCatsCollect: UICollectionView!
+    @IBOutlet weak var topLineCat: UIView!
+    @IBOutlet weak var addLocationButton: UIButton!
+    @IBOutlet weak var textPostPressedLine: UIView!
+    @IBOutlet weak var textPostPressedLabel: UILabel!
+    @IBOutlet weak var curCityLabel: UILabel!
+    @IBOutlet weak var succesfulPostView: UIView!
+    @IBOutlet weak var cancelPostButton: UIButton!
+    @IBOutlet weak var postButton: UIButton!
+    @IBOutlet weak var makePostView: UIView!
+    @IBOutlet weak var makePostImageView: UIImageView!
+    @IBOutlet weak var makePostTextView: UITextView!
+    @IBAction func doneWithSportsButtonPressed(_ sender: Any) {
+        //var count = 0
+        containsSport = false
+        for row in 0...self.sportsCollect.numberOfItems(inSection: 0) - 1
+        {
+            let indexPath = IndexPath(row: row, section: 0)
+            sportsCollect.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition(), animated: true)
+            if let cell = getCell(indexPath) {
+                if (cell.catSportLabel.textColor == UIColor.red) {
+                    containsSport = true
+                    //print("sportText: \((sportsCollect.cellForItem(at: indexPath as IndexPath) as! PostCatSearchSportsCell).catSportLabel.text!)")
+                    curCatsData.append((sportsCollect.cellForItem(at: indexPath as IndexPath) as! PostCatSearchSportsCell).catSportLabel.text!)
+                }
+            }
+        }
+        if containsSport == true {
+            for cell in addCatCollect.visibleCells{
+                if (cell as! PostCatSearchCell).catLabel.text == "Sports"{
+                    (cell as! PostCatSearchCell).catLabel.textColor = UIColor.red
+                }
+            }
+        } else {
+            for cell in addCatCollect.visibleCells{
+                if (cell as! PostCatSearchCell).catLabel.text == "Sports"{
+                    (cell as! PostCatSearchCell).catLabel.textColor = UIColor.black
+                }
+            }
+            for data in curCatsData{
+                if catSportsData.contains(data){
+                    curCatsData.remove(at: curCatsData.index(of: data)!)
+                }
+            }
+        }
+        sportsView.isHidden = true
+    }
+   
+    @IBAction func addPicTouched(_ sender: AnyObject) {
+        currentPicker = "photo"
+        
+        let picker = YPImagePicker()
+        
+        self.postType = "pic"
+        picker.didFinishPicking { [unowned picker] items, _ in
+            if let photo = items.singlePhoto {
+                self.makePostView.isHidden = false
+                self.cancelPostButton.isHidden = false
+                self.makePostImageView.image = photo.image
+            }
+            picker.dismiss(animated: true, completion: nil)
+        }
+        present(picker, animated: true, completion: nil)
+        
+    }
+    
+    @IBAction func picVidPressed(_ sender: Any) {
+        startLocationManager()
+        postLine.isHidden = true
+        picViewLine1.isHidden = false
+        picViewLine2.isHidden = false
+        picViewLine3.isHidden = false
+        //catTopLabel.isHidden = true
+        
+        var config = YPImagePickerConfiguration()
+        config.screens = [.library, .video]
+        config.library.mediaType = .photoAndVideo
+        let picker = YPImagePicker(configuration: config)
+        picker.didFinishPicking { [unowned picker] items, cancelled in
+            
+            if cancelled {
+                print("Picker was canceled")
+                picker.dismiss(animated: true, completion: nil)
+                return
+            }
+            
+            if let firstItem = items.first {
+                switch firstItem {
+                case .photo(let photo):
+                    if let photo = items.singlePhoto {
+                        self.makePostView.isHidden = false
+                        self.cancelPostButton.isHidden = false
+                        // var //tempImage = photo.image.
+                        self.makePostImageView.image = photo.image
+                        self.postType = "pic"
+                        
+                    }
+                case .video(let video):
+                    if let video = items.singleVideo {
+                        print(video.fromCamera)
+                        print(video.thumbnail)
+                        print(video.url)
+                        self.makePostView.isHidden = false
+                        self.cancelPostButton.isHidden = false
+                        self.postPlayer?.url = video.url
+                        let videoURL = video.url as! NSURL
+                        do {
+                            let video1 = try NSData(contentsOf: videoURL as URL, options: .mappedIfSafe)
+                            self.vidData = video1
+                            self.postType = "vid"
+                        } catch {
+                            print(error)
+                            return
+                        }
+                    }
+                }
+                picker.dismiss(animated: true, completion: nil)
+            }
+        }
+        present(picker, animated: true, completion: nil)
+        
+    }
+    @IBAction func backFromTag(_ sender: Any) {
+  
+    }
+    @IBAction func backFromTheCat(_ sender: Any) {
+    
+    }
+    @IBAction func backFuq(_ sender: Any){
+        addCatView.isHidden = true
+        cancelPostButton.isHidden = false
+        postButton.isHidden = false
+    }
+    @IBAction func backToPostPressed(_ sender: Any) {
+        // DispatchQueue.main.async{
+        print("curCatsAdded: \(self.curCatsAdded), curCatsData: \(self.curCatsData), selectedCellsArr: \(self.selectedCellsArr)")
+        //add for loop here that loops through sports collect and checks if red text
+        curCatsData = Array(Set(curCatsData))
+        addCatView.isHidden = true
+        var catLabelsSorted = catLabels.sorted { $0.localizedCaseInsensitiveCompare($1) == ComparisonResult.orderedAscending }
+        
+        catLabelsRefined = catLabelsSorted
+        addCatCollect.reloadData()
+        curCatsCollect.reloadData()
+        postButton.isHidden = false
+        cancelPostButton.isHidden = false
+        makePostTextView.resignFirstResponder()
+  
+    }
+    
+    @IBAction func tagPeopleButtonPressed(_ sender: Any) {
+        postButton.isHidden = true
+        tagView.isHidden = false
+        
+    }
+    @IBAction func addToCategoryButtonPressed(_ sender: Any) {
+        addCatView.isHidden = false
+        postButton.isHidden = true
+        cancelPostButton.isHidden = true
+        curCatsLabel.text = ""
+        curCatsAdded.removeAll()
+
+    }
+
+    @IBAction func shareButtonPressed(_ sender: Any) {
+    }
+    @IBAction func textPostPressed(_ sender: Any) {
+        postLine.isHidden = true
+        picViewLine1.isHidden = true
+        picViewLine2.isHidden = true
+        picViewLine3.isHidden = true
+        startLocationManager()
+        self.postType = "text"
+        addToCategoryLabel.isHidden = true
+        addToCategoryButton.isHidden = true
+        self.addToCategoryLabel.isHidden = true
+        makePostTextView.delegate = self
+        makePostTextView.selectAll(nil)
+        UIView.animate(withDuration: 0.5, animations: {
+            self.tagPeopleButton.isHidden = true
+            self.tagPeopleButtonIcon.isHidden = true
+            //self.shareButton.isHidden = true
+            //self.shareIconButton.isHidden = true
+            self.addToCatIconButton.isHidden = true
+            self.addToCategoryLabel.isHidden = true
+            self.addToCategoryButton.isHidden = true
+            self.curCatsLabel.isHidden = true
+            
+            self.curCatsLabel.isHidden = true
+            self.makePostTextView.frame = self.textPostTextViewPos.frame
+            self.addToCatIconButton.frame = self.addCat1TextPos.frame
+            self.addToCategoryButton.frame = self.addCat2TextPos.frame
+            self.curCatsLabel.frame = self.addCat3TextPos.frame
+            self.makePostTextView.text = "What's going on?"
+            self.cancelPostButton.isHidden = false
+            self.makePostView.isHidden = false
+            self.makePostImageView.isHidden = true
+            self.postPlayer?.view.isHidden = true
+            self.makePostView.backgroundColor = UIColor.white
+            self.postText.isHidden = true
+            self.postPic.isHidden = true
+            self.makePostTextView.becomeFirstResponder()
+        })
+    }
+    
+    @IBAction func chooseVidFromPhoneSelected(_ sender: AnyObject) {
+        self.postType = "vid"
+        addToCategoryButton.isHidden = false
+        addToCategoryLabel.isHidden = false
+        var config = YPImagePickerConfiguration()
+        config.screens = [.library, .video]
+        config.library.mediaType = .photoAndVideo
+        let picker = YPImagePicker(configuration: config)
+        picker.didFinishPicking { [unowned picker] items, _ in
+            if let video = items.singleVideo {
+                print(video.fromCamera)
+                print(video.thumbnail)
+                print(video.url)
+                self.makePostView.isHidden = false
+                self.cancelPostButton.isHidden = false
+                self.postPlayer?.url = video.url
+                let videoURL = video.url as! NSURL
+                do {
+                    let video1 = try NSData(contentsOf: videoURL as URL, options: .mappedIfSafe)
+                    self.vidData = video1
+                } catch {
+                    print(error)
+                    return
+                }
+            }
+            picker.dismiss(animated: true, completion: nil)
+        }
+        present(picker, animated: true, completion: nil)
+    }
+    
+    @IBAction func addLocationPressed(_ sender: Any) {
+        let autocompleteController = GMSAutocompleteViewController()
+        autocompleteController.delegate = self
+        present(autocompleteController, animated: true, completion: nil)
+    }
+    @IBAction func cancelPostButtonPressed(_ sender: Any) {
+        
+        if tagView.isHidden == false{
+            postButton.isHidden = false
+            tagView.isHidden = true
+            tagSearchBar.resignFirstResponder()
+        } else {
+            postLine.isHidden = false //makePostTextView.resignFirstResponder()
+            makePostImageView.image = nil
+            postPlayer?.url = nil
+            taggedFriends.removeAll()
+            postText.isHidden = false
+            postPic.isHidden = false
+            self.addPicButton.frame = self.ogPicPosit
+            self.addVidButton.frame = self.ogVidPosit
+            self.picVidButton.frame = self.ogPicVidPosit
+            self.addVidButton.alpha = 0.0
+            self.addPicButton.alpha = 0.0
+            self.picVidButton.alpha = 1.0
+            makePostImageView.isHidden = false
+            cancelPostButton.isHidden = true
+            makePostView.backgroundColor = UIColor.white
+            makePostTextView.text = "Write a caption..."
+            self.addToCatIconButton.isHidden = false
+            self.addToCategoryButton.isHidden = false
+            self.addToCategoryLabel.isHidden = false
+            self.curCatsLabel.text = ""
+            self.curCatsLabel.isHidden = false
+            makePostTextView.frame = picPostTextViewPos!
+            addToCatIconButton.frame = ogCat1Pos
+            addToCategoryButton.frame = ogCat2Pos
+            curCatsLabel.frame = ogCat3Pos
+            makePostTextView.textColor = UIColor.darkGray
+            self.tagPeopleButton.isHidden = false
+            self.tagPeopleButtonIcon.isHidden = false
+            self.cityData = nil
+            self.curCityLabel.text = ""
+            self.extended = false
+            makePostView.isHidden = true
+        }
+    }
+    
+    @IBAction func postButtonPressed(_ sender: Any) {
+        SwiftOverlays.showBlockingWaitOverlayWithText("Posting to Feed...")
+        postText.isHidden = false
+        postPic.isHidden = false
+        newPost = [String: Any]()
+        if postType == "pic"{
+            newPost!["posterUID"] = Auth.auth().currentUser!.uid
+            newPost!["posterName"] = self.curUser.username
+            print("cUpP2: \(curUser.profPic!)")
+            newPost!["posterPicURL"] = curUser.profPic!
+            self.newPost!["likes"] = [["x":"x"]]
+            self.newPost!["favorites"] = [["x":"x"]]
+            self.newPost!["shares"] = [["x":"x"]]
+            self.newPost!["comments"] = [["x":"x"]]
+            var finalTag = [[String:Any]]()
+            
+            for dict in taggedFriends{
+                var temp = dict as! [String:Any]
+                temp.removeValue(forKey: "profPic")
+                finalTag.append(temp)
+            }
+            
+            self.newPost!["tagged"] = finalTag
+            if self.curCatsData == nil || self.curCatsData.count == 0{
+                curCatsData.append("Other")
+            }
+            self.newPost!["categories"] = self.curCatsData
+            self.newPost!["city"] = self.curCityLabel.text
+            if(self.place == nil){
+                print("no place coord")
+            } else {
+                self.newPost!["postCoord"] = ["lat":Double((self.place?.coordinate.latitude)!),"long": Double((self.place?.coordinate.longitude)!)]
+            }
+            
+            //let curLoc = locationManager.location
+            //newPost![location]
+            if self.makePostTextView.text != "Write a caption..."{
+                newPost!["postText"] = self.makePostTextView.text
+            }
+            
+            let imageName = NSUUID().uuidString
+            let storageRef = Storage.storage().reference().child("FeedPosts").child("ImagePosts").child(Auth.auth().currentUser!.uid).child("\(imageName).jpg")
+            print("makePostImageView: \(self.makePostImageView.image!)")
+            if let uploadData = UIImageJPEGRepresentation(self.makePostImageView.image!, 0.1) {
+                storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
+                    if error != nil {
+                        print(error!)
+                        return  };
+                    print("makePostImageView: \(self.makePostImageView.image!)")
+                    
+                    self.newPost!["postPic"] = (metadata?.downloadURL()?.absoluteString)!
+                    
+                    self.newPost!["datePosted"] = Date().description
+                    
+                    
+                    
+                    
+                    let key = Database.database().reference().child("posts").childByAutoId().key
+                    self.newPost!["postID"] = key
+                    let childUpdates = ["/posts/\(key)": self.newPost,
+                                        "/users/\(Auth.auth().currentUser!.uid)/posts/\(key)/": self.newPost]
+                    Database.database().reference().updateChildValues(childUpdates, withCompletionBlock: { (error, ref) in
+                        if error != nil{
+                            print(error?.localizedDescription)
+                            return
+                        }
+                        self.checkForTags(postID: key)
+                        
+                        
+                        self.makePostTextView.textColor = UIColor.darkGray
+                        print("This never prints in the console")
+                        self.postPlayer?.url = nil
+                        self.makePostImageView.image = nil
+                        self.makePostView.isHidden = true
+                        self.cancelPostButton.isHidden = true
+                        
+                        self.addToCatIconButton.isHidden = false
+                        self.addToCategoryButton.isHidden = false
+                        self.addToCategoryLabel.isHidden = false
+                        
+                        self.curCatsLabel.text = ""
+                        self.curCatsLabel.isHidden = false
+                        self.makePostTextView.frame = self.picPostTextViewPos!
+                        self.addToCatIconButton.frame = self.ogCat1Pos
+                        self.addToCategoryButton.frame = self.ogCat2Pos
+                        self.curCatsLabel.frame = self.ogCat3Pos
+                        self.tagPeopleButton.isHidden = false
+                        self.tagPeopleButtonIcon.isHidden = false
+                        SwiftOverlays.removeAllBlockingOverlays()
+                        self.performSegue(withIdentifier: "PostToFeed", sender: self)
+                    })
+                })
+            }
+        } else if postType == "vid" {
+            print("uploadingVid")
+            newPost!["posterUID"] = Auth.auth().currentUser!.uid
+            newPost!["posterName"] = self.curUser.username
+            if self.curCatsAdded == nil || self.curCatsAdded.count == 0{
+                curCatsAdded.append("Other")
+            }
+            self.newPost!["categories"] = self.curCatsAdded
+            print("cUpP3: \(curUser.profPic!)")
+            newPost!["posterPicURL"] = curUser.profPic!
+            self.newPost!["city"] = self.curCityLabel.text
+            if self.makePostTextView.text != "Write a caption..."{
+                newPost!["postText"] = self.makePostTextView.text
+            }
+            let videoName = NSUUID().uuidString
+            
+            let storageRef = Storage.storage().reference().child("FeedPosts").child("VideoPosts").child(Auth.auth().currentUser!.uid).child("\(videoName).mov")
+            
+            var videoRef = storageRef.fullPath
+            
+            let uploadMetadata = StorageMetadata()
+            
+            uploadMetadata.contentType = "video/quicktime"
+            
+            _ = storageRef.putData(self.vidData! as Data, metadata: uploadMetadata){(metadata, error) in
+                if(error != nil){
+                    print("got an error: \(error)") }
+                print("metaData: \(metadata)")
+                print("metaDataURL: \((metadata?.downloadURL()?.absoluteString)!)")
+                if(self.place == nil){
+                    print("no place coord")
+                } else {
+                    self.newPost!["postCoord"] = ["lat":Double((self.place?.coordinate.latitude)!),"long": Double((self.place?.coordinate.longitude)!)]
+                }
+                self.newPost!["postVid"] = (metadata?.downloadURL()?.absoluteString)!
+                self.newPost!["datePosted"] = Date().description
+                self.newPost!["likes"] = [["x":"x"]]
+                self.newPost!["favorites"] = [["x":"x"]]
+                self.newPost!["shares"] = [["x":"x"]]
+                self.newPost!["comments"] = [["x":"x"]]
+                //self.newPost!["categories"] = self.curCatsAdded
+                self.newPost!["posterPicURL"] = self.curUser.profPic!
+                let key = Database.database().reference().child("posts").childByAutoId().key
+                self.newPost!["postID"] = key
+                
+                let childUpdates = ["/posts/\(key)": self.newPost,
+                                    "/users/\(Auth.auth().currentUser!.uid)/posts/\(key)/": self.newPost]
+                Database.database().reference().updateChildValues(childUpdates, withCompletionBlock: { (error, ref) in
+                    if error != nil{
+                        print(error?.localizedDescription)
+                        return
+                    }
+                    self.checkForTags(postID: key)
+                    
+                    self.makePostTextView.textColor = UIColor.darkGray
+                    print("This never prints in the console")
+                    self.postPlayer?.url = nil
+                    self.makePostImageView.image = nil
+                    self.makePostView.isHidden = true
+                    self.cancelPostButton.isHidden = true
+                    SwiftOverlays.removeAllBlockingOverlays()
+                    self.performSegue(withIdentifier: "PostToFeed", sender: self)
+                    
+                })
+            }
+        } else {
+            if self.makePostTextView.hasText == false || self.makePostTextView.text == "Write a caption..." || self.makePostTextView.text == "What's going on?" || self.makePostTextView.text == "" {
+                let alert = UIAlertController(title: "Missing Info", message: "You cannot make an empty post.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                SwiftOverlays.removeAllBlockingOverlays()
+                return
+            }
+            newPost!["posterUID"] = Auth.auth().currentUser!.uid
+            newPost!["posterName"] = self.curUser.username
+            print("cUpP: \(curUser.profPic!)")
+            newPost!["posterPicURL"] = curUser.profPic
+            
+            self.newPost!["comments"] = [["x":"x"]]
+            newPost!["likes"] = [["x":"x"]]
+            newPost!["favorites"] = [["x":"x"]]
+            newPost!["shares"] = [["x":"x"]]
+            if self.curCatsAdded == nil || self.curCatsAdded.count == 0{
+                curCatsAdded.append("Other")
+            }
+            self.newPost!["categories"] = self.curCatsAdded
+            
+            newPost!["postText"] = self.makePostTextView.text
+            
+            self.newPost!["datePosted"] = Date().description
+            let key = Database.database().reference().child("posts").childByAutoId().key
+            self.newPost!["postID"] = key
+            print("self.cityInPost: \(self.city)")
+            self.newPost!["city"] = self.curCityLabel.text
+            let childUpdates = ["/posts/\(key)": self.newPost,
+                                "/users/\(Auth.auth().currentUser!.uid)/posts/\(key)/": self.newPost]
+            Database.database().reference().updateChildValues(childUpdates, withCompletionBlock: { (error, ref) in
+                if error != nil{
+                    print(error?.localizedDescription)
+                    return
+                }
+                self.checkForTags(postID: key)
+                
+                self.makePostTextView.textColor = UIColor.darkGray
+                print("This never prints in the console")
+                self.postPlayer?.url = nil
+                self.makePostImageView.image = nil
+                self.makePostView.isHidden = true
+                self.cancelPostButton.isHidden = true
+                SwiftOverlays.removeAllBlockingOverlays()
+                
+                self.performSegue(withIdentifier: "PostToFeed", sender: self)
+            })
+        }
+        DispatchQueue.main.async{
+            self.makePostTextView.frame = self.picPostTextViewPos!
+            self.addToCatIconButton.frame = self.ogCat1Pos
+            self.addToCategoryButton.frame = self.ogCat2Pos
+            self.curCatsLabel.frame = self.ogCat3Pos
+            self.makePostImageView.isHidden = false
+            self.postPlayer?.view.isHidden = true
+            self.cityData = nil
+
+        }
+    }
+    @IBAction func postSuccButtonPressed(_ sender: Any) {
+        self.curCityLabel.text = ""
+        for cell in self.addCatCollect.visibleCells{
+            let tempCell = cell as! PostCatSearchCell
+            tempCell.catLabel.textColor = UIColor.black
+        }
+        self.curCatsAdded.removeAll()
+        self.curCatsLabel.text = ""
+        succesfulPostView.isHidden = true
+        
+    }
+    @IBAction func swipeHandler(_ gestureRecognizer : UISwipeGestureRecognizer) {
+        if gestureRecognizer.state == .ended {
+            // Perform action.
+            print("swipeRight: \(prevScreen)")
+            if prevScreen == "feed"{
+                performSegue(withIdentifier: "PostToFeed", sender: self)
+            }
+            if prevScreen == "profile"{
+                performSegue(withIdentifier: "PostToProfile", sender: self)
+            }
+            
+            if prevScreen == "search"{
+                performSegue(withIdentifier: "PostToSearch", sender: self)
+            }
+            if prevScreen == "notifications"{
+                performSegue(withIdentifier: "PostToNotifications", sender: self)
+            }
+        }
+    }
+    
     func removeCat(catLabel: String) {
         print("inremoveDel2")
         var i = 0
@@ -84,27 +681,6 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
             
         }
     }
-    
-    
-    @IBOutlet weak var tagSearchBar: UISearchBar!
-    @IBOutlet weak var addCat3TextPos: UIView!
-    @IBOutlet weak var addCat2TextPos: UIView!
-    @IBOutlet weak var addCat1TextPos: UIView!
-    @IBOutlet weak var whiteShadeView: UIView!
-    @IBOutlet weak var curCatsLabel: UILabel!
-    
-    @IBOutlet weak var shadeView2: UIView!
-    @IBOutlet weak var shadeView1: UIView!
-    var catLabels = ["Abs","Arms","Back","Body Building","Cardio","Chest","Crossfit", "Legs","Nutrition", "Shoulders","Sports","Stretching","Speed & Agility"]
-    
-    var placeAddress = String()
-    var place: GMSPlace?
-    var catLabelsRefined = [String]()
-    var prevScreen = String()
-    
-    @IBOutlet weak var sportsCollect: UICollectionView!
-    @IBOutlet weak var sportsView: UIView!
-    var catSportsData = ["Soccer","Football","Lacrosse", "Track & Field", "Tennis","Baseball","Swimming","Basketball","Rock Climbing","Softball","Golf","Ice Hockey","Boxing","Cycling","Rugby","MMA","Volleyball"]
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
          if collectionView == sportsCollect{
             return catSportsData.count
@@ -190,51 +766,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
         
     }
     var containsSport = false
-    @IBAction func doneWithSportsButtonPressed(_ sender: Any) {
-        //var count = 0
-        containsSport = false
-        for row in 0...self.sportsCollect.numberOfItems(inSection: 0) - 1
-        {
-            let indexPath = IndexPath(row: row, section: 0)
-            
-            print("indexPatht:\(indexPath)")
-            
-            sportsCollect.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition(), animated: true)
-            if let cell = getCell(indexPath) {
-                if (cell.catSportLabel.textColor == UIColor.red) {
-                    containsSport = true
-                    
-                    print("sportText: \((sportsCollect.cellForItem(at: indexPath as IndexPath) as! PostCatSearchSportsCell).catSportLabel.text!)")
-                    
-                    curCatsData.append((sportsCollect.cellForItem(at: indexPath as IndexPath) as! PostCatSearchSportsCell).catSportLabel.text!)
-                    
-                    
-                }
-            }
-            }
-        
-        if containsSport == true {
-            for cell in addCatCollect.visibleCells{
-                if (cell as! PostCatSearchCell).catLabel.text == "Sports"{
-                    (cell as! PostCatSearchCell).catLabel.textColor = UIColor.red
-                }
-            }
-        } else {
-            for cell in addCatCollect.visibleCells{
-                if (cell as! PostCatSearchCell).catLabel.text == "Sports"{
-                    (cell as! PostCatSearchCell).catLabel.textColor = UIColor.black
-                }
-            }
-            for data in curCatsData{
-                if catSportsData.contains(data){
-                    curCatsData.remove(at: curCatsData.index(of: data)!)
-                }
-            }
-        }
-            
-        //print("curCatsAdded: \(curCatsAdded)")
-        sportsView.isHidden = true
-    }
+    
     func getCell(_ indexPath: IndexPath) -> PostCatSearchSportsCell? {
         sportsCollect.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.centeredHorizontally, animated: false)
         var cell = sportsCollect.cellForItem(at: indexPath) as? PostCatSearchSportsCell
@@ -251,16 +783,9 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
         }
         return cell
     }
-    
-    @IBOutlet weak var tagPeopleLabel: UILabel!
-    
+
     var selectedSports = [String]()
     var taggedFriends = [[String:Any]]()
-    @IBOutlet weak var doneWithSportsButton: UIButton!
-    
-    
-    
-    @IBOutlet weak var tagView: UIView!
     var curCatCount = 0
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == tagCollect{
@@ -277,18 +802,15 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
             if containsUid == false{
                  taggedFriends.append(findFriendsData[indexPath.row] as! [String:Any])
             } else {
-               // cell.backgroundColor = UIColor.white
-                
-                
+
                 taggedFriends.remove(at: count)
             }
- 
-            print("taggedFriends: \(taggedFriends)")
+            //print("taggedFriends: \(taggedFriends)")
             taggedString = ""
             for dict in taggedFriends{
                 taggedString = taggedString + " " + (dict["realName"] as! String) + ","
             }
-            print("taggedString: \(taggedString)")
+            //print("taggedString: \(taggedString)")
             tagPeopleLabel.text = taggedString
             tagView.isHidden = true
             postButton.isHidden = false
@@ -376,7 +898,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
         
     }
    
-    @IBOutlet weak var layout: UICollectionViewFlowLayout!
+    
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == curCatsCollect{
            
@@ -406,303 +928,18 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
     
     
     
-    var selectedCellsArr = [PostCatSearchCell]()
-    
-    @IBOutlet weak var picViewLine1: UIView!
-    @IBOutlet weak var picViewLine2: UIView!
-    @IBOutlet weak var picViewLine3: UIView!
-    
-    
-    @IBOutlet weak var addCatView: UIView!
-    
-    @IBOutlet weak var addCatCollect: UICollectionView!
-    var picPostTextViewPos: CGRect?
-    
-    @IBOutlet weak var textPostTextViewPos: UIView!
-    @IBOutlet weak var posterPicTextPos: UIView!
-    
-    @IBOutlet weak var tabBar: UITabBar!
-    @IBOutlet weak var postText: UIView!
-    @IBOutlet weak var postPic: UIView!
-    
-    @IBOutlet weak var picVidButton: UIButton!
-    @IBOutlet weak var picVidSmallFrame: UIView!
-    @IBOutlet weak var addPicButton: UIButton!
-    @IBAction func addPicTouched(_ sender: AnyObject) {
-        currentPicker = "photo"
-        
-        let picker = YPImagePicker()
-        
-        self.postType = "pic"
-        picker.didFinishPicking { [unowned picker] items, _ in
-            if let photo = items.singlePhoto {
-                print(photo.fromCamera) // Image source (camera or library)
-                print(photo.image) // Final image selected by the user
-                print(photo.originalImage) // original image selected by the user, unfiltered
-                print(photo.modifiedImage) // Transformed image, can be nil
-                print(photo.exifMeta) // Print exif meta data of original image.
-                self.makePostView.isHidden = false
-                self.cancelPostButton.isHidden = false
-                self.makePostImageView.image = photo.image
-            }
-            picker.dismiss(animated: true, completion: nil)
-        }
-        present(picker, animated: true, completion: nil)
-        
-    }
-    
-    @IBOutlet weak var catTopLabel: UILabel!
-    
-    
-    var extended = false
-    @IBOutlet weak var picButtonPositionOut: UIView!
-    @IBAction func picVidPressed(_ sender: Any) {
-        startLocationManager()
-        postLine.isHidden = true
-        picViewLine1.isHidden = false
-        picViewLine2.isHidden = false
-        picViewLine3.isHidden = false
-        //catTopLabel.isHidden = true
-        
-                var config = YPImagePickerConfiguration()
-                config.screens = [.library, .video]
-                config.library.mediaType = .photoAndVideo
-        
-        
-                
-                let picker = YPImagePicker(configuration: config)
-                picker.didFinishPicking { [unowned picker] items, cancelled in
-                    
-                    if cancelled {
-                        print("Picker was canceled")
-                        picker.dismiss(animated: true, completion: nil)
-                        return
-                    }
-                    
-                    if let firstItem = items.first {
-                        switch firstItem {
-                        case .photo(let photo):
-                            if let photo = items.singlePhoto {
-                                print(photo.fromCamera) // Image source (camera or library)
-                                print(photo.image) // Final image selected by the user
-                                print(photo.originalImage) // original image selected by the user, unfiltered
-                                print(photo.modifiedImage) // Transformed image, can be nil
-                                print(photo.exifMeta) // Print exif meta data of original image.
-                                self.makePostView.isHidden = false
-                                self.cancelPostButton.isHidden = false
-                                // var //tempImage = photo.image.
-                                self.makePostImageView.image = photo.image
-                                self.postType = "pic"
-                                
-                            }
-                        case .video(let video):
-                            if let video = items.singleVideo {
-                                print(video.fromCamera)
-                                print(video.thumbnail)
-                                print(video.url)
-                                self.makePostView.isHidden = false
-                                self.cancelPostButton.isHidden = false
-                                self.postPlayer?.url = video.url
-                                let videoURL = video.url as! NSURL
-                                do {
-                                    let video1 = try NSData(contentsOf: videoURL as URL, options: .mappedIfSafe)
-                                    self.vidData = video1
-                                    self.postType = "vid"
-                                } catch {
-                                    print(error)
-                                    return
-                                }
-                            }
-                        }
-                         picker.dismiss(animated: true, completion: nil)
-                    }
-                }
-                present(picker, animated: true, completion: nil)
-        
-    }
-    var ogVidPosit = CGRect()
-    var ogPicPosit = CGRect()
-    var ogPicVidPosit = CGRect()
-    var currentPicker = String()
-    let picker = UIImagePickerController()
-    let imagePicker = UIImagePickerController()
-    var curCatsAdded = [String]()
-    var taggedString = String()
-    @IBAction func backFromTag(_ sender: Any) {
-        
-        
-    }
 
 
-    @IBAction func backFromTheCat(_ sender: Any) {
-        
-        
-    }
-    @IBAction func backFuq(_ sender: Any){
-        addCatView.isHidden = true
-        cancelPostButton.isHidden = false
-        postButton.isHidden = false
-    }
+    
+    
 
-    var curString = ""
-    @IBAction func backToPostPressed(_ sender: Any) {
-       // DispatchQueue.main.async{
-        print("curCatsAdded: \(self.curCatsAdded), curCatsData: \(self.curCatsData), selectedCellsArr: \(self.selectedCellsArr)")
-       //add for loop here that loops through sports collect and checks if red text
-        curCatsData = Array(Set(curCatsData))
-        addCatView.isHidden = true
-        var catLabelsSorted = catLabels.sorted { $0.localizedCaseInsensitiveCompare($1) == ComparisonResult.orderedAscending }
-        
-        catLabelsRefined = catLabelsSorted
-        addCatCollect.reloadData()
-        curCatsCollect.reloadData()
-        postButton.isHidden = false
-        cancelPostButton.isHidden = false
-        makePostTextView.resignFirstResponder()
-        
-        
-    }
-    @IBOutlet weak var backToPostButton: UIButton!
-    @IBOutlet weak var tagPeopleButton: UIButton!
-    @IBOutlet weak var tagPeopleButtonIcon: UIButton!
-    @IBAction func tagPeopleButtonPressed(_ sender: Any) {
-        postButton.isHidden = true
-        tagView.isHidden = false
-        
-    }
-    //@IBOutlet weak var addToCatBigButton: UIButton!
-    @IBOutlet weak var addToCategoryLabel: UILabel!
-    @IBOutlet weak var addToCatIconButton: UIButton!
-    @IBOutlet weak var addToCategoryButton: UIButton!
-    @IBAction func addToCategoryButtonPressed(_ sender: Any) {
-        addCatView.isHidden = false
-        postButton.isHidden = true
-        
-        //cancelPostButton.setTitle("Back", for: .normal)
-        cancelPostButton.isHidden = true
-        curCatsLabel.text = ""
-        curCatsAdded.removeAll()
-        
-        
-        
-        
-        
-    }
     
     
-    @IBOutlet weak var addLocationIcon: UIButton!
-    
-    @IBOutlet weak var shareIconButton: UIButton!
-    @IBOutlet weak var shareButton: UIButton!
-    @IBAction func shareButtonPressed(_ sender: Any) {
-    }
-    @IBAction func textPostPressed(_ sender: Any) {
-        postLine.isHidden = true
-        picViewLine1.isHidden = true
-        picViewLine2.isHidden = true
-        picViewLine3.isHidden = true
-        
-        startLocationManager()
-        self.postType = "text"
-        addToCategoryLabel.isHidden = true
-        addToCategoryButton.isHidden = true
-        self.addToCategoryLabel.isHidden = true
-        makePostTextView.delegate = self
-        
-        makePostTextView.selectAll(nil)
-        
-        UIView.animate(withDuration: 0.5, animations: {
-            self.tagPeopleButton.isHidden = true
-            self.tagPeopleButtonIcon.isHidden = true
-            //self.shareButton.isHidden = true
-            //self.shareIconButton.isHidden = true
-            self.addToCatIconButton.isHidden = true
-            self.addToCategoryLabel.isHidden = true
-            self.addToCategoryButton.isHidden = true
-            self.curCatsLabel.isHidden = true
-            
-            self.curCatsLabel.isHidden = true
-            self.makePostTextView.frame = self.textPostTextViewPos.frame
-            self.addToCatIconButton.frame = self.addCat1TextPos.frame
-            self.addToCategoryButton.frame = self.addCat2TextPos.frame
-            self.curCatsLabel.frame = self.addCat3TextPos.frame
-            self.makePostTextView.text = "What's going on?"
-            self.cancelPostButton.isHidden = false
-            
-            
-            self.makePostView.isHidden = false
-            self.makePostImageView.isHidden = true
-            self.postPlayer?.view.isHidden = true
-            self.makePostView.backgroundColor = UIColor.white
-            self.postText.isHidden = true
-            self.postPic.isHidden = true
-            self.makePostTextView.becomeFirstResponder()
-            
-            
-        })
-       
-    }
     override func viewDidDisappear(_ animated: Bool) {
         makePostTextView.resignFirstResponder()
     }
-    @IBOutlet weak var addVidButton: UIButton!
     
-    @IBOutlet weak var posterPicIV: UIImageView!
-    
-    @IBOutlet weak var postLine: UIView!
-    
-    @IBOutlet weak var vidButtonPositionOut: UIView!
-    @IBAction func chooseVidFromPhoneSelected(_ sender: AnyObject) {
-       /* currentPicker = "vid"
-        picker.mediaTypes = ["public.movie"]
-        self.postType = "vid"
-        
-        present(picker, animated: true, completion: nil)
-       // makePostView.isHidden = false*/
-        // Here we configure the picker to only show videos, no photos.
-        self.postType = "vid"
-        
-       // makePostTextView.layer.borderColor = UIColor.lightGray.cgColor
-        addToCategoryButton.isHidden = false
-        addToCategoryLabel.isHidden = false
-        
-        var config = YPImagePickerConfiguration()
-        config.screens = [.library, .video]
-        config.library.mediaType = .photoAndVideo
-        
-        let picker = YPImagePicker(configuration: config)
-        picker.didFinishPicking { [unowned picker] items, _ in
-            if let video = items.singleVideo {
-                print(video.fromCamera)
-                print(video.thumbnail)
-                print(video.url)
-                self.makePostView.isHidden = false
-                self.cancelPostButton.isHidden = false
-                self.postPlayer?.url = video.url
-                let videoURL = video.url as! NSURL
-                do {
-                    let video1 = try NSData(contentsOf: videoURL as URL, options: .mappedIfSafe)
-                    self.vidData = video1
-                } catch {
-                    print(error)
-                    return
-                }
-                
-            }
-            picker.dismiss(animated: true, completion: nil)
-        }
-        present(picker, animated: true, completion: nil)
-    }
-   // var vc2 = PostViewController()
-    var curCatsData = [String]()
-    @IBOutlet weak var curCatsCollect: UICollectionView!
-    
-    var ogCat1Pos = CGRect()
-    var ogCat2Pos = CGRect()
-    var ogCat3Pos = CGRect()
-    var newPost: [String:Any]?
-    
-    @IBOutlet weak var topLineCat: UIView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         //sportsCollect.isPrefetchingEnabled = false
@@ -950,356 +1187,16 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
     }
     var postPlayer: Player?
     
-    @IBOutlet weak var addLocationButton: UIButton!
-    @IBAction func addLocationPressed(_ sender: Any) {
-        //print(self.city)
-       //self.cityData = self.city
-        //self.curCityLabel.text = self.city
-        //locationManager.requestLocation()
-        let autocompleteController = GMSAutocompleteViewController()
-        autocompleteController.delegate = self
-        present(autocompleteController, animated: true, completion: nil)
-    }
-    @IBOutlet weak var textPostPressedLine: UIView!
-    @IBOutlet weak var textPostPressedLabel: UILabel!
     
-    @IBOutlet weak var curCityLabel: UILabel!
-    @IBAction func cancelPostButtonPressed(_ sender: Any) {
-        
-        if tagView.isHidden == false{
-            postButton.isHidden = false
-            tagView.isHidden = true
-            tagSearchBar.resignFirstResponder()
-        } else {
-           postLine.isHidden = false //makePostTextView.resignFirstResponder()
-        makePostImageView.image = nil
-        postPlayer?.url = nil
-        taggedFriends.removeAll()
-        postText.isHidden = false
-        postPic.isHidden = false
-        self.addPicButton.frame = self.ogPicPosit
-        self.addVidButton.frame = self.ogVidPosit
-        self.picVidButton.frame = self.ogPicVidPosit
-        self.addVidButton.alpha = 0.0
-        self.addPicButton.alpha = 0.0
-        self.picVidButton.alpha = 1.0
-       // textPostPressedLine.isHidden = true
-        //textPostPressedLabel.isHidden = true
-        makePostImageView.isHidden = false
-        cancelPostButton.isHidden = true
-        makePostView.backgroundColor = UIColor.white
-        makePostTextView.text = "Write a caption..."
-        self.addToCatIconButton.isHidden = false
-        self.addToCategoryButton.isHidden = false
-        self.addToCategoryLabel.isHidden = false
-        self.curCatsLabel.text = ""
-        self.curCatsLabel.isHidden = false
-        makePostTextView.frame = picPostTextViewPos!
-        addToCatIconButton.frame = ogCat1Pos
-        addToCategoryButton.frame = ogCat2Pos
-        curCatsLabel.frame = ogCat3Pos
-        makePostTextView.textColor = UIColor.darkGray
-        self.tagPeopleButton.isHidden = false
-        self.tagPeopleButtonIcon.isHidden = false
-        //self.shareButton.isHidden = false
-        //self.shareIconButton.isHidden = false
-       
-        self.cityData = nil
-        self.curCityLabel.text = ""
-        
-        
-            
-        
-        
-        self.extended = false
-        makePostView.isHidden = true
-        }
-        
-    }
-    @IBOutlet weak var succesfulPostView: UIView!
-    @IBOutlet weak var cancelPostButton: UIButton!
+    
     var postType: String?
     var curUser = User()
-    @IBAction func postButtonPressed(_ sender: Any) {
-    
-        
-        SwiftOverlays.showBlockingWaitOverlayWithText("Posting to Feed...")
-        //makePostView.backgroundColor = UIColor.black
-        postText.isHidden = false
-        postPic.isHidden = false
-        
-        
-        newPost = [String: Any]()
-        if postType == "pic"{
-            //newPost!["postPic"] = self.makePostImageView.image!
-            newPost!["posterUID"] = Auth.auth().currentUser!.uid
-            newPost!["posterName"] = self.curUser.username
-            print("cUpP2: \(curUser.profPic!)")
-            newPost!["posterPicURL"] = curUser.profPic!
-            self.newPost!["likes"] = [["x":"x"]]
-            self.newPost!["favorites"] = [["x":"x"]]
-            self.newPost!["shares"] = [["x":"x"]]
-            self.newPost!["comments"] = [["x":"x"]]
-            var finalTag = [[String:Any]]()
-            
-            for dict in taggedFriends{
-                var temp = dict as! [String:Any]
-                temp.removeValue(forKey: "profPic")
-                finalTag.append(temp)
-            }
-            
-            self.newPost!["tagged"] = finalTag
-            if self.curCatsData == nil || self.curCatsData.count == 0{
-                curCatsData.append("Other")
-            }
-            self.newPost!["categories"] = self.curCatsData
-            self.newPost!["city"] = self.curCityLabel.text
-            if(self.place == nil){
-                print("no place coord")
-            } else {
-            self.newPost!["postCoord"] = ["lat":Double((self.place?.coordinate.latitude)!),"long": Double((self.place?.coordinate.longitude)!)]
-            }
-          
-            //let curLoc = locationManager.location
-            //newPost![location]
-            if self.makePostTextView.text != "Write a caption..."{
-                newPost!["postText"] = self.makePostTextView.text
-            }
-            
-            let imageName = NSUUID().uuidString
-            let storageRef = Storage.storage().reference().child("FeedPosts").child("ImagePosts").child(Auth.auth().currentUser!.uid).child("\(imageName).jpg")
-            print("makePostImageView: \(self.makePostImageView.image!)")
-            if let uploadData = UIImageJPEGRepresentation(self.makePostImageView.image!, 0.1) {
-                storageRef.putData(uploadData, metadata: nil, completion: { (metadata, error) in
-                    if error != nil {
-                        print(error!)
-                        return  };
-                    print("makePostImageView: \(self.makePostImageView.image!)")
-
-                    self.newPost!["postPic"] = (metadata?.downloadURL()?.absoluteString)!
-                    
-            self.newPost!["datePosted"] = Date().description
-                    
-                
-                    
-                    
-            let key = Database.database().reference().child("posts").childByAutoId().key
-            self.newPost!["postID"] = key
-            let childUpdates = ["/posts/\(key)": self.newPost,
-                                "/users/\(Auth.auth().currentUser!.uid)/posts/\(key)/": self.newPost]
-                    Database.database().reference().updateChildValues(childUpdates, withCompletionBlock: { (error, ref) in
-                        if error != nil{
-                            print(error?.localizedDescription)
-                            return
-                        }
-                        self.checkForTags(postID: key)
-                        
-                        
-                        self.makePostTextView.textColor = UIColor.darkGray
-                        print("This never prints in the console")
-                        self.postPlayer?.url = nil
-                        self.makePostImageView.image = nil
-                        self.makePostView.isHidden = true
-                        self.cancelPostButton.isHidden = true
-                        
-                        self.addToCatIconButton.isHidden = false
-                        self.addToCategoryButton.isHidden = false
-                        self.addToCategoryLabel.isHidden = false
-                    
-                        self.curCatsLabel.text = ""
-                        self.curCatsLabel.isHidden = false
-                        self.makePostTextView.frame = self.picPostTextViewPos!
-                        self.addToCatIconButton.frame = self.ogCat1Pos
-                        self.addToCategoryButton.frame = self.ogCat2Pos
-                        self.curCatsLabel.frame = self.ogCat3Pos
-                        self.tagPeopleButton.isHidden = false
-                        self.tagPeopleButtonIcon.isHidden = false
-                        //self.shareButton.isHidden = false
-                        //self.shareIconButton.isHidden = false
-                        SwiftOverlays.removeAllBlockingOverlays()
-                         self.performSegue(withIdentifier: "PostToFeed", sender: self)
-                       // }
-                       
-
-                
-            
-                    })
-                })
-            }
-            
-            
-        } else if postType == "vid" {
-            print("uploadingVid")
-            newPost!["posterUID"] = Auth.auth().currentUser!.uid
-            newPost!["posterName"] = self.curUser.username
-            if self.curCatsAdded == nil || self.curCatsAdded.count == 0{
-                curCatsAdded.append("Other")
-            }
-            self.newPost!["categories"] = self.curCatsAdded
-            print("cUpP3: \(curUser.profPic!)")
-            newPost!["posterPicURL"] = curUser.profPic!
-            self.newPost!["city"] = self.curCityLabel.text
-            if self.makePostTextView.text != "Write a caption..."{
-                newPost!["postText"] = self.makePostTextView.text
-            }
-                let videoName = NSUUID().uuidString
-                
-                let storageRef = Storage.storage().reference().child("FeedPosts").child("VideoPosts").child(Auth.auth().currentUser!.uid).child("\(videoName).mov")
-                
-                var videoRef = storageRef.fullPath
-                
-                let uploadMetadata = StorageMetadata()
-                
-                uploadMetadata.contentType = "video/quicktime"
-                
-                _ = storageRef.putData(self.vidData! as Data, metadata: uploadMetadata){(metadata, error) in
-                    if(error != nil){
-                        print("got an error: \(error)") }
-                    print("metaData: \(metadata)")
-                    print("metaDataURL: \((metadata?.downloadURL()?.absoluteString)!)")
-                    if(self.place == nil){
-                        print("no place coord")
-                    } else {
-                    self.newPost!["postCoord"] = ["lat":Double((self.place?.coordinate.latitude)!),"long": Double((self.place?.coordinate.longitude)!)]
-                    }
-                    self.newPost!["postVid"] = (metadata?.downloadURL()?.absoluteString)!
-                    self.newPost!["datePosted"] = Date().description
-                    self.newPost!["likes"] = [["x":"x"]]
-                    self.newPost!["favorites"] = [["x":"x"]]
-                    self.newPost!["shares"] = [["x":"x"]]
-                    self.newPost!["comments"] = [["x":"x"]]
-                    //self.newPost!["categories"] = self.curCatsAdded
-                    self.newPost!["posterPicURL"] = self.curUser.profPic!
-                    let key = Database.database().reference().child("posts").childByAutoId().key
-                    self.newPost!["postID"] = key
-                    
-                    let childUpdates = ["/posts/\(key)": self.newPost,
-                                        "/users/\(Auth.auth().currentUser!.uid)/posts/\(key)/": self.newPost]
-                    Database.database().reference().updateChildValues(childUpdates, withCompletionBlock: { (error, ref) in
-                        if error != nil{
-                            print(error?.localizedDescription)
-                            return
-                        }
-                        self.checkForTags(postID: key)
-                        
-                        self.makePostTextView.textColor = UIColor.darkGray
-                        print("This never prints in the console")
-                        self.postPlayer?.url = nil
-                        self.makePostImageView.image = nil
-                        self.makePostView.isHidden = true
-                        self.cancelPostButton.isHidden = true
-                        SwiftOverlays.removeAllBlockingOverlays()
-                        self.performSegue(withIdentifier: "PostToFeed", sender: self)
-                         
-                    })
-                    
-                    
-                   
-                }
-        } else {
-            if self.makePostTextView.hasText == false || self.makePostTextView.text == "Write a caption..." || self.makePostTextView.text == "What's going on?" || self.makePostTextView.text == "" {
-                let alert = UIAlertController(title: "Missing Info", message: "You cannot make an empty post.", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
-                SwiftOverlays.removeAllBlockingOverlays()
-                return
-            }
-            newPost!["posterUID"] = Auth.auth().currentUser!.uid
-            newPost!["posterName"] = self.curUser.username
-            print("cUpP: \(curUser.profPic!)")
-            newPost!["posterPicURL"] = curUser.profPic
-          
-            self.newPost!["comments"] = [["x":"x"]]
-            newPost!["likes"] = [["x":"x"]]
-            newPost!["favorites"] = [["x":"x"]]
-            newPost!["shares"] = [["x":"x"]]
-            if self.curCatsAdded == nil || self.curCatsAdded.count == 0{
-                curCatsAdded.append("Other")
-            }
-            self.newPost!["categories"] = self.curCatsAdded
-           
-                newPost!["postText"] = self.makePostTextView.text
-            
-            self.newPost!["datePosted"] = Date().description
-            let key = Database.database().reference().child("posts").childByAutoId().key
-            self.newPost!["postID"] = key
-            print("self.cityInPost: \(self.city)")
-            self.newPost!["city"] = self.curCityLabel.text
-            let childUpdates = ["/posts/\(key)": self.newPost,
-                                "/users/\(Auth.auth().currentUser!.uid)/posts/\(key)/": self.newPost]
-            Database.database().reference().updateChildValues(childUpdates, withCompletionBlock: { (error, ref) in
-                if error != nil{
-                    print(error?.localizedDescription)
-                    return
-                }
-                self.checkForTags(postID: key)
-                
-                self.makePostTextView.textColor = UIColor.darkGray
-                print("This never prints in the console")
-                self.postPlayer?.url = nil
-                self.makePostImageView.image = nil
-                self.makePostView.isHidden = true
-                self.cancelPostButton.isHidden = true
-                SwiftOverlays.removeAllBlockingOverlays()
-                
-                self.performSegue(withIdentifier: "PostToFeed", sender: self)
-                    
-            
-                
-            })
-        }
-        DispatchQueue.main.async{
-            self.makePostTextView.frame = self.picPostTextViewPos!
-            self.addToCatIconButton.frame = self.ogCat1Pos
-            self.addToCategoryButton.frame = self.ogCat2Pos
-            self.curCatsLabel.frame = self.ogCat3Pos
-            self.makePostImageView.isHidden = false
-            self.postPlayer?.view.isHidden = true
-            self.cityData = nil
-            
-            
-        }
-        
-    }
     
     
-    @IBOutlet weak var postButton: UIButton!
-    @IBOutlet weak var makePostView: UIView!
     
-    @IBOutlet weak var makePostImageView: UIImageView!
-    @IBAction func postSuccButtonPressed(_ sender: Any) {
-        self.curCityLabel.text = ""
-        for cell in self.addCatCollect.visibleCells{
-            let tempCell = cell as! PostCatSearchCell
-            tempCell.catLabel.textColor = UIColor.black
-        }
-        self.curCatsAdded.removeAll()
-        self.curCatsLabel.text = ""
-        succesfulPostView.isHidden = true
-        
-    }
     
-    @IBOutlet weak var makePostTextView: UITextView!
     
-    @IBAction func swipeHandler(_ gestureRecognizer : UISwipeGestureRecognizer) {
-        if gestureRecognizer.state == .ended {
-            // Perform action.
-            print("swipeRight: \(prevScreen)")
-            if prevScreen == "feed"{
-                performSegue(withIdentifier: "PostToFeed", sender: self)
-            }
-            if prevScreen == "profile"{
-                performSegue(withIdentifier: "PostToProfile", sender: self)
-            }
-           
-            if prevScreen == "search"{
-                performSegue(withIdentifier: "PostToSearch", sender: self)
-            }
-            if prevScreen == "notifications"{
-                performSegue(withIdentifier: "PostToNotifications", sender: self)
-            }
-        }
-    }
+    
     
     // MARK: - Navigation
 

@@ -11,18 +11,25 @@ import FirebaseAuth
 import FirebaseDatabase
 
 class MessagesTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
-    
-    @IBOutlet weak var selectRecipLabel: UILabel!
-    
     var backFromMessage = false
     var selectedMessageKey: String?
     var newMessage = false
+    var curUID = String()
+    var tableViewData = [[String:Any]]()
+    var suggestedTableViewData = [[String:Any]]()
+    var myRealName = String()
+    var prevScreen = String()
+    var recipientID = String()
+    var curItemKey = String()
+    var selectedRecip = String()
+    var searchActive = Bool()
+    var curMessageKey = String()
+    var allSuggested = [String]()
+    @IBOutlet weak var selectRecipLabel: UILabel!
     @IBOutlet weak var suggestedLabel: UILabel!
     @IBOutlet weak var messagesSearchBar: UISearchBar!
     @IBOutlet weak var allMessagesTableView: UITableView!
     @IBAction func rightBarButtonPressed(_ sender: Any) {
-        
-        
         selectRecipLabel.isHidden = false
         topLabel.isHidden = true
         
@@ -30,11 +37,7 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
         newMessage = true
         messagesSearchBar.becomeFirstResponder()
         allMessagesTableView.reloadData()
-        
-        
     }
-    
-    var curUID = String()
     @IBAction func backPressed(_ sender: Any) {
         
         if newMessage == true{
@@ -131,9 +134,7 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    var tableViewData = [[String:Any]]()
-    //var newMessage = false
-    var suggestedTableViewData = [[String:Any]]()
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if(searchActive) {
             return self.suggestedTableViewData.count
@@ -141,10 +142,7 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
             return self.tableViewData.count
         }
     }
-    var myRealName = String()
-    var prevScreen = String()
-    var recipientID = String()
-    var curItemKey = String()
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if(searchActive) {
@@ -209,9 +207,7 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
         }
             
     }
-    var selectedRecip = String()
-    var searchActive = Bool()
-    var curMessageKey = String()
+    
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath){
         //performSegue to chatViewController
          if(searchActive) {
@@ -290,7 +286,7 @@ class MessagesTableViewController: UIViewController, UITableViewDelegate, UITabl
         searchActive = false;
     }
 
-    var allSuggested = [String]()
+    
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String){
         print("SB text did change: \(searchText)")
         
