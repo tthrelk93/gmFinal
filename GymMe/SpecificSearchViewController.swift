@@ -33,6 +33,7 @@ var myUName = String()
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        print("why")
         if self.prevScreen == "feed"{
            self.showWaitOverlay()
             

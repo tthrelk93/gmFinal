@@ -34,6 +34,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.enableAutoToolbar = true
        IQKeyboardManager.shared.shouldShowToolbarPlaceholder = false
        // IQKeyboardManager.shared.sho shouldHidePreviousNext = false
+       
+       
         GMSPlacesClient.provideAPIKey("AIzaSyDvw0LOBxWRxlY56O3sbE5nCqs3T3K1u-M")
         GMSServices.provideAPIKey("AIzaSyADVDZNEDAirfuVo92hECXnvCvTay8gXqo")
         //BITHockeyManager.shared().configure(withIdentifier: "APP_IDENTIFIER")

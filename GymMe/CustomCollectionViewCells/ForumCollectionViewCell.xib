@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -97,6 +97,12 @@
                             <action selector="actualLikeTopicPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="B8H-yi-Lgw"/>
                         </connections>
                     </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9IQ-E3-Hgt">
+                        <rect key="frame" x="75" y="57" width="257" height="23"/>
+                        <connections>
+                            <action selector="posterNameButtonPressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="TGO-Mq-NTs"/>
+                        </connections>
+                    </button>
                 </subviews>
             </view>
             <constraints>
@@ -110,11 +116,14 @@
                 <constraint firstItem="dUU-DY-mrA" firstAttribute="top" secondItem="EJZ-nV-v3J" secondAttribute="top" id="Afe-7v-XNm"/>
                 <constraint firstAttribute="bottom" secondItem="l7t-B0-4jy" secondAttribute="bottom" id="C4j-Mr-a7F"/>
                 <constraint firstItem="m7j-la-VtT" firstAttribute="top" secondItem="Df0-4F-mBZ" secondAttribute="bottom" constant="8" symbolic="YES" id="C6P-V8-H7I"/>
+                <constraint firstItem="9IQ-E3-Hgt" firstAttribute="top" secondItem="m7j-la-VtT" secondAttribute="top" id="CN5-8k-iVT"/>
                 <constraint firstItem="Bns-3N-zM8" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="Iqi-oT-Zmp"/>
+                <constraint firstItem="9IQ-E3-Hgt" firstAttribute="bottom" secondItem="m7j-la-VtT" secondAttribute="bottom" id="Kmi-tu-tuH"/>
                 <constraint firstItem="dUU-DY-mrA" firstAttribute="baseline" secondItem="EJZ-nV-v3J" secondAttribute="baseline" id="NnR-Ta-5ZW"/>
                 <constraint firstItem="dUU-DY-mrA" firstAttribute="leading" secondItem="Uz8-fY-1ks" secondAttribute="trailing" constant="5" id="Oni-5O-IsF"/>
                 <constraint firstItem="Uz8-fY-1ks" firstAttribute="leading" secondItem="EJZ-nV-v3J" secondAttribute="trailing" constant="14" id="PkQ-zq-6Ee"/>
                 <constraint firstItem="Df0-4F-mBZ" firstAttribute="leading" secondItem="nAY-nQ-6te" secondAttribute="trailing" constant="-4" id="Q00-ew-v4g"/>
+                <constraint firstItem="9IQ-E3-Hgt" firstAttribute="trailing" secondItem="m7j-la-VtT" secondAttribute="trailing" id="UYP-35-dYW"/>
                 <constraint firstItem="Df0-4F-mBZ" firstAttribute="trailing" secondItem="l7t-B0-4jy" secondAttribute="trailing" id="Zod-Gm-wdK"/>
                 <constraint firstItem="EJZ-nV-v3J" firstAttribute="top" secondItem="l7t-B0-4jy" secondAttribute="top" id="a9Q-Nt-lmC"/>
                 <constraint firstItem="Uz8-fY-1ks" firstAttribute="top" secondItem="EJZ-nV-v3J" secondAttribute="top" constant="-1" id="fIy-iN-04d"/>
@@ -124,6 +133,7 @@
                 <constraint firstItem="l7t-B0-4jy" firstAttribute="leading" secondItem="dUU-DY-mrA" secondAttribute="trailing" constant="8" symbolic="YES" id="hrj-a5-47u"/>
                 <constraint firstItem="dUU-DY-mrA" firstAttribute="bottom" secondItem="EJZ-nV-v3J" secondAttribute="bottom" id="ioA-YE-Ula"/>
                 <constraint firstAttribute="trailing" secondItem="m7j-la-VtT" secondAttribute="trailing" constant="20" id="kuJ-tl-cJ7"/>
+                <constraint firstItem="9IQ-E3-Hgt" firstAttribute="leading" secondItem="m7j-la-VtT" secondAttribute="leading" id="lfV-QN-ydE"/>
                 <constraint firstItem="hDr-T0-CXg" firstAttribute="leading" secondItem="Bns-3N-zM8" secondAttribute="leading" id="pDe-nM-hK4"/>
                 <constraint firstItem="hDr-T0-CXg" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="6" id="rCZ-Os-tkr"/>
                 <constraint firstItem="nAY-nQ-6te" firstAttribute="leading" secondItem="Bns-3N-zM8" secondAttribute="trailing" constant="9" id="sLd-BE-4Qu"/>
@@ -139,6 +149,7 @@
                 <outlet property="actualLikeTopic" destination="Uz8-fY-1ks" id="YJX-vA-jrq"/>
                 <outlet property="likeTopicButton" destination="Df0-4F-mBZ" id="obd-U7-hhR"/>
                 <outlet property="likesCountButton" destination="dUU-DY-mrA" id="okb-re-9SF"/>
+                <outlet property="posterNameButton" destination="9IQ-E3-Hgt" id="rFZ-aW-ppL"/>
                 <outlet property="posterNameLabel" destination="m7j-la-VtT" id="Hqf-8r-Tch"/>
                 <outlet property="posterPicButton" destination="hDr-T0-CXg" id="HA1-Tn-7jA"/>
                 <outlet property="posterPicImageView" destination="Bns-3N-zM8" id="DRY-Iy-hvN"/>
@@ -150,7 +161,7 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="favoritesUnfilled" width="40" height="40"/>
-        <image name="like" width="50" height="50"/>
+        <image name="favoritesUnfilled" width="20" height="20"/>
+        <image name="like" width="25" height="25"/>
     </resources>
 </document>

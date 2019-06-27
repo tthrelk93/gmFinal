@@ -55,6 +55,14 @@ class PostCatSearchSportsCell: UICollectionViewCell {
 class PostCatSearchCell: UICollectionViewCell {
     @IBOutlet weak var catLabel: UILabel!
     @IBOutlet weak var catCheck: UIImageView!
+    
+    @IBOutlet weak var sportsArrow: UIButton!
+    override func prepareForReuse(){
+        self.sportsArrow.isHidden = true
+        super.prepareForReuse()
+        
+       
+    }
 }
 
 class PostViewController: UIViewController, UITabBarDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UITextViewDelegate, CLLocationManagerDelegate, UICollectionViewDelegate,
@@ -87,7 +95,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
     
     @IBOutlet weak var shadeView2: UIView!
     @IBOutlet weak var shadeView1: UIView!
-    var catLabels = ["Abs","Arms","Back","Body Building","Cardio","Chest","Crossfit", "Legs","Nutrition", "Shoulders","Sports","Stretching","Speed and Agility"]
+    var catLabels = ["Abs","Arms","Back","Body Building","Cardio","Chest","Crossfit", "Legs","Nutrition", "Shoulders","Sports","Stretching","Speed & Agility"]
     
     var placeAddress = String()
     var place: GMSPlace?
@@ -96,7 +104,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
     
     @IBOutlet weak var sportsCollect: UICollectionView!
     @IBOutlet weak var sportsView: UIView!
-    var catSportsData = ["Soccer","Football","Lacrosse", "Track & Field", "Tennis","Baseball","Swimming","Basketball","Rock Climbing"]
+    var catSportsData = ["Soccer","Football","Lacrosse", "Track & Field", "Tennis","Baseball","Swimming","Basketball","Rock Climbing","Softball","Golf","Ice Hockey","Boxing","Cycling","Rugby","MMA","Volleyball"]
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
          if collectionView == sportsCollect{
             return catSportsData.count
@@ -161,6 +169,14 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
                 cell.catLabel.textColor = UIColor.black
             }
         cell.catLabel.text = catLabelsRefined[indexPath.row]
+            if catLabelsRefined[indexPath.row] == "Sports"{
+                cell.sportsArrow.isHidden = false
+                if containsSport == true{
+                    cell.catLabel.textColor = UIColor.red
+                } else {
+                    cell.catLabel.textColor = UIColor.black
+                }
+            }
         let border = CALayer()
         let width = CGFloat(1.0)
         border.borderColor = UIColor.lightGray.cgColor
@@ -173,28 +189,67 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
         }
         
     }
-    
+    var containsSport = false
     @IBAction func doneWithSportsButtonPressed(_ sender: Any) {
+        //var count = 0
+        containsSport = false
         for row in 0...self.sportsCollect.numberOfItems(inSection: 0) - 1
         {
             let indexPath = IndexPath(row: row, section: 0)
             
             print("indexPatht:\(indexPath)")
             
-            if ((sportsCollect.cellForItem(at: indexPath) as! PostCatSearchSportsCell).catSportLabel.textColor == UIColor.red) {
-               
-                print("sportText: \((sportsCollect.cellForItem(at: indexPath as IndexPath) as! PostCatSearchSportsCell).catSportLabel.text!)")
-            
-                
-                //selectedCellsArr.append(cell)
-                
-                curCatsData.append((sportsCollect.cellForItem(at: indexPath as IndexPath) as! PostCatSearchSportsCell).catSportLabel.text!)
-               
-                
+            sportsCollect.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition(), animated: true)
+            if let cell = getCell(indexPath) {
+                if (cell.catSportLabel.textColor == UIColor.red) {
+                    containsSport = true
+                    
+                    print("sportText: \((sportsCollect.cellForItem(at: indexPath as IndexPath) as! PostCatSearchSportsCell).catSportLabel.text!)")
+                    
+                    curCatsData.append((sportsCollect.cellForItem(at: indexPath as IndexPath) as! PostCatSearchSportsCell).catSportLabel.text!)
+                    
+                    
+                }
+            }
+            }
+        
+        if containsSport == true {
+            for cell in addCatCollect.visibleCells{
+                if (cell as! PostCatSearchCell).catLabel.text == "Sports"{
+                    (cell as! PostCatSearchCell).catLabel.textColor = UIColor.red
+                }
+            }
+        } else {
+            for cell in addCatCollect.visibleCells{
+                if (cell as! PostCatSearchCell).catLabel.text == "Sports"{
+                    (cell as! PostCatSearchCell).catLabel.textColor = UIColor.black
+                }
+            }
+            for data in curCatsData{
+                if catSportsData.contains(data){
+                    curCatsData.remove(at: curCatsData.index(of: data)!)
+                }
             }
         }
+            
         //print("curCatsAdded: \(curCatsAdded)")
         sportsView.isHidden = true
+    }
+    func getCell(_ indexPath: IndexPath) -> PostCatSearchSportsCell? {
+        sportsCollect.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.centeredHorizontally, animated: false)
+        var cell = sportsCollect.cellForItem(at: indexPath) as? PostCatSearchSportsCell
+        if cell == nil {
+            print("nil1")
+            sportsCollect.layoutIfNeeded()
+            cell = sportsCollect.cellForItem(at: indexPath) as? PostCatSearchSportsCell
+        }
+        if cell == nil {
+            print("nil2")
+            sportsCollect.reloadData()
+            sportsCollect.layoutIfNeeded()
+            cell = sportsCollect.cellForItem(at: indexPath) as? PostCatSearchSportsCell
+        }
+        return cell
     }
     
     @IBOutlet weak var tagPeopleLabel: UILabel!
@@ -270,7 +325,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
          } else {
         var cellSelected = collectionView.cellForItem(at: indexPath) as! PostCatSearchCell
             print("wtf: \(cellSelected.catLabel.text!)")
-        if (cellSelected.catLabel.text as! String) == "Sports"{
+        /*if (cellSelected.catLabel.text as! String) == "Sports"{
             if curCatCount == 6{
                 let alert = UIAlertController(title: "Maximum Categories", message: "You cannot add more than 6 categories to a post.", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
@@ -281,8 +336,8 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
                 sportsView.isHidden = false
                 return
             }
-        }
-        if cellSelected.catLabel.textColor == UIColor.red {
+        }*/
+        if cellSelected.catLabel.textColor == UIColor.red && cellSelected.catLabel.text != "Sports"{
             cellSelected.catLabel.textColor = UIColor.black
             var indexPa = IndexPath()
             var count = 0
@@ -299,7 +354,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
             
             
         } else {
-            if curCatCount == 6{
+            if curCatCount == 6 && cellSelected.catLabel.text != "Sports"{
                 //alert
                 let alert = UIAlertController(title: "Maximum Categories", message: "You cannot add more than 6 categories to a post.", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
@@ -307,9 +362,13 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
                
                 return
             } else {
+                if cellSelected.catLabel.text == "Sports"{
+                    sportsView.isHidden = false
+                } else {
                 curCatCount = curCatCount + 1
             cellSelected.catLabel.textColor = UIColor.red
             curCatsData.append(cellSelected.catLabel.text!)
+                }
             }
         }
             
@@ -336,6 +395,9 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
             return CGSize(width:width, height: 24)
         } else if collectionView == tagCollect {
             return CGSize(width: collectionView.frame.width - 20, height: 70)
+        } else if collectionView == sportsCollect {
+            return CGSize(width: collectionView.frame.width/2 - 10, height: 40)
+            
         } else {
             return CGSize(width: collectionView.frame.width - 20, height: 41)
         }
@@ -486,7 +548,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
     @IBAction func backToPostPressed(_ sender: Any) {
        // DispatchQueue.main.async{
         print("curCatsAdded: \(self.curCatsAdded), curCatsData: \(self.curCatsData), selectedCellsArr: \(self.selectedCellsArr)")
-       
+       //add for loop here that loops through sports collect and checks if red text
         curCatsData = Array(Set(curCatsData))
         addCatView.isHidden = true
         var catLabelsSorted = catLabels.sorted { $0.localizedCaseInsensitiveCompare($1) == ComparisonResult.orderedAscending }
@@ -525,10 +587,10 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
         
         
         
-        
     }
     
     
+    @IBOutlet weak var addLocationIcon: UIButton!
     
     @IBOutlet weak var shareIconButton: UIButton!
     @IBOutlet weak var shareButton: UIButton!
@@ -546,7 +608,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
         addToCategoryButton.isHidden = true
         self.addToCategoryLabel.isHidden = true
         makePostTextView.delegate = self
-        makePostTextView.becomeFirstResponder()
+        
         makePostTextView.selectAll(nil)
         
         UIView.animate(withDuration: 0.5, animations: {
@@ -574,6 +636,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
             self.makePostView.backgroundColor = UIColor.white
             self.postText.isHidden = true
             self.postPic.isHidden = true
+            self.makePostTextView.becomeFirstResponder()
             
             
         })
@@ -642,6 +705,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
     @IBOutlet weak var topLineCat: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        //sportsCollect.isPrefetchingEnabled = false
         doneWithSportsButton.layer.cornerRadius = 12
         doneWithSportsButton.layer.masksToBounds = true
         postPic.layer.shadowColor = UIColor.black.cgColor
@@ -692,6 +756,19 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
         tabBar.selectedItem = tabBar.items?[2]
         postPic.layer.cornerRadius = 15
         postText.layer.cornerRadius = 15
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: NSNotification.Name.UIKeyboardWillShow,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide),
+            name: NSNotification.Name.UIKeyboardWillHide,
+            object: nil
+        )
         
        // self.sportsCollect.register(UINib(nibName: "PostCatSearchSportsCell", bundle: nil), forCellWithReuseIdentifier: "PostCatSearchSportsCell")
         tagCollect.register(UINib(nibName: "LikedByCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "LikedByCollectionViewCell")
@@ -977,6 +1054,11 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
             }
             self.newPost!["categories"] = self.curCatsData
             self.newPost!["city"] = self.curCityLabel.text
+            if(self.place == nil){
+                print("no place coord")
+            } else {
+            self.newPost!["postCoord"] = ["lat":Double((self.place?.coordinate.latitude)!),"long": Double((self.place?.coordinate.longitude)!)]
+            }
           
             //let curLoc = locationManager.location
             //newPost![location]
@@ -1075,6 +1157,11 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
                         print("got an error: \(error)") }
                     print("metaData: \(metadata)")
                     print("metaDataURL: \((metadata?.downloadURL()?.absoluteString)!)")
+                    if(self.place == nil){
+                        print("no place coord")
+                    } else {
+                    self.newPost!["postCoord"] = ["lat":Double((self.place?.coordinate.latitude)!),"long": Double((self.place?.coordinate.longitude)!)]
+                    }
                     self.newPost!["postVid"] = (metadata?.downloadURL()?.absoluteString)!
                     self.newPost!["datePosted"] = Date().description
                     self.newPost!["likes"] = [["x":"x"]]
@@ -1241,6 +1328,59 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
         }
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+    }
+    
+    //keyboardNotifications
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if postType == "text"{
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            let keyboardHeight = keyboardSize.height
+            //print("keyHeight: \(keyboardHeight)")
+           //makePostView.frame = CGRect(x: makePostView.frame.origin.x, y: makePostView.frame.origin.y - 150, width: makePostView.frame.width, height: makePostView.frame.height)
+            /*postButton.frame = CGRect(x: postButton.frame.origin.x, y: postButton.frame.origin.y - 50, width: postButton.frame.width, height: postButton.frame.height)
+            
+            //backFromLikedByViewButton.isHidden = false
+            //self.likeTopLabel.isHidden = true
+            
+            addLocationIcon.frame = CGRect(x: addLocationIcon.frame.origin.x, y: addLocationIcon.frame.origin.y - 50, width: addLocationIcon.frame.width, height: addLocationIcon.frame.height)
+            
+           cancelPostButton.frame = CGRect(x: cancelPostButton.frame.origin.x, y: cancelPostButton.frame.origin.y - 50, width: cancelPostButton.frame.width, height: cancelPostButton.frame.height)
+            
+            
+            
+            posterPicIV.frame = CGRect(x: posterPicIV.frame.origin.x, y: posterPicIV.frame.origin.y - 50, width: posterPicIV.frame.width, height: posterPicIV.frame.height)
+            
+            makePostTextView.frame = CGRect(x: makePostTextView.frame.origin.x, y: makePostTextView.frame.origin.y - 50, width: makePostTextView.frame.width, height: makePostTextView.frame.height)
+            
+            //print("hiding keyb")*/
+            }
+        }
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        
+        if postType == "text"{
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            let keyboardHeight = keyboardSize.height
+            //makePostView.frame = CGRect(x: makePostView.frame.origin.x, y: makePostView.frame.origin.y + 150, width: makePostView.frame.width, height: makePostView.frame.height)
+            //print("keyHeight: \(keyboardHeight)")
+            //print("keyboardHeight")
+           /* postButton.frame = CGRect(x: postButton.frame.origin.x, y: postButton.frame.origin.y + 50, width: postButton.frame.width, height: postButton.frame.height)
+            
+            //backFromLikedByViewButton.isHidden = false
+            //self.likeTopLabel.isHidden = true
+            
+            addLocationIcon.frame = CGRect(x: addLocationIcon.frame.origin.x, y: addLocationIcon.frame.origin.y + 50, width: addLocationIcon.frame.width, height: addLocationIcon.frame.height)
+            
+            cancelPostButton.frame = CGRect(x: cancelPostButton.frame.origin.x, y: cancelPostButton.frame.origin.y + 50, width: cancelPostButton.frame.width, height: cancelPostButton.frame.height)
+            
+            
+            posterPicIV.frame = CGRect(x: posterPicIV.frame.origin.x, y: posterPicIV.frame.origin.y + 50, width: posterPicIV.frame.width, height: posterPicIV.frame.height)
+            
+            makePostTextView.frame = CGRect(x: makePostTextView.frame.origin.x, y: makePostTextView.frame.origin.y + 50, width: makePostTextView.frame.width, height: makePostTextView.frame.height)
+            //print("showing keyb")*/
+            }
+        }
     }
     
     //TextViewDelegate
@@ -1638,6 +1778,7 @@ extension PostViewController: GMSAutocompleteViewControllerDelegate {
         print("Place name: \(place.name)")
         print("Place address: \(place.formattedAddress)")
         print("Place attributions: \(place.attributions)")
+        
         curCityLabel.text = place.name
         addLocationButton.setTitle(place.name, for: .normal)
         //jobPost.location = place.formattedAddress

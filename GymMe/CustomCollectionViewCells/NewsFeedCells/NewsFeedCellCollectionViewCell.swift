@@ -24,7 +24,7 @@ protocol PerformActionsInFeedDelegate {
 class NewsFeedCellCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
     var myRealName: String?
     var myPicString: String?
-   
+    var coords: [String:Any]?
     @IBOutlet weak var bottomSizeView: UIView!
     @IBOutlet weak var topSizeView: UIView!
     @IBAction func locationButtonPressed(_ sender: Any) {
@@ -325,12 +325,7 @@ class NewsFeedCellCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
         self.postText.delegate = self
         self.profImageView.layer.cornerRadius = self.profImageView.frame.width/2
         self.profImageView.layer.masksToBounds = true
-       // let thisTap = UITapGestureRecognizer()
-        //thisTap.numberOfTapsRequired = 1
-        //thisTap.addTarget(self, action: #selector(NewsFeedCellCollectionViewCell.showComments))
-       // postText.addGestureRecognizer(thisTap)
-        //print(self.gestureRecognizers)
-        // Initialization code
+       
     }
     @objc func showComments(){
         delegate?.showLikedByViewTextCell(sentBy: "showCommentsCount", cell: self)
@@ -356,3 +351,15 @@ class NewsFeedCellCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
     }
     
 }
+
+/*extension UIButton{
+    override open func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        let newArea = CGRect(
+            x: self.bounds.origin.x - 5.0,
+            y: self.bounds.origin.y - 5.0,
+            width: self.bounds.size.width + 15.0,
+            height: self.bounds.size.height + 25.0
+        )
+        return newArea.contains(point)
+    }
+}*/

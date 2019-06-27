@@ -12,6 +12,21 @@ import FirebaseDatabase
 import FirebaseAuth
 
 class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, CommentLike {
+    
+    var selectedCurAuthProfile = true
+   
+    @IBAction func posterNameButtonPressed(_ sender: Any) {
+        self.curName = posterNameButton.titleLabel!.text!
+        self.selectedCellUID = topicData["posterID"] as! String
+        if (topicData["posterID"] as! String) == Auth.auth().currentUser!.uid {
+            selectedCurAuthProfile = true
+        } else {
+            selectedCurAuthProfile = false
+        }
+        performSegue(withIdentifier: "SingleTopicToProfile", sender: self)
+        
+    }
+    @IBOutlet weak var posterNameButton: UIButton!
     func commentGoToProf(cellUID: String, name: String) {
         print("yo \(cellUID), \(name)")
         self.curName = name
@@ -381,6 +396,14 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
     @IBOutlet weak var posterPicButton: UIButton!
     
     @IBAction func posterPicButtonPressed(_ sender: Any) {
+        self.curName = posterNameButton.titleLabel!.text!
+        self.selectedCellUID = topicData["posterID"] as! String
+        if (topicData["posterID"] as! String) == Auth.auth().currentUser!.uid {
+            selectedCurAuthProfile = true
+        } else {
+            selectedCurAuthProfile = false
+        }
+        performSegue(withIdentifier: "SingleTopicToProfile", sender: self)
     }
     
     @IBOutlet weak var topicDescriptionLabel: UILabel!
@@ -736,6 +759,8 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
                     self.timeStampLabel.text = "\(hoursBetween) days ago"
                 }
             }
+            self.posterNameButton.setTitle((self.topicData["posterRealName"] as! String), for: .normal)
+            //self.posterNameButton.titleLabel?.text = (self.topicData["posterRealName"] as! String)
             
             var replyLikes = self.topicData["likes"] as? [[String:Any]]
             var actualLikes = self.topicData["actualLikes"] as? [[String:Any]]

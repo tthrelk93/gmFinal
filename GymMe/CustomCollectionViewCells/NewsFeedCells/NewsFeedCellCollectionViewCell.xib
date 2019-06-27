@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -127,6 +127,8 @@
                                             <constraint firstAttribute="width" constant="25" id="bEu-HQ-5rq"/>
                                             <constraint firstAttribute="height" constant="25" id="xxJ-3e-Eh0"/>
                                         </constraints>
+                                        <inset key="contentEdgeInsets" minX="-2" minY="-15" maxX="0.0" maxY="0.0"/>
+                                        <inset key="imageEdgeInsets" minX="2" minY="14" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" image="like">
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
@@ -135,11 +137,13 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qbe-cG-vJ1">
-                                        <rect key="frame" x="76" y="-1" width="24" height="25"/>
+                                        <rect key="frame" x="80" y="0.0" width="24" height="25"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="24" id="Jwx-lb-R0h"/>
                                             <constraint firstAttribute="height" constant="25" id="iIz-N8-K0c"/>
                                         </constraints>
+                                        <inset key="contentEdgeInsets" minX="-5" minY="-15" maxX="-5" maxY="0.0"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="15" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" backgroundImage="favoritesUnfilled">
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
@@ -148,11 +152,13 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5sg-DW-2qr">
-                                        <rect key="frame" x="110" y="-1" width="23" height="25"/>
+                                        <rect key="frame" x="116" y="0.0" width="23" height="25"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="25" id="eYs-vw-Zer"/>
                                             <constraint firstAttribute="width" constant="23" id="gob-V3-SOF"/>
                                         </constraints>
+                                        <inset key="contentEdgeInsets" minX="0.0" minY="-15" maxX="0.0" maxY="0.0"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="15" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" backgroundImage="shareIcon-1">
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
@@ -161,11 +167,13 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jmL-mb-sxe">
-                                        <rect key="frame" x="42" y="0.0" width="25" height="25"/>
+                                        <rect key="frame" x="43" y="0.0" width="25" height="25"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="25" id="6fy-Oj-3Ag"/>
                                             <constraint firstAttribute="width" constant="25" id="GFy-3H-ns3"/>
                                         </constraints>
+                                        <inset key="contentEdgeInsets" minX="0.0" minY="-15" maxX="0.0" maxY="0.0"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="15" maxX="0.0" maxY="0.0"/>
                                         <state key="normal" image="Comment">
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
@@ -176,16 +184,16 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="qbe-cG-vJ1" firstAttribute="leading" secondItem="jmL-mb-sxe" secondAttribute="trailing" constant="9" id="7ar-la-cDz"/>
-                                    <constraint firstAttribute="trailing" secondItem="5sg-DW-2qr" secondAttribute="trailing" constant="19" id="8eE-hV-Kok"/>
-                                    <constraint firstItem="5sg-DW-2qr" firstAttribute="leading" secondItem="qbe-cG-vJ1" secondAttribute="trailing" constant="10" id="ARP-xS-QXx"/>
-                                    <constraint firstItem="jmL-mb-sxe" firstAttribute="leading" secondItem="BLQ-Nz-7pi" secondAttribute="trailing" constant="10" id="Ay2-RE-8dE"/>
+                                    <constraint firstItem="qbe-cG-vJ1" firstAttribute="leading" secondItem="jmL-mb-sxe" secondAttribute="trailing" constant="12" id="7ar-la-cDz"/>
+                                    <constraint firstAttribute="trailing" secondItem="5sg-DW-2qr" secondAttribute="trailing" constant="13" id="8eE-hV-Kok"/>
+                                    <constraint firstItem="5sg-DW-2qr" firstAttribute="leading" secondItem="qbe-cG-vJ1" secondAttribute="trailing" constant="12" id="ARP-xS-QXx"/>
+                                    <constraint firstItem="jmL-mb-sxe" firstAttribute="leading" secondItem="BLQ-Nz-7pi" secondAttribute="trailing" constant="11" id="Ay2-RE-8dE"/>
                                     <constraint firstAttribute="bottom" secondItem="BLQ-Nz-7pi" secondAttribute="bottom" id="Knb-mr-iwF"/>
                                     <constraint firstItem="BLQ-Nz-7pi" firstAttribute="bottom" secondItem="jmL-mb-sxe" secondAttribute="bottom" id="aHg-dB-ayC"/>
                                     <constraint firstItem="BLQ-Nz-7pi" firstAttribute="top" secondItem="jmL-mb-sxe" secondAttribute="top" id="bGh-h6-CDo"/>
                                     <constraint firstItem="qbe-cG-vJ1" firstAttribute="top" secondItem="5sg-DW-2qr" secondAttribute="top" id="guB-mb-wcA"/>
                                     <constraint firstItem="BLQ-Nz-7pi" firstAttribute="leading" secondItem="5fR-ss-cBN" secondAttribute="leading" constant="7" id="hxA-3R-w1K"/>
-                                    <constraint firstItem="jmL-mb-sxe" firstAttribute="top" secondItem="qbe-cG-vJ1" secondAttribute="top" constant="1" id="pvN-ds-O1a"/>
+                                    <constraint firstItem="jmL-mb-sxe" firstAttribute="top" secondItem="qbe-cG-vJ1" secondAttribute="top" id="pvN-ds-O1a"/>
                                     <constraint firstItem="BLQ-Nz-7pi" firstAttribute="top" secondItem="5fR-ss-cBN" secondAttribute="top" id="xv4-H2-JzY"/>
                                 </constraints>
                             </view>
@@ -248,9 +256,9 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="Comment" width="50" height="50"/>
-        <image name="favoritesUnfilled" width="40" height="40"/>
-        <image name="like" width="50" height="50"/>
-        <image name="shareIcon-1" width="40" height="40"/>
+        <image name="Comment" width="25" height="25"/>
+        <image name="favoritesUnfilled" width="20" height="20"/>
+        <image name="like" width="25" height="25"/>
+        <image name="shareIcon-1" width="20" height="20"/>
     </resources>
 </document>

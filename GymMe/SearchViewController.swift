@@ -17,11 +17,12 @@ import SwiftOverlays
 class SearchViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITabBarDelegate, UICollectionViewDelegateFlowLayout, UITextFieldDelegate, UITextViewDelegate, CLLocationManagerDelegate {
     @IBOutlet weak var backToCatButton: UIButton!
     var prevScreen = String()
-    var sportsCollectData = ["Soccer","Football","Lacrosse", "Track & Field", "Tennis","Baseball","Swimming","Basketball","Rock Climbing"]
+    var sportsCollectData = ["Soccer","Football","Lacrosse", "Track & Field", "Tennis","Baseball","Basketball","Rock Climbing","Softball","Golf","Swimming","Ice Hockey","Boxing","Cycling","Rugby","MMA","Volleyball"]
     
     @IBOutlet weak var sportsView: UIView!
     
     
+    @IBOutlet weak var singlePostScrollView: UIScrollView!
     
     @IBOutlet weak var sportsCollect: UICollectionView!
     
@@ -63,6 +64,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             //self.singlePostView3.frame = self.ogCommentPos
             print("bPress")
             self.singlePostView.isHidden = true
+            self.singlePostScrollView.isHidden = true
             //self.singlePostView.frame = self.curCellFrame
             self.singlePostImageView.image = nil
            // self.singlePostTextView.text = nil
@@ -221,7 +223,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         
     }
     var catCollectPics = ["arms","chest","abs","legs", "back", "shoulders","cardio","sports","nutrition","stretching","crossfit","bodybuilding","agility"]
-    var catCollectData = ["Arms","Chest","Abs","Legs","Back", "Shoulders","Cardio","Sports","Nutrition","Stretching","Crossfit","Body Building","Speed and Agility"]
+    var catCollectData = ["Arms","Chest","Abs","Legs","Back", "Shoulders","Cardio","Sports","Nutrition","Stretching","Crossfit","Body Building","Speed & Agility"]
      //let border = CALayer()
      //let border2 = CALayer()
      //let border3 = CALayer()
@@ -248,7 +250,9 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         super.viewDidLoad()
         posterPicButton.frame.size = CGSize(width: 40, height: 40)
         postText.delegate = self
-        
+        singlePostScrollView.delegate = self
+        //singlePostScrollView.scrollToTop(animated: false)
+        //singlePostScrollView.bounces = false
         ogPopFrame = popCollect.frame
         posterPicButton.layer.cornerRadius = posterPicButton.frame.width/2
          topLine.frame = CGRect(x: topLine.frame.origin.x, y: topLine.frame.origin.y, width: topLine.frame.width, height: 0.5)
@@ -319,7 +323,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         topBarNearby.setTitleColor(UIColor.black, for: .normal)
         categoriesCollect.isHidden = false
         loadPopData()
-        
+        singlePostScrollView.contentSize = CGSize(width: self.singlePostView.frame.width,height: self.view.frame.height+200)
 
         // Do any additional setup after loading the view.
     }
@@ -622,6 +626,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         
         } else if collectionView == commentCollect {
             let cell : CommentCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CommentCollectionViewCell", for: indexPath) as! CommentCollectionViewCell
+            
             cell.postID = self.postID
             cell.indexPath = indexPath
             cell.posterUID = self.posterUID
@@ -740,47 +745,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             applicationActivities: nil)
         
         present(activityViewController!, animated: true, completion: nil)
-        //shareFinalizeButton.isHidden = false
-        //self.inboxButton.isHidden = true
         
-        //self.selfCommentPic.isHidden = true
-        //shareSearchBar.isHidden = true
-        
-        //commentTF.isHidden = true
-       /* Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { snapshot in
-            let valDict = snapshot.value as! [String:Any]
-            
-            
-            
-            let followersArr = valDict["followers"] as! [String]
-            let followingArr = valDict["following"] as! [String]
-            var mergedArr = Array(Set(followersArr + followingArr))
-            var sortedMergedArr = mergedArr.sort()
-            print("mergedArr: \(sortedMergedArr)")
-            
-            Database.database().reference().child("users").observeSingleEvent(of: .value, with: { snapshot in
-                let valDict2 = snapshot.value as! [String:Any]
-                for (key, vall) in valDict2{
-                    var val = vall as! [String:Any]
-                    print("key: \(key), val: \(val)")
-                    if mergedArr.contains(key){
-                        var collectDataDict = ["pic": (val["profPic"] as! String), "uName": self.myUName, "realName": (val["realName"] as! String), "uid":
-                            key]
-                        
-                        self.likedCollectData.append(collectDataDict)
-                    }
-                }
-                self.shareCollect.delegate = self
-                self.shareCollect.dataSource = self
-                DispatchQueue.main.async{
-                    self.shareCollect.reloadData()
-                }
-                
-                self.shareCollectView.isHidden = false
-                
-            })
-            
-        })*/
     }
     var likedCollectData = [[String:Any]]()
     @IBOutlet weak var shareButton: UIButton!
@@ -1072,6 +1037,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     var posterUID = String()
     var selfData = [String:Any]()
     
+    //@IBOutlet weak var singlePostScrollView: UIScrollView!
     @IBOutlet weak var discoverLabel: UILabel!
     @IBAction func posterNameButtonPressed(_ sender: Any) {
     }
@@ -1266,15 +1232,18 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                    self.likedCollectData = (selfData["likes"] as! [[String:Any]])
                    self.cityLabel.setTitle(selfData["city"] as? String, for: .normal)
                     self.posterNameButton.setTitle(selfData["posterName"] as? String, for: .normal)
+                    
                     self.curCommentCell = selfData
                     var likesPost: [String:Any]?
                     var favesPost: [String:Any]?
                     var commentsPost: [String:Any]?
+                    
                     for item in (selfData["comments"] as! [[String:Any]]){
                         
                         commentsPost = item
                         
                     }
+                    
                     var likedBySelf = false
                     for item in (selfData["likes"] as! [[String:Any]]){
                         
@@ -1309,7 +1278,11 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     
                         commentsCollectData.removeAll()
                         print("showComments")
+                    if ((selfData["comments"] as! [[String:Any]]).first as! [String:Any])["x"] != nil{
+                        
+                    } else {
                         commentsCollectData = (selfData["comments"] as! [[String:Any]])
+                    }
                     
                     DispatchQueue.main.async{
                         self.commentCollect.reloadData()
@@ -1347,7 +1320,6 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     if favesPost!["x"] != nil {
                         
                     } else {
-                        
                         
                         if favedBySelf == true{
                             favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
@@ -1420,7 +1392,11 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     //set comments count
                     commentsCollectData.removeAll()
                     print("showComments")
+                    if ((selfData["comments"] as! [[String:Any]]).first as! [String:Any])["x"] != nil{
+                        
+                    } else {
                     commentsCollectData = (selfData["comments"] as! [[String:Any]])
+                    }
                     
                     DispatchQueue.main.async{
                         self.commentCollect.reloadData()
@@ -1502,7 +1478,11 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     }
                     commentsCollectData.removeAll()
                     print("showComments")
+                    if ((selfData["comments"] as! [[String:Any]]).first as! [String:Any])["x"] != nil{
+                        
+                    } else {
                     commentsCollectData = (selfData["comments"] as! [[String:Any]])
+                    }
                     
                     DispatchQueue.main.async{
                         self.commentCollect.reloadData()
@@ -1546,17 +1526,27 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 cityLabel.setTitle((selfData["city"] as! String), for: .normal)
                 if (selfData["postText"] as? String) != nil{
             
-                let attrs = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 15)]
-                let attributedString = NSMutableAttributedString(string:(selfData["postText"] as! String), attributes:attrs)
+                    let attrs = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 15)]
+                    let attributedString = NSMutableAttributedString(string:self.selfData["postText"] as! String, attributes:attrs)
+                    
+                    postText.attributedText = attributedString
+                    
+                    
+                    postText.resolveHashTags()
+                    
+                    
+                    let fixedWidth = postText.frame.size.width
+                    let newSize = postText.sizeThatFits(CGSize(width: fixedWidth, height: self.estimateFrameForText(text: postText.text as! String).height))
+                    
+                    postText.frame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
+                    postText.isScrollEnabled = false
+                     self.commentedByButton.frame.origin = CGPoint(x: self.commentedByButton.frame.origin.x, y: self.postText.frame.origin.y + self.postText.frame.height + 2)
                 
-                postText.attributedText = attributedString
-                
-                
-                postText.resolveHashTags()
                 }
                 
                 UIView.animate(withDuration: 0.5, animations: {
                     self.singlePostView.isHidden = false
+                    self.singlePostScrollView.isHidden = false
                     self.backToCatButton.isHidden = true
                     self.border1.isHidden = true
                     self.border2.isHidden = true
@@ -1568,12 +1558,13 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 //^%%%%%%%%
             } else if topBarPop.titleLabel!.textColor == UIColor.red {
                 
-                print("wut wut")
+                
                 backToCatButton.isHidden = true
                  selfData = (self.popCollectData[indexPath.row] as! [String:Any])
-                
+                print("wut wut: \(selfData)")
         
-                self.cityLabel.titleLabel!.text = ((self.popCollectData[indexPath.row]) as! [String:Any])["city"] as? String
+                //self.cityLabel.titleLabel!.text =
+                self.cityLabel.setTitle(((self.popCollectData[indexPath.row]) as! [String:Any])["city"] as? String, for: .normal)
                 self.posterNameButton.setTitle(((self.popCollectData[indexPath.row]) as! [String:Any])["posterName"] as? String, for: .normal)
                 
                 if let messageImageUrl = URL(string: ((self.popCollectData[indexPath.row]) as! [String:Any])["posterPicURL"] as! String) {
@@ -1585,12 +1576,21 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                 if((((self.popCollectData[indexPath.row]) as! [String:Any])["postText"] as? String) != nil){
                     
                     let attrs = [NSAttributedStringKey.font : UIFont.systemFont(ofSize: 15)]
-                    let attributedString = NSMutableAttributedString(string:(((self.popCollectData[indexPath.row]) as! [String:Any])["postText"] as! String), attributes:attrs)
+                    let attributedString = NSMutableAttributedString(string:self.selfData["postText"] as! String, attributes:attrs)
                     
                     postText.attributedText = attributedString
                     
                     
                     postText.resolveHashTags()
+                    
+                    
+                    let fixedWidth = postText.frame.size.width
+                    let newSize = postText.sizeThatFits(CGSize(width: fixedWidth, height: self.estimateFrameForText(text: postText.text as! String).height))
+                    
+                    postText.frame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
+                    postText.isScrollEnabled = false
+                    self.commentedByButton.frame.origin = CGPoint(x: self.commentedByButton.frame.origin.x, y: self.postText.frame.origin.y + self.postText.frame.height + 2)
+                    
                     
                 }
                
@@ -1656,7 +1656,11 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     
                     commentsCollectData.removeAll()
                     print("showComments")
+                    if ((selfData["comments"] as! [[String:Any]]).first as! [String:Any])["x"] != nil{
+                        
+                    } else {
                     commentsCollectData = (selfData["comments"] as! [[String:Any]])
+                    }
                     
                     DispatchQueue.main.async{
                         self.commentCollect.reloadData()
@@ -1775,7 +1779,11 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     likeButtonCount.setTitle(likeString, for: .normal)
                     commentsCollectData.removeAll()
                     print("showComments")
+                    if ((selfData["comments"] as! [[String:Any]]).first as! [String:Any])["x"] != nil{
+                        
+                    } else {
                     commentsCollectData = (selfData["comments"] as! [[String:Any]])
+                    }
                     
                     DispatchQueue.main.async{
                         self.commentCollect.reloadData()
@@ -1845,6 +1853,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         
                     }
                     }
+                   self.cityLabel.setTitle(selfData["city"] as? String, for: .normal)
                     self.posterNameButton.setTitle(((self.popCollectData[indexPath.row]) )["posterName"] as? String, for: .normal)
                     self.cityLabel.setTitle((selfData["city"] as! String), for: .normal)
                     
@@ -1891,7 +1900,11 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     likeButtonCount.setTitle(likeString, for: .normal)
                     commentsCollectData.removeAll()
                     print("showComments")
+                    if ((selfData["comments"] as! [[String:Any]]).first as! [String:Any])["x"] != nil{
+                        
+                    } else {
                     commentsCollectData = (selfData["comments"] as! [[String:Any]])
+                    }
                     
                     DispatchQueue.main.async{
                         self.commentCollect.reloadData()
@@ -1933,6 +1946,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                
                 UIView.animate(withDuration: 0.5, animations: {
                     self.singlePostView.isHidden = false
+                    self.singlePostScrollView.isHidden = false
                     self.singlePostView.frame = self.ogSinglePostViewFrame
                     if self.topBarCat.titleLabel?.textColor == UIColor.red{
                         self.border1.isHidden = false
@@ -2014,6 +2028,17 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             }
             }
         }
+    }
+    
+    private func estimateFrameForText(text: String) -> CGRect {
+        //we make the height arbitrarily large so we don't undershoot height in calculation
+        let height: CGFloat = 1000
+        
+        let size = CGSize(width: postText.frame.width, height: height)
+        let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+        let attributes = [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.regular)]
+        
+        return NSString(string: text).boundingRect(with: size, options: options, attributes: attributes, context: nil)
     }
     
     @IBAction func swipeHandler(_ gestureRecognizer : UISwipeGestureRecognizer) {
@@ -2279,6 +2304,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     
                     
                     //reload collect in delegate
+                   
                     self.commentsCollectData = commentsArray
                     if commentsArray.count == 1 {
                         DispatchQueue.main.async{
@@ -2293,7 +2319,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         print("reloading here")
                         var count = 0
                        
-                                Database.database().reference().child("posts").child(cellTypeTemp).observeSingleEvent(of: .value, with: { snapshot in
+                        Database.database().reference().child("posts").child(cellTypeTemp).observeSingleEvent(of: .value, with: { snapshot in
                                     var tempDict = snapshot.value as! [String:Any]
                                     if tempDict["postPic"] == nil && tempDict["postVid"] == nil{
                                         //text
@@ -2336,9 +2362,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                                                 if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
                                                     var pic = UIImage(data: imageData as Data)
                                                     tempDict["postPic"] = pic as! UIImage
-                                                    //self.feedImageArray.append(pic as! UIImage)
-                                                    //self.feedVidArray.append(URL(string: "x")!)
-                                                    
+
                                                     
                                                 }
                                             }
@@ -2365,44 +2389,6 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         self.view.endEditing(true)
     }
     
-    
-    
-    /*public func textFieldDidEndEditing(_ textField: UITextField){
-        //add comment to post
-        Database.database().reference().child("posts").child((self.curCommentCell!.first?.value as! [String:Any])["postID"]! as! String).observeSingleEvent(of: .value, with: { snapshot in
-            let valDict = snapshot.value as! [String:Any]
-            
-            var commentsArray = valDict["comments"] as! [[String:Any]]
-            if commentsArray.count == 1 && (commentsArray.first! as! [String:String]) == ["x": "x"]{
-                commentsArray.remove(at: 0)
-            }
-            var commentsVal = commentsArray.count
-            commentsVal = commentsVal + 1
-            if self.myPicString == nil {
-                self.myPicString = "profile-placeholder"
-            }
-            //add current users id and uName to comment object and upload to database
-            commentsArray.append(["commentorName": self.myName, "commentorID": Auth.auth().currentUser!.uid, "commentorPic": self.myPicString, "commentText": self.typeCommentTF.text])
-            Database.database().reference().child("posts").child((self.curCommentCell!.first?.value as! [String:Any])["postID"]! as! String).child("comments").setValue(commentsArray)
-            Database.database().reference().child("users").child((self.curCommentCell!.first?.value as! [String:Any])["posterUID"]! as! String).child("posts").child((self.curCommentCell!.first?.value as! [String:Any])["postID"]! as! String).child("comments").setValue(commentsArray)
-            
-            self.typeCommentTF.text = nil
-            self.commentsCollectData = commentsArray
-            if commentsArray.count == 1{
-                DispatchQueue.main.async{
-                    self.commentCollect.delegate = self
-                    self.commentCollect.dataSource = self
-                }
-                
-            } else {
-                print("reloadhereeee")
-                //DispatchQueue.main.async{
-                    self.commentCollect.reloadData()
-                //}
-            }
-            
-        })
-    } // may be called if*/
     
     @IBOutlet weak var cityLabel: UIButton!
     
@@ -2662,6 +2648,33 @@ extension SearchViewController:PlayerPlaybackDelegate {
     
     func playerPlaybackWillLoop(_ player: Player) {
         player.playbackLoops = false
+    }
+    
+}
+extension UIScrollView {
+    
+    // Scroll to a specific view so that it's top is at the top our scrollview
+    func scrollToView(view:UIView, animated: Bool) {
+        if let origin = view.superview {
+            // Get the Y position of your child view
+            let childStartPoint = origin.convert(view.frame.origin, to: self)
+            // Scroll to a rectangle starting at the Y of your subview, with a height of the scrollview
+            self.scrollRectToVisible(CGRect(x:0, y:childStartPoint.y,width: 1,height: self.frame.height), animated: animated)
+        }
+    }
+    
+    // Bonus: Scroll to top
+    func scrollToTop(animated: Bool) {
+        let topOffset = CGPoint(x: 0, y: -contentInset.top)
+        setContentOffset(topOffset, animated: animated)
+    }
+    
+    // Bonus: Scroll to bottom
+    func scrollToBottom() {
+        let bottomOffset = CGPoint(x: 0, y: contentSize.height - bounds.size.height + contentInset.bottom)
+        if(bottomOffset.y > 0) {
+            setContentOffset(bottomOffset, animated: true)
+        }
     }
     
 }

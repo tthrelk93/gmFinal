@@ -13,12 +13,12 @@ import FirebaseAuth
 
 protocol ForumDelegate {
     
-    //func performSegueToPosterProfile(uid: String, name: String)
+    func performSegueToPosterProfile(uid: String, name: String)
     //func showLikedByViewTextCell(sentBy: String, cell: NewsFeedCellCollectionViewCell)
     //func showLikedByViewPicCell(sentBy: String, cell: NewsFeedPicCollectionViewCell)
     //func locationButtonTextCellPressed(sentBy: String, cell: NewsFeedCellCollectionViewCell)
     //func locationButtonPicCellPressed(sentBy: String, cell: NewsFeedPicCollectionViewCell)
-    func reloadDataAfterLike()
+    func reloadDataAfterLike(newData: [[String:Any]], indexPathRow: Int, likeType: String)
     //func showHashTag(tagType: String, payload:String, postID: String, name: String)
     
     
@@ -28,6 +28,10 @@ protocol ForumDelegate {
 
 class ForumCollectionViewCell: UICollectionViewCell {
 
+    @IBOutlet weak var posterNameButton: UIButton!
+    @IBAction func posterNameButtonPressed(_ sender: Any) {
+        delegate?.performSegueToPosterProfile(uid: (self.forumData["posterID"] as! String), name: (self.posterNameLabel.text)!)
+    }
     @IBAction func likesCountButtonPressed(_ sender: Any) {
     }
     @IBOutlet weak var likesCountButton: UIButton!
@@ -52,8 +56,6 @@ class ForumCollectionViewCell: UICollectionViewCell {
         })
         if self.actualLikeTopic.imageView?.image == UIImage(named: "like.png"){
             self.actualLikeTopic.setImage(UIImage(named:"likeSelected.png"), for: .normal)
-            // let curLikes = Int((self.likesCountButton.titleLabel?.text)!)
-            //self.likesCountButton.setTitle(String(curLikes! + 1), for: .normal)
             Database.database().reference().child("forum").child(self.forumID).observeSingleEvent(of: .value, with: { snapshot in
                 let valDict = snapshot.value as! [String:Any]
                 
@@ -76,6 +78,7 @@ class ForumCollectionViewCell: UICollectionViewCell {
                 Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("likedTopics").setValue(self.likedTopics!)
                 Database.database().reference().child("forum").child(self.forumID).child("actualLikes").setValue(likesArray)
                 Database.database().reference().child("users").child((self.forumData["posterID"] as! String)).child("forumPosts").child(self.forumID).child("actualLikes").setValue(likesArray)
+                
                 Database.database().reference().child("users").child((self.forumData["posterID"] as! String)).observeSingleEvent(of: .value, with: { snapshot in
                     var uploadDict = [String:Any]()
                     var snapDict = snapshot.value as! [String:Any]
@@ -119,6 +122,7 @@ class ForumCollectionViewCell: UICollectionViewCell {
                     likesString = "\(likesArray.count) likes"
                 }
                 self.likesCountButton.setTitle(likesString, for: .normal)
+                self.delegate?.reloadDataAfterLike(newData: likesArray, indexPathRow: self.indexPath.row, likeType: "actualLike")
                 
                 //reload collect in delegate
                 
@@ -164,15 +168,13 @@ class ForumCollectionViewCell: UICollectionViewCell {
                 
                 Database.database().reference().child("users").child((self.forumData["posterID"] as! String)).child("forumPosts").child(self.forumID).child("actualLikes").setValue(likesArray)
                 
-                
+                self.delegate?.reloadDataAfterLike(newData: likesArray, indexPathRow: self.indexPath.row, likeType: "actualLike")
             })
             
         }
-        DispatchQueue.main.async {
-            self.delegate?.reloadDataAfterLike()
-        }
+        
     }
-    
+    var indexPath = IndexPath()
     @IBOutlet weak var actualLikeTopic: UIButton!
     @IBAction func likeTopicPressed(_ sender: Any) {
         Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { snapshot in
@@ -249,6 +251,7 @@ class ForumCollectionViewCell: UICollectionViewCell {
                 } else {
                     likesString = "\(likesArray.count) likes"
                 }
+                self.delegate?.reloadDataAfterLike(newData: likesArray, indexPathRow: self.indexPath.row, likeType: "fav")
                
                 
             })
@@ -296,13 +299,13 @@ class ForumCollectionViewCell: UICollectionViewCell {
                 
                 Database.database().reference().child("users").child((self.forumData["posterID"] as! String)).child("forumPosts").child(self.forumID).child("likes").setValue(likesArray)
                 
-                
+                self.delegate?.reloadDataAfterLike(newData: likesArray, indexPathRow: self.indexPath.row, likeType: "fav")
             })
             
         }
-        DispatchQueue.main.async {
-            self.delegate?.reloadDataAfterLike()
-        }
+        
+        
+        
     }
     var delegate: ForumDelegate!
     @IBOutlet weak var likeTopicButton: UIButton!
@@ -314,6 +317,8 @@ class ForumCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var posterNameLabel: UILabel!
     @IBOutlet weak var topicLabel: UILabel!
     @IBAction func posterPicButtonPressed(_ sender: Any) {
+        //go to profile
+        delegate?.performSegueToPosterProfile(uid: (self.forumData["posterID"] as! String), name: (self.posterNameLabel.text)!)
     }
     @IBOutlet weak var posterPicButton: UIButton!
     override func awakeFromNib() {

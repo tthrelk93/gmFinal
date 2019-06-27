@@ -14,7 +14,7 @@ import FirebaseAuth
 
 class NewsFeedPicCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
 
-    
+    var coords: [String:Any]?
     @IBAction func postLocationPressed(_ sender: Any) {
         delegate?.locationButtonPicCellPressed(sentBy: "locationPicCell", cell: self)
     }

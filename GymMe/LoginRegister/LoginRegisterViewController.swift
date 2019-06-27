@@ -44,16 +44,20 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
     var emailVerificationSent = false
     var profPicked = false
     @IBAction func signInButtonPressed(_ sender: Any) {
+        print("why")
         Database.database().reference().child("usernames").observeSingleEvent(of: .value, with: {(snapshot) in
+            print("whyyyy")
             self.signInButton.setTitleColor(self.gmRed, for: .selected)
-            print(self.logRegIndex)
+            print("please\(self.logRegIndex)")
             if self.signInButton.titleLabel?.text == "Send Password Reset"{
                 Auth.auth().sendPasswordReset(withEmail: self.userNameTextField.text!) { error in
                 // Your code here
                 
             }
         } else {
+                print("here?: \(self.logRegIndex)")
                 if self.logRegIndex == 1 {
+                    print("here")
                 if self.uNameTextField.hasText == true && self.userNameTextField.hasText == true && self.confirmEmailTextField.hasText == true &&  self.passwordTextField.hasText == true && self.confirmPasswordTextField.hasText == true && self.firstNameTextField.hasText && self.lastNameTextField.hasText {
                     if self.confirmPasswordTextField.text != self.passwordTextField.text{
                         //present error passwords don't match
@@ -75,7 +79,9 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
                         }
                     self.user.username = self.uNameTextField.text
                     self.user.email = self.userNameTextField.text
+                    print("hereCreateUser")
                     Auth.auth().createUser(withEmail: self.user.email!, password: self.passwordTextField.text!, completion: { (authResult, error) in
+                        print("insidehereCreateUser")
                         if error != nil {
                             let alert = UIAlertController(title: "Login/Register Failed", message: "Check that you entered the correct information.", preferredStyle: UIAlertControllerStyle.alert)
                             alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.default, handler: nil))
@@ -175,25 +181,7 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
                     let imageName = NSUUID().uuidString
                     let storageRef = Storage.storage().reference().child("profile_images").child(Auth.auth().currentUser!.uid).child("\(imageName).jpg")
                     
-                    
-                    /*let profileImage = self.profPicImageView.image
-                    let uploadData = UIImageJPEGRepresentation(profileImage!, 0.1)
-                    storageRef.putData(uploadData!, metadata: nil, completion: { (metadata, error) in
-                        
-                        if error != nil {
-                            print(error as Any)
-                            return
-                        }
-                        
-                        if let profileImageUrl = metadata?.downloadURL()?.absoluteString {
-                            
-                            self.uploadData["profPic"] = profileImageUrl
-                            
-                            //values["location"] = self.locDict
-                            
-                            //done
- */
-                    
+
                     self.uploadData["profPic"] = "profile-placeholder"
                     self.uploadData["favorited"] = ["x":"x"]
                     self.uploadData["shared"] = ["x"]
@@ -504,9 +492,6 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
                 print("registeringForRemote")
                 UIApplication.shared.registerForRemoteNotifications(matching: [.badge, .sound, .alert])
             }
-            
-            
-            
         } else {
             isListening = true
             print("in some else")
@@ -565,6 +550,11 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        /*do {
+            try Auth.auth().signOut()
+        }catch {
+            
+        }*/
         print("Auth: \(Auth.auth().currentUser?.uid)")
 
         if Auth.auth().currentUser != nil {
@@ -572,7 +562,7 @@ class LoginRegisterViewController: UIViewController, UITextFieldDelegate, UIImag
             // ...
             //SwiftOverlays.showBlockingWaitOverlayWithText("Loading Feed")
             self.performSegue(withIdentifier: "LoginToFeed", sender: self)
-            //print(Auth.auth().currentUser!.uid)
+           // print(Auth.auth().currentUser!.uid)
             //try! Auth.auth().signOut()
             //print("dfgdfg")
             //print(Auth.auth().currentUser!.uid)

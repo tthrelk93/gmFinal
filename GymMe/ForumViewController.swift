@@ -18,11 +18,34 @@ class ForumPickerCell: UICollectionViewCell{
 }
 
 class ForumViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, ForumDelegate {
-    func reloadDataAfterLike(){
-        DispatchQueue.main.async{
-            // self.likedByCollect.reloadData()
-            // self.refresh()
+    
+    
+    
+    var curName = String()
+    var selectedCellUID = String()
+    var selectedCurAuthProfile = true
+    func performSegueToPosterProfile(uid: String, name: String){
+        self.curName = name
+        self.selectedCellUID = uid
+        if uid == Auth.auth().currentUser!.uid {
+            selectedCurAuthProfile = true
+        } else {
+            selectedCurAuthProfile = false
         }
+        performSegue(withIdentifier: "ForumToProfile", sender: self)
+    }
+    func reloadDataAfterLike(newData: [[String:Any]], indexPathRow: Int, likeType: String){
+        if likeType == "actualLike"{
+            self.topicData[indexPathRow]["actualLikes"] = newData
+        } else {
+        //print("newData:\(newData), \(indexPathRow)")
+       // print("beforeTopicD:\(self.topicData[indexPathRow])")
+        self.topicData[indexPathRow]["likes"] = newData
+        //print("afterTopicD:\(self.topicData[indexPathRow])")
+        }
+        /*DispatchQueue.main.async{
+            self.topicCollect.reloadData()
+        }*/
         // self.refresh()
     }
     @IBAction func mostRecentButtonPressed(_ sender: Any) {
@@ -137,7 +160,7 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
              let cell : ForumCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "ForumCollectionViewCell", for: indexPath) as! ForumCollectionViewCell
         
             cell.layer.addBor(edge: .top, color: UIColor.lightGray, thickness: 0.5)
-        
+        cell.indexPath = indexPath
             var cellData = topicData[indexPath.row] as! [String:Any]
             if let messageImageUrl = URL(string: cellData["posterPic"] as! String) {
                 
@@ -146,6 +169,7 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
                     
                 }
             }
+        cell.delegate = self
             cell.forumData = cellData
             cell.forumID = cellData["postID"] as! String
             
@@ -252,6 +276,7 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
        
             self.selectedTopicData = topicData[indexPath.row] as! [String:Any]
             performSegue(withIdentifier: "ForumToTopic", sender: self)
@@ -405,6 +430,26 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
         if segue.identifier == "ForumToTopic"{
             if let vc = segue.destination as? SingleTopicViewController{
                 vc.topicData = self.selectedTopicData
+            }
+        }
+        if segue.identifier == "ForumToProfile"{
+            if let vc = segue.destination as? ProfileViewController{
+                /*if toMention == true{
+                    vc.curUID = self.mentionID
+                } else {
+                    vc.curUID = self.selectedCellUID
+                }*/
+                vc.prevScreen = "forum"
+                
+                if selectedCurAuthProfile == true{
+                    vc.viewerIsCurAuth = true
+                    
+                } else {
+                    vc.viewerIsCurAuth = false
+                }
+                vc.curName = self.curName
+                
+                
             }
         }
     }

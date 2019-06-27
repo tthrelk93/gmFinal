@@ -340,24 +340,27 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
     var advancedData = [String:Any]()
     var myRealName = String()
     
+    @IBOutlet weak var scrollView: UIScrollView!
     
     @IBOutlet weak var tpPostCommentSep: UIView!
     //var ogTextViewHeight = Double()
     override func viewDidLoad() {
         super.viewDidLoad()
        
-        postCommentPic.layer.cornerRadius = postCommentPic.frame.width/2
         
+        
+         scrollView.contentSize = CGSize(width: self.view.frame.width,height: self.view.frame.height+200)
+        commentTF.frame.size = CGSize(width: commentTF.frame.width, height: 29)
+        tpCommentTF.frame.size = CGSize(width: commentTF.frame.width, height: 29)
+        postCommentPic.frame.size = CGSize(width: 25, height: 25)
+        
+        postCommentPic.layer.cornerRadius = postCommentPic.frame.width/2
         postCommentPic.layer.masksToBounds = true
         
-        postCommentPic.frame.size = CGSize(width: 31, height: 31)
+        
+        tpCommentorPic.frame.size = CGSize(width: 25, height: 25)
         tpCommentorPic.layer.cornerRadius = tpCommentorPic.frame.width/2
-        
         tpCommentorPic.layer.masksToBounds = true
-        
-        tpCommentorPic.frame.size = CGSize(width: 31, height: 31)
-        
-        
         Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: {(snapshot) in
             var curUser = snapshot.value as! [String:Any]
             self.myUName = curUser["username"] as! String
@@ -557,7 +560,9 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
             
             //set comments count
             self.commentsArray = ((self.thisPostData["comments"] as? [[String: Any]])!)
-            
+                if(self.commentsArray.count == 1 && self.commentsArray[0]["x"] != nil){
+                    self.commentsArray.removeAll()
+                }
             
             if commentsPost!["x"] != nil {
                 
@@ -615,6 +620,17 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                         attributedString.append(normalString)
                         
                         self.postText.attributedText = attributedString
+                        
+                        
+                        self.postText.resolveHashTags()
+                        
+                        
+                        let fixedWidth = self.postText.frame.size.width
+                        let newSize = self.postText.sizeThatFits(CGSize(width: fixedWidth, height: self.estimateFrameForText(text: self.postText.text as! String).height))
+                        
+                        self.postText.frame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
+                        self.postText.isScrollEnabled = false
+                        self.commentsCountButton.frame.origin = CGPoint(x: self.commentsCountButton.frame.origin.x, y: self.postText.frame.origin.y + self.postText.frame.height + 2)
                         
                 }
                     self.postText.resolveHashTags()
@@ -697,13 +713,15 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                     
                     if favedBySelf == true{
                         self.favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
-                        //cell.favoritesCountButton.setTitle((self.feedDataArray[indexPath.row]["favorites"] as! [[String:Any]]).count.description, for: .normal)
+                        
                     }
                 }
                 
                 //set comments count
                  self.commentsArray = ((self.thisPostData["comments"] as? [[String: Any]])!)
-            
+                    if(self.commentsArray.count == 1 && self.commentsArray[0]["x"] != nil){
+                        self.commentsArray.removeAll()
+                    }
                 
                 if commentsPost!["x"] != nil {
                     
@@ -747,6 +765,12 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                         attributedString.append(normalString)
                         
                         self.postText.attributedText = attributedString
+                        let fixedWidth = self.postText.frame.size.width
+                        let newSize = self.postText.sizeThatFits(CGSize(width: fixedWidth, height: self.estimateFrameForText(text: self.postText.text as! String).height))
+                        
+                        self.postText.frame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
+                        self.postText.isScrollEnabled = false
+                        self.commentsCountButton.frame.origin = CGPoint(x: self.commentsCountButton.frame.origin.x, y: self.postText.frame.origin.y + self.postText.frame.height + 2)
                     }
                     if self.thisPostData["city"] != nil{
                         self.cityButton.setTitle((self.thisPostData["city"] as! String), for: .normal)
@@ -829,13 +853,17 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                         
                         if favedBySelf2 == true{
                             self.favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
-                            //cell.favoritesCountButton.setTitle((self.feedDataArray[indexPath.row]["favorites"] as! [[String:Any]]).count.description, for: .normal)
+                            
                         }
                     }
                     
                     //set comments count
                     self.commentsArray = ((self.thisPostData["comments"] as? [[String: Any]])!)
                     
+                    if(self.commentsArray.count == 1 && self.commentsArray[0]["x"] != nil){
+                        self.commentsArray.removeAll()
+                    }
+                        
                     
                     if commentsPost!["x"] != nil {
                         
@@ -1395,6 +1423,9 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                             }
                             self.thisPostData = tempDict
                             self.commentsArray = ((self.thisPostData["comments"] as? [[String: Any]])!)
+                            if(self.commentsArray.count == 1 && self.commentsArray[0]["x"] != nil){
+                                self.commentsArray.removeAll()
+                            }
                             DispatchQueue.main.async{
                                 
                                 self.tpCommentCollect.reloadData()
@@ -1555,6 +1586,9 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                     
                     //reload collect in delegate
                     self.commentsArray = commentsArray
+                    if(self.commentsArray.count == 1 && self.commentsArray[0]["x"] != nil){
+                        self.commentsArray.removeAll()
+                    }
                     if commentsArray.count == 1{
                         DispatchQueue.main.async{
                             self.commentsCollect.delegate = self
@@ -1623,6 +1657,9 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                                     }
                                     self.thisPostData = tempDict
                                     self.commentsArray = ((self.thisPostData["comments"] as? [[String: Any]])!)
+                                    if(self.commentsArray.count == 1 && self.commentsArray[0]["x"] != nil){
+                                        self.commentsArray.removeAll()
+                                    }
                                     DispatchQueue.main.async{
                                         
                                         self.commentsCollect.reloadData()
