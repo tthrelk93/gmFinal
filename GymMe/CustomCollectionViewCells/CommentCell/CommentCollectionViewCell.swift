@@ -18,6 +18,10 @@ protocol CommentLike {
     func commentGoToProf(cellUID:String,name:String)
 
 }
+protocol HashDelegate {
+    func goToHash(tagType: String, payload: String)
+    func goToMention(tagType: String, payload: String)
+}
 
 class CommentCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
 
@@ -36,10 +40,11 @@ class CommentCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
     var likesCount = Int()
     var postID = String()
     var indexPath = IndexPath()
+    var hashDelegate: HashDelegate?
     override func awakeFromNib() {
         lineView.frame = CGRect(x: lineView.frame.origin.x, y: lineView.frame.origin.y, width: lineView.frame.width, height: 0.5)
         commentorPic.frame.size = CGSize(width: 35, height: 35)
-        likeButton.frame.size = CGSize(width: 25, height: 25)
+        likeButton.frame = CGRect(x: likeButton.frame.origin.x, y: self.frame.midY - 7, width: 25, height: 25)
         self.commentTextView.delegate = self
         super.awakeFromNib()
 
@@ -240,11 +245,15 @@ class CommentCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
         //exampleView.layer.cornerRadius = 0
     }
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+        print("yo:\(URL.scheme)")
         switch URL.scheme {
         case "hash" :
-            showHashTagAlert(tagType: "hash", payload: (URL as NSURL).resourceSpecifier!.removingPercentEncoding!)
+            hashDelegate!.goToHash(tagType: "hash", payload: (URL as NSURL).resourceSpecifier!.removingPercentEncoding!)
+            
+            //showHashTagAlert(tagType: "hash", payload: (URL as NSURL).resourceSpecifier!.removingPercentEncoding!)
         case "mention" :
-            showHashTagAlert(tagType: "mention", payload: (URL as NSURL).resourceSpecifier!.removingPercentEncoding!)
+            hashDelegate!.goToMention(tagType: "mention", payload: (URL as NSURL).resourceSpecifier!.removingPercentEncoding!)
+            //showHashTagAlert(tagType: "mention", payload: (URL as NSURL).resourceSpecifier!.removingPercentEncoding!)
         default:
             print("just a regular url")
         }

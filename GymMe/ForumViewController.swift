@@ -78,7 +78,9 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
                     self.mostRecentButton.frame = CGRect(x: 6, y: self.popularButton.frame.origin.y, width: 103, height: self.mostRecentButton.frame.size.height)
                 })
                 
-                self.topicData = self.favoritedTopicsData
+                //self.topicData.removeAll()
+                
+               self.topicData = self.favoritedTopicsData
                 
                 self.topicCollect.reloadData()
             }
@@ -124,12 +126,14 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
         }
         performSegue(withIdentifier: "ForumToProfile", sender: self)
     }
-    func reloadDataAfterLike(newData: [[String:Any]], indexPathRow: Int, likeType: String){
+    func reloadDataAfterLike(newData: [[String:Any]], favTopicsIdData: [String], indexPathRow: Int, likeType: String){
         if likeType == "actualLike"{
-            self.topicData[indexPathRow]["actualLikes"] = newData
+            //self.topicData[indexPathRow]["actualLikes"] = newData
+            reloadData()
         } else {
-        self.topicData[indexPathRow]["likes"] = newData
-        
+            reloadData()
+        //self.topicData[indexPathRow]["likes"] = newData
+        //self.favoritedTopics = favTopicsIdData
         }
     }
     
@@ -157,6 +161,7 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
                     
                 }
             }
+        cell.actualLikeTopic.setImage(UIImage(named: "like.png"), for: .normal)
         cell.delegate = self
             cell.forumData = cellData
             cell.forumID = cellData["postID"] as! String
@@ -280,6 +285,100 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
    
     
     var mrBigFrame = CGRect()
+    func reloadData(){
+        topicData.removeAll()
+        favoritedTopicsData.removeAll()
+        favoritedTopics?.removeAll()
+        ogTopicData.removeAll()
+        
+        
+        Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            var userDict = snapshot.value as! [String:Any]
+            self.favoritedTopics = userDict["favoritedTopics"] as? [String]
+            Database.database().reference().child("forum").observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                var forumDict = snapshot.value as! [String:Any]
+                for (key, val) in forumDict{
+                    if key as! String == "x"{
+                        
+                    } else {
+                        var tempDict = val as! [String:Any]
+                        
+                        let dateFormatter = DateFormatter()
+                        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+                        
+                        let date = dateFormatter.date(from: tempDict["timestamp"] as! String)
+                        tempDict["timestamp"] = date
+                        
+                        if self.favoritedTopics == nil{
+                            
+                        } else {
+                            if (self.favoritedTopics?.contains(tempDict["postID"] as! String))!{
+                                self.favoritedTopicsData.append(tempDict)
+                            }
+                        }
+                        
+                        
+                        self.topicData.append(tempDict)
+                        
+                        
+                    }
+                    
+                }
+                var counter1 = 0
+                var tempArr1 = [[String:Any]]()
+                for post in self.favoritedTopicsData{
+                    var tempD = post
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+                    
+                    let str = dateFormatter.string(from: post["timestamp"] as! Date)
+                    tempD["timestamp"] = str as! String
+                    //self.topicData[counter] = tempD
+                    tempArr1.append(tempD)
+                    counter1 = counter1 + 1
+                }
+                let sortedResultsFavs = (self.favoritedTopicsData as NSArray).sortedArray(using: [NSSortDescriptor(key: "timestamp", ascending: true)]) as! [[String:AnyObject]]
+                self.favoritedTopicsData = sortedResultsFavs
+                self.favoritedTopicsData = tempArr1
+                //self.favoritedTopicsData.reverse()
+                
+                
+                let sortedResults = (self.topicData as NSArray).sortedArray(using: [NSSortDescriptor(key: "timestamp", ascending: true)]) as! [[String:AnyObject]]
+                self.topicData = sortedResults
+                //self.topicData.reverse()
+                var counter = 0
+                var tempArr = [[String:Any]]()
+                for post in self.topicData{
+                    var tempD = post
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+                    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+                    
+                    let str = dateFormatter.string(from: post["timestamp"] as! Date)
+                    tempD["timestamp"] = str as! String
+                    //self.topicData[counter] = tempD
+                    tempArr.append(tempD)
+                    counter = counter + 1
+                }
+                self.topicData = tempArr
+                self.topicData.reverse()
+                self.ogTopicData = self.topicData
+                
+                
+                
+                self.topicCollect.delegate = self
+                self.topicCollect.dataSource = self
+                
+                
+            })
+            
+            
+        })
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -347,8 +446,11 @@ class ForumViewController: UIViewController, UICollectionViewDelegate, UICollect
                     tempArr1.append(tempD)
                     counter1 = counter1 + 1
                 }
+                let sortedResultsFavs = (self.favoritedTopicsData as NSArray).sortedArray(using: [NSSortDescriptor(key: "timestamp", ascending: true)]) as! [[String:AnyObject]]
+                self.favoritedTopicsData = sortedResultsFavs
                 self.favoritedTopicsData = tempArr1
-                self.favoritedTopicsData.reverse()
+                //self.favoritedTopicsData.reverse()
+                
                 
                 let sortedResults = (self.topicData as NSArray).sortedArray(using: [NSSortDescriptor(key: "timestamp", ascending: true)]) as! [[String:AnyObject]]
                 self.topicData = sortedResults

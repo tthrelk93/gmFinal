@@ -295,8 +295,8 @@
     <resources>
         <image name="Comment" width="25" height="25"/>
         <image name="Octicons-mute.svg" width="666.66668701171875" height="762"/>
-        <image name="favoritesUnfilled" width="20" height="20"/>
+        <image name="favoritesUnfilled" width="25" height="25"/>
         <image name="like" width="25" height="25"/>
-        <image name="shareIcon-1" width="20" height="20"/>
+        <image name="shareIcon-1" width="25" height="25"/>
     </resources>
 </document>

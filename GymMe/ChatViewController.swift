@@ -19,6 +19,8 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
     var jobType = String()
     lazy var outgoingBubbleImageView: JSQMessagesBubbleImage = self.setupOutgoingBubble()
     lazy var incomingBubbleImageView: JSQMessagesBubbleImage = self.setupIncomingBubble()
+    lazy var incomingBubbleShareImageView: JSQMessagesBubbleImage = self.setupIncomingBubbleShare()
+    lazy var outgoingBubbleShareImageView: JSQMessagesBubbleImage = self.setupOutgoingBubbleShare()
     var thisUser = DatabaseReference()
     var thisUserIsTypingRef = DatabaseReference()
     var thisUsersTypingQuery = DatabaseReference()
@@ -143,6 +145,7 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, didTapCellAt indexPath: IndexPath!, touchLocation: CGPoint) {
         print(messages[indexPath.row])
+        
     }
     var thisPostData = [String:Any]()
     
@@ -177,11 +180,22 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAt indexPath: IndexPath!) -> JSQMessageBubbleImageDataSource! {
         let message = messages[indexPath.item] // 1
-        if message.senderId == senderId { // 2
-            return outgoingBubbleImageView
-        } else { // 3
-            return incomingBubbleImageView
+        self.selectedPostID = message.postID
+        if selectedPostID == "nil"{
+            print("postIDNil")
+            if message.senderId == senderId { // 2
+                return outgoingBubbleImageView
+            } else { // 3
+                return incomingBubbleImageView
+            }
+        } else {
+            if message.senderId == senderId { // 2
+                return outgoingBubbleShareImageView
+            } else { // 3
+                return incomingBubbleShareImageView
+            }
         }
+        
     }
     var gmRed = UIColor(red: 237/255, green: 28/255, blue: 39/255, alpha: 1.0)
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -190,11 +204,22 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
         cell.textView?.isSelectable = false
         let message = messages[indexPath.item]
         //cell.textView?.backgroundColor = gmRed
-        if message.senderId == senderId { // 1
-            cell.textView?.textColor = UIColor.white // 2
+        self.selectedPostID = message.postID
+        if selectedPostID == "nil"{
+            print("postIDNil")
+            if message.senderId == senderId { // 1
+                cell.textView?.textColor = UIColor.white // 2
+            } else {
+                cell.textView?.textColor = UIColor.black // 3
+            }
         } else {
-            cell.textView?.textColor = UIColor.black // 3
+            cell.textView?.textColor = UIColor.white
+            //cell.contentView.layer.borderColor = self.gmRed.cgColor
+            //cell.contentView.layer.borderWidth = 2
+            //cell.contentView.layer.masksToBounds = true
         }
+        
+        
         
         return cell
     }
@@ -246,6 +271,8 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
                 } else if let id = messageData["senderId"] as String!, let photoURL = messageData["photoURL"] as String!, let postID = messageData["postID"] {
                     print("tryingToLoadImage")
                     if let mediaItem = JSQPhotoMediaItem(maskAsOutgoing: id == self.senderId) {
+                        
+                        //self.addMessage(withId: id, name: name, text: text, postID: postID)
                         self.addPhotoMessage(withId: id, key: snapshot.key, mediaItem: mediaItem, postID: postID)
                         
                         if (photoURL.hasPrefix("gs://") || photoURL.hasPrefix("https://")) {
@@ -458,6 +485,14 @@ final class ChatViewController: JSQMessagesViewController, UINavigationControlle
     private func setupIncomingBubble() -> JSQMessagesBubbleImage {
         let bubbleImageFactory = JSQMessagesBubbleImageFactory()
         return bubbleImageFactory!.incomingMessagesBubbleImage(with: UIColor.jsq_messageBubbleLightGray())
+    }
+    private func setupIncomingBubbleShare() -> JSQMessagesBubbleImage {
+        let bubbleImageFactory = JSQMessagesBubbleImageFactory()
+        return bubbleImageFactory!.incomingMessagesBubbleImage(with: UIColor.gray)//jsq_messageBubbleWhite())
+    }
+    private func setupOutgoingBubbleShare() -> JSQMessagesBubbleImage {
+        let bubbleImageFactory = JSQMessagesBubbleImageFactory()
+        return bubbleImageFactory!.outgoingMessagesBubbleImage(with: UIColor.gray/*jsq_messageBubbleLightGray()?.withAlphaComponent(0.4)/*jsq_messageBubbleWhite()*/*/)
     }
     
     override func didPressAccessoryButton(_ sender: UIButton) {

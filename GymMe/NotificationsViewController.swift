@@ -302,8 +302,14 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell : NotificationCell = collectionView.dequeueReusableCell(withReuseIdentifier: "NotificationCell", for: indexPath) as! NotificationCell
+        DispatchQueue.main.async{
+            
+        cell.postPic.setImage(nil, for: .normal)
+        cell.postPic.isHidden = false
+        cell.postTextLabel.text = ""
         cell.postPic.frame = CGRect(x: cell.postPic.frame.origin.x, y: cell.postPic.frame.origin.y, width: 60, height: 60)
         cell.actionUserPicButton.frame = CGRect(x: cell.actionUserPicButton.frame.origin.x, y: cell.actionUserPicButton.frame.origin.y, width: 50, height: 50)
+            cell.postTextLabel.isHidden = false
         cell.postID = (self.noteCollectData![indexPath.row] )["postID"] as! String
         if (self.noteCollectData![indexPath.row] )["isForumPost"] as? Bool != nil{
             cell.postTextLabel.text = "Forum"
@@ -318,11 +324,11 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
         }
         //lineView.frame = CGRect(x: lineView.frame.origin.x, y: lineView.frame.origin.y, width: lineView.frame.width, height: 0.5)
         
-        DispatchQueue.main.async{
+        
             cell.delegate = self
             cell.name = (self.noteCollectData![indexPath.row] as! [String:Any])["actionByUsername"] as! String
         
-            cell.postPic.frame = CGRect(x: cell.postPic.frame.origin.x, y: cell.postPic.frame.origin.y, width: 60, height: 60)
+            //cell.postPic.frame = CGRect(x: cell.postPic.frame.origin.x, y: cell.postPic.frame.origin.y, width: 60, height: 60)
         
             var partOne = (self.noteCollectData![indexPath.row]["actionText"] as! String)
         if let first = partOne.components(separatedBy: " ").first {
@@ -419,11 +425,11 @@ class NotificationsViewController: UIViewController, UICollectionViewDelegate, U
             }
             cell.ogPostPicFrame = cell.postPic.frame
             if self.picDict[self.noteCollectData![indexPath.row]["postID"] as! String] != nil{
-                cell.postPic.frame = cell.ogPostPicFrame
+                //cell.postPic.frame = cell.ogPostPicFrame
                 cell.postPic.setImage(self.picDict[self.noteCollectData![indexPath.row]["postID"] as! String], for: .normal)
             } else {
                 if (self.noteCollectData![indexPath.row]["isForumPost"] as? Bool) == nil {
-                   cell.postPic.frame = cell.tpIconPosition.frame
+                   //cell.postPic.frame = cell.tpIconPosition.frame
                     cell.postPic.setBackgroundImage(UIImage(named: "List-Grey-120 copy 2"), for: .normal)
                     
                 } else {
@@ -546,7 +552,7 @@ extension CALayer {
         
         switch edge {
         case UIRectEdge.top:
-            border.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: thickness)
+            border.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: 0.5)
             break
         case UIRectEdge.bottom:
             border.frame = CGRect(x:0, y:self.frame.height - thickness, width:self.frame.width, height:thickness)

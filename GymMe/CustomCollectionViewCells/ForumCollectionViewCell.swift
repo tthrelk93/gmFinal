@@ -18,7 +18,7 @@ protocol ForumDelegate {
     //func showLikedByViewPicCell(sentBy: String, cell: NewsFeedPicCollectionViewCell)
     //func locationButtonTextCellPressed(sentBy: String, cell: NewsFeedCellCollectionViewCell)
     //func locationButtonPicCellPressed(sentBy: String, cell: NewsFeedPicCollectionViewCell)
-    func reloadDataAfterLike(newData: [[String:Any]], indexPathRow: Int, likeType: String)
+    func reloadDataAfterLike(newData: [[String:Any]],favTopicsIdData: [String], indexPathRow: Int, likeType: String)
     //func showHashTag(tagType: String, payload:String, postID: String, name: String)
     
     
@@ -122,7 +122,7 @@ class ForumCollectionViewCell: UICollectionViewCell {
                     likesString = "\(likesArray.count) likes"
                 }
                 self.likesCountButton.setTitle(likesString, for: .normal)
-                self.delegate?.reloadDataAfterLike(newData: likesArray, indexPathRow: self.indexPath.row, likeType: "actualLike")
+                self.delegate?.reloadDataAfterLike(newData: likesArray, favTopicsIdData: ["nil"], indexPathRow: self.indexPath.row, likeType: "actualLike")
                 
                 //reload collect in delegate
                 
@@ -168,7 +168,7 @@ class ForumCollectionViewCell: UICollectionViewCell {
                 
                 Database.database().reference().child("users").child((self.forumData["posterID"] as! String)).child("forumPosts").child(self.forumID).child("actualLikes").setValue(likesArray)
                 
-                self.delegate?.reloadDataAfterLike(newData: likesArray, indexPathRow: self.indexPath.row, likeType: "actualLike")
+                self.delegate?.reloadDataAfterLike(newData: likesArray, favTopicsIdData: ["nil"], indexPathRow: self.indexPath.row, likeType: "actualLike")
             })
             
         }
@@ -194,6 +194,7 @@ class ForumCollectionViewCell: UICollectionViewCell {
                 if likesArray.count == 1 && (likesArray.first! as! [String:String]) == ["x": "x"]{
                     likesArray.remove(at: 0)
                 }
+                
                 var likesVal = likesArray.count
                 likesVal = likesVal + 1
                 //if self.myPicString == nil{
@@ -251,7 +252,7 @@ class ForumCollectionViewCell: UICollectionViewCell {
                 } else {
                     likesString = "\(likesArray.count) likes"
                 }
-                self.delegate?.reloadDataAfterLike(newData: likesArray, indexPathRow: self.indexPath.row, likeType: "fav")
+                self.delegate?.reloadDataAfterLike(newData: likesArray, favTopicsIdData: self.favoritedTopics!, indexPathRow: self.indexPath.row, likeType: "fav")
                
                 
             })
@@ -299,7 +300,7 @@ class ForumCollectionViewCell: UICollectionViewCell {
                 
                 Database.database().reference().child("users").child((self.forumData["posterID"] as! String)).child("forumPosts").child(self.forumID).child("likes").setValue(likesArray)
                 
-                self.delegate?.reloadDataAfterLike(newData: likesArray, indexPathRow: self.indexPath.row, likeType: "fav")
+                self.delegate?.reloadDataAfterLike(newData: likesArray, favTopicsIdData:self.favoritedTopics!, indexPathRow: self.indexPath.row, likeType: "fav")
             })
             
         }

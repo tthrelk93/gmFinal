@@ -280,6 +280,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
         postButton.isHidden = false
         cancelPostButton.isHidden = false
         makePostTextView.resignFirstResponder()
+        
   
     }
     
@@ -581,6 +582,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
                 SwiftOverlays.removeAllBlockingOverlays()
                 return
             }
+            makePostTextView.resignFirstResponder()
             newPost!["posterUID"] = Auth.auth().currentUser!.uid
             newPost!["posterName"] = self.curUser.username
             print("cUpP: \(curUser.profPic!)")
@@ -1526,26 +1528,27 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
                     }
                 }
                 
-                let uRange = (uName as NSString).range(of: searchText, options: NSString.CompareOptions.literal)
-                let rRange = (rName as NSString).range(of: searchText, options: NSString.CompareOptions.literal)
+                let uRange = (uName.lowercased() as NSString).range(of: searchText.lowercased(), options: NSString.CompareOptions.literal)
+                let rRange = (rName.lowercased() as NSString).range(of: searchText.lowercased(), options: NSString.CompareOptions.literal)
                 print("rANDu: \(uRange) \(rRange)")
                 if uRange.location != NSNotFound {
                     tempUserDict[key] = ["uName":uName, "rName":rName, "pic": pic!, "uid": uid, "picString": picString]
                     self.allSuggested.append(rName)
-                    print("curTextu: \(searchText) allSuggested1: \(self.allSuggested)")
+                    print("curTextu: \(searchText) allSuggested1: \(self.allSuggested),\(uName)")
                 } else if rRange.location != NSNotFound{
                     
                     tempUserDict[key] = ["uName":uName, "rName":rName, "pic": pic!,"picString":picString, "uid": uid]
                     
                     
-                    self.allSuggested.append(key)
+                    self.allSuggested.append(rName)
                     print("curText: \(searchText) allSuggested: \(self.allSuggested)")
-                } else if self.allSuggested.contains(key){
-                    if self.allSuggested.contains(rName){
-                        tempUserDict.removeValue(forKey: key)
-                        self.allSuggested.remove(at: self.allSuggested.index(of: key)!)
-                        //self.findFriendsData.remove(at: fin)
-                    }
+                } else if self.allSuggested.contains(rName){
+                    /*self.allSuggested.contains(key){
+                     if*/
+                    tempUserDict.removeValue(forKey: key)
+                    self.allSuggested.remove(at: self.allSuggested.index(of: rName)!)
+                    //self.findFriendsData.remove(at: fin)
+                    //}
                     
                 }
                 
@@ -1558,7 +1561,7 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
             }
             for (key, val) in tempUserDict {
                 print("snapKey: \(key)")
-                if self.allSuggested.contains(key){
+                if self.allSuggested.contains((val as! [String:Any])["rName"] as! String){
                     
                     var tempDict = [String:Any]()
                     tempDict = val as! [String:Any]
@@ -1586,7 +1589,6 @@ UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UISearchBarDeleg
             } else {
                 self.searchActive = true;
             }
-            
             
             
             DispatchQueue.main.async{

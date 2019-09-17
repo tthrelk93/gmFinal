@@ -868,33 +868,38 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
         
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             let keyboardHeight = keyboardSize.height
+            let keyboardHeigh = keyboardSize.height
             print("keyHeight: \(keyboardHeight)")
-            //topLine.frame = CGRect(x: topLine.frame.origin.x, y: topLine.frame.origin.y - keyboardHeight, width: topLine.frame.width, height: topLine.frame.height)
+            
             
             backButton.isHidden = false
             //self.likeTopLabel.isHidden = true
             
-            commentView.frame = CGRect(x: commentView.frame.origin.x, y: commentView.frame.origin.y + keyboardHeight, width: commentView.frame.width, height: commentView.frame.height)
-           // topLabel.frame = CGRect(x: topLabel.frame.origin.x, y: topLabel.frame.origin.y - keyboardHeight, width: topLabel.frame.width, height: topLabel.frame.height)
+            commentView.frame = CGRect(x: commentView.frame.origin.x, y: commentView.frame.origin.y + keyboardHeigh - 400, width: commentView.frame.width, height: commentView.frame.height)
             
-           // replyCountButton.frame = CGRect(x: replyCountButton.frame.origin.x, y: replyCountButton.frame.origin.y - keyboardHeight, width: replyCountButton.frame.width, height: replyCountButton.frame.height)
+            topLine.frame = CGRect(x: topLine.frame.origin.x, y: topLine.frame.origin.y - keyboardHeight, width: topLine.frame.width, height: topLine.frame.height)
             
-          //  likesCountButton.frame = CGRect(x: likesCountButton.frame.origin.x, y: likesCountButton.frame.origin.y - keyboardHeight, width: likesCountButton.frame.width, height: likesCountButton.frame.height)
+            topLabel.frame = CGRect(x: topLabel.frame.origin.x, y: topLabel.frame.origin.y - keyboardHeight, width: topLabel.frame.width, height: topLabel.frame.height)
             
-           // posterImageView.frame = CGRect(x: posterImageView.frame.origin.x, y: posterImageView.frame.origin.y - keyboardHeight, width: posterImageView.frame.width, height: posterImageView.frame.height)
-           // timeStampLabel.frame = CGRect(x: timeStampLabel.frame.origin.x, y: timeStampLabel.frame.origin.y - keyboardHeight, width: timeStampLabel.frame.width, height: timeStampLabel.frame.height)
-          //  likeButton.frame = CGRect(x: likeButton.frame.origin.x, y: likeButton.frame.origin.y - keyboardHeight, width: likeButton.frame.width, height: likeButton.frame.height)
-          //  actualLikeButton.frame = CGRect(x: actualLikeButton.frame.origin.x, y: actualLikeButton.frame.origin.y - keyboardHeight, width: actualLikeButton.frame.width, height: actualLikeButton.frame.height)
-          //  topicTopLine2.frame = CGRect(x: topicTopLine2.frame.origin.x, y: topicTopLine2.frame.origin.y - keyboardHeight, width: topicTopLine2.frame.width, height: topicTopLine2.frame.height)
+            replyCountButton.frame = CGRect(x: replyCountButton.frame.origin.x, y: replyCountButton.frame.origin.y - keyboardHeight, width: replyCountButton.frame.width, height: replyCountButton.frame.height)
             
-           // topicTitleLabel.frame = CGRect(x: topicTitleLabel.frame.origin.x, y: topicTitleLabel.frame.origin.y - keyboardHeight, width: topicTitleLabel.frame.width, height: topicTitleLabel.frame.height)
+            likesCountButton.frame = CGRect(x: likesCountButton.frame.origin.x, y: likesCountButton.frame.origin.y - keyboardHeight, width: likesCountButton.frame.width, height: likesCountButton.frame.height)
             
-           // posterPicButton.frame = CGRect(x: posterPicButton.frame.origin.x, y: posterPicButton.frame.origin.y - keyboardHeight, width: posterPicButton.frame.width, height: posterPicButton.frame.height)
+            posterImageView.frame = CGRect(x: posterImageView.frame.origin.x, y: posterImageView.frame.origin.y - keyboardHeight, width: posterImageView.frame.width, height: posterImageView.frame.height)
+            timeStampLabel.frame = CGRect(x: timeStampLabel.frame.origin.x, y: timeStampLabel.frame.origin.y - keyboardHeight, width: timeStampLabel.frame.width, height: timeStampLabel.frame.height)
+           likeButton.frame = CGRect(x: likeButton.frame.origin.x, y: likeButton.frame.origin.y - keyboardHeight, width: likeButton.frame.width, height: likeButton.frame.height)
+            actualLikeButton.frame = CGRect(x: actualLikeButton.frame.origin.x, y: actualLikeButton.frame.origin.y - keyboardHeight, width: actualLikeButton.frame.width, height: actualLikeButton.frame.height)
+            topicTopLine2.frame = CGRect(x: topicTopLine2.frame.origin.x, y: topicTopLine2.frame.origin.y - keyboardHeight, width: topicTopLine2.frame.width, height: topicTopLine2.frame.height)
             
-            //topicDescriptionLabel.frame = CGRect(x: topicDescriptionLabel.frame.origin.x, y: topicDescriptionLabel.frame.origin.y - keyboardHeight, width: topicDescriptionLabel.frame.width, height: topicDescriptionLabel.frame.height)
+            topicTitleLabel.frame = CGRect(x: topicTitleLabel.frame.origin.x, y: topicTitleLabel.frame.origin.y - keyboardHeight, width: topicTitleLabel.frame.width, height: topicTitleLabel.frame.height)
             
-           //likeReplyCollect.frame = CGRect(x: likeReplyCollect.frame.origin.x, y: likeReplyCollect.frame.origin.y - keyboardHeight, width: likeReplyCollect.frame.width, height: likeReplyCollect.frame.height)
-            //commentIconButton.frame = CGRect(x: commentIconButton.frame.origin.x, y: commentIconButton.frame.origin.y - keyboardHeight, width: commentIconButton.frame.width, height: commentIconButton.frame.height)
+            posterPicButton.frame = CGRect(x: posterPicButton.frame.origin.x, y: posterPicButton.frame.origin.y - keyboardHeight, width: posterPicButton.frame.width, height: posterPicButton.frame.height)
+            
+            topicDescriptionLabel.frame = CGRect(x: topicDescriptionLabel.frame.origin.x, y: topicDescriptionLabel.frame.origin.y - keyboardHeight, width: topicDescriptionLabel.frame.width, height: topicDescriptionLabel.frame.height)
+            
+           likeReplyCollect.frame = CGRect(x: likeReplyCollect.frame.origin.x, y: likeReplyCollect.frame.origin.y - keyboardHeight, width: likeReplyCollect.frame.width, height: likeReplyCollect.frame.height)
+            commentIconButton.frame = CGRect(x: commentIconButton.frame.origin.x, y: commentIconButton.frame.origin.y - keyboardHeight, width: commentIconButton.frame.width, height: commentIconButton.frame.height)
+            posterNameButton.frame = CGRect(x: posterNameButton.frame.origin.x, y: posterNameButton.frame.origin.y - keyboardHeight, width: posterNameButton.frame.width, height: posterNameButton.frame.height)
             print("hiding keyb")
         }
     }
@@ -904,15 +909,39 @@ class SingleTopicViewController: UIViewController, UICollectionViewDelegate, UIC
         
         
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            let keyboardHeigh = keyboardSize.height
             let keyboardHeight = keyboardSize.height
             print("keyHeight: \(keyboardHeight)")
-            //topLine.frame = CGRect(x: topLine.frame.origin.x, y: topLine.frame.origin.y + keyboardHeight, width: topLine.frame.width, height: topLine.frame.height)
+            
             
             backButton.isHidden = true
             //self.likeTopLabel.isHidden = true
             
-            commentView.frame = CGRect(x: commentView.frame.origin.x, y: commentView.frame.origin.y - keyboardHeight, width: commentView.frame.width, height: commentView.frame.height)
+            commentView.frame = CGRect(x: commentView.frame.origin.x, y: commentView.frame.origin.y - keyboardHeigh + 400, width: commentView.frame.width, height: commentView.frame.height)
             
+            topLine.frame = CGRect(x: topLine.frame.origin.x, y: topLine.frame.origin.y + keyboardHeight, width: topLine.frame.width, height: topLine.frame.height)
+            
+            topLabel.frame = CGRect(x: topLabel.frame.origin.x, y: topLabel.frame.origin.y + keyboardHeight, width: topLabel.frame.width, height: topLabel.frame.height)
+            
+            replyCountButton.frame = CGRect(x: replyCountButton.frame.origin.x, y: replyCountButton.frame.origin.y + keyboardHeight, width: replyCountButton.frame.width, height: replyCountButton.frame.height)
+            
+            likesCountButton.frame = CGRect(x: likesCountButton.frame.origin.x, y: likesCountButton.frame.origin.y + keyboardHeight, width: likesCountButton.frame.width, height: likesCountButton.frame.height)
+            
+            posterImageView.frame = CGRect(x: posterImageView.frame.origin.x, y: posterImageView.frame.origin.y + keyboardHeight, width: posterImageView.frame.width, height: posterImageView.frame.height)
+            timeStampLabel.frame = CGRect(x: timeStampLabel.frame.origin.x, y: timeStampLabel.frame.origin.y + keyboardHeight, width: timeStampLabel.frame.width, height: timeStampLabel.frame.height)
+            likeButton.frame = CGRect(x: likeButton.frame.origin.x, y: likeButton.frame.origin.y + keyboardHeight, width: likeButton.frame.width, height: likeButton.frame.height)
+            actualLikeButton.frame = CGRect(x: actualLikeButton.frame.origin.x, y: actualLikeButton.frame.origin.y + keyboardHeight, width: actualLikeButton.frame.width, height: actualLikeButton.frame.height)
+            topicTopLine2.frame = CGRect(x: topicTopLine2.frame.origin.x, y: topicTopLine2.frame.origin.y + keyboardHeight, width: topicTopLine2.frame.width, height: topicTopLine2.frame.height)
+            
+            topicTitleLabel.frame = CGRect(x: topicTitleLabel.frame.origin.x, y: topicTitleLabel.frame.origin.y + keyboardHeight, width: topicTitleLabel.frame.width, height: topicTitleLabel.frame.height)
+            
+            posterPicButton.frame = CGRect(x: posterPicButton.frame.origin.x, y: posterPicButton.frame.origin.y + keyboardHeight, width: posterPicButton.frame.width, height: posterPicButton.frame.height)
+            
+            topicDescriptionLabel.frame = CGRect(x: topicDescriptionLabel.frame.origin.x, y: topicDescriptionLabel.frame.origin.y + keyboardHeight, width: topicDescriptionLabel.frame.width, height: topicDescriptionLabel.frame.height)
+            
+            likeReplyCollect.frame = CGRect(x: likeReplyCollect.frame.origin.x, y: likeReplyCollect.frame.origin.y + keyboardHeight, width: likeReplyCollect.frame.width, height: likeReplyCollect.frame.height)
+            commentIconButton.frame = CGRect(x: commentIconButton.frame.origin.x, y: commentIconButton.frame.origin.y + keyboardHeight, width: commentIconButton.frame.width, height: commentIconButton.frame.height)
+            posterNameButton.frame = CGRect(x: posterNameButton.frame.origin.x, y: posterNameButton.frame.origin.y + keyboardHeight, width: posterNameButton.frame.width, height: posterNameButton.frame.height)
             
            
             print("hiding keyb")

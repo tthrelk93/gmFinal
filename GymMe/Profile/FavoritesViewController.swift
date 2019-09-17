@@ -353,16 +353,17 @@ class FavoritesViewController: UIViewController, UICollectionViewDelegate, UICol
         super.viewDidLoad()
         
         topLine.frame.size = CGSize(width: UIScreen.main.bounds.width,height: 0.5)
+        topLine.frame.origin = CGPoint(x: topLine.frame.origin.x, y: tabBar.frame.origin.y)
         bottomLine.frame.size = CGSize(width: UIScreen.main.bounds.width,height: 0.5)
         
         tabBar.selectedItem = tabBar.items![0]
         tabBar.delegate = self
         ogFavData = self.favData
-        print("favData123: \(self.favData)")
+        
         for dict in favData{
             var tempDict = dict.first?.value as! [String:Any]
             if tempDict["postPic"] == nil && tempDict["postVid"] == nil{
-                if tempDict["posterPicURL"] as! String == "profile-placeholder"{
+                if tempDict["posterPicURL"] as? String == nil || tempDict["posterPicURL"] as! String == "profile-placeholder"{
                     tempDict["posterPicURL"] = UIImage(named: "profile-placeholder")
                     //self.myPicString = "profile-placeholder"
                 } else {
@@ -370,7 +371,9 @@ class FavoritesViewController: UIViewController, UICollectionViewDelegate, UICol
                     if let messageImageUrl = URL(string: tempDict["posterPicURL"] as! String) {
                         
                         if let imageData: NSData = NSData(contentsOf: messageImageUrl) {
+                            tempDict["posterPicURLString"] = tempDict["posterPicURL"] as! String
                             tempDict["posterPicURL"] = UIImage(data: imageData as Data)
+                            
                         }
                     }
                 }

@@ -89,7 +89,12 @@ class HashTagViewController: UIViewController, UICollectionViewDelegate,UICollec
         topLine2.frame.size = CGSize(width: UIScreen.main.bounds.width, height: 0.5)
         
          hashTagImage.frame = CGRect(x: hashTagImage.frame.origin.x, y: hashTagImage.frame.origin.y, width: hashTagImage.frame.width, height: hashTagImage.frame.width)
-        
+        let layout2: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        layout2.sectionInset = UIEdgeInsets(top: 2.5, left: 2.5, bottom: 2.5, right: 2.5)
+        layout2.itemSize = CGSize(width: UIScreen.main.bounds.width/3.06, height: UIScreen.main.bounds.width/3.06)
+        layout2.minimumInteritemSpacing = 1
+        layout2.minimumLineSpacing = 1
+        hashTagCollect!.collectionViewLayout = layout2
         hashTagImage.layer.cornerRadius = hashTagImage.frame.width/2
         hashTagImage.layer.masksToBounds = true
         
@@ -126,6 +131,7 @@ class HashTagViewController: UIViewController, UICollectionViewDelegate,UICollec
             }
         })
         
+        print("hash: \(hashtag)")
         Database.database().reference().child("hashtags").child(hashtag).observeSingleEvent(of: .value, with: { snapshot in
             var valDict = snapshot.value as? [String]
             if valDict as? [String] != nil{
@@ -222,6 +228,7 @@ class HashTagViewController: UIViewController, UICollectionViewDelegate,UICollec
             vc.following = self.following
             vc.myPicString = self.myPicString
             vc.hashtag = self.hashtag
+            vc.selectedHash = self.hashtag
             
             
             }

@@ -13,8 +13,15 @@ import SwiftOverlays
 import JSQMessagesViewController
 
 
-class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITabBarDelegate, PerformActionsInFeedDelegate,UIGestureRecognizerDelegate, UITextFieldDelegate, UISearchBarDelegate, CommentLike, UITextViewDelegate, ToProfileDelegate {
+class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITabBarDelegate, PerformActionsInFeedDelegate,UIGestureRecognizerDelegate, UITextFieldDelegate, UISearchBarDelegate, CommentLike, UITextViewDelegate, ToProfileDelegate, HashDelegate {
     
+    func goToHash(tagType: String, payload: String) {
+        showHashTagAlertComment(tagType: "hash", payload: payload)
+    }
+    
+    func goToMention(tagType: String, payload: String) {
+        showHashTagAlertComment(tagType: "mention", payload: payload)
+    }
     @IBOutlet weak var topLabel: UILabel!
     @IBOutlet weak var likeTopLabel: UILabel!
     @IBOutlet weak var locationOptionsMenu: UIView!
@@ -347,6 +354,7 @@ class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UIColle
     }
     @IBOutlet weak var createNewMessageButton: UIButton!
     @IBAction func backFromFindPressed(_ sender: Any) {
+        print("back from find")
         inboxButton.isHidden = false
         sentBy = "feed"
         topLabel.isHidden = false
@@ -430,7 +438,7 @@ class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UIColle
                         
                     } else {
                         
-                        var tempString = "\(self.myUName!) commented on your post" as! String
+                        var tempString = "\(self.myUName!) commented on your post." as! String
                         
                         var date = Date()
                         var dateFormatter = DateFormatter()
@@ -653,10 +661,14 @@ class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UIColle
         
         return true
     }
-    
+    func showHashTagAlertComment(tagType:String, payload:String){
+        // print("show hash")
+        showHashTag(tagType: tagType, payload: payload, postID: "", name: "")
+        
+    }
     func showHashTagAlert(tagType:String, payload:String){
        // print("show hash")
-        showHashTag(tagType: tagType, payload: payload, postID: curCell.postID!, name: (self.tpPosterNameButton.titleLabel?.text)!)
+        showHashTag(tagType: tagType, payload: payload, postID: curCell.postID!, name: (curCell.posterNameButton.titleLabel!.text)!)
         
     }
     var selectedHash = String()
@@ -818,6 +830,7 @@ class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UIColle
         }
     }
     func backk(){
+        print("in backk")
         self.inboxButton.isHidden = false
         self.commentTF.resignFirstResponder()
         self.topLabel.text = "GymMe"
@@ -1045,6 +1058,7 @@ class HomeFeedViewController: UIViewController, UICollectionViewDelegate,UIColle
     var commentToLikeOGFrame = CGRect()
     var backToCommentsFromLiked = false
     @IBAction func backFromLikedByViewButtonPressed(_ sender: Any) {
+        print("backFromLikedByViewButtonPressed")
         if backToCommentsFromLiked == true{
             self.sentBy = "showComments"
             likedByCollectData.removeAll()
@@ -1328,7 +1342,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
             let fixedWidth = cell.postText.frame.size.width
             let newSize = cell.postText.sizeThatFits(CGSize(width: fixedWidth, height: self.estimateFrameForText(text: cell.postText.text as! String).height))
             
-            tpTextView.frame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
+            tpTextView.frame.size = CGSize(width: max(newSize.width - 5, fixedWidth - 5), height: newSize.height)
             tpTextView.isScrollEnabled = false
             tpTimestampLabel.text = cell.timeStambLabel.text
             
@@ -1351,7 +1365,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
             textPostCommentView.frame = CGRect(x: textPostCommentView.frame.origin.x, y: textPostCommentView.frame.origin.y, width: viewSize.width, height: curCell.frame.height - 15)
             
             tpTopView.frame = CGRect(x: 0, y: 0, width: tpTopView.frame.width, height: 51)
-            tpTextView.frame = CGRect(x: 8, y: 0 + tpTopView.frame.height, width: textPostCommentView.frame.width, height: curCell.postText.frame.height)
+            tpTextView.frame = CGRect(x: 8, y: 0 + tpTopView.frame.height, width: textPostCommentView.frame.width - 5, height: curCell.postText.frame.height)
             tpBottomView.frame = CGRect(x: 8, y: 0 + tpTopView.frame.height + tpTextView.frame.height - 15, width: tpBottomView.frame.width, height: textPostCommentView.frame.height - tpTextView.frame.height - tpTopView.frame.height + 5)
             
             //tpBottomLine.frame = CGRect(x: 0, y: textPostCommentView.frame.origin.y + textPostCommentView.frame.height, width: UIScreen.main.bounds.width, height: 0.5)
@@ -1369,7 +1383,12 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
             self.selectedPostForComments = cell.postID!
             self.selectedPostPosterID = cell.posterUID!
             self.topLabel.isHidden = false
+            self.tpLikeButton.frame.size = CGSize(width: 25, height: 25)
+            self.tpFavoriteButton.frame.size = CGSize(width: 25, height: 25)
             
+            self.tpCommentButton.frame.size = CGSize(width: 25, height: 25)
+            
+            self.tpShareButton.frame.size = CGSize(width: 25, height: 25)
             likedByCollectData.removeAll()
            // print("showCommentsCount")
            
@@ -1424,7 +1443,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
             let fixedWidth = cell.postText.frame.size.width
             let newSize = cell.postText.sizeThatFits(CGSize(width: fixedWidth, height: self.estimateFrameForText(text: cell.postText.text as! String).height))
             
-            tpTextView.frame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
+            tpTextView.frame.size = CGSize(width: max(newSize.width - 5, fixedWidth - 5), height: newSize.height)
             tpTextView.isScrollEnabled = false
              tpTimestampLabel.text = cell.timeStambLabel.text
             
@@ -1452,6 +1471,12 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
             self.selectedPostForComments = cell.postID!
             self.selectedPostPosterID = cell.posterUID!
             self.commentTF.delegate = self
+            self.tpLikeButton.frame.size = CGSize(width: 25, height: 25)
+            self.tpFavoriteButton.frame.size = CGSize(width: 25, height: 25)
+            
+            self.tpCommentButton.frame.size = CGSize(width: 25, height: 25)
+            
+            self.tpShareButton.frame.size = CGSize(width: 25, height: 25)
             likedByCollectData.removeAll()
            // print("showComments")
            
@@ -1841,7 +1866,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                cell.myRealName = self.myRealName
                 cell.posterUID = self.selectedPostPosterID
                 cell.posterName = (self.likedByCollectData[indexPath.row]["commentorName"] as! String)
-                
+                //cell.likeButton.frame.origin = CGPoint(x: cell.likeButton.frame.origin.x, y: cell.frame.midY)
                 cell.postID = self.selectedPostForComments
                     cell.commentDelegate = self
                     cell.indexPath = indexPath
@@ -1850,7 +1875,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                     cell.contentView.layer.borderColor = UIColor.clear.cgColor
                     cell.contentView.layer.masksToBounds = true
                     
-                
+                cell.hashDelegate = self
                 cell.commentorPic.frame.size = CGSize(width: 35, height: 35)
                 
                     cell.commentorPic.layer.cornerRadius = cell.commentorPic.frame.width/2
@@ -1982,8 +2007,12 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
             
             typeOfCellAtIndexPath[indexPath] = 0
             let cell : NewsFeedCellCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "NewsFeedCellCollectionViewCell", for: indexPath) as! NewsFeedCellCollectionViewCell
+            
             DispatchQueue.main.async{
-                
+                cell.likesCountButton.setTitle("0 likes", for: .normal)
+                cell.likeButton.setImage(UIImage(named:"like.png"), for: .normal)
+                //cell.likesCountButton.titleLabel!.text = "0 likes"
+                //cell.likeButton.imageView!.image = nil
                 
                 cell.profImageView.frame = CGRect(x: cell.profImageView.frame.origin.x, y: cell.profImageView.frame.origin.y, width: 35, height: 35)
                 cell.goToPosterProfile.frame = CGRect(x: cell.profImageView.frame.origin.x, y: cell.profImageView.frame.origin.y, width: 35, height: 35)
@@ -2025,6 +2054,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
 
                 let fixedWidth = cell.postText.frame.size.width
                 let newSize = cell.postText.sizeThatFits(CGSize(width: fixedWidth, height: self.estimateFrameForText(text: cell.postText.text as! String).height))
+                //print("sizeForCellIs: \(newSize)")
                 
                 cell.postText.frame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
                 cell.postText.isScrollEnabled = false
@@ -2702,46 +2732,41 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                 
                 var numLines = numLinesForTextView(text: text as! String)
                 print("numLines: \(numLines)")
-                
-                 if (estimateFrameForText(text: text as! String).height) >= 70 && (estimateFrameForText(text: text as! String).height) < 140 {
-                    if (estimateFrameForText(text: text as! String).height) >= 70 && (estimateFrameForText(text: text as! String).height) < 100{
-                        height = estimateFrameForText(text: text as! String).height + 150
-                        //print("suh")
-                    } else if (estimateFrameForText(text: text as! String).height) > 100 && (estimateFrameForText(text: text as! String).height) < 110{
-                        height = estimateFrameForText(text: text as! String).height + 140
-                        //print("suh")
-                    } else if (estimateFrameForText(text: text as! String).height) >= 110 && (estimateFrameForText(text: text as! String).height) < 120{
-                        height = estimateFrameForText(text: text as! String).height + 135
-                    
-                    } else if (estimateFrameForText(text: text as! String).height) >= 120 && (estimateFrameForText(text: text as! String).height) < 130{
-                        height = estimateFrameForText(text: text as! String).height + 130
-                        
-                    } else if (estimateFrameForText(text: text as! String).height) >= 130 {
-                    
-                    height = estimateFrameForText(text: text as! String).height + 125
-                    }
-                 } else if (estimateFrameForText(text: text as! String).height) > 140 && (estimateFrameForText(text: text as! String).height) < 175{
-                    height = estimateFrameForText(text: text as! String).height + 133
-                 } else if (estimateFrameForText(text: text as! String).height) > 175 && (estimateFrameForText(text: text as! String).height) < 210{
-                    height = estimateFrameForText(text: text as! String).height + 120
-                 } else if (estimateFrameForText(text: text as! String).height) > 210 && (estimateFrameForText(text: text as! String).height) < 240{
-                    height = estimateFrameForText(text: text as! String).height + 110
-                 } else if (estimateFrameForText(text: text as! String).height) > 240{
-                    height = estimateFrameForText(text: text as! String).height + 100
-                 } else {
+                if numLines == 1.0 {
                     height = estimateFrameForText(text: text as! String).height + 160
+                } else if numLines == 2.0 {
+                    height = estimateFrameForText(text: text as! String).height + 155
+                } else if numLines == 3.0 || numLines == 4.0 {
+                    height = estimateFrameForText(text: text as! String).height + 150
+                } else if numLines == 5.0 {
+                    height = estimateFrameForText(text: text as! String).height + 145
+                } else if numLines == 6.0 {
+                    height = estimateFrameForText(text: text as! String).height + 140
+                } else if numLines == 7.0 || numLines == 8.0 {
+                   height = estimateFrameForText(text: text as! String).height + 135
+                } else if numLines == 8.0 {
+                    height = estimateFrameForText(text: text as! String).height + 135
+                } else if numLines == 9.0 || numLines == 10.0 {
+                    height = estimateFrameForText(text: text as! String).height + 130
+                } else if numLines == 11.0 || numLines == 12.0 {
+                    height = estimateFrameForText(text: text as! String).height + 125
+                } else if numLines == 13.0 || numLines == 14.0 {
+                    height = estimateFrameForText(text: text as! String).height + 120
+                } else if numLines == 15.0 || numLines == 16.0 {
+                    height = estimateFrameForText(text: text as! String).height + 115
+                } else {
+                    print("size > 16")
+                    height = estimateFrameForText(text: text as! String).height + 105
                 }
                 print("textCell height for: \(text) = \(estimateFrameForText(text: text as! String).height)")
-                
+               
             }
-            //height = CGFloat(195)
-            
-            
+
         } else {
             width = collectionView.frame.width - 20
             if let text = (feedDataArray[indexPath.row])["postText"] {
                 var numLines = numLinesForTextView(text: text as! String)
-                print("numLines: \(numLines)")
+                //print("numLines: \(numLines)")
                 if (estimateFrameForText(text: text as! String).height) < 300 {
                     
                     if numLines == 1.0 {
@@ -2756,18 +2781,22 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                         height = (estimateFrameForText(text: text as! String).height/1.75) + 474 + 75
                     } else if numLines == 7.0 {
                         height = (estimateFrameForText(text: text as! String).height/1.75) + 474 + 80
-                    } else {
+                    } else if numLines == 8.0 || numLines == 9.0 {
                         height = (estimateFrameForText(text: text as! String).height/1.75) + 474 + 90
+                    } else {
+                        print("size 10 or 11")
+                        height = (estimateFrameForText(text: text as! String).height/1.75) + 474 + 100
                     }
                 } else {
                     
                     height = (estimateFrameForText(text: text as! String).height/1.75) + 474 + 100
                 }
-                print("picCell height for: \(text) = \(estimateFrameForText(text: text as! String).height)")
+               // print("picCell height for: \(text) = \(estimateFrameForText(text: text as! String).height)")
             }
                 }
             //height = CGFloat(563)
             }
+            //print("returnheight: \(height)")
             return CGSize(width: width, height: height)
         }
         
@@ -2828,6 +2857,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
     override func viewDidLoad() {
         super.viewDidLoad()
         //self.edgesForExtendedLayout = []
+        
         ogLikeCollectFrame = self.likedByCollect.frame
        // print("startLoad")
         //self.showWaitOverlayWithText("Loading Feed")
@@ -2836,6 +2866,8 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
         viewPostsButton.layer.cornerRadius = 6
         print("the screen height is: \(UIScreen.main.bounds.height)")
         print("the screen width is: \(UIScreen.main.bounds.width)")
+        print("tabBarHeightAndY: height \(tabBar.frame.height), Y \(tabBar.frame.origin.y)")
+        //tabBar.layer.addBorder(edge: .top, color: .lightGray, thickness: 0.2)
         DispatchQueue.main.async{ self.view.addSubview(UIView().customActivityIndicator(view: self.view, widthView: nil, backgroundColor:UIColor.black, textColor: UIColor.white, message: "Loading Feed", topLine: self.lineView, tabBarFrame: self.tabBar.frame))
         }
         
@@ -3146,7 +3178,7 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
             let keyboardHeight = keyboardSize.height
             //print("keyHeight: \(keyboardHeight)")
             commentTopLine.frame = CGRect(x: commentTopLine.frame.origin.x, y: commentTopLine.frame.origin.y - keyboardHeight, width: commentTopLine.frame.width, height: commentTopLine.frame.height)
-            
+            print("did this just get called?")
             backFromLikedByViewButton.isHidden = false
             //self.likeTopLabel.isHidden = true
             
@@ -3467,12 +3499,12 @@ alert.addAction(UIAlertAction(title: "Send via Direct Message", style: .default)
                     
                     
                     var rName = (snapshot.value as! [String:Any])["realName"]
-            if (((postDict["postPic"] as? String) == nil) && ((postDict["postPic"] as? String) == nil)){
+            if (((postDict["postPic"] as? String) == nil) && ((postDict["postVid"] as? String) == nil)){
                 //sendTextPost
                 let messageItem = [
                     "senderId": Auth.auth().currentUser!.uid,
                     "senderName": self.myRealName,
-                    "text": (postDict["postText"] as? String),
+                    "text": "\(self.myRealName) shared a post with you. Press here to view post."/*(postDict["postText"] as? String)*/,
                     "timeStamp": stringDate,
                     "receiverName": recipName, "postID": self.curPostID
                 ]
@@ -3668,7 +3700,7 @@ extension UIView{
     func customActivityIndicator(view: UIView, widthView: CGFloat?,backgroundColor: UIColor?, textColor:UIColor?, message: String?, topLine: UIView, tabBarFrame:CGRect) -> UIView{
         
         //Config UIView
-        self.backgroundColor = backgroundColor?.withAlphaComponent(0.3) //Background color of your view which you want to set
+        self.backgroundColor = backgroundColor?.withAlphaComponent(0.4) //Background color of your view which you want to set
         
         var selfWidth = view.frame.width
         if widthView != nil{
@@ -3682,7 +3714,7 @@ extension UIView{
         // let imageListArray = [UIImage(named:"spin1"), UIImage(named:"spin2")] as! [UIImage]
         
         loopImages.animationImages = imageListArray
-        loopImages.animationDuration = TimeInterval(0.9 )
+        loopImages.animationDuration = TimeInterval(1.0)
         loopImages.startAnimating()
         
         let imageFrameX = (selfWidth / 2) - 30
@@ -3727,7 +3759,7 @@ extension UIView{
         label.text = message // "\(inspirationalMessages[number])"
         
         // Define UIView frame
-        self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width , height: UIScreen.main.bounds.size.height )
+        self.frame = CGRect(x: 0, y: -1, width: UIScreen.main.bounds.size.width , height: UIScreen.main.bounds.size.height + 1)
         
         
         //ImageFrame

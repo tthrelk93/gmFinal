@@ -11,7 +11,15 @@ import FirebaseDatabase
 import FirebaseStorage
 import FirebaseAuth
 
-class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITextFieldDelegate, UITextViewDelegate {
+class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UITextFieldDelegate, UITextViewDelegate, HashDelegate {
+    func goToHash(tagType: String, payload: String) {
+        showHashTagAlert(tagType: "hash", payload: payload)
+    }
+    
+    func goToMention(tagType: String, payload: String) {
+        showHashTagAlert(tagType: "mention", payload: payload)
+    }
+    
     var prevScreen = String()
     var senderScreen = String()
     var hashtag = String()
@@ -41,9 +49,9 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
     }
     @IBAction func favoritesButtonPressed(_ sender: Any) {
         print("here000")
-        print("df: \(self.favoritesButton.currentBackgroundImage)")
-        if self.favoritesButton.currentBackgroundImage == UIImage(named: "favoritesUnfilled.png"){
-            self.favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
+       // print("df: \(self.favoritesButton.currentImage)")
+        if self.favoritesButton.imageView?.image == UIImage(named: "favoritesUnfilled.png"){
+            self.favoritesButton.setImage(UIImage(named:"favoritesFilled.png"), for: .normal)
             print("here111")
             Database.database().reference().child("posts").child(self.postID).observeSingleEvent(of: .value, with: { snapshot in
                 let valDict = snapshot.value as! [String:Any]
@@ -61,7 +69,15 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                 
                 Database.database().reference().child("posts").child(self.postID).child("favorites").setValue(favoritesArray)
                 Database.database().reference().child("users").child(self.posterUID).child("posts").child(self.postID).child("favorites").setValue(favoritesArray)
-                Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("favorited").updateChildValues([self.postID: self.thisPostData])
+               
+                var tempDict = self.thisPostData
+                if tempDict["posterPicURLString"] != nil{
+                tempDict["posterPicURL"] = tempDict["posterPicURLString"]
+                
+                Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("favorited").updateChildValues([self.postID: tempDict])
+                } else {
+                    Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("favorited").updateChildValues([self.postID: self.thisPostData])
+                }
                 // self.favoritesCountButton.setTitle(String(favoritesArray.count), for: .normal)
                 Database.database().reference().child("users").child(self.posterUID).observeSingleEvent(of: .value, with: { snapshot in
                     var uploadDict = [String:Any]()
@@ -99,7 +115,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                 
             })
         } else {
-            self.favoritesButton.setBackgroundImage(UIImage(named:"favoritesUnfilled.png"), for: .normal)
+            self.favoritesButton.setImage(UIImage(named:"favoritesUnfilled.png"), for: .normal)
             
             
             Database.database().reference().child("posts").child(self.postID).observeSingleEvent(of: .value, with: { snapshot in
@@ -416,8 +432,9 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
     @IBAction func tpFaveButtonPressed(_ sender: Any) {
         print("here000")
         //print("df: \(self.favoritesButton.currentBackgroundImage)")
-        if self.tpFaveButton.currentBackgroundImage == UIImage(named: "favoritesUnfilled.png"){
-            self.tpFaveButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
+        
+        if self.tpFaveButton.imageView?.image == UIImage(named: "favoritesUnfilled.png"){
+            self.tpFaveButton.setImage(UIImage(named:"favoritesFilled.png"), for: .normal)
             print("here111")
             Database.database().reference().child("posts").child(self.postID).observeSingleEvent(of: .value, with: { snapshot in
                 let valDict = snapshot.value as! [String:Any]
@@ -435,7 +452,16 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                 
                 Database.database().reference().child("posts").child(self.postID).child("favorites").setValue(favoritesArray)
                 Database.database().reference().child("users").child(self.posterUID).child("posts").child(self.postID).child("favorites").setValue(favoritesArray)
-                Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("favorited").updateChildValues([self.postID: self.thisPostData])
+                
+                var tempDict = self.thisPostData
+                if tempDict["posterPicURLString"] != nil{
+                    tempDict["posterPicURL"] = tempDict["posterPicURLString"]
+                    
+                    Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("favorited").updateChildValues([self.postID: tempDict])
+                } else {
+                    Database.database().reference().child("users").child(Auth.auth().currentUser!.uid).child("favorited").updateChildValues([self.postID: self.thisPostData])
+                }
+                
                 // self.favoritesCountButton.setTitle(String(favoritesArray.count), for: .normal)
                 Database.database().reference().child("users").child(self.posterUID).observeSingleEvent(of: .value, with: { snapshot in
                     var uploadDict = [String:Any]()
@@ -470,7 +496,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                 })
             })
         } else {
-            self.tpFaveButton.setBackgroundImage(UIImage(named:"favoritesUnfilled.png"), for: .normal)
+            self.tpFaveButton.setImage(UIImage(named:"favoritesUnfilled.png"), for: .normal)
             
             
             Database.database().reference().child("posts").child(self.postID).observeSingleEvent(of: .value, with: { snapshot in
@@ -553,7 +579,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                         
                     } else {
                         
-                        var tempString = "\(self.myUName) commented on your post" as! String
+                        var tempString = "\(self.myUName) commented on your post." as! String
                         
                         var date = Date()
                         var dateFormatter = DateFormatter()
@@ -728,7 +754,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                         
                     } else {
                         
-                        var tempString = "\(self.myUName) commented on your post" as! String
+                        var tempString = "\(self.myUName) commented on your post." as! String
                         
                         var date = Date()
                         var dateFormatter = DateFormatter()
@@ -977,8 +1003,9 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                 }
            
                 if self.thisPostData["postText"] == nil{
-                
+                print("nilText")
             } else {
+                    print("textPostSizingTime")
                     self.commentsCountButton.frame = CGRect(x: self.commentsCountButton.frame.origin.x, y: self.postText.frame.origin.y + 8, width: self.commentsCountButton.frame.width, height: self.commentsCountButton.frame.height)
                     self.postTextView.isHidden = false
                     self.tpView.isHidden = false
@@ -995,16 +1022,22 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                     let fixedWidth = self.postTextView.frame.size.width
                     
                     let newSize = self.postTextView.sizeThatFits(CGSize(width: fixedWidth, height: self.estimateFrameForText(text: self.postTextView.text as! String).height))
-                    
+                    print("sizeForText:\(newSize), \(self.postTextView.isHidden)")
                     self.postTextView.frame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
+                    
                     self.postTextView.isScrollEnabled = false
+                    self.commentsCountButton.frame.origin = CGPoint(x: self.commentsCountButton.frame.origin.x, y: self.postTextView.frame.origin.y + self.postTextView.frame.height)
                     var x = self.tpView.frame.origin.x
                     var w = self.tpView.frame.width
-                    var y = self.postTextView.frame.origin.y + self.postTextView.frame.height
+                    var y = self.postTextView.frame.origin.y + self.postTextView.frame.height + self.posterNameButton.frame.origin.y + 60
                     var h = abs(y - UIScreen.main.bounds.maxY)
-                    
+                    // Figure out proper dynamic sizing since view all comments will be hidden.
+                    self.commentsCountButton.isHidden = true
                     self.tpView.frame = CGRect(x: x, y: y, width: w, height: h)
                     self.tpCommentorPic.frame.size = CGSize(width: self.tpCommentTF.frame.height, height: self.tpCommentTF.frame.height)
+                    
+                    self.scrollView.isScrollEnabled = false
+                   
             }
                 self.postTextView.resolveHashTags()
                 
@@ -1093,9 +1126,9 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                 
                 if (favedBySelf == true){
                    
-                    self.tpFaveButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
+                    self.tpFaveButton.setImage(UIImage(named:"favoritesFilled.png"), for: .normal)
                     
-                    self.favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
+                    self.favoritesButton.setImage(UIImage(named:"favoritesFilled.png"), for: .normal)
                     //cell.favoritesCountButton.setTitle((self.feedDataArray[indexPath.row]["favorites"] as! [[String:Any]]).count.description, for: .normal)
                 }
             }
@@ -1173,6 +1206,8 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                         self.postText.frame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
                         self.postText.isScrollEnabled = false
                         self.commentsCountButton.frame.origin = CGPoint(x: self.commentsCountButton.frame.origin.x, y: self.postText.frame.origin.y + self.postText.frame.height + 2)
+                        //self.tpFaveButton.frame = CGRect(x: self.tpFaveButton.frame.origin.x, y: self.tpLikeButton.frame.origin.y, width: self.tpLikeButton.frame.width, height: self.tpLikeButton.frame.height)
+                        //self.tpShareButton.frame = CGRect(x: self.tpShareButton.frame.origin.x, y: self.tpLikeButton.frame.origin.y, width: self.tpLikeButton.frame.width, height: self.tpLikeButton.frame.height)
                         
                 }
                     self.postText.resolveHashTags()
@@ -1254,7 +1289,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                     
                     
                     if favedBySelf == true{
-                        self.favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
+                        self.favoritesButton.setImage(UIImage(named:"favoritesFilled.png"), for: .normal)
                         
                     }
                 }
@@ -1313,6 +1348,11 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                         self.postText.frame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
                         self.postText.isScrollEnabled = false
                         self.commentsCountButton.frame.origin = CGPoint(x: self.commentsCountButton.frame.origin.x, y: self.postText.frame.origin.y + self.postText.frame.height + 2)
+                        
+                        
+                        //self.tpFaveButton.frame = CGRect(x: self.tpFaveButton.frame.origin.x, y: self.tpLikeButton.frame.origin.y, width: self.tpLikeButton.frame.width, height: self.tpLikeButton.frame.height)
+                         //self.tpShareButton.frame = CGRect(x: self.tpShareButton.frame.origin.x, y: self.tpLikeButton.frame.origin.y, width: self.tpLikeButton.frame.width, height: self.tpLikeButton.frame.height)
+                        
                     }
                     if self.thisPostData["city"] != nil{
                         self.cityButton.setTitle((self.thisPostData["city"] as! String), for: .normal)
@@ -1394,7 +1434,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
                         
                         
                         if favedBySelf2 == true{
-                            self.favoritesButton.setBackgroundImage(UIImage(named:"favoritesFilled.png"), for: .normal)
+                            self.favoritesButton.setImage(UIImage(named:"favoritesFilled.png"), for: .normal)
                             
                         }
                     }
@@ -1514,8 +1554,11 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
     let cell : CommentCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CommentCollectionViewCell", for: indexPath) as! CommentCollectionViewCell
             cell.postID = self.postID
     DispatchQueue.main.async{
+        cell.hashDelegate = self
     cell.commentorPic.layer.cornerRadius = cell.commentorPic.frame.width/2
     cell.commentorPic.layer.masksToBounds = true
+        //cell.commentDelegate = self
+        //cell.indexPath = indexPath
         cell.indexPath = indexPath
         cell.myRealName = self.myUName
         cell.posterUID = self.posterUID
@@ -1528,6 +1571,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
         
     print("boldName&Comment: \(boldNameAndComment)")
     cell.commentTextView.attributedText = boldNameAndComment
+        
     let tStampDateString = self.commentsArray[indexPath.row]["commentDate"] as! String
     
     let dateFormatter = DateFormatter()
@@ -1541,6 +1585,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
     let hoursBetween = now.hours(from: date!)
     //let tString = dateFormatter.string(from: tDate!)
     cell.commentTimeStamp.text = "\(hoursBetween) hours ago"
+    cell.commentTextView.resolveHashTags()
     
     if self.commentsArray[indexPath.row]["commentorPic"] as! String == "profile-placeholder"{
     cell.commentorPic.setImage(UIImage(named: "profile-placeholder"), for: .normal)
@@ -1596,7 +1641,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
         }
         if segue.identifier == "SinglePostToHash"{
             if let vc = segue.destination as? HashTagViewController{
-                vc.hashtag = self.hashtag
+                vc.hashtag = self.selectedHash
             }
             
         }
@@ -1637,9 +1682,8 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
             
             commentsCollect.frame = CGRect(x: commentsCollect.frame.origin.x, y: commentsCollect.frame.origin.y - keyboardHeight, width: commentsCollect.frame.width, height: commentsCollect.frame.height)
             } else {
-                tpCommentCollect.frame = CGRect(x: tpCommentCollect.frame.origin.x, y: tpCommentCollect.frame.origin.y + keyboardHeight, width: tpCommentCollect.frame.width, height: tpCommentCollect.frame.height)
                 
-                postTextView.frame = CGRect(x: postTextView.frame.origin.x, y: postTextView.frame.origin.y - keyboardHeight, width: postTextView.frame.width, height: postTextView.frame.height)
+                scrollView.frame = CGRect(x: scrollView.frame.origin.x, y: scrollView.frame.origin.y - keyboardHeight, width: scrollView.frame.width, height: scrollView.frame.height)
                 tpView.frame = CGRect(x: tpView.frame.origin.x, y: tpView.frame.origin.y - keyboardHeight, width: tpView.frame.width, height: tpView.frame.height)
                  tpCommentView.frame = CGRect(x: tpCommentView.frame.origin.x, y: tpCommentView.frame.origin.y + keyboardHeight, width: tpCommentView.frame.width, height: tpCommentView.frame.height)
             }
@@ -1661,9 +1705,10 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
             
             commentsCollect.frame = CGRect(x: commentsCollect.frame.origin.x, y: commentsCollect.frame.origin.y + keyboardHeight, width: commentsCollect.frame.width, height: commentsCollect.frame.height)
             } else {
-                 tpCommentCollect.frame = CGRect(x: tpCommentCollect.frame.origin.x, y: tpCommentCollect.frame.origin.y - keyboardHeight, width: tpCommentCollect.frame.width, height: tpCommentCollect.frame.height)
+                 //tpCommentCollect.frame = CGRect(x: tpCommentCollect.frame.origin.x, y: tpCommentCollect.frame.origin.y - keyboardHeight, width: tpCommentCollect.frame.width, height: tpCommentCollect.frame.height)
                 
-                postTextView.frame = CGRect(x: postTextView.frame.origin.x, y: postTextView.frame.origin.y + keyboardHeight, width: postTextView.frame.width, height: postTextView.frame.height)
+                //postTextView.frame = CGRect(x: postTextView.frame.origin.x, y: postTextView.frame.origin.y + keyboardHeight, width: postTextView.frame.width, height: postTextView.frame.height)
+                scrollView.frame = CGRect(x: scrollView.frame.origin.x, y: scrollView.frame.origin.y + keyboardHeight, width: scrollView.frame.width, height: scrollView.frame.height)
                 
                 tpView.frame = CGRect(x: tpView.frame.origin.x, y: tpView.frame.origin.y + keyboardHeight, width: tpView.frame.width, height: tpView.frame.height)
                  tpCommentView.frame = CGRect(x: tpCommentView.frame.origin.x, y: tpCommentView.frame.origin.y - keyboardHeight, width: tpCommentView.frame.width, height: tpCommentView.frame.height)
@@ -1725,6 +1770,7 @@ class SinglePostViewController: UIViewController, UICollectionViewDelegate, UICo
     }
     var selectedHash = String()
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+        print("shouldWork")
         switch URL.scheme {
         case "hash" :
             showHashTagAlert(tagType: "hash", payload: (URL as NSURL).resourceSpecifier!.removingPercentEncoding!)

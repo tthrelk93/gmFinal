@@ -287,6 +287,8 @@ class NewsFeedCellCollectionViewCell: UICollectionViewCell, UITextViewDelegate {
         //self.postPic.image = nil
         self.profImageView.image = nil
         self.cellIndexPath = nil
+        //self.likeButton.imageView!.image = nil
+        //self.likesCountButton.titleLabel!.text = nil
         //self.commentsCountButton.titleLabel?.text = nil
         
         // exampleView.backgroundColor = nil

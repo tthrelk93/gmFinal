@@ -158,12 +158,15 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
             self.popCollect.isHidden = false
         })
     }
+    var ogCommentCollectPos = CGRect()
     @IBOutlet weak var singlePostTopLine: UIView!
     @IBOutlet weak var commentView: UIView!
     @IBOutlet weak var topBarNearby: UIButton!
     @IBOutlet weak var commentedByButton: UIButton!
     @IBAction func commentedByButtonPressed(_ sender: Any) {
         commentView.isHidden = false
+        ogCommentPos = commentView.frame
+        ogCommentCollectPos = commentCollect.frame
         singlePostImageView.isHidden = true
         specCatLabel.isHidden = true
         commentTF.resignFirstResponder()
@@ -428,6 +431,8 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     @IBAction func commentPressed(_ sender: Any) {
         //singlePostTopLabel.isHidden = true
         commentView.isHidden = false
+        ogCommentCollectPos = commentCollect.frame
+        ogCommentPos = commentView.frame
         commentCollect.isHidden = false
         likesCollect.isHidden = true
         // print("commentsArray: \(commentsArray)")
@@ -502,6 +507,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         dumbCommentsLabel.isHidden = true
         
     }
+    @IBOutlet weak var commentsLabel: UILabel!
     @IBOutlet weak var commentPic: UIImageView!
     @IBOutlet weak var postCommentButton: UIButton!
     @IBAction func editingDidBegin(_ sender: Any) {
@@ -567,7 +573,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                         
                     } else {
                         
-                        var tempString = "\(self.myUName) commented on your post" as! String
+                        var tempString = "\(self.myUName) commented on your post." as! String
                         
                         var date = Date()
                         var dateFormatter = DateFormatter()
@@ -734,6 +740,30 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         singlePostScrollView.delegate = self
         //singlePostScrollView.scrollToTop(animated: false)
         //singlePostScrollView.bounces = false
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: NSNotification.Name.UIKeyboardWillShow,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide),
+            name: NSNotification.Name.UIKeyboardWillHide,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardDidShow),
+            name: NSNotification.Name.UIKeyboardDidShow,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardDidHide),
+            name: NSNotification.Name.UIKeyboardDidHide,
+            object: nil
+        )
         ogPopFrame = popCollect.frame
         posterPicButton.layer.cornerRadius = posterPicButton.frame.width/2
          topLine.frame = CGRect(x: topLine.frame.origin.x, y: topLine.frame.origin.y, width: topLine.frame.width, height: 0.5)
@@ -2162,6 +2192,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
                     self.singlePostView.isHidden = false
                     self.singlePostScrollView.isHidden = false
                     self.singlePostView.frame = self.ogSinglePostViewFrame
+                    
                     if self.topBarCat.titleLabel?.textColor == UIColor.red{
                         self.border1.isHidden = false
                         self.border2.isHidden = true
@@ -2256,6 +2287,57 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
     }
     
     
+    @objc func keyboardWillHide(notification: NSNotification) {
+        
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            let keyboardHeight = keyboardSize.height
+            let keyboardHeigh = keyboardSize.height
+            print("keyHeight: \(keyboardHeight)")
+            
+            
+            //backButton.isHidden = false
+            //self.likeTopLabel.isHidden = true
+            commentsLabel.isHidden = false
+            //commentView.frame = ogCommentPos
+            commentCollect.frame = CGRect(x: 0, y: ogCommentCollectPos.origin.y + keyboardHeigh + 5, width: commentCollect.frame.width, height: ogCommentCollectPos.height)
+            
+            
+            print("hiding keyb")
+        }
+    }
+    
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        
+        
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            let keyboardHeigh = keyboardSize.height
+            let keyboardHeight = keyboardSize.height
+            print("keyHeight: \(keyboardHeight)")
+            commentCollect.frame = CGRect(x: 0, y: ogCommentCollectPos.origin.y + keyboardHeigh + 5, width: commentCollect.frame.width, height: ogCommentCollectPos.height)
+            
+            //backButton.isHidden = true
+            //self.likeTopLabel.isHidden = true
+            commentsLabel.isHidden = true
+            //commentView.frame = CGRect(x: commentView.frame.origin.x, y: commentView.frame.origin.y - keyboardHeigh + 400, width: commentView.frame.width, height: commentView.frame.height)
+            
+           
+            
+            
+            print("hiding keyb")
+            
+        }
+    }
+    @objc func keyboardDidShow(notification: NSNotification) {
+        print("didShowKeyB")
+        
+    }
+    
+     @objc func keyboardDidHide(notification: NSNotification) {
+        print("didHideKeyB")
+        //commentCollect.frame = ogCommentCollectPos
+    }
+    
     
     
     // MARK: - Navigation
@@ -2344,7 +2426,7 @@ class SearchViewController: UIViewController, UICollectionViewDelegate, UICollec
         //logoWords.frame = CGRect(x: logoWords.frame.origin.x, y: logoWords.frame.origin.y + height, width: logoWords.frame.width, height: logoWords.frame.height)
         backFromCommentsButton.frame = CGRect(x: backFromCommentsButton.frame.origin.x, y: backFromCommentsButton.frame.origin.y + height, width: backFromCommentsButton.frame.width, height: backFromCommentsButton.frame.height)
         
-        commentCollect.frame = CGRect(x: commentCollect.frame.origin.x, y: commentCollect.frame.origin.y + height, width: commentCollect.frame.width, height: commentCollect.frame.height)
+        //commentCollect.frame = CGRect(x: commentCollect.frame.origin.x, y: commentCollect.frame.origin.y + height, width: commentCollect.frame.width, height: commentCollect.frame.height)
         print("balls")
         
         
